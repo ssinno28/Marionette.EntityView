@@ -1,0 +1,20 @@
+<script id="side-nav-item-template" type="text/template">
+    <div class="row">
+        <div class="columns large-10">
+            <a class="item" data-type="<%= type %>" href="<%= routeUrl %>">
+                <%= name %>
+            </a>
+        </div>
+        <div class="large-2 columns">
+            <a class="toggle<%= id %> toggle">
+                <i class="fi-minus"></i>
+                <i class="fi-plus"></i>
+            </a>
+        </div>
+        <div class="large-12 columns">
+            <ul class="children">
+
+            </ul>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,24 @@
+<script type="text/template" id="date-picker-template">
+    <div class="row">
+        <div class="large-6 columns">
+            <div class="row collapse">
+                <div class="large-3 columns">
+                    <i class="prefix fi-calendar"></i>
+                </div>
+                <div class="large-9 columns">
+                    <input type="text" class="fdatepicker" data-field="<%= dataField %>_date" value="<%= date %>"/>
+                </div>
+            </div>
+        </div>
+        <div class="large-6 columns">
+            <div class="row collapse">
+                <div class="large-3 columns">
+                    <i class="prefix fi-clock"></i>
+                </div>
+                <div class="large-9 columns">
+                    <input type="text" data-field="<%= dataField %>_time" value="<%= time %>"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

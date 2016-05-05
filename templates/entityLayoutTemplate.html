@@ -1,0 +1,70 @@
+<script type="text/template" id="entity-layout-template">
+    <div class="entity-header row">
+
+    </div>
+    <% if(showSubNav){ %>
+    <dl class="sub-nav">
+        <dd class="active"><a class="get-all" href="#">All</a></dd>
+        <dd><a class="create" href="#">Create</a></dd>
+    </dl>
+    <% } %>
+    <div class="row">
+        <div class="large-12 columns">
+            <input type="text" placeholder="Filter..." class="filterEntities nameFilter"/>
+        </div>
+    </div>
+    <div class="entityRegion row"></div>
+    <div class="filterEntities row">
+        <div class="pagerRegion large-12 columns"></div>
+    </div>
+    <div class="clearfix"></div>
+
+    <% if(allowDeleteAll || allowPublishAll || allowAddAll) { %>
+    <div class="row multi-action-requests filterEntities">
+        <div class="large-6 columns end">
+            <ul class="button-group radius even-2">
+                <% if(allowDeleteAll){ %>
+                <li>
+                    <button class="button <%= btnClass %> delete-all">Delete All</button>
+                </li>
+                <% } %>
+
+                <% if(allowPublishAll){ %>
+                <li>
+                    <button class="button <%= btnClass %> publish-all">Publish All</button>
+                </li>
+                <% } %>
+
+                <% if(allowAddAll){ %>
+                <li>
+                    <button class="button <%= btnClass %> add-all">Add All</button>
+                </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+    <% } %>
+
+    <div class="delete-all-modal tiny reveal-modal" style="display:none;" data-reveal>
+        <p class="lead">Are you sure you want to delete these items?</p>
+
+        <div class="row">
+            <div class="large-5 large-centered columns">
+                <a href="#" class="button yes">Yes</a>
+                <a href="#" class="button no">No</a>
+            </div>
+        </div>
+        <a class="close-reveal-modal">&#215;</a>
+    </div>
+    <div class="publish-all-modal tiny reveal-modal" style="display:none;" data-reveal>
+        <p class="lead">Are you sure you want to publish these items?</p>
+
+        <div class="row">
+            <div class="large-5 large-centered columns">
+                <a href="#" class="button yes">Yes</a>
+                <a href="#" class="button no">No</a>
+            </div>
+        </div>
+        <a class="close-reveal-modal">&#215;</a>
+    </div>
+</script>

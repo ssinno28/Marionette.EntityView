@@ -1,0 +1,31 @@
+<script id="entity-list-item-template" type="text/html">
+    <% if(allowPublishAll || allowDeleteAll || allowAddAll){ %>
+    <div class="large-1 columns">
+        <fieldset class="switch small radius" tabindex="0">
+            <input class="multi-action" data-id="<%= id %>" id="<%= route %><%=id%>" type="checkbox">
+            <label for="<%= route %><%=id%>"></label>
+        </fieldset>
+    </div>
+    <% } %>
+
+    <div class="fieldsRegion large-9 columns"></div>
+    <div class="buttons large-2 columns center">
+        <ul class="inline-list actions">
+            <% if(allowEdit){ %>
+            <li>
+                <a class="edit" data-id="<%= id %>" href="#">
+                    <i data-id="<%= id %>" class="fi-pencil size-21"></i>
+                </a>
+            </li>
+            <% } %>
+
+            <% if(allowDelete){ %>
+            <li>
+                <a class="delete" href="#<%= route %>/delete/<%= id %>/">
+                    <i data-id="<%= id %>" class="fi-x size-21"></i>
+                </a>
+            </li>
+            <% } %>
+        </ul>
+    </div>
+</script>
