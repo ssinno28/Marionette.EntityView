@@ -1,12 +1,6 @@
-// Filename: router.js
-//The router will load the correct dependencies depending on the current URL.
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette'
-], function ($, _, Backbone, Marionette) {
-    return Backbone.Marionette.AppRouter.extend({
+var EntityRouter;
+(function ($, _, Backbone, Marionette) {
+    EntityRouter = Marionette.EntityRouter = Backbone.Marionette.AppRouter.extend({
         onRoute: function (name, path, arguments) {
             if (_.isFunction(this.options.controller.onActionExecuting)) {
                 this.options.controller.onActionExecuting(name, path, arguments);
@@ -35,4 +29,4 @@ define([
             'startsWith/:startsWith/field/:field/*actions': 'textSearch'
         }
     });
-});
+})(jQuery, _, Backbone, Marionette);

@@ -1,10 +1,7 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette'
-], function ($, _, Backbone, Marionette) {
-    var confirmModalBehavior = Marionette.Behavior.extend({
+
+var ConfirmModalBehavior;
+(function ($, _, Backbone, Marionette) {
+    ConfirmModalBehavior = Marionette.Behavior.extend({
         defaults: {
             message: "Are you sure you want to do this?",
             yesFunc: function (e) {
@@ -35,6 +32,4 @@ define([
             }, this));
         }
     });
-
-    return confirmModalBehavior;
-});
+})(jQuery, _, Backbone, Marionette);

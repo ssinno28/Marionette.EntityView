@@ -1,12 +1,6 @@
-// Filename: views/facets/FacetListView
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'views/reusableTypes/ReusableTypeView'
-], function ($, _, Backbone, Marionette, ReusableTypeView) {
-    var OptionView = ReusableTypeView.extend({
+var OptionView;
+(function ($, _, Backbone, Marionette, ReusableTypeView) {
+    OptionView = ReusableTypeView.extend({
         tagName: 'option',
         onRender: function () {
             this.$el.val(this.model.get('id'));
@@ -20,6 +14,4 @@ define([
             }
         }
     });
-    // Our module now returns our view
-    return OptionView;
-});
+})(jQuery, _, Backbone, Marionette, ReusableTypeView);

@@ -1,14 +1,6 @@
-// Filename: views/facets/FacetListView
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'text!templates/sideNav/sideNavItemTemplate.html',
-    'event.aggregator',
-    'views/tree/TreeCompositeView'
-], function ($, _, Backbone, Marionette, sideNavItemTemplate, EventAggregator, TreeCompositeView) {
-    var SideNavItemView = TreeCompositeView.extend({
+var SideNavItemView;
+(function ($, _, Backbone, Marionette, sideNavItemTemplate, EventAggregator, TreeCompositeView) {
+    SideNavItemView = Marionette.SideNavItemView = TreeCompositeView.extend({
         template: Marionette.TemplateCache.get(sideNavItemTemplate),
         tagName: 'li',
         events: function () {
@@ -39,6 +31,5 @@ define([
             };
         }
     });
-    // Our module now returns our view
-    return SideNavItemView;
-});
+
+})(jQuery, _, Backbone, Marionette, sideNavItemTemplate, EventAggregator, TreeCompositeView);

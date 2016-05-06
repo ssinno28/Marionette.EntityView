@@ -1,13 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'views/reusableTypes/ReusableTypeListView',
-    'views/reusableTypes/autoComplete/AutoCompleteView',
-    'event.aggregator'
-], function ($, _, Backbone, Marionette, ReusableTypeListView, AutoCompleteView, EventAggregator) {
-    var dropDownListView = ReusableTypeListView.extend({
+var AutoCompleteListView;
+(function ($, _, Backbone, Marionette, ReusableTypeListView, AutoCompleteView, EventAggregator) {
+    AutoCompleteListView = ReusableTypeListView.extend({
         className: 'f-dropdown',
         tagName: 'ul',
         childView: AutoCompleteView,
@@ -24,6 +17,4 @@ define([
             EventAggregator.trigger('auto-complete:selected:' + this.dataField, e);
         }
     });
-
-    return dropDownListView;
-});
+})(jQuery, _, Backbone, Marionette, ReusableTypeListView, AutoCompleteView, EventAggregator);

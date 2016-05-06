@@ -1,11 +1,6 @@
-// Filename: views/facets/FacetListView
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette'
-], function ($, _, Backbone, Marionette) {
-    var ReusableTypeView = Backbone.Marionette.LayoutView.extend({
+var ReusableTypeView;
+(function ($, _, Backbone, Marionette) {
+    ReusableTypeView = Marionette.ReusableTypeView = Backbone.Marionette.LayoutView.extend({
         initialize: function (options) {
             _.extend(this, options);
             this.isSelected();
@@ -33,6 +28,5 @@ define([
             };
         }
     });
-    // Our module now returns our view
-    return ReusableTypeView;
-});
+
+})(jQuery, _, Backbone, Marionette);

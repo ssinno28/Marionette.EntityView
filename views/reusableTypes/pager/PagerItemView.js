@@ -1,12 +1,8 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'text!templates/reusableTypes/pager/pagerItemTemplate.html'
-], function ($, _, Backbone, Marionette, template) {
-    var PagerItemView = Marionette.ItemView.extend({
-        template: Marionette.TemplateCache.get(template),
+
+var PagerItemView;
+(function ($, _, Backbone, Marionette, pagerItemTemplate) {
+    PagerItemView = Marionette.ItemView.extend({
+        template: Marionette.TemplateCache.get(pagerItemTemplate),
         tagName: 'li',
         className: function () {
             var isCurrent = this.model.get('currentPage'),
@@ -20,5 +16,4 @@ define([
         }
     });
 
-    return PagerItemView;
-});
+})($, _, Backbone, Marionette, pagerItemTemplate);

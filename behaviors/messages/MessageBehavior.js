@@ -1,13 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'views/validation/SuccessView',
-    'views/validation/ErrorView',
-    'views/validation/InfoView'
-], function ($, _, Backbone, Marionette, SuccessView, ErrorView, InfoView) {
-    var messageModalBehavior = Marionette.Behavior.extend({
+var MessageModalBehavior;
+(function ($, _, Backbone, Marionette, SuccessView, ErrorView, InfoView) {
+    MessageModalBehavior = Marionette.Behavior.extend({
         defaults: {
             duration: 3000
         },
@@ -41,6 +34,4 @@ define([
             }, this.options.duration)
         }
     });
-
-    return messageModalBehavior;
-});
+})(jQuery, _, Backbone, Marionette, SuccessView, ErrorView, InfoView);

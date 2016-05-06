@@ -1,13 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'views/reusableTypes/ReusableTypeLayoutView',
-    'text!templates/reusableTypes/image/imageFieldTemplate.html',
-    'app'
-], function ($, _, Backbone, Marionette, ReusableTypeLayoutView, imageFieldTemplate, App) {
-    var imageFieldView = ReusableTypeLayoutView.extend({
+var ImageFieldView;
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, imageFieldTemplate) {
+    ImageFieldView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
@@ -29,7 +22,4 @@ define([
             this.updateImageUrl(App.API_URL + '/');
         }
     });
-
-    return imageFieldView;
-})
-;
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, imageFieldTemplate);

@@ -1,14 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'views/reusableTypes/ReusableTypeLayoutView',
-    'text!templates/reusableTypes/datePickerTemplate.html',
-    'event.aggregator',
-    'moment'
-], function ($, _, Backbone, Marionette, ReusableTypeLayoutView, datePickerTemplate, EventAggregator, Moment) {
-    var datePickerView = ReusableTypeLayoutView.extend({
+var DatePickerView;
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, datePickerTemplate, EventAggregator, Moment) {
+    DatePickerView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
@@ -41,9 +33,9 @@ define([
             var $date = $('[data-field="' + this.dataField + '_date"]'),
                 $time = $('[data-field="' + this.dataField + '_time"]');
 
-            if(this.extensionType === 'Date'){
+            if (this.extensionType === 'Date') {
                 $time.hide();
-            } else if(this.extensionType === 'Time'){
+            } else if (this.extensionType === 'Time') {
                 $date.hide();
             }
         },
@@ -63,6 +55,4 @@ define([
             return $date.val() + ' ' + $time.val();
         }
     });
-
-    return datePickerView;
-});
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, datePickerTemplate, EventAggregator, Moment);

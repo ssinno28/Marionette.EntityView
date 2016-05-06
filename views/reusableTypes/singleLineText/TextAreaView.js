@@ -1,14 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'views/reusableTypes/ReusableTypeLayoutView',
-    'text!templates/reusableTypes/textAreaTemplate.html'
-], function ($, _, Backbone, Marionette, ReusableTypeLayoutView, textAreaTemplate) {
-    var textAreaView = ReusableTypeLayoutView.extend({
+var TextAreaView;
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, textAreaTemplate) {
+    TextAreaView = ReusableTypeLayoutView.extend({
         template: Marionette.TemplateCache.get(textAreaTemplate)
     });
-
-    return textAreaView;
-});
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, textAreaTemplate);

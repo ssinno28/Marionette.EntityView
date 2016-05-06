@@ -1,12 +1,7 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'views/sideNav/SideNavItemView',
-    'event.aggregator'
-], function ($, _, Backbone, Marionette, SideNavItemView, EventAggregator) {
-    var SideNavListView = Backbone.Marionette.CollectionView.extend({
+
+var SideNavListView;
+(function ($, _, Backbone, Marionette, SideNavItemView) {
+    SideNavListView = Marionette.SideNavListView = Backbone.Marionette.CollectionView.extend({
         initialize: function (options) {
             this.listings = options.listings;
             this.headerIndexes = [];
@@ -87,5 +82,4 @@ define([
             }
         }
     });
-    return SideNavListView;
-});
+})(jQuery, _, Backbone, Marionette, SideNavItemView);

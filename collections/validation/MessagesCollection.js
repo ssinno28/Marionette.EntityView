@@ -1,16 +1,10 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'app',
-    'models/validation/MessageModel'
-], function ($, _, Backbone, Marionette, App, MessageModel) {
+var MessagesCollection;
+(function ($, _, Backbone, Marionette, App, MessageModel) {
     /**
      * @class MessagesCollection
      * @type {Backbone.CollectionSubset.extend|*|dst|target|Object|a}
      */
-    var MessagesCollection = Backbone.Collection.extend({
+    MessagesCollection = Backbone.Collection.extend({
         defaults: {
             model: MessageModel
         },
@@ -18,7 +12,7 @@ define([
          * Description
          * @method setMessages
          * @param {} messages
-         * @return 
+         * @return
          */
         setMessages: function (messages) {
             var outerScope = this;
@@ -29,8 +23,7 @@ define([
             });
         }
     });
-    return MessagesCollection;
-});
+})(jQuery, _, Backbone, Marionette, App, MessageModel);
 /**
  * Created by ssinno on 12/2/13.
  */

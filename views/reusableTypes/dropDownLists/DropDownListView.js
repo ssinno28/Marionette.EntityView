@@ -1,14 +1,6 @@
-// Filename: views/facets/FacetListView
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'app',
-    'views/reusableTypes/dropDownLists/OptionView',
-    'views/reusableTypes/ReusableTypeListView'
-], function ($, _, Backbone, Marionette, App, OptionView, ReusableTypeListView) {
-    var DropDownListView = ReusableTypeListView.extend({
+var DropDownListView;
+(function ($, _, Backbone, Marionette, OptionView, ReusableTypeListView) {
+    DropDownListView = ReusableTypeListView.extend({
         childView: OptionView,
         tagName: 'select',
         className: '',
@@ -17,7 +9,4 @@ define([
             this.$el.attr('data-field', dataField);
         }
     });
-
-    // Our module now returns our view
-    return DropDownListView;
-});
+})($, _, Backbone, Marionette, OptionView, ReusableTypeListView);

@@ -1,11 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'event.aggregator'
-], function ($, _, Backbone, Marionette, EventAggregator) {
-    var SortableItemView = Marionette.LayoutView.extend({
+var SortableItemView;
+(function ($, _, Backbone, Marionette, EventAggregator) {
+    SortableItemView = Marionette.SortableItemView = Marionette.LayoutView.extend({
         tagName: "li",
         attributes: {
             "draggable": true
@@ -56,6 +51,4 @@ define([
             EventAggregator.trigger('item:dropped', this.parent.draggedModel, currentModel);
         }
     });
-
-    return SortableItemView;
-});
+})(jQuery, _, Backbone, Marionette, EventAggregator);

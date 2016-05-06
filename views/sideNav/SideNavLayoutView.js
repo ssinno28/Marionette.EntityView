@@ -1,13 +1,8 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'views/sideNav/SideNavListView',
-    'text!templates/sideNav/sideNavLayoutTemplate.html'
-], function ($, _, Backbone, Marionette, SideNavListView, template) {
-    var sideNavLayoutView = Marionette.LayoutView.extend({
-        template: Marionette.TemplateCache.get(template),
+
+var SideNavLayoutView;
+(function ($, _, Backbone, Marionette, SideNavListView, sideNavLayoutTemplate) {
+    SideNavLayoutView = Marionette.LayoutView.extend({
+        template: Marionette.TemplateCache.get(sideNavLayoutTemplate),
         regions: {
             listingsRegion: '.listingsRegion'
         },
@@ -20,5 +15,5 @@ define([
             this.listingsRegion.show(sideNavListView);
         }
     });
-    return sideNavLayoutView;
-});
+
+})(jQuery, _, Backbone, Marionette, SideNavListView, sideNavLayoutTemplate);

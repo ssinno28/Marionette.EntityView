@@ -1,12 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'views/reusableTypes/pager/PagerItemView',
-    'event.aggregator'
-], function ($, _, Backbone, Marionette, PagerItemView, EventAggregator) {
-    var PagerListView = Marionette.CollectionView.extend({
+var PagerListView;
+(function ($, _, Backbone, Marionette, PagerItemView, EventAggregator) {
+    PagerListView = Marionette.CollectionView.extend({
         tagName: 'ul',
         className: 'pagination',
         initialize: function (options) {
@@ -38,6 +32,4 @@ define([
             EventAggregator.off('page:changed:' + this.parentViewCid);
         }
     });
-
-    return PagerListView;
-});
+})(jQuery, _, Backbone, Marionette, PagerItemView, EventAggregator);

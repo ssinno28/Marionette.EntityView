@@ -1,10 +1,7 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette'
-], function ($, _, Backbone, Marionette) {
-    var reusableTypeLayoutView = Backbone.Marionette.LayoutView.extend({
+
+var ReusableTypeLayoutView;
+(function ($, _, Backbone, Marionette) {
+    ReusableTypeLayoutView = Marionette.ReusableTypeLayoutView = Backbone.Marionette.LayoutView.extend({
         initialize: function (options) {
             _.extend(this, options);
         },
@@ -16,6 +13,4 @@ define([
             }
         }
     });
-
-    return reusableTypeLayoutView;
-});
+})(jQuery, _, Backbone, Marionette);

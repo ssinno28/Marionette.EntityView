@@ -1,12 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'app',
-    'views/reusableTypes/pager/PagerListView'
-], function ($, _, Backbone, Marionette, App, PagerListView) {
-    var pagerBehavior = Marionette.Behavior.extend({
+var PagerBehavior;
+(function ($, _, Backbone, Marionette, App, PagerListView) {
+    PagerBehavior = Marionette.Behavior.extend({
         onShowPager: function (entityCollection) {
             if (this.view.pagerRegion.currentView != null) {
                 this.view.pagerRegion.reset();
@@ -19,7 +13,7 @@ define([
 
             if (noOfPages === 1) {
                 this.view.pagerRegion.empty();
-                if(this.view.routing){
+                if (this.view.routing) {
                     location.hash = '/' + this.view.route + '/' + 1 + '/' + this.view.additionalParams;
                 }
 
@@ -42,6 +36,4 @@ define([
             }));
         }
     });
-
-    return pagerBehavior;
-});
+})(jQuery, _, Backbone, Marionette, App, PagerListView);

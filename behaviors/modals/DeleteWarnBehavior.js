@@ -1,18 +1,11 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'behaviors/modals/ConfirmModalBehavior'
-], function ($, _, Backbone, Marionette, ConfirmModalBehavior) {
-    var deleteWarnBehavior = ConfirmModalBehavior.extend({
+var DeleteWarnBehavior;
+(function ($, _, Backbone, Marionette, ConfirmModalBehavior) {
+    DeleteWarnBehavior = ConfirmModalBehavior.extend({
         events: {
             "click .delete": "showWarningModal"
         },
-        getModal: function(){
+        getModal: function () {
             return $('.deleteModal');
         }
     });
-
-    return deleteWarnBehavior;
-});
+})(jQuery, _, Backbone, Marionette, ConfirmModalBehavior);

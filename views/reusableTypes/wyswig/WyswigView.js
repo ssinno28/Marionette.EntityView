@@ -1,13 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'views/reusableTypes/ReusableTypeLayoutView',
-    'text!templates/reusableTypes/wyswigTemplate.html',
-    'app'
-], function ($, _, Backbone, Marionette, ReusableTypeLayoutView, wyswigTextTemplate, App) {
-    var wyswigView = ReusableTypeLayoutView.extend({
+var WyswigView;
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, wyswigTextTemplate, CKEDITOR) {
+    WyswigView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
@@ -17,11 +10,11 @@ define([
                 imgs = $(html).find('img'),
                 self = this;
 
-            _.each(imgs, function(img){
+            _.each(imgs, function (img) {
                 var $img = $(img),
                     src = $img.attr('src');
 
-                if(self.isPathAbsolute(src)){
+                if (self.isPathAbsolute(src)) {
                     return;
                 }
 
@@ -38,10 +31,8 @@ define([
         onDomRefresh: function () {
             var self = this;
 
-            require(['libs/ckeditor/ckeditor', 'libs/ckeditor/adapters/jquery'], function () {
-                CKEDITOR.replace(self.dataField, {
-                    filebrowserBrowseUrl: '/AchillesCR.Web/js/libs/filemanager/index.html'
-                });
+            CKEDITOR.replace(self.dataField, {
+                filebrowserBrowseUrl: '/AchillesCR.Web/js/libs/filemanager/index.html'
             });
         },
         template: Marionette.TemplateCache.get(wyswigTextTemplate),
@@ -49,6 +40,4 @@ define([
             return /^https?:\/\//i.test(path);
         }
     });
-
-    return wyswigView;
-});
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, wyswigTextTemplate, CKEDITOR);

@@ -1,14 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'models/validation/ValidationModel',
-    'text!templates/validation/validationTemplate.html',
-    'collections/validation/MessagesCollection',
-    'views/validation/MessageListView'
-], function ($, _, Backbone, Marionette, ValidationModel, validationTemplate, MessageCollection, MessageListView) {
-    var BaseValidationView = Backbone.Marionette.LayoutView.extend({
+var BaseValidationView;
+(function ($, _, Backbone, Marionette, ValidationModel, validationTemplate, MessageCollection, MessageListView) {
+    BaseValidationView = Marionette.BaseValidationView = Backbone.Marionette.LayoutView.extend({
         tagName: 'div',
         template: Backbone.Marionette.TemplateCache.get(validationTemplate),
         regions: {
@@ -22,6 +14,5 @@ define([
             this.validationMessages.show(new MessageListView({collection: messageCollection}));
         }
     });
-// Our module now returns our view
-    return BaseValidationView;
-});
+
+})(jQuery, _, Backbone, Marionette, ValidationModel, validationTemplate, MessageCollection, MessageListView);

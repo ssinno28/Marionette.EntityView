@@ -1,16 +1,6 @@
-define([
-    'marionette',
-    'jquery',
-    'underscore',
-    'text!templates/reusableTypes/multiSelectLists/multiSelectLayoutTemplate.html',
-    'views/reusableTypes/ReusableTypeLayoutView',
-    'services/multiSelectService',
-    'models/EntityLayoutModel',
-    'app',
-    'text!templates/reusableTypes/multiSelectLists/headerTemplate.html',
-    'event.aggregator'
-], function (Marionette, $, _, multiSelectLayoutTemplate, ReusableTypeLayoutView, multiSelectService, EntityLayoutModel, App, headerTemplate, EventAggregator) {
-    var multiSelectLayoutView = ReusableTypeLayoutView.extend({
+var MultiSelectLayoutView;
+(function (Marionette, $, _, multiSelectLayoutTemplate, ReusableTypeLayoutView, multiSelectService, EntityLayoutModel, headerTemplate, EventAggregator) {
+    MultiSelectLayoutView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
@@ -138,12 +128,12 @@ define([
             EventAggregator.trigger(this.excludedItemsRoute + '.getAll', 1);
 
             var inPred = [
-                    {
-                        searchType: 'in',
-                        field: 'id',
-                        value: selectedIds
-                    }
-                ];
+                {
+                    searchType: 'in',
+                    field: 'id',
+                    value: selectedIds
+                }
+            ];
 
             this.selectedItemsService.conditions = inPred;
             EventAggregator.trigger(this.selectedItemsRoute + '.getAll', 1);
@@ -297,6 +287,4 @@ define([
             EventAggregator.off(this.selectedItemsRoute + '.subcollection');
         }
     });
-
-    return multiSelectLayoutView;
-});
+})(Marionette, jQuery, _, multiSelectLayoutTemplate, ReusableTypeLayoutView, multiSelectService, EntityLayoutModel, headerTemplate, EventAggregator);

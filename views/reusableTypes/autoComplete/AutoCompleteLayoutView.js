@@ -1,15 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'views/reusableTypes/ReusableTypeLayoutView',
-    'text!templates/reusableTypes/autoComplete/autoCompleteTemplate.html',
-    'util/timeoutUtil',
-    'event.aggregator',
-    'views/reusableTypes/autoComplete/AutoCompleteListView'
-], function ($, _, Backbone, Marionette, ReusableTypeLayoutView, autoCompleteTemplate, TimeoutUtil, EventAggregator, AutoCompleteListView) {
-    var autoCompleteView = ReusableTypeLayoutView.extend({
+var AutoCompleteLayoutView;
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, autoCompleteTemplate, TimeoutUtil, EventAggregator, AutoCompleteListView) {
+    AutoCompleteLayoutView = ReusableTypeLayoutView.extend({
         tag: 'div',
         template: Marionette.TemplateCache.get(autoCompleteTemplate),
         initialize: function (options) {
@@ -124,6 +115,4 @@ define([
             EventAggregator.off('auto-complete:selected:' + this.dataField);
         }
     });
-
-    return autoCompleteView;
-});
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, autoCompleteTemplate, TimeoutUtil, EventAggregator, AutoCompleteListView);

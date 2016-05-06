@@ -1,11 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'app'
-], function ($, _, Backbone, Marionette, App) {
-    var ValidationModel = Backbone.Model.extend({
+var ValidationModel;
+(function ($, _, Backbone, Marionette, App) {
+    ValidationModel = Backbone.Model.extend({
         defaults: {
             messagesCollection: new Backbone.Collection()
         },
@@ -18,5 +13,5 @@ define([
             });
         }
     });
-    return ValidationModel;
-});
+
+})(jQuery, _, Backbone, Marionette, App);

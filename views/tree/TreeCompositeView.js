@@ -1,15 +1,7 @@
-// Filename: views/facets/FacetListView
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'app',
-    'text!templates/tree/treeCompositeTemplate.html',
-    'util/uriUtil',
-    'event.aggregator'
-], function ($, _, Backbone, Marionette, App, treeCompositeTemplate, UriUtil, EventAggregator) {
-    var TreeCompositeView = Backbone.Marionette.CompositeView.extend({
+
+var TreeCompositeView;
+(function ($, _, Backbone, Marionette, treeCompositeTemplate) {
+    TreeCompositeView = Marionette.TreeCompositeView = Backbone.Marionette.CompositeView.extend({
         tagName: 'li',
         template: Marionette.TemplateCache.get(treeCompositeTemplate),
         events: function () {
@@ -127,6 +119,5 @@ define([
             return !_.isUndefined(this.collection) && this.collection.length > 0;
         }
     });
-    // Our module now returns our view
-    return TreeCompositeView;
-});
+
+})(jQuery, _, Backbone, Marionette, treeCompositeTemplate);

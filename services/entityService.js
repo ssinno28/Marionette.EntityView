@@ -1,15 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'app',
-    'views/EntityLayoutView',
-    'text!templates/headerTemplate.html',
-    'event.aggregator'
-], function ($, _, Backbone, Marionette, App, EntityLayoutView, headerTemplate, EventAggregator) {
-
-    var entityService = (function () {
+var EntityService;
+(function ($, _, Backbone, Marionette, App, EntityLayoutView, headerTemplate, EventAggregator) {
+    EntityService = (function () {
 
         var ctor = function () {
 
@@ -192,7 +183,7 @@ define([
                             var currentCollection = self.entityLayoutView().listView.collection;
                             currentCollection.remove(id);
 
-                            self.entityLayoutView().triggerMethod("ShowPager",  currentCollection);
+                            self.entityLayoutView().triggerMethod("ShowPager", currentCollection);
                         },
                         error: function (errorResponse) {
                             console.log("Inside Failure");
@@ -333,6 +324,4 @@ define([
 
         return ctor;
     });
-
-    return entityService;
-});
+})(jQuery, _, Backbone, Marionette, App, EntityLayoutView, headerTemplate, EventAggregator);

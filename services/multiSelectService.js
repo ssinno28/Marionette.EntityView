@@ -1,53 +1,42 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'services/entityService',
-    'app',
-    'models/entryitems/EntryItemModel',
-    'views/reusableTypes/multiSelectLists/MultiSelectListView'
-], function ($, _, Backbone, Marionette, EntityService, App, EntryItemModel, MultiSelectListView) {
-    var ctor = function () {
+var MultiSelectService;
+(function ($, _, Backbone, Marionette, EntityService, App, MultiSelectListView) {
+    MultiSelectService = (function () {
+        var ctor = function () {
 
-    };
-
-    ctor.prototype = new EntityService();
-    ctor.prototype.$super = new EntityService();
-
-    ctor.prototype.getData = function (page) {
-        var data = {
-            conditions: [],
-            page: page,
-            pageSize: window.pageSize
         };
 
-        data.conditions = data.conditions.concat(this.conditions);
+        ctor.prototype = new EntityService();
+        ctor.prototype.$super = new EntityService();
 
-        return data;
-    };
+        ctor.prototype.getData = function (page) {
+            var data = {
+                conditions: [],
+                page: page,
+                pageSize: window.pageSize
+            };
 
-    ctor.prototype.initialize = function (options) {
-        this.model = EntryItemModel;
-        this.listView = MultiSelectListView;
-        this.formView = null;
+            data.conditions = data.conditions.concat(this.conditions);
 
-        this.$super.initialize.call(this, options);
-    };
+            return data;
+        };
 
-    ctor.prototype.getHeader = function () {
-        return this.header;
-    };
+        ctor.prototype.initialize = function (options) {
+            this.model = null;
+            this.listView = MultiSelectListView;
+            this.formView = null;
 
-    ctor.prototype.getBtnClass = function () {
-        return 'tiny round';
-    };
+            this.$super.initialize.call(this, options);
+        };
 
-    ctor.prototype.getNewModel = function () {
-        var entity = new this.model();
-        entity.set({entryTypeId: this.entryTypeId});
-        return entity;
-    };
+        ctor.prototype.getHeader = function () {
+            return this.header;
+        };
 
-    return ctor;
-});
+        ctor.prototype.getBtnClass = function () {
+            return 'tiny round';
+        };
+
+        return ctor;
+    });
+
+})(jQuery, _, Backbone, Marionette, EntityService, App, MultiSelectListView);

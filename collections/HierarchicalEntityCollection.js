@@ -1,23 +1,16 @@
-// Filename: models/project
-define([
-    'underscore',
-    'backbone',
-    'jquery',
-    'app',
-    'util/uriUtil',
-    'collections/EntityCollection'
-], function (_, Backbone, $, App, UriUtil, EntityCollection) {
+var HierarchicalEntityCollection;
+(function (_, Backbone, $, App, UriUtil, EntityCollection) {
     /**
      * This collection is used for hierarchical entites
      *
      * @class HierarchicalEntityCollection
      * @type {Backbone.CollectionSubset.extend|*|dst|target|Object|a}
      */
-    var HierarchicalEntityCollection = EntityCollection.extend({
+    HierarchicalEntityCollection = Backbone.HierarchicalEntityCollection = EntityCollection.extend({
         /**
          * Description
          * @method initialize
-         * @return 
+         * @return
          */
         initialize: function () {
             EntityCollection.prototype.initialize.apply(this);
@@ -56,7 +49,7 @@ define([
                      * Description
                      * @method success
                      * @param {} response
-                     * @return 
+                     * @return
                      */
                     success: function (response) {
                         outerScope.addModelsToCollection(response);
@@ -66,7 +59,7 @@ define([
                      * Description
                      * @method error
                      * @param {} errorResponse
-                     * @return 
+                     * @return
                      */
                     error: function (errorResponse) {
                         console.log("Inside Failure");
@@ -111,7 +104,7 @@ define([
                      * Description
                      * @method success
                      * @param {} response
-                     * @return 
+                     * @return
                      */
                     success: function (response) {
                         outerScope.addModelsToCollection(response);
@@ -121,7 +114,7 @@ define([
                      * Description
                      * @method error
                      * @param {} errorResponse
-                     * @return 
+                     * @return
                      */
                     error: function (errorResponse) {
                         console.log("Inside Failure");
@@ -164,8 +157,8 @@ define([
             return uniqueParentIds;
         },
         getChildrenIds: function (entity) {
-            var children = this.filter(function(profile){
-               return profile.get('parentIds').indexOf(entity.get('id')) > -1;
+            var children = this.filter(function (profile) {
+                return profile.get('parentIds').indexOf(entity.get('id')) > -1;
             });
 
             return _.pluck(children, 'id');
@@ -197,7 +190,7 @@ define([
                  */
                 filter: function (node) {
                     var modelId = node.get('id');
-                    return  parentIds.indexOf(modelId) > -1;
+                    return parentIds.indexOf(modelId) > -1;
                 }
             });
 
@@ -230,7 +223,7 @@ define([
                  */
                 filter: function (node) {
                     var modelId = node.get('id');
-                    return  childrenIds.indexOf(modelId) > -1;
+                    return childrenIds.indexOf(modelId) > -1;
                 }
             });
 
@@ -260,7 +253,7 @@ define([
                      * Description
                      * @method success
                      * @param {} response
-                     * @return 
+                     * @return
                      */
                     success: function (response) {
                         var models = outerScope.addModelsToCollection(response);
@@ -275,7 +268,7 @@ define([
                      * Description
                      * @method error
                      * @param {} errorResponse
-                     * @return 
+                     * @return
                      */
                     error: function (errorResponse) {
                         console.log("Inside Failure");
@@ -289,6 +282,4 @@ define([
             return window.getCache(url, getCollection);
         }
     });
-    // Return the model for the module
-    return HierarchicalEntityCollection;
-});
+})(_, Backbone, jQuery, App, UriUtil, EntityCollection);

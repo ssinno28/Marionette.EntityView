@@ -1,13 +1,8 @@
-// Filename: views/facets/FacetListView
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'views/tree/TreeCompositeView',
-    'event.aggregator'
-], function ($, _, Backbone, Marionette, TreeCompositeView, EventAggregator) {
-    var TreeListView = Marionette.CollectionView.extend({
+
+
+var TreeListView;
+(function ($, _, Backbone, Marionette, TreeCompositeView, EventAggregator) {
+    TreeListView = Marionette.TreeListView = Marionette.CollectionView.extend({
         childView: TreeCompositeView,
         initialize: function (options) {
             this.fullCollection = options.fullCollection;
@@ -32,6 +27,5 @@ define([
             };
         }
     });
-    // Our module now returns our view
-    return TreeListView;
-});
+
+})(jQuery, _, Backbone, Marionette, TreeCompositeView, EventAggregator);

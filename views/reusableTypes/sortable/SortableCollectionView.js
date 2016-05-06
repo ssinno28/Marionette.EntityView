@@ -1,12 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'views/reusableTypes/sortable/SortableItemView',
-    'event.aggregator'
-], function ($, _, Backbone, Marionette, SortableItemView, EventAggregator) {
-    var SortableCollectionView = Marionette.CollectionView.extend({
+var SortableCollectionView;
+(function ($, _, Backbone, Marionette, SortableItemView, EventAggregator) {
+    SortableCollectionView = Marionette.SortableCollectionView = Marionette.CollectionView.extend({
         tagName: 'ul',
         className: 'sortable-view',
         childView: SortableItemView,
@@ -93,6 +87,4 @@ define([
             EventAggregator.off('item:dropped');
         }
     });
-
-    return SortableCollectionView;
-});
+})(jQuery, _, Backbone, Marionette, SortableItemView, EventAggregator);
