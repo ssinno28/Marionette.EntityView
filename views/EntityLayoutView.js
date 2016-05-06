@@ -1,17 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'text!templates/entityLayoutTemplate.html',
-    'models/EntityLayoutModel',
-    'event.aggregator',
-    'util/timeoutUtil',
-    'app',
-    'behaviors/pager/PagerBehavior',
-    'services/externalService'
-], function ($, _, Backbone, Marionette, entityListLayoutTemplate, EntityLayoutModel, EventAggregator, TimeoutUtil, App, PagerBehavior, externalService) {
-    var EntityListLayoutView = Backbone.Marionette.LayoutView.extend({
+var EntityLayoutView;
+(function ($, _, Backbone, Marionette, entityListLayoutTemplate, EntityLayoutModel, EventAggregator, TimeoutUtil, PagerBehavior) {
+    EntityLayoutView = Marionette.EntityLayoutView = Backbone.Marionette.LayoutView.extend({
         template: entityListLayoutTemplate,
         regions: {
             'entityRegion': '.entityRegion',
@@ -137,21 +126,7 @@ define([
 
             this.ui.$publishAllModal.on('click', '.yes', function (e) {
                 e.preventDefault();
-
-                var getEntryType = App.EntryType.collection.getById(App.Network.currentEntryType),
-                    getProfile = App.Profile.collection.getById(App.Network.currentProfile);
-
-                $.when(getEntryType, getProfile)
-                    .done(_.bind(function (entryType, profile) {
-                        var service = new externalService();
-                        service.initialize({entryType: entryType, profile: profile});
-
-                        service.publishEntities(ids)
-                            .done(function (response) {
-                                self.ui.$publishAllModal.foundation('reveal', 'close');
-                                itemsSelected.prop('checked', false);
-                            })
-                    }, this));
+                EventAggregator.trigger('publish-all', ids);
             });
         },
         addAll: function (e) {
@@ -225,12 +200,6 @@ define([
             } else {
                 this.ui.$multiActionRequests.hide();
             }
-
-            if (_.isUndefined(App.Network.currentEntryType) || _.isNull(App.Network.currentEntryType)) {
-                this.$el.find('.publish-all').hide();
-            } else {
-                this.$el.find('.publish-all').show();
-            }
         },
         filterByName: function (e) {
             e.stopPropagation();
@@ -241,20 +210,10 @@ define([
             this.timeoutUtil.suspendOperation(400, _.bind(function () {
                 if (name.length === 0) {
                     EventAggregator.trigger(this.route + '.getAll', 1);
-                    /*  if (!this.routing) {
-                     } else {
-                     EventAggregator.trigger('toggle-options', this.route + '/1/');
-                     }*/
                     return;
                 }
 
                 EventAggregator.trigger(this.route + '.textSearch', name, 'name');
-                /*          if (!this.routing) {
-
-                 } else {
-                 EventAggregator.trigger('toggle-options', this.route + '/startsWith/' + name + '/field/name/');
-                 }*/
-
             }, this))
         },
         showListView: function () {
@@ -318,6 +277,4 @@ define([
             }
         }
     });
-
-    return EntityListLayoutView;
-});
+})(jQuery, _, Backbone, Marionette, entityListLayoutTemplate, EntityLayoutModel, EventAggregator, TimeoutUtil, PagerBehavior);

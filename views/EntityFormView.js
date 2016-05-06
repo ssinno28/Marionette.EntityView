@@ -1,21 +1,6 @@
-// Filename: views/facets/FacetListView
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'formview',
-    'app',
-    'text!templates/entityFormLayoutTemplate.html',
-    'views/reusableTypes/multiSelectLists/MultiSelectLayoutView',
-    'views/reusableTypes/dropDownLists/DropDownListView',
-    'views/reusableTypes/autoComplete/AutoCompleteLayoutView',
-    'event.aggregator',
-    'behaviors/messages/MessageBehavior',
-    'views/reusableTypes/radioButtons/RadioButtonListView',
-    'views/reusableTypes/singleLineText/TextAreaView'
-], function ($, _, Backbone, Marionette, FormView, App, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, EventAggregator, MessageBehavior, RadioButtonListView, TextAreaView) {
-    var EntityFormView = Backbone.Marionette.FormView.extend({
+var EntityFormView;
+(function ($, _, Backbone, Marionette, FormView, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, EventAggregator, MessageBehavior, RadioButtonListView, TextAreaView) {
+    EntityFormView = Marionette.EntityFormView = Backbone.Marionette.FormView.extend({
         template: entityFormLayoutTemplate,
         regions: {
             entityFormRegion: '.entityFormRegion',
@@ -249,6 +234,4 @@ define([
             }));
         }
     });
-    // Our module now returns our view
-    return EntityFormView;
-});
+})(jQuery, _, Backbone, Marionette, FormView, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, EventAggregator, MessageBehavior, RadioButtonListView, TextAreaView);

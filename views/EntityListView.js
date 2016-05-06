@@ -1,13 +1,6 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'app',
-    'text!templates/entityListTemplate.html',
-    'event.aggregator'
-], function ($, _, Backbone, Marionette, App, entityListTemplate, EventAggregator) {
-    var EntityListView = Backbone.Marionette.CompositeView.extend({
+var EntityListView;
+(function ($, _, Backbone, Marionette, entityListTemplate, EventAggregator) {
+    EntityListView = Marionette.EntityListView = Backbone.Marionette.CompositeView.extend({
         template: entityListTemplate,
         itemViewContainer: '.listings',
         className: 'large-12 columns',
@@ -37,6 +30,4 @@ define([
             };
         }
     });
-    // Our module now returns our view
-    return EntityListView;
-});
+})(jQuery, _, Backbone, Marionette, entityListTemplate, EventAggregator);
