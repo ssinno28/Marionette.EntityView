@@ -1,16 +1,8 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'marionette',
-    'app',
-    'models/validation/MessageModel',
-    'text!templates/validation/messageTemplate.html'
-], function($, _, Backbone, Marionette, App, MessageModel, messageTemplate){
-    var MessageView = Backbone.Marionette.ItemView.extend({
+var MessageView;
+(function ($, _, Backbone, Marionette, MessageModel, messageTemplate) {
+    MessageView = Marionette.MessageView = Backbone.Marionette.ItemView.extend({
         model: MessageModel,
         tagName: 'li',
         template: Backbone.Marionette.TemplateCache.get(messageTemplate)
     });
-    return MessageView;
-});
+})(jQuery, _, Backbone, Marionette, MessageModel, messageTemplate);
