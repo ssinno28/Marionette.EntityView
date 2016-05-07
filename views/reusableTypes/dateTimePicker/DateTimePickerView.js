@@ -23,7 +23,7 @@ var DatePickerView;
         ui: {
             $datePicker: '.fdatepicker'
         },
-        template: Marionette.TemplateCache.get(datePickerTemplate),
+        template: datePickerTemplate,
         onDomRefresh: function () {
             this.ui.$datePicker.fdatepicker()
                 .on('changeDate', function (e) {

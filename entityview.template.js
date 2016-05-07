@@ -9,11 +9,15 @@
             root.EventAggregator = new Backbone.Wreqr.EventAggregator();
         }
 
+        if(_.isUndefined(root.App)){
+            root.App = new Marionette.Application();
+        }
+
         // Browser globals
-        root.FastTrack = factory(root.Backbone, root.Marionette, root.jQuery, root._, root.EventAggregator, root.App, root.CKEDITOR, root.Moment);
+        var exports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.EventAggregator, root.App, root.CKEDITOR, root.moment);
+        _.extend(root, exports);
     }
 }(this, function (Backbone, Marionette, jQuery, _, EventAggregator, App, CKEDITOR, Moment) {
-    "use strict";
 
     <%= templates %>
     <%= content %>
@@ -28,6 +32,7 @@
         SuccessView: SuccessView,
         TimeoutUtil: TimeoutUtil,
         UriUtil: UriUtil,
-        EventAggregator: EventAggregator
+        IconMenuListView: IconMenuListView,
+        IconMenuItemView: IconMenuItemView
     };
 }));

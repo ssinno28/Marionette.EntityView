@@ -6,7 +6,7 @@ var ImageFieldView;
 
             $('[data-field="' + this.dataField + '"]').on('change', this.updateImageUrl);
         },
-        template: Marionette.TemplateCache.get(imageFieldTemplate),
+        template: imageFieldTemplate,
         ui: {
             '$image': '.uploadedImage'
         },

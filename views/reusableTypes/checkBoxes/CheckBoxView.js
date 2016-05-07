@@ -3,7 +3,7 @@ var CheckBoxView;
     CheckBoxView = ReusableTypeView.extend({
         tagName: 'div',
         className: 'large-6 columns',
-        template: Backbone.Marionette.TemplateCache.get(checkBoxTemplate),
+        template: checkBoxTemplate,
         events: {
             'click input[type=checkbox]': 'itemChecked'
         },

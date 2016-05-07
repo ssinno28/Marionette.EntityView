@@ -6,4 +6,4 @@ var MessageListView;
         collection: MessagesCollection
     });
 
-})(jQuery, _, Backbone, Marionette, MessageView, MessagesColllection);
+})(jQuery, _, Backbone, Marionette, MessageView, MessagesCollection);

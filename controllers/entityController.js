@@ -4,19 +4,8 @@ var EntityController;
         initialize: function (options) {
             this.getEntityService(options);
         },
-        onActionExecuting: function (name, path, arguments) {
+        onActionExecuting: function (name, path) {
             App.route = this.route;
-
-            var $mainMenuRegion = $('#mainMenuRegion');
-            if (path === 'network') {
-                $mainMenuRegion.removeClass('large-offset-3');
-                $mainMenuRegion.removeClass('large-9');
-                $mainMenuRegion.addClass('large-12');
-            } else {
-                $mainMenuRegion.addClass('large-offset-3');
-                $mainMenuRegion.addClass('large-9');
-                $mainMenuRegion.removeClass('large-12');
-            }
         },
         getEntityService: function (options) {
             this.entityService = new EntityService();
@@ -38,4 +27,4 @@ var EntityController;
             EventAggregator.trigger(this.entityService.route + '.getType', page);
         }
     });
-})(App, jQuery, _, Backbone, Marionette, EventAggregator, EntityLayoutView, headerTemplate, TimeoutUtil, EntityService);
+})(App, jQuery, _, Backbone, Marionette, EventAggregator, EntityLayoutView, this['FastTrack']['Templates']['./templates/headerTemplate.html'], TimeoutUtil, EntityService);

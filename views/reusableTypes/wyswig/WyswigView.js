@@ -35,7 +35,7 @@ var WyswigView;
                 filebrowserBrowseUrl: '/AchillesCR.Web/js/libs/filemanager/index.html'
             });
         },
-        template: Marionette.TemplateCache.get(wyswigTextTemplate),
+        template: wyswigTextTemplate,
         isPathAbsolute: function (path) {
             return /^https?:\/\//i.test(path);
         }

@@ -1,7 +1,7 @@
 var SideNavItemView;
 (function ($, _, Backbone, Marionette, sideNavItemTemplate, EventAggregator, TreeCompositeView) {
     SideNavItemView = Marionette.SideNavItemView = TreeCompositeView.extend({
-        template: Marionette.TemplateCache.get(sideNavItemTemplate),
+        template: sideNavItemTemplate,
         tagName: 'li',
         events: function () {
             var events = {

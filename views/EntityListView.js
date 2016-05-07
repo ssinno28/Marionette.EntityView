@@ -4,7 +4,7 @@ var EntityListView;
         template: entityListTemplate,
         itemViewContainer: '.listings',
         className: 'large-12 columns',
-        template: Marionette.TemplateCache.get(entityListTemplate),
+        template: entityListTemplate,
         initialize: function (options) {
             this.fullCollection = options.fullCollection;
             this.parentViewCid = options.parentViewCid;
@@ -30,4 +30,4 @@ var EntityListView;
             };
         }
     });
-})(jQuery, _, Backbone, Marionette, entityListTemplate, EventAggregator);
+})(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/entityListTemplate.html'], EventAggregator);

@@ -1,0 +1,12 @@
+<script type="text/template" id="icon-menu-item">
+
+    <a class="item" href="<%= routeUrl %>" aria-labelledby="#<%= name %>Label">
+        <% if(iconClass !== undefined){ %>
+        <i class="<%= iconClass %>"></i>
+        <% } else { %>
+        <%= icon %>
+        <% } %>
+
+        <label id="<%= name %>Label"><%= name %></label>
+    </a>
+</script>

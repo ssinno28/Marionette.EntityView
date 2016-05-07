@@ -3,7 +3,7 @@ var TreeCompositeView;
 (function ($, _, Backbone, Marionette, treeCompositeTemplate) {
     TreeCompositeView = Marionette.TreeCompositeView = Backbone.Marionette.CompositeView.extend({
         tagName: 'li',
-        template: Marionette.TemplateCache.get(treeCompositeTemplate),
+        template: treeCompositeTemplate,
         events: function () {
             var nodeClickEvent = 'click .nodeLink' + this.options.model.get('id'),
                 plusClickEvent = 'click .plus' + this.options.model.get('id'),

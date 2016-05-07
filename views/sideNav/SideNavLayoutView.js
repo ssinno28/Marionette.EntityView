@@ -2,7 +2,7 @@
 var SideNavLayoutView;
 (function ($, _, Backbone, Marionette, SideNavListView, sideNavLayoutTemplate) {
     SideNavLayoutView = Marionette.LayoutView.extend({
-        template: Marionette.TemplateCache.get(sideNavLayoutTemplate),
+        template: sideNavLayoutTemplate,
         regions: {
             listingsRegion: '.listingsRegion'
         },

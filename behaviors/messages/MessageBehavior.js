@@ -1,6 +1,6 @@
-var MessageModalBehavior;
+var MessageBehavior;
 (function ($, _, Backbone, Marionette, SuccessView, ErrorView, InfoView) {
-    MessageModalBehavior = Marionette.Behavior.extend({
+    MessageBehavior = Marionette.Behavior.extend({
         defaults: {
             duration: 3000
         },

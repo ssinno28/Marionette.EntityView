@@ -2,7 +2,7 @@
 var PagerItemView;
 (function ($, _, Backbone, Marionette, pagerItemTemplate) {
     PagerItemView = Marionette.ItemView.extend({
-        template: Marionette.TemplateCache.get(pagerItemTemplate),
+        template: pagerItemTemplate,
         tagName: 'li',
         className: function () {
             var isCurrent = this.model.get('currentPage'),

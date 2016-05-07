@@ -3,7 +3,7 @@ var RadioButtonView;
     RadioButtonView = ReusableTypeView.extend({
         tagName: 'div',
         className: 'large-6 columns',
-        template: Backbone.Marionette.TemplateCache.get(radioButtonTemplate)
+        template: radioButtonTemplate
     });
 
 })(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/reusableTypes/radioButtonTemplate.html'], ReusableTypeView);

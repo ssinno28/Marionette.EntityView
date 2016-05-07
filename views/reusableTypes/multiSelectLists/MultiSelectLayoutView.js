@@ -21,7 +21,7 @@ var MultiSelectLayoutView;
             this.$el.attr('data-field', this.dataField);
         },
         className: 'zselect',
-        template: Marionette.TemplateCache.get(multiSelectLayoutTemplate),
+        template: multiSelectLayoutTemplate,
         regions: {
             'optionsRegion': '.options',
             'selectedOptionsRegion': '.selectedOptions'

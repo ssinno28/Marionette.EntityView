@@ -71,6 +71,8 @@ module.exports = function (grunt) {
                     './views/sideNav/SideNavItemView.js',
                     './views/sideNav/SideNavListView.js',
                     './views/sideNav/SideNavLayoutView.js',
+                    './views/iconMenu/IconMenuItemView.js',
+                    './views/iconMenu/IconMenuListView.js',
                     './controllers/entityController.js'
                 ],
                 dest: './generated/js/main.js'
@@ -84,11 +86,12 @@ module.exports = function (grunt) {
         },
         underscore: {
             options: {
-                namespace: 'FastTrack.Templates'
+                namespace: 'FastTrack.Templates',
+                compile: true
             },
             demo: {
                 files: {
-                    './generated/js/templates.js': './templates/**/*/*.html'
+                    './generated/js/templates.js': ['./templates/**/*.html', './templates/*.html']
                 }
             }
         }

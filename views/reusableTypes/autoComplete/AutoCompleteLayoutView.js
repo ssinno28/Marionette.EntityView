@@ -2,7 +2,7 @@ var AutoCompleteLayoutView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, autoCompleteTemplate, TimeoutUtil, EventAggregator, AutoCompleteListView) {
     AutoCompleteLayoutView = ReusableTypeLayoutView.extend({
         tag: 'div',
-        template: Marionette.TemplateCache.get(autoCompleteTemplate),
+        template: autoCompleteTemplate,
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 

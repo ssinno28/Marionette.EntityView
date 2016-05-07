@@ -1,7 +1,7 @@
 var EntityRouter;
 (function ($, _, Backbone, Marionette) {
     EntityRouter = Marionette.EntityRouter = Backbone.Marionette.AppRouter.extend({
-        onRoute: function (name, path, arguments) {
+        onRoute: function (name, path) {
             if (_.isFunction(this.options.controller.onActionExecuting)) {
                 this.options.controller.onActionExecuting(name, path, arguments);
             }
