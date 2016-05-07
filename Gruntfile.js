@@ -78,8 +78,8 @@ module.exports = function (grunt) {
         },
         watch: {
             js: {
-                files: ['./*.js'],
-                tasks: ['concat:js']
+                files: ['./**/*/*.js', './templates/**/*/*.html'],
+                tasks: ['default']
             }
         },
         underscore: {
@@ -99,17 +99,18 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-template');
     grunt.loadNpmTasks('grunt-underscore-compiler');
+    grunt.loadNpmTasks('grunt-then');
 
     grunt.registerTask('default', function () {
-        grunt.task.run('concat');
-        grunt.task.run('underscore');
+        grunt.task.run(['concat', 'underscore'])
+            .then(function () {
+                var content = fs.readFileSync('./generated/js/main.js', 'utf8'),
+                    templates = fs.readFileSync('./generated/js/templates.js', 'utf8'),
+                    template = fs.readFileSync('./entityview.template.js', 'utf8'),
+                    fileContent = grunt.template.process(template, {data: {content: content, templates: templates}});
 
-        var content = fs.readFileSync('./generated/js/main.js', 'utf8'),
-            templates = fs.readFileSync('./generated/js/templates.js', 'utf8'),
-            template = fs.readFileSync('./entityview.template.js', 'utf8'),
-            fileContent = grunt.template.process(template, {data: {content: content, templates: templates}});
-
-        fs.writeFileSync('./backbone.marionette.entityview.js', fileContent);
+                fs.writeFileSync('./backbone.marionette.entityview.js', fileContent);
+            });
     });
 };
 /**
