@@ -5,10 +5,14 @@
         // AMD. Register as an anonymous module.
         define(['backbone', 'marionette', 'jquery', 'underscore', 'event.aggregator', 'app', 'ckeditor', 'moment'], factory);
     } else {
+        if (_.isUndefined(root.EventAggregator)) {
+            root.EventAggregator = new Backbone.Wreqr.EventAggregator();
+        }
+
         // Browser globals
         root.FastTrack = factory(root.Backbone, root.Marionette, root.jQuery, root._, root.EventAggregator, root.App, root.CKEDITOR, root.Moment);
     }
-}(this, function (Backbone, Marionette, jQuery, _, EventAggregator, App, CKEDITOR, Moment) {  
+}(this, function (Backbone, Marionette, jQuery, _, EventAggregator, App, CKEDITOR, Moment) {
     "use strict";
 
     <%= templates %>
@@ -23,6 +27,7 @@
         WarningView: WarningView,
         SuccessView: SuccessView,
         TimeoutUtil: TimeoutUtil,
-        UriUtil: UriUtil
+        UriUtil: UriUtil,
+        EventAggregator: EventAggregator
     };
 }));
