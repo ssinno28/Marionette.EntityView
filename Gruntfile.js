@@ -78,7 +78,7 @@ module.exports = function (grunt) {
         },
         watch: {
             js: {
-                files: ['./**/*/*.js', './templates/**/*/*.html'],
+                files: ['./**/*/*.js', './entityview.template.js', './templates/**/*/*.html', '!./generated/*'],
                 tasks: ['default']
             }
         },
