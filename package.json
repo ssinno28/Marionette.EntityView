@@ -3,8 +3,11 @@
   "description": "Grunt scripting for building Marionette.EntityView",
   "version": "0.0.1",
   "devDependencies": {
+    "file-save": "^0.2.0",
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-watch": "^0.6.1"
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-template": "^0.2.3",
+    "grunt-underscore-compiler": "0.0.6"
   }
 }

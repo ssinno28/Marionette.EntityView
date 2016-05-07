@@ -4,4 +4,4 @@ var SingleLineTextView;
         tag: 'input',
         template: Marionette.TemplateCache.get(singleLineTextTemplate)
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, singleLineTextTemplate);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['FastTrack']['Templates']['./templates/reusableTypes/singleLineTextTemplate.html']);

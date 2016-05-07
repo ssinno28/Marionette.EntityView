@@ -11,4 +11,4 @@ var CheckBoxView;
             EventAggregator.trigger(this.dataField + ':checked', this.model);
         }
     });
-})(jQuery, _, Backbone, Marionette, checkBoxTemplate, ReusableTypeView, EventAggregator);
+})(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/reusableTypes/checkBoxTemplate.html'], ReusableTypeView, EventAggregator);

@@ -120,4 +120,4 @@ var TreeCompositeView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, treeCompositeTemplate);
+})(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/tree/treeCompositeTemplate.html']);

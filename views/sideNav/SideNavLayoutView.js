@@ -16,4 +16,4 @@ var SideNavLayoutView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, SideNavListView, sideNavLayoutTemplate);
+})(jQuery, _, Backbone, Marionette, SideNavListView, this['FastTrack']['Templates']['./templates/sideNav/sideNavLayoutTemplate.html']);

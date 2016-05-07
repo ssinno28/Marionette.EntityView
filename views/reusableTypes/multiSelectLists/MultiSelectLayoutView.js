@@ -287,4 +287,4 @@ var MultiSelectLayoutView;
             EventAggregator.off(this.selectedItemsRoute + '.subcollection');
         }
     });
-})(Marionette, jQuery, _, multiSelectLayoutTemplate, ReusableTypeLayoutView, multiSelectService, EntityLayoutModel, headerTemplate, EventAggregator);
+})(Marionette, jQuery, _, this['FastTrack']['Templates']['./templates/reusableTypes/multiSelectLists/multiSelectLayoutTemplate.html'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, this['FastTrack']['Templates']['./templates/reusableTypes/multiSelectLists/headerTemplate.html'], EventAggregator);

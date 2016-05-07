@@ -4,4 +4,4 @@ var AutoCompleteView;
         tagName: 'li',
         template: Marionette.TemplateCache.get(liAutoCompleteTemplate)
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeListView, liAutoCompleteTemplate);
+})(jQuery, _, Backbone, Marionette, ReusableTypeListView, this['FastTrack']['Templates']['./templates/reusableTypes/autoComplete/liAutoCompleteTemplate.html']);

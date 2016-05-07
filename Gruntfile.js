@@ -1,4 +1,7 @@
 module.exports = function (grunt) {
+    var fs = require('fs');
+    var fileSave = require('file-save');
+
     // project configuration
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -6,7 +9,7 @@ module.exports = function (grunt) {
         concat: {
             js: {
                 options: {
-                    sourceMap: true
+                    sourceMap: false
                 },
                 src: [
                     './util/formValidator.js',
@@ -73,11 +76,20 @@ module.exports = function (grunt) {
                 dest: './generated/js/main.js'
             }
         },
-
         watch: {
             js: {
                 files: ['./*.js'],
                 tasks: ['concat:js']
+            }
+        },
+        underscore: {
+            options: {
+                namespace: 'FastTrack.Templates'
+            },
+            demo: {
+                files: {
+                    './generated/js/templates.js': './templates/**/*/*.html'
+                }
             }
         }
     });
@@ -85,9 +97,20 @@ module.exports = function (grunt) {
     // load plugins
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-template');
+    grunt.loadNpmTasks('grunt-underscore-compiler');
 
-    // dev task
-    grunt.registerTask('dev', ['concat']);
+    grunt.registerTask('default', function () {
+        grunt.task.run('concat');
+        grunt.task.run('underscore');
+
+        var content = fs.readFileSync('./generated/js/main.js', 'utf8'),
+            templates = fs.readFileSync('./generated/js/templates.js', 'utf8'),
+            template = fs.readFileSync('./entityview.template.js', 'utf8'),
+            fileContent = grunt.template.process(template, {data: {content: content, templates: templates}});
+
+        fs.writeFileSync('./backbone.marionette.entityview.js', fileContent);
+    });
 };
 /**
  * Created by Sammi on 5/6/2016.

@@ -6,4 +6,4 @@ var RadioButtonView;
         template: Backbone.Marionette.TemplateCache.get(radioButtonTemplate)
     });
 
-})(jQuery, _, Backbone, Marionette, radioButtonTemplate, ReusableTypeView);
+})(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/reusableTypes/radioButtonTemplate.html'], ReusableTypeView);

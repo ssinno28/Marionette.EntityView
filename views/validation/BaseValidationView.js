@@ -15,4 +15,4 @@ var BaseValidationView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, ValidationModel, validationTemplate, MessageCollection, MessageListView);
+})(jQuery, _, Backbone, Marionette, ValidationModel, this['FastTrack']['Templates']['./templates/validation/validationTemplate.html'], MessagesCollection, MessageListView);

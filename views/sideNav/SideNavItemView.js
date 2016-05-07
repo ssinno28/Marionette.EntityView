@@ -32,4 +32,4 @@ var SideNavItemView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, sideNavItemTemplate, EventAggregator, TreeCompositeView);
+})(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/sideNav/sideNavItemTemplate.html'], EventAggregator, TreeCompositeView);

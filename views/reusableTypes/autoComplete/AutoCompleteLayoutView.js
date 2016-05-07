@@ -115,4 +115,4 @@ var AutoCompleteLayoutView;
             EventAggregator.off('auto-complete:selected:' + this.dataField);
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, autoCompleteTemplate, TimeoutUtil, EventAggregator, AutoCompleteListView);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['FastTrack']['Templates']['./templates/reusableTypes/autoComplete/autoCompleteTemplate.html'], TimeoutUtil, EventAggregator, AutoCompleteListView);

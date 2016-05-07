@@ -5,4 +5,4 @@ var MessageView;
         tagName: 'li',
         template: Backbone.Marionette.TemplateCache.get(messageTemplate)
     });
-})(jQuery, _, Backbone, Marionette, MessageModel, messageTemplate);
+})(jQuery, _, Backbone, Marionette, MessageModel, this['FastTrack']['Templates']['./templates/validation/messageTemplate.html']);
