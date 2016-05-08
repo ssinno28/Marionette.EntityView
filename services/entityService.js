@@ -1,6 +1,6 @@
 var EntityService;
 (function ($, _, Backbone, Marionette, App, EntityLayoutView, headerTemplate, EventAggregator) {
-    EntityService = (function () {
+    EntityService = Marionette.EntityService = (function () {
 
         var ctor = function () {
 
