@@ -222,15 +222,15 @@ var FormView;
                             html = $hiddenDiv.html(val),
                             imgs = $(html).find('img');
 
-                        /*            _.each(imgs, function (img) {
-                         var $img = $(img),
-                         src = $img.attr('src');
+                        _.each(imgs, function (img) {
+                            var $img = $(img),
+                                src = $img.attr('src');
 
-                         if (src.indexOf(App.API_URL) > -1) {
-                         src = src.replace(App.API_URL, '');
-                         $img.attr('src', src);
-                         }
-                         });*/
+                            if (src.indexOf(App.API_URL) > -1) {
+                                src = src.replace(App.API_URL, '');
+                                $img.attr('src', src);
+                            }
+                        });
 
                         val = $hiddenDiv.html();
                     }

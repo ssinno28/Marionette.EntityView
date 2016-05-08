@@ -32,7 +32,7 @@ var WyswigView;
             var self = this;
 
             CKEDITOR.replace(self.dataField, {
-                filebrowserBrowseUrl: '/AchillesCR.Web/js/libs/filemanager/index.html'
+                filebrowserBrowseUrl: App.FILE_BROWSER_URL
             });
         },
         template: wyswigTextTemplate,
