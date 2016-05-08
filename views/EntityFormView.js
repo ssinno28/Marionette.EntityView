@@ -9,7 +9,9 @@ var EntityFormView;
         initialize: function (options) {
             _.extend(this, options.formOptions);
 
-            this.model.setUrl(this.collection.getUrl());
+            if (!_.isUndefined(this.collection)) {
+                this.model.setUrl(this.collection.getUrl());
+            }
 
             this.getDropDownForRegion = _.bind(this.dropDownForRegion, this);
             this.getRadioBtnsForRegion = _.bind(this.radioButtonListForRegion, this);
@@ -48,7 +50,6 @@ var EntityFormView;
         },
         resetForm: function (e) {
             e.preventDefault();
-            this.model.store();
             this.render();
         },
         showWarningModal: function (message, yesFunc, noFunc) {
@@ -124,20 +125,24 @@ var EntityFormView;
         },
         saveModel: function () {
             var self = this;
-            this.model.store();
-
             this.model.save(null, {
                 success: function (model, response) {
                     if (model.isNew()) {
                         //check to see if something went wrong server side
                         if (parseInt(response) === 0) {
-                            self.collection.remove(model);
+                            if (!_.isUndefined(self.collection)) {
+                                self.collection.remove(model);
+                            }
+
                             self.triggerMethod("ShowMessages", 'error', ['Could not create item!']);
                             return;
                         }
 
                         model.set({id: response});
-                        self.collection.add(model);
+                        if (!_.isUndefined(self.collection)) {
+                            self.collection.add(model);
+                        }
+
                         self.triggerMethod("ShowMessages", 'success', ['Item successfully created!']);
 
                         EventAggregator.trigger("Entity.Created." + model.get('id'));
@@ -148,7 +153,9 @@ var EntityFormView;
                 },
                 error: function (model, response) {
                     if (model.isNew()) {
-                        self.collection.remove(self.model.cid);
+                        if (!_.isUndefined(self.collection)) {
+                            self.collection.remove(self.model.cid);
+                        }
                         self.triggerMethod("ShowMessages", 'error', ['Could not create item!']);
                     } else {
                         self.triggerMethod("ShowMessages", 'error', ['Could not save item!']);
