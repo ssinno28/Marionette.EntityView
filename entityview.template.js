@@ -1,15 +1,17 @@
-;
 (function (root, factory) {
     "use strict";
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['backbone', 'marionette', 'jquery', 'underscore', 'event.aggregator', 'app', 'moment'], factory);
+        define(['backbone', 'marionette', 'jquery', 'underscore', 'event.aggregator', 'app', 'moment'],
+            function (Backbone, Marionette, $, _, EventAggregator, App, Moment) {
+                return factory(Backbone, Marionette, $, _, EventAggregator, App, Moment);
+            });
     } else {
         if (_.isUndefined(root.EventAggregator)) {
             root.EventAggregator = new Backbone.Wreqr.EventAggregator();
         }
 
-        if(_.isUndefined(root.App)){
+        if (_.isUndefined(root.App)) {
             root.App = new Marionette.Application();
         }
 
@@ -17,7 +19,7 @@
         var exports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.EventAggregator, root.App, root.moment);
         _.extend(root, exports);
     }
-}(this, function (Backbone, Marionette, jQuery, _, EventAggregator, App, CKEDITOR, Moment) {
+}(this, function (Backbone, Marionette, jQuery, _, EventAggregator, App, Moment) {
 
     <%= templates %>
     <%= content %>
@@ -38,12 +40,16 @@
         MultiSelectLayoutView: MultiSelectLayoutView,
         DateTimePickerView: DateTimePickerView,
         SingleLineTextView: SingleLineTextView,
-        WyswigView:WyswigView,
+        WyswigView: WyswigView,
         ImageFieldView: ImageFieldView,
         AutoCompleteListView: AutoCompleteListView,
         RadioButtonListView: RadioButtonListView,
         CheckBoxListView: CheckBoxListView,
         CheckBoxView: CheckBoxView,
-        SideNavLayoutView: SideNavLayoutView
+        SideNavLayoutView: SideNavLayoutView,
+        SortableItemView: SortableItemView,
+        SortableCollectionView: SortableCollectionView,
+        FormValidator: FormValidator,
+        Templates: this['FastTrack']['Templates']
     };
 }));

@@ -224,8 +224,7 @@ var EntityLayoutView;
                 return;
             }
 
-            var template = Marionette.TemplateCache.get(this.header.template);
-            var html = Marionette.Renderer.render(template, this.header.params);
+            var html = Marionette.Renderer.render(this.header.template, this.header.params);
             this.ui.$header.append(html);
         },
         subNavClick: function (e) {
