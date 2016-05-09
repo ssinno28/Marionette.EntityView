@@ -3,7 +3,7 @@
     "use strict";
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['backbone', 'marionette', 'jquery', 'underscore', 'event.aggregator', 'app', 'ckeditor', 'moment'], factory);
+        define(['backbone', 'marionette', 'jquery', 'underscore', 'event.aggregator', 'app', 'moment'], factory);
     } else {
         if (_.isUndefined(root.EventAggregator)) {
             root.EventAggregator = new Backbone.Wreqr.EventAggregator();
@@ -14,7 +14,7 @@
         }
 
         // Browser globals
-        var exports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.EventAggregator, root.App, root.CKEDITOR, root.moment);
+        var exports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.EventAggregator, root.App, root.moment);
         _.extend(root, exports);
     }
 }(this, function (Backbone, Marionette, jQuery, _, EventAggregator, App, CKEDITOR, Moment) {
@@ -33,6 +33,17 @@
         TimeoutUtil: TimeoutUtil,
         UriUtil: UriUtil,
         IconMenuListView: IconMenuListView,
-        IconMenuItemView: IconMenuItemView
+        IconMenuItemView: IconMenuItemView,
+        AutoCompleteLayoutView: AutoCompleteLayoutView,
+        MultiSelectLayoutView: MultiSelectLayoutView,
+        DateTimePickerView: DateTimePickerView,
+        SingleLineTextView: SingleLineTextView,
+        WyswigView:WyswigView,
+        ImageFieldView: ImageFieldView,
+        AutoCompleteListView: AutoCompleteListView,
+        RadioButtonListView: RadioButtonListView,
+        CheckBoxListView: CheckBoxListView,
+        CheckBoxView: CheckBoxView,
+        SideNavLayoutView: SideNavLayoutView
     };
 }));
