@@ -51,6 +51,9 @@ var FormView;
                 var elem = this.$('[data-field="' + field + '"]');
                 this.inputVal(elem, this.model.get(field));
                 if (options.autoFocus) elem.focus();
+                if (options.disabled) {
+                    elem.attr('disabled', 'disabled');
+                }
             }, this);
         },
 
