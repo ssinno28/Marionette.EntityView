@@ -1,6 +1,6 @@
-var DatePickerView;
+var DateTimePickerView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, datePickerTemplate, EventAggregator, Moment) {
-    DatePickerView = ReusableTypeLayoutView.extend({
+    DateTimePickerView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
