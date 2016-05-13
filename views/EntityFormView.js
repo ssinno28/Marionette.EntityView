@@ -21,6 +21,21 @@ var EntityFormView;
         },
         onShow: function () {
             EventAggregator.trigger('form.view.activated.' + this.options.parentViewCid);
+            this.checkDisabledFields();
+        },
+        checkDisabledFields: function () {
+            var allDisabled = true;
+            for (var key in this.fields) {
+                var field = this.fields[key];
+                if (_.isUndefined(field.disabled) || !field.disabled) {
+                    allDisabled = false;
+                    break;
+                }
+            }
+
+            if (allDisabled) {
+                this.ui.$actions.hide();
+            }
         },
         behaviors: {
             Messages: {

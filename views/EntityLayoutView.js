@@ -62,7 +62,7 @@ var EntityLayoutView;
             '$header': '.entity-header'
         },
         templateHelpers: function () {
-            var showSubNav = this.allowableOperations.indexOf('create') > -1,
+            var showCreate = this.allowableOperations.indexOf('create') > -1,
                 allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1,
                 allowPublishAll = this.allowableOperations.indexOf('publish-all') > -1,
                 allowAddAll = this.allowableOperations.indexOf('add-all') > -1,
@@ -70,7 +70,7 @@ var EntityLayoutView;
                 btnClass = this.btnClass;
 
             return {
-                showSubNav: showSubNav,
+                showCreate: showCreate,
                 allowDeleteAll: allowDeleteAll,
                 allowPublishAll: allowPublishAll,
                 allowAddAll: allowAddAll,
@@ -233,9 +233,8 @@ var EntityLayoutView;
 
             var $target = $(e.target);
 
-            var collection = this.listView.collection;
-
-            var page = 1;
+            var collection = this.listView.collection,
+                page = 1;
 
             if (!_.isUndefined(this.listView.currentPage) && this.listView.currentPage !== 0) {
                 page = this.listView.currentPage;

@@ -28,6 +28,12 @@ var EntityListView;
                 collection: collection,
                 baseClassIds: baseClassIds
             };
+        },
+        onAddChild: function (childView) {
+            var indexOf = this.collection.indexOf(childView.model);
+            if (indexOf === 0 && !_.isUndefined(this.getTableHeader)) {
+                childView.$el.before(this.getTableHeader());
+            }
         }
     });
 })(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/entityListTemplate.html'], EventAggregator);

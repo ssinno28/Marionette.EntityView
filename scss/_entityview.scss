@@ -47,7 +47,8 @@
   visibility: hidden;
 }
 
-/* Entity Tree View */
+/* Entity Tree View
+---------------------------------------------------------*/
 * {
   margin: 0;
   padding: 0;
@@ -161,6 +162,7 @@ ul {
 .entity-list-item {
   margin: 5px 0px;
   padding: 5px 0px;
+  text-align:center;
   fieldset {
     margin: 0 !important;;
     label {
@@ -181,7 +183,11 @@ ul {
 }
 
 .entity-list-item:nth-child(even) {
-  background-color: $background-color;
+  background-color: #cccccc;
+}
+
+.filterEntities{
+  margin-top: 15px !important;
 }
 
 /* Icons

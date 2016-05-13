@@ -2,12 +2,13 @@
     <div class="entity-header row">
 
     </div>
-    <% if(showSubNav){ %>
+
     <dl class="sub-nav">
         <dd class="active"><a class="get-all" href="#">All</a></dd>
+        <% if(showCreate){ %>
         <dd><a class="create" href="#">Create</a></dd>
+        <% } %>
     </dl>
-    <% } %>
     <div class="row">
         <div class="large-12 columns">
             <input type="text" placeholder="Filter..." class="filterEntities nameFilter"/>
