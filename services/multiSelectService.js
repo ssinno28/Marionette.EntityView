@@ -37,6 +37,6 @@ var MultiSelectService;
         };
 
         return ctor;
-    });
+    })();
 
 })(jQuery, _, Backbone, Marionette, EntityService, App, MultiSelectListView);
