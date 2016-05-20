@@ -30,8 +30,8 @@ var DateTimePickerView;
                     EventAggregator.trigger('change:date:' + this.dataField, e);
                 });
 
-            var $date = $('[data-field="' + this.dataField + '_date"]'),
-                $time = $('[data-field="' + this.dataField + '_time"]');
+            var $date = this.$el.find('.date'),
+                $time = this.$el.find('.time');
 
             if (this.extensionType === 'Date') {
                 $time.hide();
@@ -51,6 +51,12 @@ var DateTimePickerView;
         getDateTime: function () {
             var $date = $('[data-field="' + this.dataField + '_date"]'),
                 $time = $('[data-field="' + this.dataField + '_time"]');
+
+            if (this.extensionType === 'Date') {
+                $date.val();
+            } else if (this.extensionType === 'Time') {
+                $time.val();
+            }
 
             return $date.val() + ' ' + $time.val();
         }
