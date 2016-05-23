@@ -5,8 +5,10 @@ var DateTimePickerView;
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
             var value = this.model.get('value'),
-                date = Moment(value).format('MM/DD/YYYY'),
-                time = Moment(value).format('hh:mm:ss A');
+                timeFormat = !_.isUndefined(this.timeFormat) ? this.timeFormat : 'hh:mm:ss A',
+                dateFormat = !_.isUndefined(this.dateFormat) ? this.dateFormat: 'MM/DD/YYYY',
+                date = Moment(value).format(dateFormat),
+                time = Moment(value).format(timeFormat);
 
             if (date !== 'Invalid date') {
                 this.model.set({date: date});
@@ -37,6 +39,7 @@ var DateTimePickerView;
                 $time.hide();
             } else if (this.extensionType === 'Time') {
                 $date.hide();
+                $time.attr('style', 'float:left');
             }
         },
         show: function () {
