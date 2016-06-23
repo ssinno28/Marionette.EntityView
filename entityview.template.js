@@ -51,6 +51,7 @@
         SortableCollectionView: SortableCollectionView,
         FormValidator: FormValidator,
         ReusableTypeLayoutView: ReusableTypeLayoutView,
-        Templates: this['FastTrack']['Templates']
+        Templates: this['FastTrack']['Templates'],
+        MessageBehavior: MessageBehavior
     };
 }));
