@@ -52,6 +52,7 @@
         FormValidator: FormValidator,
         ReusableTypeLayoutView: ReusableTypeLayoutView,
         Templates: this['FastTrack']['Templates'],
-        MessageBehavior: MessageBehavior
+        MessageBehavior: MessageBehavior,
+        DropDownListView: DropDownListView
     };
 }));
