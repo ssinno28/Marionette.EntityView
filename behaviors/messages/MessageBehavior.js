@@ -28,10 +28,10 @@ var MessageBehavior;
                         return;
                     }
 
-                    view.messagesRegion.reset();
+                    view.messagesRegion.$el.clear();
                 });
 
-            }, this.options.duration)
+            }, this.options.duration);
         }
     });
 })(jQuery, _, Backbone, Marionette, SuccessView, ErrorView, InfoView);
