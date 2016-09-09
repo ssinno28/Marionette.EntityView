@@ -13,7 +13,7 @@ var IconMenuItemView;
         },
         templateHelpers: function () {
             var outerScope = this,
-                routeUrl = _.isUndefined(outerScope.model.get('route')) ? '#' : '#' + outerScope.model.get('route'),
+                routeUrl = _.isUndefined(outerScope.model.get('route')) ? '#' : outerScope.model.get('route'),
                 type = this.model.collection.type;
 
             if (_.isUndefined(type) || _.isNull(type)) {
