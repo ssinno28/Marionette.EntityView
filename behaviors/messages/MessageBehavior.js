@@ -28,7 +28,7 @@ var MessageBehavior;
                         return;
                     }
 
-                    view.messagesRegion.$el.clear();
+                    view.messagesRegion.$el.empty();
                 });
 
             }, this.options.duration);
