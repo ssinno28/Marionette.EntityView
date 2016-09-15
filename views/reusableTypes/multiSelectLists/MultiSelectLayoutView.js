@@ -69,6 +69,9 @@ var MultiSelectLayoutView;
             this.actionableOptions.each(function (entity) {
                 self.selectedItems.remove(entity);
                 self.nonSelectedItems.add(entity);
+
+                var index = self.selectedId.indexOf(entity.get('id'));
+                self.selectedId.splice(index, 1);
             });
 
             var addItemTrigger = this.dataField + ':removed';
@@ -96,6 +99,8 @@ var MultiSelectLayoutView;
             this.actionableOptions.each(function (entity) {
                 self.selectedItems.add(entity);
                 self.nonSelectedItems.remove(entity);
+
+                self.selectedId.push(entity.get('id'));
             });
 
             var addItemTrigger = this.dataField + ':added';

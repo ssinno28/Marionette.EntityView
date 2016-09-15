@@ -132,7 +132,7 @@ var EntityFormView;
                 //make sure it doesn't come from the prototype and that
                 //we don't overwrite the id.
                 if (!data.hasOwnProperty(key) || key === 'id') {
-                    continue
+                    continue;
                 }
 
                 this.model.set(key, data[key]);
