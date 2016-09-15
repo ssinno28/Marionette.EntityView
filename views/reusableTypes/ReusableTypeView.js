@@ -8,6 +8,10 @@ var ReusableTypeView;
         isSelected: function () {
             this.checked = "";
             if (_.isUndefined(this.selectedId)) {
+                if (!_.isUndefined(this.model.get('value')) && this.model.get('value') === true) {
+                    this.checked = "checked";
+                }
+
                 return;
             }
 

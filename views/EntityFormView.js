@@ -1,5 +1,5 @@
 var EntityFormView;
-(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, EventAggregator, MessageBehavior, RadioButtonListView, TextAreaView) {
+(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, EventAggregator, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView) {
     EntityFormView = Marionette.EntityFormView = Backbone.Marionette.FormView.extend({
         template: entityFormLayoutTemplate,
         regions: {
@@ -18,6 +18,7 @@ var EntityFormView;
             this.getAutoCompleteForRegion = _.bind(this.autoCompleteForRegion, this);
             this.getMultiSelectForRegion = _.bind(this.multiSelectForRegion, this);
             this.getTextAreaForRegion = _.bind(this.textAreaForRegion, this);
+            this.getCheckboxForRegion = _.bind(this.checkboxForRegion, this);
         },
         onShow: function () {
             EventAggregator.trigger('form.view.activated.' + this.options.parentViewCid);
@@ -254,6 +255,12 @@ var EntityFormView;
                 model: model,
                 dataField: dataField
             }));
+        },
+        checkboxForRegion: function(model, region, dataField) {
+            region.show(new CheckBoxView({
+                model: model,
+                dataField: dataField
+            }));
         }
     });
-})(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/entityFormLayoutTemplate.html'], MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, EventAggregator, MessageBehavior, RadioButtonListView, TextAreaView);
+})(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/entityFormLayoutTemplate.html'], MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, EventAggregator, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView);

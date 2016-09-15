@@ -67,9 +67,6 @@ var MultiSelectLayoutView;
 
             var self = this;
             this.actionableOptions.each(function (entity) {
-                self.selectedItems.remove(entity);
-                self.nonSelectedItems.add(entity);
-
                 var index = self.selectedId.indexOf(entity.get('id'));
                 self.selectedId.splice(index, 1);
             });
@@ -97,9 +94,6 @@ var MultiSelectLayoutView;
 
             var self = this;
             this.actionableOptions.each(function (entity) {
-                self.selectedItems.add(entity);
-                self.nonSelectedItems.remove(entity);
-
                 self.selectedId.push(entity.get('id'));
             });
 
@@ -112,7 +106,7 @@ var MultiSelectLayoutView;
             this.refreshCollections();
         },
         refreshCollections: function () {
-            var selectedIds = this.selectedItems.pluck('id').toString();
+            var selectedIds = this.selectedId;
 
             var notInPred = [];
             if (selectedIds !== "") {
