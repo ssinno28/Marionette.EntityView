@@ -8,7 +8,7 @@ var IconMenuItemView;
         },
         listItemClick: function (e) {
             e.stopPropagation();
-            var $target = $(e.target);
+            var $target = $(e.target).closest('a');
             EventAggregator.trigger('icon-menu:click:' + $target.data('type'), this.model, e, $target.attr('href'));
         },
         templateHelpers: function () {
