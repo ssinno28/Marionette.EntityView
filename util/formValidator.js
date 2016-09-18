@@ -20,8 +20,8 @@ var FormValidator;
 
         min: {
             id: '272b4a6f-055f-44af-bd2e-dc8d3f281537',
-            evaluate: function (val, minLength) {
-                if (val.length < minLength) return false;
+            evaluate: function (val, options) {
+                if (val.length < options[0]) return false;
                 return true;
             }
         },
@@ -29,8 +29,8 @@ var FormValidator;
 
         max: {
             id: 'c1bfaee0-7179-4764-a92a-42e1afb78b82',
-            evaluate: function (val, maxLength) {
-                if (val.length > maxLength) return false;
+            evaluate: function (val, options) {
+                if (val.length > options[0]) return false;
                 return true;
             }
         },

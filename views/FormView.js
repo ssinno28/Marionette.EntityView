@@ -190,7 +190,7 @@ var FormView;
                             el.prop('checked', !!val);
                         }
                         break;
-                    default :
+                    default:
                         if (mode === 'get') {
                             val = $.trim(el.val());
                         } else {
@@ -236,6 +236,8 @@ var FormView;
                         });
 
                         val = $hiddenDiv.html();
+                    } else {
+                        val = el.val();
                     }
                 } else {
                     el.val(val);
