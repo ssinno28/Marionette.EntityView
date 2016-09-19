@@ -59,7 +59,7 @@ var FormValidator;
         email: {
             id: '813dd3a8-c394-496b-a81c-93b97b4bbf87',
             evaluate: function (val) {
-                return FormValidator.regex.email.test(val);
+                return val === '' || FormValidator.regex.email.test(val);
             }
         },
 
