@@ -19,6 +19,8 @@ var EntityFormView;
             this.getMultiSelectForRegion = _.bind(this.multiSelectForRegion, this);
             this.getTextAreaForRegion = _.bind(this.textAreaForRegion, this);
             this.getCheckboxForRegion = _.bind(this.checkboxForRegion, this);
+
+            this.original = this.model.toJSON();
         },
         onShow: function () {
             EventAggregator.trigger('form.view.activated.' + this.options.parentViewCid);
