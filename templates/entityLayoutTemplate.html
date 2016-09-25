@@ -1,70 +1,100 @@
-
+<div class="container-fluid">
     <div class="entity-header row">
+    </div>
+    <div class="row toolbar-pf">
+        <div class="col-sm-12">
+            <div class="toolbar-pf-actions">
+                <div class="form-group toolbar-pf-filter">
+                    <label class="sr-only" for="filter">Name</label>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Name <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </div><!-- /btn-group -->
+                        <input type="text" class="form-control nameFilter" id="filter" placeholder="Filter By Name...">
+                    </div><!-- /input-group -->
+                </div>
+                <div class="form-group">
+                    <button type="button" class="get-all btn btn-default">
+                        All
+                    </button>
+                    <% if(showCreate){ %>
+                    <button type="button" class="create btn btn-default">
+                        Create
+                    </button>
+                    <% } %>
+                    <% if(allowDeleteAll || allowPublishAll || allowAddAll) { %>
+                    <div class="multi-action-requests filterEntities">
+                        <% if(allowDeleteAll){ %>
+                        <button type="button" class="btn btn-default <%= btnClass %> delete-all">Delete All</button>
+                        <% } %>
+
+                        <% if(allowPublishAll){ %>
+                        <button type="button" class="btn btn-default <%= btnClass %> publish-all">Publish All</button>
+                        <% } %>
+
+                        <% if(allowAddAll){ %>
+                        <button type="button" class="btn btn-default <%= btnClass %> add-all">Add All</button>
+                        <% } %>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div><!-- /col -->
+    </div><!-- /row -->
+</div><!-- /container -->
+
+<div class="container-fluid">
+    <div class="list-group list-view-pf list-view-pf-view entityRegion">
 
     </div>
-
-    <dl class="sub-nav">
-        <dd class="active"><a class="get-all" href="#">All</a></dd>
-        <% if(showCreate){ %>
-        <dd><a class="create" href="#">Create</a></dd>
-        <% } %>
-    </dl>
-    <div class="row">
-        <div class="large-12 columns">
-            <input type="text" placeholder="Filter..." class="filterEntities nameFilter"/>
-        </div>
-    </div>
-    <div class="entityRegion row"></div>
     <div class="filterEntities row">
-        <div class="pagerRegion large-12 columns"></div>
+        <div class="pagerRegion col-sm-12"></div>
     </div>
-    <div class="clearfix"></div>
+</div>
 
-    <% if(allowDeleteAll || allowPublishAll || allowAddAll) { %>
-    <div class="row multi-action-requests filterEntities">
-        <div class="large-6 columns end">
-            <ul class="button-group radius even-2">
-                <% if(allowDeleteAll){ %>
-                <li>
-                    <button class="button <%= btnClass %> delete-all">Delete All</button>
-                </li>
-                <% } %>
-
-                <% if(allowPublishAll){ %>
-                <li>
-                    <button class="button <%= btnClass %> publish-all">Publish All</button>
-                </li>
-                <% } %>
-
-                <% if(allowAddAll){ %>
-                <li>
-                    <button class="button <%= btnClass %> add-all">Add All</button>
-                </li>
-                <% } %>
-            </ul>
-        </div>
-    </div>
-    <% } %>
-
-    <div class="delete-all-modal tiny reveal-modal" style="display:none;" data-reveal>
-        <p class="lead">Are you sure you want to delete these items?</p>
-
-        <div class="row">
-            <div class="large-5 large-centered columns">
-                <a href="#" class="button yes">Yes</a>
-                <a href="#" class="button no">No</a>
+<div class="modal fade delete-all-modal" tabindex="-1" role="dialog" aria-labelledby="delete-all-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="pficon pficon-close"></span>
+                </button>
+                <h4 class="modal-title">Delete All?</h4>
+            </div>
+            <div class="modal-body message">
+                Are you sure you want to delete these items?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary yes">Yes</button>
+                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>
             </div>
         </div>
-        <a class="close-reveal-modal">&#215;</a>
     </div>
-    <div class="publish-all-modal tiny reveal-modal" style="display:none;" data-reveal>
-        <p class="lead">Are you sure you want to publish these items?</p>
+</div>
 
-        <div class="row">
-            <div class="large-5 large-centered columns">
-                <a href="#" class="button yes">Yes</a>
-                <a href="#" class="button no">No</a>
+<div class="modal fade publish-all-modal" tabindex="-1" role="dialog" aria-labelledby="publish-all-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="pficon pficon-close"></span>
+                </button>
+                <h4 class="modal-title">Publish All?</h4>
+            </div>
+            <div class="modal-body message">
+                Are you sure you want to publish these items?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary yes">Yes</button>
+                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>
             </div>
         </div>
-        <a class="close-reveal-modal">&#215;</a>
     </div>
+</div>

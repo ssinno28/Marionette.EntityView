@@ -77,7 +77,7 @@ var EntityFormView;
             $warningModal.find('.message').html(message);
 
             //show modal
-            $warningModal.foundation('reveal', 'open');
+            $warningModal.modal('show');
 
             if (_.isUndefined(noFunc) || _.isUndefined(yesFunc)) {
                 $warningModal.find('.buttons').hide();
@@ -90,7 +90,7 @@ var EntityFormView;
                     noFunc();
                 }
 
-                $warningModal.foundation('reveal', 'close');
+                $warningModal.modal('hide');
             });
 
             $warningModal.on('click', '.yes', function (e) {
@@ -100,7 +100,7 @@ var EntityFormView;
                     yesFunc();
                 }
 
-                $warningModal.foundation('reveal', 'close');
+                $warningModal.modal('hide');
             });
         },
         onSubmitFail: function (errors) {
@@ -111,18 +111,27 @@ var EntityFormView;
             $errors.remove();
 
             for (var errorObject in errors) {
-                var field = errors[errorObject].el;
-                var $selector = $(field);
+                var field = errors[errorObject].el,
+                    $selector = $(field),
+                    $formGroup = $selector.closest('.form-group');
+
+                $formGroup.addClass('has-error');
+
                 for (var i = 0; i < errors[errorObject].error.length; i++) {
-                    $selector.after('<small class="error">' + errors[errorObject].error[i] + '</small>');
+                    $selector.after('<span class="help-block">' + errors[errorObject].error[i] + '</span>');
                 }
             }
         },
         onSubmit: function (evt) {
             evt.preventDefault();
 
-            var $errors = $('.error');
+            var $errors = $('.help-block');
             $errors.remove();
+
+            _.each($errors, function ($error) {
+                var $formGroup = $error.closest('.form-group');
+                $formGroup.removeClass('has-error');
+            });
 
             this.setModelDefaults();
             this.saveModel();
