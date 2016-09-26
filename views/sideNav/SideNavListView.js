@@ -35,7 +35,7 @@ var SideNavListView;
                 var findModel = null;
                 listing.fullCollection.getById(model.get('id'), false)
                     .done(function (entity) {
-                        findModel = entity
+                        findModel = entity;
                     });
 
                 return findModel !== null;
@@ -50,7 +50,7 @@ var SideNavListView;
             return {};
         },
         tagName: 'ul',
-        className: 'cr-side-nav',
+        className: 'list-group',
         events: {
             'click a': 'setActiveElement'
         },
@@ -66,7 +66,7 @@ var SideNavListView;
         onAddChild: function (childView) {
             var indexOf = this.collection.indexOf(childView.model);
             if (indexOf !== this.collection.length - 1) {
-                childView.$el.after('<li class="divider"></li>')
+                childView.$el.after('<li class="divider"></li>');
             }
 
             var isHeaderIndex = _.find(this.headerIndexes, function (headerIndex) {

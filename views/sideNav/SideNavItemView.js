@@ -3,6 +3,9 @@ var SideNavItemView;
     SideNavItemView = Marionette.SideNavItemView = TreeCompositeView.extend({
         template: sideNavItemTemplate,
         tagName: 'li',
+        onRender: function () {
+            this.$el.data('target', 'toggle-' + this.model.get('id'));
+        },
         events: function () {
             var events = {
                 'click .item': 'listItemClick'
