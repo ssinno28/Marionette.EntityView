@@ -23,14 +23,24 @@ var DateTimePickerView;
             }
         },
         ui: {
-            $datePicker: '.fdatepicker'
+            $datePicker: '.bootstrap-datepicker',
+            $timePicker: '.time-picker-pf input'
         },
         template: datePickerTemplate,
         onDomRefresh: function () {
-            this.ui.$datePicker.fdatepicker()
+            this.ui.$datePicker.datepicker()
                 .on('changeDate', function (e) {
                     EventAggregator.trigger('change:date:' + this.dataField, e);
                 });
+
+            this.ui.$timePicker.datetimepicker({
+                format: 'LT',
+                keyBinds: {
+                    enter: function () {
+                        this.hide();
+                    }
+                }
+            });
 
             var $date = this.$el.find('.date'),
                 $time = this.$el.find('.time');
@@ -43,13 +53,13 @@ var DateTimePickerView;
             }
         },
         show: function () {
-            this.$el.fdatepicker('show');
+            this.$el.datepicker('show');
         },
         hide: function () {
-            this.$el.fdatepicker('hide');
+            this.$el.datepicker('hide');
         },
         update: function (value) {
-            this.$el.fdatepicker('update', value);
+            this.$el.datepicker('update', value);
         },
         getDateTime: function () {
             var $date = $('[data-field="' + this.dataField + '_date"]'),

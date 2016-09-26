@@ -7,7 +7,7 @@ var CheckBoxView;
             }
         },
         tagName: 'div',
-        className: 'large-6 columns',
+        className: 'col-sm-6',
         template: checkBoxTemplate,
         events: {
             'click input[type=checkbox]': 'itemChecked'
