@@ -9,7 +9,7 @@ module.exports = function (grunt) {
         concat: {
             js: {
                 options: {
-                    sourceMap: false
+                    sourceMap: true
                 },
                 src: [
                     './util/formValidator.js',

@@ -13,8 +13,9 @@ var AutoCompleteLayoutView;
             EventAggregator.on('auto-complete:list:complete:' + this.dataField, _.bind(this.listingRetrieved, this));
             EventAggregator.on('auto-complete:selected:' + this.dataField, _.bind(this.entitySelected, this));
         },
+        className: 'dropdown',
         listingRetrieved: function () {
-            Foundation.libs.dropdown.toggle(this.ui.$ddLink);
+            this.ui.$ddLink.dropdown('toggle');
             var setSelectedEntity = _.bind(this.setSelectedEntity, this);
 
             $('html').on('click', function (e) {
@@ -30,7 +31,7 @@ var AutoCompleteLayoutView;
             this.ui.$selectedId.val($target.data('id'));
             this.ui.$valueText.val($target.html());
 
-            Foundation.libs.dropdown.toggle(this.ui.$ddLink);
+            this.ui.$ddLink.dropdown('toggle');
 
             $('html').off('click');
         },
@@ -41,13 +42,13 @@ var AutoCompleteLayoutView;
 
             if (_.isNull(id) || _.isUndefined(id) || id === '') {
                 this.ui.$valueText.val('');
-                Foundation.libs.dropdown.toggle(this.ui.$ddLink);
+                this.ui.$ddLink.dropdown('toggle');
                 return;
             }
 
             this.collection.getById(id)
                 .done(function (entity) {
-                    Foundation.libs.dropdown.toggle($ddLink);
+                    this.ui.$ddLink.dropdown('toggle');
                     $valueText.val(entity.get('name'));
                 });
         },

@@ -238,7 +238,6 @@ var MultiSelectLayoutView;
                 this.selectedItems = new Backbone.Collection(entities.models);
 
                 this.showSelectedInHeader();
-                $(document).foundation('tooltip', 'reflow');
             }, this));
 
             EventAggregator.trigger(this.selectedItemsRoute + '.getType', 1);
