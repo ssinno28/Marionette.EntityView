@@ -71,8 +71,8 @@ module.exports = function (grunt) {
                     './views/sideNav/SideNavItemView.js',
                     './views/sideNav/SideNavListView.js',
                     './views/sideNav/SideNavLayoutView.js',
-                    './views/iconMenu/IconMenuItemView.js',
-                    './views/iconMenu/IconMenuListView.js',
+                    './views/topBar/TopBarMenuItemView.js',
+                    './views/topBar/TopBarListView.js',
                     './controllers/entityController.js'
                 ],
                 dest: './generated/js/main.js'

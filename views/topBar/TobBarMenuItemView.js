@@ -1,6 +1,6 @@
-var IconMenuItemView;
+var TopBarMenuItemView;
 (function ($, _, Backbone, Marionette, iconMenuItemTemplate, EventAggregator) {
-    IconMenuItemView = Marionette.ItemView.extend({
+    TopBarMenuItemView = Marionette.ItemView.extend({
         template: iconMenuItemTemplate,
         tagName: 'li',
         events: {
