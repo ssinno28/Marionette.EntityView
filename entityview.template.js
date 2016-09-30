@@ -1,3 +1,5 @@
+/*jshint sub:true*/
+
 /* MIT License
 
 Copyright (c) 2016 Sammi Maan Sinno
@@ -45,7 +47,10 @@ SOFTWARE.
     }
 }(this, function (Backbone, Marionette, jQuery, _, EventAggregator, App, Moment) {
 
+    /* jshint ignore:start */
     <%= templates %>
+    /* jshint ignore:end */
+
     <%= content %>
 
     return {
