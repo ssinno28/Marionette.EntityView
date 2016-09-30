@@ -1,10 +1,9 @@
 var EntityListView;
-(function ($, _, Backbone, Marionette, entityListTemplate, EventAggregator) {
+(function ($, _, Backbone, Marionette, entityListTpl, EventAggregator) {
     EntityListView = Marionette.EntityListView = Backbone.Marionette.CompositeView.extend({
-        template: entityListTemplate,
+        template: entityListTpl,
         itemViewContainer: '.listings',
         className: 'large-12 columns',
-        template: entityListTemplate,
         initialize: function (options) {
             this.fullCollection = options.fullCollection;
             this.parentViewCid = options.parentViewCid;

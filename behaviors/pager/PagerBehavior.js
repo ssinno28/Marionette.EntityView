@@ -2,7 +2,7 @@ var PagerBehavior;
 (function ($, _, Backbone, Marionette, App, PagerListView) {
     PagerBehavior = Marionette.Behavior.extend({
         onShowPager: function (entityCollection) {
-            if (this.view.pagerRegion.currentView != null) {
+            if (this.view.pagerRegion.currentView !== null) {
                 this.view.pagerRegion.reset();
             }
 

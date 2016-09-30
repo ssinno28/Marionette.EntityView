@@ -1,4 +1,4 @@
-var ReusableTypeListView
+var ReusableTypeListView;
 (function ($, _, Backbone, Marionette) {
     ReusableTypeListView = Marionette.ReusableTypeListView = Backbone.Marionette.CollectionView.extend({
         initialize: function (options) {
@@ -9,7 +9,7 @@ var ReusableTypeListView
             return {
                 dataField: self.dataField,
                 selectedId: self.selectedId
-            }
+            };
         }
     });
 })(jQuery, _, Backbone, Marionette);

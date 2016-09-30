@@ -213,7 +213,7 @@ var EntityService;
                     if (_.isUndefined(entities.child)) {
                         models = entities;
                     } else {
-                        models = entities.child
+                        models = entities.child;
                     }
 
                     var listView =
@@ -249,7 +249,7 @@ var EntityService;
                     if (_.isUndefined(entities.child)) {
                         models = entities;
                     } else {
-                        models = entities.child
+                        models = entities.child;
                     }
 
 
@@ -294,7 +294,7 @@ var EntityService;
                     if (_.isUndefined(entities.child)) {
                         models = entities;
                     } else {
-                        models = entities.child
+                        models = entities.child;
                     }
 
                     self.region.reset();

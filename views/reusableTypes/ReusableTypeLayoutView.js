@@ -10,7 +10,7 @@ var ReusableTypeLayoutView;
 
             return {
                 dataField: self.dataField
-            }
+            };
         }
     });
 })(jQuery, _, Backbone, Marionette);

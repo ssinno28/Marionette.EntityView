@@ -22,18 +22,19 @@ var SortableCollectionView;
             var draggedModelPlacment = this.placement[placementDraggedModelIndex].placement,
                 overModelPlacement = this.placement[placementOverModelIndex].placement;
 
+            var placement;
             if (draggedModelPlacment < overModelPlacement) {
-                for (var i = 0; i < this.placement.length; i++) {
-                    var placement = this.placement[i].placement;
+                for (var j = 0; j < this.placement.length; j++) {
+                    placement = this.placement[j].placement;
                     if (placement <= overModelPlacement) {
-                        this.placement[i].placement--;
+                        this.placement[j].placement--;
                     }
                 }
 
                 this.placement[placementDraggedModelIndex].placement = overModelPlacement;
             } else if (draggedModelPlacment > overModelPlacement) {
                 for (var i = 0; i < this.placement.length; i++) {
-                    var placement = this.placement[i].placement;
+                    placement = this.placement[i].placement;
                     if (placement >= overModelPlacement) {
                         this.placement[i].placement++;
                     }

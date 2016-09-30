@@ -80,7 +80,7 @@ module.exports = function (grunt) {
         },
         watch: {
             js: {
-                files: ['!./generated/*.js', './**/*/*.js', './entityview.template.js', './templates/**/*.html', './templates/*.html'],
+                files: ['!./generated/*.js', './**/*/*.js', './entityview.template.js', './templates/**/*.html', './templates/*.html', '!./backbone.marionette.entityview.js'],
                 tasks: ['default']
             }
         },

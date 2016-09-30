@@ -214,7 +214,7 @@ var EntityLayoutView;
                 }
 
                 EventAggregator.trigger(this.route + '.textSearch', name, 'name');
-            }, this))
+            }, this));
         },
         showListView: function () {
             this.entityRegion.show(this.listView);

@@ -38,7 +38,7 @@ var FormValidator;
         numeric: {
             id: '85aee6f9-c7af-4658-b983-4be319e960c4',
             evaluate: function (val) {
-                return !_.isNaN(new Number(val));
+                return !_.isNaN(val);
             }
         },
 

@@ -56,7 +56,7 @@ SOFTWARE.
     return {
         SideNavLayoutView: SideNavLayoutView,
         SideNavItemView: SideNavItemView,
-        SideNavListView: SideNavListView,
+        SideNavListView: SideNavListView, 
         ErrorView: ErrorView,
         InfoView: InfoView,
         WarningView: WarningView,
@@ -75,7 +75,6 @@ SOFTWARE.
         RadioButtonListView: RadioButtonListView,
         CheckBoxListView: CheckBoxListView,
         CheckBoxView: CheckBoxView,
-        SideNavLayoutView: SideNavLayoutView,
         SortableItemView: SortableItemView,
         SortableCollectionView: SortableCollectionView,
         FormValidator: FormValidator,
