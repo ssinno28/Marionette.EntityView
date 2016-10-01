@@ -1,10 +1,15 @@
 var SideNavItemView;
-(function ($, _, Backbone, Marionette, sideNavItemTemplate, EventAggregator, TreeCompositeView) {
+(function ($, _, Backbone, Marionette, sideNavItemTpl, EventAggregator, TreeCompositeView) {
     SideNavItemView = Marionette.SideNavItemView = TreeCompositeView.extend({
-        template: sideNavItemTemplate,
+        template: sideNavItemTpl,
         tagName: 'li',
+        className: 'list-group-item',
         onRender: function () {
-            this.$el.data('target', 'toggle-' + this.model.get('id'));
+            this.$el.data('target', 'toggle-' + this.model.get('route'));
+
+            if (this.hasChildren()) {
+                this.$el.addClass('secondary-nav-item-pf');
+            }
         },
         events: function () {
             var events = {
@@ -20,8 +25,7 @@ var SideNavItemView;
             EventAggregator.trigger('side-nav:click:' + $target.data('type'), this.model, e, $target.attr('href'));
         },
         templateHelpers: function () {
-            var outerScope = this,
-                routeUrl = _.isUndefined(outerScope.model.get('route')) ? '#' : outerScope.model.get('route'),
+            var routeUrl = _.isUndefined(this.model.get('route')) ? '#' : this.model.get('route'),
                 type = this.model.collection.type;
 
             if (_.isUndefined(type) || _.isNull(type)) {

@@ -1,9 +1,9 @@
 
 var TreeCompositeView;
-(function ($, _, Backbone, Marionette, treeCompositeTemplate) {
+(function ($, _, Backbone, Marionette, treeCompositeTpl) {
     TreeCompositeView = Marionette.TreeCompositeView = Backbone.Marionette.CompositeView.extend({
         tagName: 'li',
-        template: treeCompositeTemplate,
+        template: treeCompositeTpl,
         events: function () {
             var nodeClickEvent = 'click .nodeLink' + this.options.model.get('id'),
                 plusClickEvent = 'click .plus' + this.options.model.get('id'),
