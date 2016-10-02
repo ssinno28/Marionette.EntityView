@@ -55,7 +55,7 @@ var EntityFormView;
             };
         },
         renderForm: function (template) {
-            var formView = Backbone.Marionette.ItemView.extend({
+            var formView = Backbone.Marionette.View.extend({
                 template: template,
                 model: this.model
             });

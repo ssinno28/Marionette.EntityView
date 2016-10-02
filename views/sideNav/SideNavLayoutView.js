@@ -1,7 +1,7 @@
 
 var SideNavLayoutView;
 (function ($, _, Backbone, Marionette, SideNavListView, sideNavLayoutTemplate) {
-    SideNavLayoutView = Marionette.LayoutView.extend({
+    SideNavLayoutView = Marionette.View.extend({
         template: sideNavLayoutTemplate,
         className: 'nav-pf-vertical nav-pf-vertical-with-sub-menus hide-nav-pf',
         regions: {

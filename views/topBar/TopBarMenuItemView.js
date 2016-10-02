@@ -1,7 +1,7 @@
 var TopBarMenuItemView;
-(function ($, _, Backbone, Marionette, iconMenuItemTemplate, EventAggregator) {
-    TopBarMenuItemView = Marionette.ItemView.extend({
-        template: iconMenuItemTemplate,
+(function ($, _, Backbone, Marionette, topBarMenuItemTemplate, EventAggregator) {
+    TopBarMenuItemView = Marionette.View.extend({
+        template: topBarMenuItemTemplate,
         tagName: 'li',
         events: {
             'click .item': 'listItemClick'
@@ -9,7 +9,7 @@ var TopBarMenuItemView;
         listItemClick: function (e) {
             e.stopPropagation();
             var $target = $(e.target).closest('a');
-            EventAggregator.trigger('icon-menu:click:' + $target.data('type'), this.model, e, $target.attr('href'));
+            EventAggregator.trigger('top-bar:click:' + $target.data('type'), this.model, e, $target.attr('href'));
         },
         templateHelpers: function () {
             var outerScope = this,

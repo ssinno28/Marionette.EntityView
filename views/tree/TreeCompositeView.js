@@ -1,7 +1,7 @@
 
 var TreeCompositeView;
 (function ($, _, Backbone, Marionette, treeCompositeTpl) {
-    TreeCompositeView = Marionette.TreeCompositeView = Backbone.Marionette.LayoutView.extend({
+    TreeCompositeView = Marionette.TreeCompositeView = Backbone.Marionette.View.extend({
         tagName: 'li',
         template: treeCompositeTpl,
         events: function () {

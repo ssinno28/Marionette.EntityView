@@ -28,7 +28,7 @@ var EntityListItemView;
             }
 
             var fieldsView =
-                Backbone.Marionette.ItemView.extend(
+                Backbone.Marionette.View.extend(
                     {
                         template: entityTemplate,
                         model: this.model
