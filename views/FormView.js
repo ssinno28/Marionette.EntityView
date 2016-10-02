@@ -3,14 +3,14 @@ var FormView;
     "use strict";
 
     /**
-     * FormView Extension of Backbone.Marionette.LayoutView
+     * FormView Extension of Backbone.Marionette.View
      *
      * @param {Object} options                   Options defining this FormView
      * @param {Object} [options.data]            Form Data. (Required if options.model is not set)
      * @param {Object} [options.fields]          Which Fields to include
      *
      */
-    FormView = Marionette.FormView = Marionette.LayoutView.extend({
+    FormView = Marionette.FormView = Marionette.View.extend({
 
         className: "formView",
 
@@ -19,7 +19,7 @@ var FormView;
         fields: {},
 
         constructor: function () {
-            Marionette.LayoutView.prototype.constructor.apply(this, arguments);
+            Marionette.View.prototype.constructor.apply(this, arguments);
 
             //Allow Passing In Fields by extending with a fields hash
             if (!this.fields) throw new Error("Fields Must Be Provided");

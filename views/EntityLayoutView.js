@@ -1,6 +1,6 @@
 var EntityLayoutView;
 (function ($, _, Backbone, Marionette, entityListLayoutTemplate, EntityLayoutModel, EventAggregator, TimeoutUtil, PagerBehavior) {
-    EntityLayoutView = Marionette.EntityLayoutView = Backbone.Marionette.LayoutView.extend({
+    EntityLayoutView = Marionette.EntityLayoutView = Backbone.Marionette.View.extend({
         template: entityListLayoutTemplate,
         regions: {
             'entityRegion': '.entityRegion',

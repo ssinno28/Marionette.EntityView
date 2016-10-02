@@ -15,6 +15,9 @@ var SideNavListView;
             var $target = $(e.target).parent();
             $target.addClass('active');
         },
-        childView: SideNavItemView
+        childView: SideNavItemView,
+        onDomRefresh: function () {
+            this.$el.setupVerticalNavigation(true); 
+        }
     });
 })(jQuery, _, Backbone, Marionette, SideNavItemView);

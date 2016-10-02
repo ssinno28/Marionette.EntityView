@@ -1,7 +1,7 @@
 
 var ReusableTypeLayoutView;
 (function ($, _, Backbone, Marionette) {
-    ReusableTypeLayoutView = Marionette.ReusableTypeLayoutView = Backbone.Marionette.LayoutView.extend({
+    ReusableTypeLayoutView = Marionette.ReusableTypeLayoutView = Backbone.Marionette.View.extend({
         initialize: function (options) {
             _.extend(this, options);
         },

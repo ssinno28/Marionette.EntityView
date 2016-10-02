@@ -1,6 +1,6 @@
 var EntityListItemView;
 (function ($, _, Backbone, Marionette, entityListItemTemplate, DeleteWarnBehavior, EventAggregator) {
-    EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.LayoutView.extend({
+    EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.View.extend({
         regions: {
             fieldsRegion: '.fieldsRegion'
         },

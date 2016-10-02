@@ -1,6 +1,6 @@
 var SortableItemView;
 (function ($, _, Backbone, Marionette, EventAggregator) {
-    SortableItemView = Marionette.SortableItemView = Marionette.LayoutView.extend({
+    SortableItemView = Marionette.SortableItemView = Marionette.View.extend({
         tagName: "li",
         attributes: {
             "draggable": true

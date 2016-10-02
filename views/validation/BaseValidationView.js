@@ -1,6 +1,6 @@
 var BaseValidationView;
 (function ($, _, Backbone, Marionette, ValidationModel, validationTemplate, MessageCollection, MessageListView) {
-    BaseValidationView = Marionette.BaseValidationView = Backbone.Marionette.LayoutView.extend({
+    BaseValidationView = Marionette.BaseValidationView = Backbone.Marionette.View.extend({
         tagName: 'div',
         template: validationTemplate,
         regions: {

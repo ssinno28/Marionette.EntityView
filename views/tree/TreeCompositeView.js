@@ -1,7 +1,7 @@
 
 var TreeCompositeView;
 (function ($, _, Backbone, Marionette, treeCompositeTpl) {
-    TreeCompositeView = Marionette.TreeCompositeView = Backbone.Marionette.CompositeView.extend({
+    TreeCompositeView = Marionette.TreeCompositeView = Backbone.Marionette.LayoutView.extend({
         tagName: 'li',
         template: treeCompositeTpl,
         events: function () {
@@ -19,36 +19,24 @@ var TreeCompositeView;
             return eventsHash;
         },
         onDomRefresh: function () {
-            if (!this.hasChildren() || this.model.get('hideChildren')) {
-                this.ui.$children.hide();
-                this.ui.$plus.show();
-                this.ui.$minus.hide();
-            } else {
-                this.ui.$plus.hide();
-                this.ui.$minus.show();
-                this.ui.$children.show();
-            }
+            if (this.hasChildren() && !_.isUndefined(this.renderChildrenTpl)) {
+                this.renderChildrenTpl();
+                var childrenRegion = new Backbone.Marionette.Region({
+                    el: '.children-' + this.model.get('id'),
+                    replaceElement: true
+                });
 
-            if (_.isUndefined(this.fullCollection)) {
-                this.ui.$toggle.hide();
+                this.regionManager.addRegion('childrenRegion', childrenRegion);
+                 
+                var ListView = this.model.get('listView');
+                this.childrenRegion.show(new ListView({ collection: this.collection }));
             }
         },
         ui: {
-            '$children': '.children',
-            '$plus': '.tree-view-plus',
-            '$minus': '.fi-minus',
-            '$toggle': '.toggle',
-            '$node' : '.node'
+            '$children': '.children'
         },
         navigateToItem: function (e) {
             e.preventDefault();
-        },
-        childViewOptions: function () {
-            var fullCollection = this.fullCollection;
-
-            return {
-                fullCollection: fullCollection
-            };
         },
         toggleChildren: function (e) {
             e.preventDefault();
@@ -72,8 +60,8 @@ var TreeCompositeView;
                     self.setChildrenCollection();
                     if (self.collection.length > 0) {
                         self.ui.$children.show();
-                        self.model.set({childCollection: self.collection});
-                        self.model.set({hideChildren: false});
+                        self.model.set({ childCollection: self.collection });
+                        self.model.set({ hideChildren: false });
 
                         self.render();
                     }
@@ -82,13 +70,13 @@ var TreeCompositeView;
         hideChildren: function (e) {
             e.preventDefault();
             this.ui.$children.hide();
-            this.model.set({hideChildren: true});
+            this.model.set({ hideChildren: true });
         },
         initialize: function (options) {
             _.extend(this, options);
 
-            if(_.isUndefined(this.model.get('hideChildren'))){
-                this.model.set({hideChildren: true});
+            if (_.isUndefined(this.model.get('hideChildren'))) {
+                this.model.set({ hideChildren: true });
             }
 
             var childCollection = this.model.get('childCollection');
@@ -114,7 +102,6 @@ var TreeCompositeView;
 
             this.collection = collection.child;
         },
-        childViewContainer: ".children",
         hasChildren: function () {
             return !_.isUndefined(this.collection) && this.collection.length > 0;
         }

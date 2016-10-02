@@ -79,8 +79,12 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            js: {
-                files: ['!./generated/*.js', './**/*/*.js', './entityview.template.js', './templates/**/*.html', './templates/*.html', '!./backbone.marionette.entityview.js'],
+            default: {
+                options: {
+                    nospawn: true,
+                    debounceDelay: 1000
+                },
+                files: ['!./generated/*.js', './**/*/*.js', './entityview.template.js', './templates/**/*.html', './templates/*.html'],
                 tasks: ['default']
             }
         },
@@ -110,7 +114,7 @@ module.exports = function (grunt) {
                 var content = fs.readFileSync('./generated/js/main.js', 'utf8'),
                     templates = fs.readFileSync('./generated/js/templates.js', 'utf8'),
                     template = fs.readFileSync('./entityview.template.js', 'utf8'),
-                    fileContent = grunt.template.process(template, {data: {content: content, templates: templates}});
+                    fileContent = grunt.template.process(template, { data: { content: content, templates: templates } });
 
                 fs.writeFileSync('./backbone.marionette.entityview.js', fileContent);
             });
