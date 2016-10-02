@@ -269,7 +269,7 @@ var EntityService;
                     self.entityLayoutView().listView = listView;
 
                     EventAggregator.trigger(self.route + '.subcollection', models);
-                    self.entityLayoutView().entityRegion.show(listView);
+                    self.entityLayoutView().showChildView('entityRegion', listView);
                 });
         };
 

@@ -1,5 +1,5 @@
 var MultiSelectLayoutView;
-(function (Marionette, $, _, multiSelectLayoutTemplate, ReusableTypeLayoutView, multiSelectService, EntityLayoutModel, headerTemplate, EventAggregator) {
+(function (Marionette, $, _, multiSelectLayoutTpl, ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, headerTemplate, EventAggregator) {
     MultiSelectLayoutView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
@@ -21,7 +21,7 @@ var MultiSelectLayoutView;
             this.$el.attr('data-field', this.dataField);
         },
         className: 'zselect',
-        template: multiSelectLayoutTemplate,
+        template: multiSelectLayoutTpl,
         regions: {
             'optionsRegion': '.options',
             'selectedOptionsRegion': '.selectedOptions'
@@ -220,7 +220,7 @@ var MultiSelectLayoutView;
                 }
             ];
 
-            this.selectedItemsService = new multiSelectService();
+            this.selectedItemsService = new MultiSelectService();
 
             var options = {
                 allowableOperations: [],
@@ -228,7 +228,7 @@ var MultiSelectLayoutView;
                 header: {params: {title: "Remove an Item"}, template: headerTemplate},
                 routing: false,
                 conditions: inPred,
-                region: this.selectedOptionsRegion,
+                region: this.getRegion('selectedOptionsRegion'),
                 collection: this.collection
             };
 
@@ -255,7 +255,7 @@ var MultiSelectLayoutView;
                 notInPred = notInPred.concat(this.options.conditions);
             }
 
-            this.excludedItemsService = new multiSelectService();
+            this.excludedItemsService = new MultiSelectService();
 
             var options = {
                 allowableOperations: [],
@@ -263,7 +263,7 @@ var MultiSelectLayoutView;
                 header: {params: {title: "Select an Item"}, template: headerTemplate},
                 routing: false,
                 conditions: notInPred,
-                region: this.optionsRegion,
+                region: this.getRegion('optionsRegion'),
                 collection: this.collection
             };
 
@@ -275,7 +275,7 @@ var MultiSelectLayoutView;
 
             EventAggregator.trigger(this.excludedItemsRoute + '.getType', 1);
         },
-        onShow: function () {
+        onDomRefresh: function () {
             this.ui.$optionsRegion.hide();
             this.showExcludedItems();
             this.showSelectedItems();

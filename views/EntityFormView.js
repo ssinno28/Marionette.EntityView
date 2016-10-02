@@ -200,7 +200,7 @@ var EntityFormView;
 
             var data = {
                 conditions: conditions
-            };
+            }; 
 
             collection.query(false, data).done(function (entities) {
                 var currentlySetId = viewContext.model.get(dataField);
@@ -210,7 +210,7 @@ var EntityFormView;
                     currentlySetId = '';
                 }
 
-                region.show(new DropDownListView({
+                viewContext.showChildView(region, new DropDownListView({
                     collection: entities,
                     dataField: dataField,
                     selectedId: currentlySetId
@@ -240,12 +240,12 @@ var EntityFormView;
                     conditions: conditions
                 });
 
-            region.show(multiSelect);
+            this.showChildView(region, multiSelect);
         },
         autoCompleteForRegion: function (collection, region, dataField) {
             var selectedId = this.model.get(dataField);
 
-            region.show(
+            this.showChildView(region,
                 new AutoCompleteLayoutView({
                     collection: collection,
                     dataField: dataField,
@@ -255,20 +255,20 @@ var EntityFormView;
         radioButtonListForRegion: function (collection, region, dataField) {
             var selectedId = this.model.get(dataField);
 
-            region.show(new RadioButtonListView({
+            this.showChildView(region, new RadioButtonListView({
                 collection: collection,
                 dataField: dataField,
                 selectedId: selectedId
             }));
         },
         textAreaForRegion: function (model, region, dataField) {
-            region.show(new TextAreaView({
+            this.showChildView(region, new TextAreaView({
                 model: model,
                 dataField: dataField
             }));
         },
         checkboxForRegion: function(model, region, dataField) {
-            region.show(new CheckBoxView({
+            this.showChildView(region, new CheckBoxView({
                 model: model,
                 dataField: dataField
             }));

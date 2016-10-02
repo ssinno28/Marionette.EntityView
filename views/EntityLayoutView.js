@@ -39,7 +39,7 @@ var EntityLayoutView;
         },
         model: EntityLayoutModel,
         events: {
-            'click .sub-nav a': 'subNavClick',
+            'click .sub-nav button': 'subNavClick',
             'click .edit': 'editClick',
             'keyup .nameFilter': 'filterByName',
             'click .multi-action': 'showMultiActions',

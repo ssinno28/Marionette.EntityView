@@ -55,7 +55,7 @@
 .zselect {
   ul {
     .selected {
-      background: $third-color;
+      background: yellow;
     }
   }
 }
@@ -75,7 +75,7 @@
 }
 
 .zselect ul li:hover {
-  background-color: $third-color;
+  background-color: yellow;
   color: #fff;
 }
 
