@@ -1,7 +1,7 @@
 var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTemplate, EntityLayoutModel, EventAggregator, TimeoutUtil, PagerBehavior) {
+(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, EventAggregator, TimeoutUtil, PagerBehavior) {
     EntityLayoutView = Marionette.EntityLayoutView = Backbone.Marionette.View.extend({
-        template: entityListLayoutTemplate,
+        template: entityListLayoutTpl,
         regions: {
             'entityRegion': '.entityRegion',
             'pagerRegion': '.pagerRegion'
@@ -28,8 +28,6 @@ var EntityLayoutView;
 
             EventAggregator.on('list.view.activated.' + this.cid, _.bind(this.listViewActivated, this));
             EventAggregator.on('form.view.activated.' + this.cid, _.bind(this.formViewActivated, this));
-
-            App.viewContainer.add(this);
         },
         className: function () {
             var entityLayoutClass = ' entity-layout';
@@ -61,7 +59,7 @@ var EntityLayoutView;
             '$treeBtn': '.get-tree',
             '$header': '.entity-header'
         },
-        templateHelpers: function () {
+        templateContext: function () {
             var showCreate = this.allowableOperations.indexOf('create') > -1,
                 allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1,
                 allowPublishAll = this.allowableOperations.indexOf('publish-all') > -1,
@@ -78,15 +76,13 @@ var EntityLayoutView;
                 btnClass: btnClass
             };
         },
-        onShow: function () {
-            this.showListView();
-            this.renderHeader();
-        },
         onDestroy: function () {
             EventAggregator.off('list.view.activated.' + this.cid);
             EventAggregator.off('form.view.activated.' + this.cid);
         },
         onDomRefresh: function () {
+            this.showListView();
+            this.renderHeader(); 
             this.showMultiActions();
         },
         listViewActivated: function () {
@@ -94,7 +90,7 @@ var EntityLayoutView;
             this.ui.$listBtn.parent().addClass('active');
             this.ui.$nameFilter.show();
             this.triggerMethod("ShowPager", this.listView.collection);
-            this.showMultiActions();
+            this.showMultiActions(); 
         },
         formViewActivated: function () {
             this.ui.$subNavElements.removeClass('active');
@@ -217,7 +213,7 @@ var EntityLayoutView;
             }, this));
         },
         showListView: function () {
-            this.entityRegion.show(this.listView);
+            this.showChildView('entityRegion', this.listView);
         },
         renderHeader: function () {
             if (!this.header) {

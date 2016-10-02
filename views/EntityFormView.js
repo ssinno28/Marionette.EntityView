@@ -22,7 +22,7 @@ var EntityFormView;
 
             this.original = this.model.toJSON();
         },
-        onShow: function () {
+        onDomRefresh: function () {
             EventAggregator.trigger('form.view.activated.' + this.options.parentViewCid);
             this.checkDisabledFields();
         },
@@ -48,7 +48,7 @@ var EntityFormView;
         ui: {
             '$actions': '.actions'
         },
-        templateHelpers: function () {
+        templateContext: function () {
             var self = this;
             return {
                 btnClass: self.options.btnClass
@@ -60,7 +60,7 @@ var EntityFormView;
                 model: this.model
             });
 
-            this.entityFormRegion.show(new formView());
+            this.showChildView('entityFormRegion', new formView());
             this.bindUIElements();
         },
         events: {

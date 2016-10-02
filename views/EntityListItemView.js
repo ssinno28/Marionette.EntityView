@@ -32,9 +32,9 @@ var EntityListItemView;
                     {
                         template: entityTemplate,
                         model: this.model
-                    });
+                    }); 
 
-            this.fieldsRegion.show(new fieldsView());
+            this.showChildView('fieldsRegion', new fieldsView());
 
             if (this.baseClassIds.indexOf(this.model.get('id')) === -1) {
                 this.$el.attr('data-index', this.collection.indexOf(this.model));
@@ -43,7 +43,7 @@ var EntityListItemView;
 
             this.bindUIElements();
         },
-        templateHelpers: function () {
+        templateContext: function () {
             var route = this.route;
 
             var allowEdit = this.allowableOperations.indexOf('edit') > -1;

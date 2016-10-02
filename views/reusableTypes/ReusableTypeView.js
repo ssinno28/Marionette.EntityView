@@ -23,7 +23,7 @@ var ReusableTypeView;
         template: function () {
             return _.template('<script id="empty-template" type="text/template"></script>');
         },
-        templateHelpers: function () {
+        templateContext: function () {
             var self = this;
 
             return {

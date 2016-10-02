@@ -116,7 +116,7 @@ module.exports = function (grunt) {
                     template = fs.readFileSync('./entityview.template.js', 'utf8'),
                     fileContent = grunt.template.process(template, { data: { content: content, templates: templates } });
 
-                fs.writeFileSync('./backbone.marionette.entityview.js', fileContent);
+                grunt.file.write('./backbone.marionette.entityview.js', fileContent);
             });
     });
 };

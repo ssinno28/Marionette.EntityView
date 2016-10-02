@@ -26,10 +26,10 @@ var TreeCompositeView;
                     replaceElement: true
                 });
 
-                this.regionManager.addRegion('childrenRegion', childrenRegion);
+                this.addRegion('childrenRegion', childrenRegion);
                  
                 var ListView = this.model.get('listView');
-                this.childrenRegion.show(new ListView({ collection: this.collection }));
+                this.showChildView('childrenRegion', new ListView({ collection: this.collection }));
             }
         },
         ui: {

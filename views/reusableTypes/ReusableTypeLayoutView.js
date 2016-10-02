@@ -5,7 +5,7 @@ var ReusableTypeLayoutView;
         initialize: function (options) {
             _.extend(this, options);
         },
-        templateHelpers: function () {
+        templateContext: function () {
             var self = this;
 
             return {

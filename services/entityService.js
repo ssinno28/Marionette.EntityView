@@ -75,7 +75,7 @@ var EntityService;
 
         ctor.entityLayoutView =
             function (entities) {
-                if (_.isNull(this._entityLayoutView) || this._entityLayoutView.isDestroyed) {
+                if (_.isNull(this._entityLayoutView) || this._entityLayoutView.isDestroyed()) {
                     this._entityLayoutView = this.getEntityLayoutView(entities);
                 }
 
@@ -136,8 +136,8 @@ var EntityService;
                 btnClass: this.getBtnClass(),
                 formOptions: this.getFormOptions()
             });
-
-            this.entityLayoutView().entityRegion.show(form);
+             
+            this.entityLayoutView().showChildView('entityRegion', form);
         };
 
         ctor.edit = function (id) {
@@ -158,7 +158,7 @@ var EntityService;
                         formOptions: this.getFormOptions()
                     });
 
-                    this.entityLayoutView().entityRegion.show(form);
+                    this.entityLayoutView().showChildView('entityRegion', form); 
                 }, this));
         };
 
@@ -229,7 +229,7 @@ var EntityService;
 
                     this.entityLayoutView().key = key;
                     EventAggregator.trigger(self.route + '.subcollection', models);
-                    this.entityLayoutView().entityRegion.show(listView);
+                    this.entityLayoutView().showChildView('entityRegion', listView);
                 }, this));
         };
 

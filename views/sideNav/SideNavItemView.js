@@ -26,7 +26,7 @@ var SideNavItemView;
             var $target = $(e.target);
             EventAggregator.trigger('side-nav:click:' + $target.data('type'), this.model, e, $target.attr('href'));
         },
-        templateHelpers: function () {
+        templateContext: function () {
             var routeUrl = _.isUndefined(this.model.get('route')) ? '#' : this.model.get('route'),
                 type = this.model.collection.type,
                 icon = this.model.get('icon');
@@ -40,7 +40,7 @@ var SideNavItemView;
             }
 
             return {
-                routeUrl: routeUrl,
+                routeUrl: _.isNull(routeUrl) ? '' : routeUrl, 
                 type: type,
                 icon: icon
             };
