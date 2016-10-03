@@ -159,32 +159,7 @@ ul {
 
 /* Entity Layout
 ------------------------------------------------------------*/
-.entity-list-item {
-  margin: 5px 0px;
-  padding: 5px 0px;
-  text-align:center;
-  fieldset {
-    margin: 0 !important;;
-    label {
-      margin-left: 0 !important;
-    }
-    input {
-      margin: 0 !important;
-    }
-  }
 
-  .inline-list {
-    margin-bottom: 0 !important;
-  }
-}
-
-.entity-list-item:nth-child(even) {
-  background-color: #cccccc;
-}
-
-.filterEntities{
-  margin-top: 15px !important;
-}
 
 /* Icons
 ------------------------------------------------------------*/
