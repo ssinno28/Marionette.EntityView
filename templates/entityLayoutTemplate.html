@@ -6,7 +6,8 @@
             <div class="toolbar-pf-actions">
                 <div class="form-group toolbar-pf-filter">
                     <label class="sr-only" for="filter">Name</label>
-                    <div class="input-group">
+
+                    <div class="input-group col-sm-12">
                         <input type="text" class="form-control nameFilter" id="filter" placeholder="Filter By Name...">
                     </div><!-- /input-group -->
                 </div>
@@ -20,19 +21,17 @@
                     </button>
                     <% } %>
                     <% if(allowDeleteAll || allowPublishAll || allowAddAll) { %>
-                    <div class="multi-action-requests filterEntities">
-                        <% if(allowDeleteAll){ %>
-                        <button type="button" class="btn btn-default <%= btnClass %> delete-all">Delete All</button>
-                        <% } %>
+                    <% if(allowDeleteAll){ %>
+                    <button type="button" class="btn btn-default multi-action-requests <%= btnClass %> delete-all">Delete All</button>
+                    <% } %>
 
-                        <% if(allowPublishAll){ %>
-                        <button type="button" class="btn btn-default <%= btnClass %> publish-all">Publish All</button>
-                        <% } %>
+                    <% if(allowPublishAll){ %>
+                    <button type="button" class="btn btn-default multi-action-requests <%= btnClass %> publish-all">Publish All</button>
+                    <% } %>
 
-                        <% if(allowAddAll){ %>
-                        <button type="button" class="btn btn-default <%= btnClass %> add-all">Add All</button>
-                        <% } %>
-                    </div>
+                    <% if(allowAddAll){ %>
+                    <button type="button" class="btn btn-default multi-action-requests <%= btnClass %> add-all">Add All</button>
+                    <% } %>
                     <% } %>
                 </div>
             </div>
@@ -49,7 +48,8 @@
     </div>
 </div>
 
-<div class="modal fade delete-all-modal" tabindex="-1" role="dialog" aria-labelledby="delete-all-modal" aria-hidden="true">
+<div class="modal fade delete-all-modal" tabindex="-1" role="dialog" aria-labelledby="delete-all-modal"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -69,7 +69,8 @@
     </div>
 </div>
 
-<div class="modal fade publish-all-modal" tabindex="-1" role="dialog" aria-labelledby="publish-all-modal" aria-hidden="true">
+<div class="modal fade publish-all-modal" tabindex="-1" role="dialog" aria-labelledby="publish-all-modal"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

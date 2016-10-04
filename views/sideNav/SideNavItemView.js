@@ -12,10 +12,12 @@ var SideNavItemView;
             if (this.hasChildren()) {
                 this.$el.addClass('secondary-nav-item-pf');
             }
+
+            this.$el.attr('data-type', this.model.get('type'));
         },
         events: function () {
             var events = {
-                'click .item': 'listItemClick'
+                'click a:first-child': 'listItemClick'
             };
 
             var newEvents = _.extend(TreeCompositeView.prototype.events.call(this), events);
@@ -24,7 +26,8 @@ var SideNavItemView;
         listItemClick: function (e) {
             e.stopPropagation();
             var $target = $(e.target);
-            EventAggregator.trigger('side-nav:click:' + $target.data('type'), this.model, e, $target.attr('href'));
+            EventAggregator.trigger('side-nav:click:' + this.$el.data('type'), this.model, e, $target.attr('href'));
+            this.trigger('item-clicked', $target);
         },
         templateContext: function () {
             var routeUrl = _.isUndefined(this.model.get('route')) ? '#' : this.model.get('route'),

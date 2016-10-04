@@ -4,20 +4,22 @@ var SideNavListView;
     SideNavListView = Marionette.SideNavListView = Backbone.Marionette.CollectionView.extend({
         tagName: 'ul',
         className: 'list-group',
-        events: {
-            'click a': 'setActiveElement'
+        childViewEvents: function(){
+            // This callback will be called whenever a child is rendered or emits a `render` event
+            return {
+                'item-clicked': 'setActiveElement'
+            }
         },
         ui: {
             '$listElements': 'li'
         },
-        setActiveElement: function (e) {
-            this.$el.find('li').removeClass('active');
-            var $target = $(e.target).parent();
-            $target.addClass('active');
+        setActiveElement: function ($target) {
+      /*      this.$el.find('li').removeClass('active');
+            $target.closest('li').addClass('active'); */
         },
         childView: SideNavItemView,
         onDomRefresh: function () {
-            this.$el.setupVerticalNavigation(true); 
+            $().setupVerticalNavigation(true);
         }
     });
 })(jQuery, _, Backbone, Marionette, SideNavItemView);
