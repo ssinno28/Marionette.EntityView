@@ -2,7 +2,7 @@ var MultiSelectOptionView;
 (function ($, _, Backbone, Marionette, EntityListItemView, multiSelectLiTemplate) {
     MultiSelectOptionView = EntityListItemView.extend({
         tagName: 'li',
-        className: 'row',
+        className: 'col-sm-12',
         onRender: function () {
             EntityListItemView.prototype.onRender.call(this, multiSelectLiTemplate);
         }

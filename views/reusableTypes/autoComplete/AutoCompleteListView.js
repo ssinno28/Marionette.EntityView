@@ -1,14 +1,15 @@
 var AutoCompleteListView;
 (function ($, _, Backbone, Marionette, ReusableTypeListView, AutoCompleteView, EventAggregator) {
     AutoCompleteListView = ReusableTypeListView.extend({
-        className: 'f-dropdown',
+        className: 'dropdown-menu',
         tagName: 'ul',
         childView: AutoCompleteView,
         onRender: function () {
             this.$el.attr('id', this.dataField);
         },
-        onShow: function () {
+        onDomRefresh: function () {
             EventAggregator.trigger('auto-complete:list:complete:' + this.dataField);
+            this.$el.dropdown('toggle');
         },
         events: {
             'click .autocomplete-item': 'autoCompleteSelected'

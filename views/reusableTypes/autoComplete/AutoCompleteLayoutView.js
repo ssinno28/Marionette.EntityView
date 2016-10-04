@@ -31,31 +31,30 @@ var AutoCompleteLayoutView;
             this.ui.$selectedId.val($target.data('id'));
             this.ui.$valueText.val($target.html());
 
-            this.ui.$ddLink.dropdown('toggle');
+            this.getRegion('dropDownRegion').reset();
 
             $('html').off('click');
         },
         setSelectedEntity: function () {
-            var $ddLink = this.ui.$ddLink,
-                $valueText = this.ui.$valueText,
+            var $valueText = this.ui.$valueText,
                 id = this.ui.$selectedId.val();
 
             if (_.isNull(id) || _.isUndefined(id) || id === '') {
                 this.ui.$valueText.val('');
-                this.ui.$ddLink.dropdown('toggle');
+                this.getRegion('dropDownRegion').reset();
                 return;
             }
 
             this.collection.getById(id)
-                .done(function (entity) {
-                    this.ui.$ddLink.dropdown('toggle');
+                .done(_.bind(function (entity) {
+                    this.getRegion('dropDownRegion').reset();
                     $valueText.val(entity.get('name'));
-                });
+                }, this));
         },
         ui: {
             '$valueText': '.valueText',
             '$selectedId': '.selectedId',
-            '$ddLink': '.ddLink'
+            '$ddLink': '.dropdown-menu'
         },
         regions: {
             'dropDownRegion': '.dropDownRegion'
@@ -101,13 +100,13 @@ var AutoCompleteLayoutView;
                 });
         },
         onDomRefresh: function () {
-            var viewContext = this;
+            var self = this;
 
             if (!_.isNull(this.selectedId) && !_.isUndefined(this.selectedId)) {
                 this.collection.getById(this.selectedId)
                     .done(function (entity) {
-                        viewContext.ui.$valueText.val(entity.get('name'));
-                        viewContext.ui.$selectedId.val(entity.get('id'));
+                        self.ui.$valueText.val(entity.get('name'));
+                        self.ui.$selectedId.val(entity.get('id'));
                     });
             }
         },
