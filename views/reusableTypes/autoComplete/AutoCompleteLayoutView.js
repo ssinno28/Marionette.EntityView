@@ -93,9 +93,9 @@ var AutoCompleteLayoutView;
                                     selectedId: self.selectedId
                                 });
 
-                                self.dropDownRegion.show(listView);
+                                self.showChildView('dropDownRegion', listView);
                             } else {
-                                self.dropDownRegion.reset();
+                                self.getRegion('dropDownRegion').reset();
                             }
                         });
                 });

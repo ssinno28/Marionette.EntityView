@@ -34,7 +34,16 @@ var EntityListItemView;
                 Backbone.Marionette.View.extend(
                     {
                         template: entityTemplate,
-                        model: this.model
+                        model: this.model,
+                        onRender: function () {
+                            // Get rid of that pesky wrapping-div.
+                            // Assumes 1 child element present in template.
+                            this.$el = this.$el.children();
+                            // Unwrap the element to prevent infinitely
+                            // nesting elements during re-render.
+                            this.$el.unwrap();
+                            this.setElement(this.$el);
+                        }
                     }); 
 
             this.showChildView('fieldsRegion', new fieldsView());

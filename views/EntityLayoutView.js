@@ -7,7 +7,10 @@ var EntityLayoutView;
                 el: '.entityRegion',
                 replaceElement: true
             },
-            'pagerRegion': '.pagerRegion'
+            'pagerRegion': {
+                el: '.pagerRegion',
+                replaceElement: true
+            }
         },
         behaviors: {
             Pager: {

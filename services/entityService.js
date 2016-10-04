@@ -34,6 +34,12 @@ var EntityService;
                 this.track = true;
             }
 
+            if (!_.isUndefined(this.header)) {
+                this.getHeader = function () {
+                    return this.header;
+                }
+            }
+
             EventAggregator.on(this.route + '.create', function () {
                 self.create();
             });
@@ -136,7 +142,7 @@ var EntityService;
                 btnClass: this.getBtnClass(),
                 formOptions: this.getFormOptions()
             });
-             
+
             this.entityLayoutView().showChildView('entityRegion', form);
         };
 
@@ -158,7 +164,7 @@ var EntityService;
                         formOptions: this.getFormOptions()
                     });
 
-                    this.entityLayoutView().showChildView('entityRegion', form); 
+                    this.entityLayoutView().showChildView('entityRegion', form);
                 }, this));
         };
 
