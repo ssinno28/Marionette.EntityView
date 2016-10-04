@@ -54,13 +54,7 @@ var MultiSelectLayoutView;
             }
 
             this.ui.$selected.attr('title', toolTip);
-            var dataSelector = this.ui.$selected.data('selector'),
-                $toolTip = $('#' + dataSelector);
-
-            if ($toolTip.length > 0) {
-                this.ui.$selected.attr('title', '');
-                $toolTip.html(toolTip + ' <span class="nub"></span>');
-            }
+            this.ui.$selected.tooltip();
         },
         removeItems: function (e) {
             e.preventDefault();
@@ -140,10 +134,15 @@ var MultiSelectLayoutView;
         selectOption: function (e) {
             e.preventDefault();
 
-            var $target = $(e.target),
+            var $target = $(e.target);
+
+            if(!$target.is('li')){
+                $target = $target.closest('li');
+            }
+
+            var optionSelectedFunc = _.bind(this.optionSelected, this),
                 id = $target.data('id');
 
-            var optionSelectedFunc = _.bind(this.optionSelected, this);
             this.collection.getById(id)
                 .done(function (entity) {
                     optionSelectedFunc(entity, $target);
@@ -152,10 +151,10 @@ var MultiSelectLayoutView;
         optionSelected: function (entity, $target) {
             if (this.actionableOptions.contains(entity)) {
                 this.actionableOptions.remove(entity);
-                $target.closest('li').removeClass('selected');
+                $target.removeClass('selected');
             } else {
                 this.actionableOptions.add(entity);
-                $target.closest('li').addClass('selected');
+                $target.addClass('selected');
             }
 
             var removing = false,

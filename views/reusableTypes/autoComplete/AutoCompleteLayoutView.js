@@ -13,7 +13,7 @@ var AutoCompleteLayoutView;
             EventAggregator.on('auto-complete:list:complete:' + this.dataField, _.bind(this.listingRetrieved, this));
             EventAggregator.on('auto-complete:selected:' + this.dataField, _.bind(this.entitySelected, this));
         },
-        className: 'dropdown',
+        className: 'dropdown col-sm-12 nopadding',
         listingRetrieved: function () {
             this.ui.$ddLink.dropdown('toggle');
             var setSelectedEntity = _.bind(this.setSelectedEntity, this);

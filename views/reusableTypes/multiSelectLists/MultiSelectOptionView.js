@@ -2,9 +2,10 @@ var MultiSelectOptionView;
 (function ($, _, Backbone, Marionette, EntityListItemView, multiSelectLiTemplate) {
     MultiSelectOptionView = EntityListItemView.extend({
         tagName: 'li',
-        className: 'col-sm-12',
+        className: 'col-sm-12 multi-select-option nopadding',
         onRender: function () {
-            EntityListItemView.prototype.onRender.call(this, multiSelectLiTemplate);
+            EntityListItemView.prototype.onRender.call(this);
+            this.$el.attr('data-id', this.model.get('id'));
         }
     });
 

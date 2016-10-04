@@ -108,6 +108,7 @@ var EntityLayoutView;
             this.ui.$nameFilter.hide();
         },
         publishAll: function (e) {
+            e.preventDefault();
             e.stopPropagation();
 
             var itemsSelected = this.$el.find('.multi-action:checked'),
@@ -119,19 +120,21 @@ var EntityLayoutView;
                 ids.push(id);
             });
 
-            this.ui.$publishAllModal.foundation('reveal', 'open');
+            this.ui.$publishAllModal.modal('show');
 
             this.ui.$publishAllModal.on('click', '.no', function (e) {
                 e.preventDefault();
-                self.ui.$publishAllModal.foundation('reveal', 'close');
+                self.ui.$publishAllModal.modal('hide');
             });
 
             this.ui.$publishAllModal.on('click', '.yes', function (e) {
                 e.preventDefault();
                 EventAggregator.trigger('publish-all', ids);
+                self.ui.$publishAllModal.modal('hide');
             });
         },
         addAll: function (e) {
+            e.preventDefault();
             e.stopPropagation();
 
             var itemsSelected = this.$el.find('.multi-action:checked'),
@@ -156,29 +159,30 @@ var EntityLayoutView;
                 }, this));
         },
         deleteAll: function (e) {
+            e.preventDefault();
             e.stopPropagation();
 
             var itemsSelected = this.$el.find('.multi-action:checked'),
                 ids = [],
-                viewContext = this,
+                self = this,
                 fullCollection = this.listView.collection;
 
             _.each(itemsSelected, function (item) {
                 ids.push($(item).data('id'));
             });
 
-            this.ui.$deleteAllModal.foundation('reveal', 'open');
+            this.ui.$deleteAllModal.modal('show');
 
             this.ui.$deleteAllModal.on('click', '.no', function (e) {
                 e.preventDefault();
-                viewContext.ui.$deleteAllModal.foundation('reveal', 'close');
+                self.ui.$deleteAllModal.modal('hide');
             });
 
             this.ui.$deleteAllModal.on('click', '.yes', function (e) {
                 e.preventDefault();
                 fullCollection.deleteByIds(ids)
                     .done(function () {
-                        viewContext.ui.$deleteAllModal.foundation('reveal', 'close');
+                        self.ui.$deleteAllModal.modal('hide');
                     });
             });
         },

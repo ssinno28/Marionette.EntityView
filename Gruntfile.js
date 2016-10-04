@@ -87,7 +87,7 @@ module.exports = function (grunt) {
                     nospawn: true,
                     debounceDelay: 1000
                 },
-                files: ['!./generated/*.js', './**/*/*.js', './entityview.template.js', './templates/**/*.html', './templates/*.html'],
+                files: ['!./generated/js/*.js',  './**/*/*.js', './entityview.template.js', './templates/**/*.html', './templates/*.html'],
                 tasks: ['default']
             }
         },

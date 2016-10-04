@@ -16,13 +16,13 @@
                         All
                     </button>
                     <% if(showCreate){ %>
-                    <button type="button" class="create btn btn-default">
+                    <button type="button" class="create btn btn-primary">
                         Create
                     </button>
                     <% } %>
                     <% if(allowDeleteAll || allowPublishAll || allowAddAll) { %>
                     <% if(allowDeleteAll){ %>
-                    <button type="button" class="btn btn-default multi-action-requests <%= btnClass %> delete-all">Delete All</button>
+                    <button type="button" class="btn btn-danger multi-action-requests <%= btnClass %> delete-all">Delete All</button>
                     <% } %>
 
                     <% if(allowPublishAll){ %>

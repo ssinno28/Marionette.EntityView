@@ -6,6 +6,7 @@
     </div>
     <% } %>
 
+    <% if(allowEdit || allowDelete){ %>
     <div class="list-view-pf-actions">
         <div class="dropdown pull-right dropdown-kebab-pf">
             <button class="btn btn-link dropdown-toggle" type="button" id="dropdown<%= route %><%=id%>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -30,6 +31,7 @@
             </ul>
         </div>
     </div>
+    <% } %>
 
     <div class="list-view-pf-main-info">
         <div class="list-view-pf-body">

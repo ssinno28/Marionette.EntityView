@@ -24,7 +24,6 @@ var SideNavItemView;
             return newEvents;
         },
         listItemClick: function (e) {
-            e.stopPropagation();
             var $target = $(e.target);
             EventAggregator.trigger('side-nav:click:' + $target.data('type'), this.model, e, $target.attr('href'));
             this.trigger('item-clicked', $target);

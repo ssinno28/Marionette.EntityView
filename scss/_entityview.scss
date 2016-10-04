@@ -141,8 +141,31 @@ ul {
 
 /* Forms
 ------------------------------------------------------------*/
+fieldset {
+  border: 1px groove #d1d1d1 !important;
+  padding: 0 1.4em 1.4em 1.4em !important;
+  margin: 0 0 1.5em 0 !important;
+  -webkit-box-shadow: 0px 0px 0px 0px #d1d1d1;
+  box-shadow: 0px 0px 0px 0px #d1d1d1;
+}
+
+legend {
+  text-align: left !important;
+  width: inherit; /* Or auto */
+  padding: 0 10px; /* To give a bit of padding on the left and right */
+  border-bottom: none;
+}
+
 .fieldWrapper {
   margin-top: 10px !important;
+}
+
+.formView {
+  margin-top: 15px;
+
+  .actions .btn + .btn {
+    margin-left: 5px;
+  }
 }
 
 /* Document Tree
@@ -159,7 +182,6 @@ ul {
 
 /* Entity Layout
 ------------------------------------------------------------*/
-
 
 /* Icons
 ------------------------------------------------------------*/
