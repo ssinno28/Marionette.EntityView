@@ -2,7 +2,10 @@ var EntityListItemView;
 (function ($, _, Backbone, Marionette, entityListItemTemplate, DeleteWarnBehavior, EventAggregator) {
     EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.View.extend({
         regions: {
-            fieldsRegion: '.fieldsRegion'
+            fieldsRegion: {
+                el: '.fieldsRegion',
+                replaceElement: true
+            }
         },
         className: 'row entity-list-item',
         template: entityListItemTemplate,

@@ -3,7 +3,10 @@ var EntityLayoutView;
     EntityLayoutView = Marionette.EntityLayoutView = Backbone.Marionette.View.extend({
         template: entityListLayoutTpl,
         regions: {
-            'entityRegion': '.entityRegion',
+            'entityRegion': {
+                el: '.entityRegion',
+                replaceElement: true
+            },
             'pagerRegion': '.pagerRegion'
         },
         behaviors: {
