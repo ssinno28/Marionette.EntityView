@@ -7,13 +7,13 @@ var MessageBehavior;
         onShowMessages: function (type, messages) {
             switch (type) {
                 case 'error':
-                    this.view.messagesRegion.show(new ErrorView(messages));
+                    this.view.showChildView('messagesRegion', new ErrorView(messages));
                     break;
                 case 'success':
-                    this.view.messagesRegion.show(new SuccessView(messages));
+                    this.view.showChildView('messagesRegion', new SuccessView(messages));
                     break;
                 case 'info':
-                    this.view.messagesRegion.show(new InfoView(messages));
+                    this.view.showChildView('messagesRegion', new InfoView(messages));
                     break;
             }
 
@@ -23,12 +23,13 @@ var MessageBehavior;
                     return;
                 }
 
-                view.messagesRegion.$el.fadeOut("slow", function () {
+                var messagesRegion = this.view.getRegion('messagesRegion');
+                messagesRegion.$el.fadeOut("slow", function () {
                     if (view.isDestroyed) {
                         return;
                     }
 
-                    view.messagesRegion.$el.empty();
+                    messagesRegion.reset();
                 });
 
             }, this.options.duration);

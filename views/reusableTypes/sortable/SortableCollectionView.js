@@ -11,10 +11,6 @@ var SortableCollectionView;
             EventAggregator.on('item:dropped', _.bind(this.setPlacement, this));
             this.setComparator();
         },
-        delegateEvents: function (events) {
-            Marionette.View.prototype.delegateEvents.call(this, events);
-            Marionette.bindEntityEvents(this, this, Marionette.getOption(this, 'childEvents'));
-        },
         setPlacement: function (draggedModel, overModel) {
             var placementOverModelIndex = _.indexOf(_.pluck(this.placement, 'id'), overModel.get('id')),
                 placementDraggedModelIndex = _.indexOf(_.pluck(this.placement, 'id'), draggedModel.get('id'));

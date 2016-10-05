@@ -31,7 +31,7 @@ var FormView;
 
             //Attach Events to preexisting elements if we don't have a template
             if (!this.template) this.runInitializers();
-            this.on('show', this.runInitializers, this);
+            this.on('dom:refresh', this.runInitializers, this);
         },
 
         changeFieldVal: function (model, fields) {

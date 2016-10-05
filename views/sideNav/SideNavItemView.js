@@ -25,6 +25,11 @@ var SideNavItemView;
         },
         listItemClick: function (e) {
             var $target = $(e.target);
+
+            if (!$target.is('li')) {
+                $target = $target.closest('li');
+            }
+
             EventAggregator.trigger('side-nav:click:' + $target.data('type'), this.model, e, $target.attr('href'));
             this.trigger('item-clicked', $target);
         },
@@ -35,24 +40,24 @@ var SideNavItemView;
 
             if (_.isUndefined(type) || _.isNull(type)) {
                 type = this.model.get('type');
-            } 
+            }
 
-            if(_.isUndefined(icon)) {
+            if (_.isUndefined(icon)) {
                 icon = 'pficon-screen';
             }
 
             return {
-                routeUrl: _.isNull(routeUrl) ? '' : routeUrl, 
+                routeUrl: _.isNull(routeUrl) ? '' : routeUrl,
                 type: type,
                 icon: icon
             };
         },
         renderChildrenTpl: function () {
             var data = {
-                name: this.model.get('name'),
-                id: this.model.get('id')
-            },
-            html = Marionette.Renderer.render(sideNavChildrenTpl, data);
+                    name: this.model.get('name'),
+                    id: this.model.get('id')
+                },
+                html = Marionette.Renderer.render(sideNavChildrenTpl, data);
 
             this.$el.append(html);
         }

@@ -11,7 +11,7 @@ var BaseValidationView;
             var messageCollection = new MessageCollection();
             messageCollection.setMessages(this.options);
 
-            this.validationMessages.show(new MessageListView({collection: messageCollection}));
+            this.showChildView('validationMessages', new MessageListView({collection: messageCollection}));
         }
     });
 

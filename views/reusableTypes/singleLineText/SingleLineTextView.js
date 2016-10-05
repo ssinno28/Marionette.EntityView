@@ -1,7 +1,7 @@
 var SingleLineTextView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, singleLineTextTemplate) {
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, singleLineTextTpl) {
     SingleLineTextView = ReusableTypeLayoutView.extend({
         tag: 'input',
-        template:singleLineTextTemplate
+        template:singleLineTextTpl
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['FastTrack']['Templates']['./templates/reusableTypes/singleLineTextTemplate.html']);

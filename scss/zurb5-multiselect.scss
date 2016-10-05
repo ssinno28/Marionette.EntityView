@@ -36,7 +36,7 @@
   float: left;
 }
 
-.zselect ul {
+.zselect ul.multi-select-listings {
   display: block;
   position: relative;
   padding: 0;
@@ -54,37 +54,29 @@
 }
 
 .zselect {
-  ul {
+  ul.multi-select-listings {
     .selected {
       border: 2px solid yellowgreen;
     }
   }
 }
 
-.zselect ul li a {
+.zselect ul.multi-select-listings li a {
   display: block;
   width: 100%;
   height: 100%;
 }
 
-.zselect ul li span {
+.zselect ul.multi-select-listings li span {
 
 }
 
-.zselect ul li.disabled {
+.zselect ul.multi-select-listings li.disabled {
   color: #808080;
 }
 
-.zselect ul li:hover {
+.zselect ul.multi-select-listings li:hover {
   border: 2px solid yellowgreen;
-}
-
-.zselect ul.pagination li:hover {
-  background: none !important;
-}
-
-.zselect ul.pagination li {
-  padding: 0px !important;
 }
 
 .zselect ul li.zmsfilter,
