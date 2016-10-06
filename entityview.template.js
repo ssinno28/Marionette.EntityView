@@ -81,6 +81,7 @@ SOFTWARE.
         ReusableTypeLayoutView: ReusableTypeLayoutView,
         Templates: this['FastTrack']['Templates'],
         MessageBehavior: MessageBehavior,
-        DropDownListView: DropDownListView
+        DropDownListView: DropDownListView,
+        ToastListView: ToastListView
     };
 }));

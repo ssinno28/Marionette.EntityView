@@ -17,18 +17,18 @@ var ConfirmModalBehavior;
             $confirmModal.find('.message').html(this.options.message);
 
             //show modal
-            $confirmModal.foundation('reveal', 'open');
+            $confirmModal.modal('show');
 
             $confirmModal.on('click', '.no', _.bind(function (e) {
                 e.preventDefault();
                 _.bind(this.options.noFunc, this)(e);
-                $confirmModal.foundation('reveal', 'close');
+                $confirmModal.modal('hide');
             }, this));
 
             $confirmModal.on('click', '.yes', _.bind(function (e) {
                 e.preventDefault();
                 _.bind(this.options.yesFunc, this)(e);
-                $confirmModal.foundation('reveal', 'close');
+                $confirmModal.modal('hide');
             }, this));
         }
     });

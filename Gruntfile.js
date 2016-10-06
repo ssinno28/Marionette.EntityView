@@ -30,6 +30,12 @@ module.exports = function (grunt) {
                     './views/validation/InfoView.js',
                     './views/validation/SuccessView.js',
                     './views/validation/WarningView.js',
+                    './views/toast/ToastItemView.js',
+                    './views/toast/ToastErrorView.js',
+                    './views/toast/ToastSuccessView.js',
+                    './views/toast/ToastWarningView.js',
+                    './views/toast/ToastInfoView.js',
+                    './views/toast/ToastListView.js',
                     './views/reusableTypes/ReusableTypeLayoutView.js',
                     './views/reusableTypes/ReusableTypeListView.js',
                     './views/reusableTypes/ReusableTypeView.js',
@@ -87,7 +93,7 @@ module.exports = function (grunt) {
                     nospawn: true,
                     debounceDelay: 1000
                 },
-                files: ['!./generated/js/*.js',  './**/*/*.js', './entityview.template.js', './templates/**/*.html', './templates/*.html'],
+                files: ['!./generated/js/*.js', './**/*/*.js', './entityview.template.js', './templates/**/*.html', './templates/*.html'],
                 tasks: ['default']
             }
         },
@@ -117,7 +123,7 @@ module.exports = function (grunt) {
                 var content = fs.readFileSync('./generated/js/main.js', 'utf8'),
                     templates = fs.readFileSync('./generated/js/templates.js', 'utf8'),
                     template = fs.readFileSync('./entityview.template.js', 'utf8'),
-                    fileContent = grunt.template.process(template, { data: { content: content, templates: templates } });
+                    fileContent = grunt.template.process(template, {data: {content: content, templates: templates}});
 
                 grunt.file.write('./backbone.marionette.entityview.js', fileContent);
             });
