@@ -200,13 +200,11 @@ var FormView;
                 }
             }
             else if (el.is('div') && el.hasClass('zselect')) {
-                var checkedOptions = el.find('.selectedOptions .entityRegion ul li');
+                var checkedOptions = el.find('.selectedOptions ul li');
                 var value = [];
                 _.each(checkedOptions, function (checkedOption) {
-                    var $checkedOption = $(checkedOption),
-                        $link = $checkedOption.find('a');
-
-                    value.push($link.data('id'));
+                    var $checkedOption = $(checkedOption);
+                    value.push($checkedOption.data('id'));
                 });
 
                 val = value;

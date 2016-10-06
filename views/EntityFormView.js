@@ -46,7 +46,8 @@ var EntityFormView;
             }
         },
         ui: {
-            '$actions': '.actions'
+            '$actions': '.actions',
+            '$spinner' : '.spinner'
         },
         templateContext: function () {
             var self = this;
