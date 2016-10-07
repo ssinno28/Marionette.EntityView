@@ -219,6 +219,10 @@ var MultiSelectLayoutView;
                 }
             ];
 
+            if (this.options.selectedConditions && this.options.selectedConditions.length > 0) {
+                inPred = inPred.concat(this.options.selectedConditions);
+            }
+
             this.selectedItemsService = new MultiSelectService();
 
             var options = {
