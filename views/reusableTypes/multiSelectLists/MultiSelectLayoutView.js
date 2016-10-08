@@ -128,6 +128,10 @@ var MultiSelectLayoutView;
                 }
             ];
 
+            if (this.options.selectedConditions && this.options.selectedConditions.length > 0) {
+                inPred = inPred.concat(this.options.selectedConditions);
+            }
+
             this.selectedItemsService.conditions = inPred;
             EventAggregator.trigger(this.selectedItemsRoute + '.getAll', 1);
         },

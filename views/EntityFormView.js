@@ -47,7 +47,7 @@ var EntityFormView;
         },
         ui: {
             '$actions': '.actions',
-            '$spinner' : '.spinner'
+            '$spinner': '.spinner'
         },
         templateContext: function () {
             var self = this;
@@ -151,9 +151,13 @@ var EntityFormView;
                 this.model.set(key, data[key]);
             }
         },
+        getHeaders: function () {
+            return {};
+        },
         saveModel: function () {
             var self = this;
             this.model.save(null, {
+                headers: this.getHeaders(),
                 success: function (model, response) {
                     if (model.isNew()) {
                         //check to see if something went wrong server side
@@ -201,7 +205,7 @@ var EntityFormView;
 
             var data = {
                 conditions: conditions
-            }; 
+            };
 
             collection.query(false, data).done(function (entities) {
                 var currentlySetId = viewContext.model.get(dataField);
@@ -268,7 +272,7 @@ var EntityFormView;
                 dataField: dataField
             }));
         },
-        checkboxForRegion: function(model, region, dataField) {
+        checkboxForRegion: function (model, region, dataField) {
             this.showChildView(region, new CheckBoxView({
                 model: model,
                 dataField: dataField
