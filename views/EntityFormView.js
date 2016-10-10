@@ -176,8 +176,7 @@ var EntityFormView;
                         }
 
                         self.triggerMethod("ShowMessages", 'success', ['Item successfully created!']);
-
-                        EventAggregator.trigger("Entity.Created." + model.get('id'));
+                        self.onCreated();
                     } else {
                         self.triggerMethod("ShowMessages", 'success', ['Item successfully saved!']);
                         EventAggregator.trigger("Entity.Updated." + model.get('id'));
@@ -197,6 +196,7 @@ var EntityFormView;
                 }
             });
         },
+        onCreated: function(){},
         dropDownForRegion: function (collection, region, dataField, conditions) {
             var viewContext = this;
             if (!conditions) {
