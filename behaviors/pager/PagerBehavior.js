@@ -7,6 +7,10 @@ var PagerBehavior;
                 pagerRegion.reset();
             }
 
+            if (_.isUndefined(window.indexes)) {
+                return;
+            }
+
             var count = window.indexes[this.view.key],
                 currentPage = this.view.listView.currentPage,
                 collection = new Backbone.Collection(),
