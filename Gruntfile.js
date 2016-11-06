@@ -9,7 +9,7 @@ module.exports = function (grunt) {
         concat: {
             js: {
                 options: {
-                    sourceMap: false
+                    sourceMap: true
                 },
                 src: [
                     './util/formValidator.js',
@@ -30,6 +30,12 @@ module.exports = function (grunt) {
                     './views/validation/InfoView.js',
                     './views/validation/SuccessView.js',
                     './views/validation/WarningView.js',
+                    './views/toast/ToastItemView.js',
+                    './views/toast/ToastErrorView.js',
+                    './views/toast/ToastSuccessView.js',
+                    './views/toast/ToastWarningView.js',
+                    './views/toast/ToastInfoView.js',
+                    './views/toast/ToastListView.js',
                     './views/reusableTypes/ReusableTypeLayoutView.js',
                     './views/reusableTypes/ReusableTypeListView.js',
                     './views/reusableTypes/ReusableTypeView.js',
@@ -59,6 +65,9 @@ module.exports = function (grunt) {
                     './views/EntityListView.js',
                     './views/EntityListItemView.js',
                     './views/EntityLayoutView.js',
+                    './views/table/TableListItemView.js',
+                    './views/table/TableListView.js',
+                    './views/table/TableLayoutView.js',
                     './views/FormView.js',
                     './views/reusableTypes/multiSelectLists/MultiSelectOptionView.js',
                     './views/reusableTypes/multiSelectLists/MultiSelectListView.js',
@@ -71,16 +80,20 @@ module.exports = function (grunt) {
                     './views/sideNav/SideNavItemView.js',
                     './views/sideNav/SideNavListView.js',
                     './views/sideNav/SideNavLayoutView.js',
-                    './views/iconMenu/IconMenuItemView.js',
-                    './views/iconMenu/IconMenuListView.js',
+                    './views/topBar/TopBarMenuItemView.js',
+                    './views/topBar/TopBarListView.js',
                     './controllers/entityController.js'
                 ],
                 dest: './generated/js/main.js'
             }
         },
         watch: {
-            js: {
-                files: ['!./generated/*.js', './**/*/*.js', './entityview.template.js', './templates/**/*.html', './templates/*.html'],
+            default: {
+                options: {
+                    nospawn: true,
+                    debounceDelay: 1000
+                },
+                files: ['!./generated/js/*.js', './**/*/*.js', './entityview.template.js', './templates/**/*.html', './templates/*.html'],
                 tasks: ['default']
             }
         },
@@ -112,7 +125,7 @@ module.exports = function (grunt) {
                     template = fs.readFileSync('./entityview.template.js', 'utf8'),
                     fileContent = grunt.template.process(template, {data: {content: content, templates: templates}});
 
-                fs.writeFileSync('./backbone.marionette.entityview.js', fileContent);
+                grunt.file.write('./backbone.marionette.entityview.js', fileContent);
             });
     });
 };

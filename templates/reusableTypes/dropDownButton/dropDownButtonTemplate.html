@@ -1,4 +1,6 @@
-
-    <a href="#" class="button secondary expand" data-dropdown="linkDrop<%=id%>"><%= linkText %> &raquo;</a>
-    <ul id="linkDrop<%= id%>" class="f-dropdown links" data-dropdown-content>
-    </ul>
+<button class="btn btn-default dropdown-toggle" type="button" id="linkDrop<%=id%>" data-toggle="dropdown">
+    Dropdown
+    <span class="caret"></span>
+</button>
+<ul class="dropdown-menu" role="menu" aria-labelledby="linkDrop<%=id%>">
+</ul>

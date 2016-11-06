@@ -36,8 +36,8 @@ var TimeoutUtil;
                             pendingOperation = false;
                         }
                     }, delay);
-            }
-        }
+            };
+        };
 
         return constructor;
     })();

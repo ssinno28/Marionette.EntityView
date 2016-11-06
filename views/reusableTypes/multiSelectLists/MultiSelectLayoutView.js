@@ -1,5 +1,5 @@
 var MultiSelectLayoutView;
-(function (Marionette, $, _, multiSelectLayoutTemplate, ReusableTypeLayoutView, multiSelectService, EntityLayoutModel, headerTemplate, EventAggregator) {
+(function (Marionette, $, _, multiSelectLayoutTpl, ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, headerTemplate, EventAggregator) {
     MultiSelectLayoutView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
@@ -21,7 +21,7 @@ var MultiSelectLayoutView;
             this.$el.attr('data-field', this.dataField);
         },
         className: 'zselect',
-        template: multiSelectLayoutTemplate,
+        template: multiSelectLayoutTpl,
         regions: {
             'optionsRegion': '.options',
             'selectedOptionsRegion': '.selectedOptions'
@@ -54,13 +54,7 @@ var MultiSelectLayoutView;
             }
 
             this.ui.$selected.attr('title', toolTip);
-            var dataSelector = this.ui.$selected.data('selector'),
-                $toolTip = $('#' + dataSelector);
-
-            if ($toolTip.length > 0) {
-                this.ui.$selected.attr('title', '');
-                $toolTip.html(toolTip + ' <span class="nub"></span>');
-            }
+            this.ui.$selected.tooltip();
         },
         removeItems: function (e) {
             e.preventDefault();
@@ -134,16 +128,25 @@ var MultiSelectLayoutView;
                 }
             ];
 
+            if (this.options.selectedConditions && this.options.selectedConditions.length > 0) {
+                inPred = inPred.concat(this.options.selectedConditions);
+            }
+
             this.selectedItemsService.conditions = inPred;
             EventAggregator.trigger(this.selectedItemsRoute + '.getAll', 1);
         },
         selectOption: function (e) {
             e.preventDefault();
 
-            var $target = $(e.target),
+            var $target = $(e.target);
+
+            if(!$target.is('li')){
+                $target = $target.closest('li');
+            }
+
+            var optionSelectedFunc = _.bind(this.optionSelected, this),
                 id = $target.data('id');
 
-            var optionSelectedFunc = _.bind(this.optionSelected, this);
             this.collection.getById(id)
                 .done(function (entity) {
                     optionSelectedFunc(entity, $target);
@@ -152,10 +155,10 @@ var MultiSelectLayoutView;
         optionSelected: function (entity, $target) {
             if (this.actionableOptions.contains(entity)) {
                 this.actionableOptions.remove(entity);
-                $target.closest('li').removeClass('selected');
+                $target.removeClass('selected');
             } else {
                 this.actionableOptions.add(entity);
-                $target.closest('li').addClass('selected');
+                $target.addClass('selected');
             }
 
             var removing = false,
@@ -220,7 +223,11 @@ var MultiSelectLayoutView;
                 }
             ];
 
-            this.selectedItemsService = new multiSelectService();
+            if (this.options.selectedConditions && this.options.selectedConditions.length > 0) {
+                inPred = inPred.concat(this.options.selectedConditions);
+            }
+
+            this.selectedItemsService = new MultiSelectService();
 
             var options = {
                 allowableOperations: [],
@@ -228,7 +235,7 @@ var MultiSelectLayoutView;
                 header: {params: {title: "Remove an Item"}, template: headerTemplate},
                 routing: false,
                 conditions: inPred,
-                region: this.selectedOptionsRegion,
+                region: this.getRegion('selectedOptionsRegion'),
                 collection: this.collection
             };
 
@@ -238,7 +245,6 @@ var MultiSelectLayoutView;
                 this.selectedItems = new Backbone.Collection(entities.models);
 
                 this.showSelectedInHeader();
-                $(document).foundation('tooltip', 'reflow');
             }, this));
 
             EventAggregator.trigger(this.selectedItemsRoute + '.getType', 1);
@@ -256,7 +262,7 @@ var MultiSelectLayoutView;
                 notInPred = notInPred.concat(this.options.conditions);
             }
 
-            this.excludedItemsService = new multiSelectService();
+            this.excludedItemsService = new MultiSelectService();
 
             var options = {
                 allowableOperations: [],
@@ -264,7 +270,7 @@ var MultiSelectLayoutView;
                 header: {params: {title: "Select an Item"}, template: headerTemplate},
                 routing: false,
                 conditions: notInPred,
-                region: this.optionsRegion,
+                region: this.getRegion('optionsRegion'),
                 collection: this.collection
             };
 
@@ -276,7 +282,7 @@ var MultiSelectLayoutView;
 
             EventAggregator.trigger(this.excludedItemsRoute + '.getType', 1);
         },
-        onShow: function () {
+        onDomRefresh: function () {
             this.ui.$optionsRegion.hide();
             this.showExcludedItems();
             this.showSelectedItems();

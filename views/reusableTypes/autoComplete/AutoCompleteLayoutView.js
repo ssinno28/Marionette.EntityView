@@ -13,8 +13,9 @@ var AutoCompleteLayoutView;
             EventAggregator.on('auto-complete:list:complete:' + this.dataField, _.bind(this.listingRetrieved, this));
             EventAggregator.on('auto-complete:selected:' + this.dataField, _.bind(this.entitySelected, this));
         },
+        className: 'dropdown col-sm-12 nopadding',
         listingRetrieved: function () {
-            Foundation.libs.dropdown.toggle(this.ui.$ddLink);
+            this.ui.$ddLink.dropdown('toggle');
             var setSelectedEntity = _.bind(this.setSelectedEntity, this);
 
             $('html').on('click', function (e) {
@@ -30,31 +31,30 @@ var AutoCompleteLayoutView;
             this.ui.$selectedId.val($target.data('id'));
             this.ui.$valueText.val($target.html());
 
-            Foundation.libs.dropdown.toggle(this.ui.$ddLink);
+            this.getRegion('dropDownRegion').reset();
 
             $('html').off('click');
         },
         setSelectedEntity: function () {
-            var $ddLink = this.ui.$ddLink,
-                $valueText = this.ui.$valueText,
+            var $valueText = this.ui.$valueText,
                 id = this.ui.$selectedId.val();
 
             if (_.isNull(id) || _.isUndefined(id) || id === '') {
                 this.ui.$valueText.val('');
-                Foundation.libs.dropdown.toggle(this.ui.$ddLink);
+                this.getRegion('dropDownRegion').reset();
                 return;
             }
 
             this.collection.getById(id)
-                .done(function (entity) {
-                    Foundation.libs.dropdown.toggle($ddLink);
+                .done(_.bind(function (entity) {
+                    this.getRegion('dropDownRegion').reset();
                     $valueText.val(entity.get('name'));
-                });
+                }, this));
         },
         ui: {
             '$valueText': '.valueText',
             '$selectedId': '.selectedId',
-            '$ddLink': '.ddLink'
+            '$ddLink': '.dropdown-menu'
         },
         regions: {
             'dropDownRegion': '.dropDownRegion'
@@ -92,21 +92,21 @@ var AutoCompleteLayoutView;
                                     selectedId: self.selectedId
                                 });
 
-                                self.dropDownRegion.show(listView);
+                                self.showChildView('dropDownRegion', listView);
                             } else {
-                                self.dropDownRegion.reset();
+                                self.getRegion('dropDownRegion').reset();
                             }
                         });
                 });
         },
         onDomRefresh: function () {
-            var viewContext = this;
+            var self = this;
 
             if (!_.isNull(this.selectedId) && !_.isUndefined(this.selectedId)) {
                 this.collection.getById(this.selectedId)
                     .done(function (entity) {
-                        viewContext.ui.$valueText.val(entity.get('name'));
-                        viewContext.ui.$selectedId.val(entity.get('id'));
+                        self.ui.$valueText.val(entity.get('name'));
+                        self.ui.$selectedId.val(entity.get('id'));
                     });
             }
         },

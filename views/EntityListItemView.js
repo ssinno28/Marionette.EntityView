@@ -1,8 +1,11 @@
 var EntityListItemView;
 (function ($, _, Backbone, Marionette, entityListItemTemplate, DeleteWarnBehavior, EventAggregator) {
-    EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.LayoutView.extend({
+    EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.View.extend({
         regions: {
-            fieldsRegion: '.fieldsRegion'
+            fieldsRegion: {
+                el: '.fieldsRegion',
+                replaceElement: true
+            }
         },
         className: 'row entity-list-item',
         template: entityListItemTemplate,
@@ -23,27 +26,33 @@ var EntityListItemView;
             }
         },
         onRender: function (entityTemplate) {
-            if (_.isUndefined(entityTemplate)) {
-                throw new Error('There was no template defined for this list item');
+            if (!_.isUndefined(entityTemplate)) {
+                var fieldsView =
+                    Backbone.Marionette.View.extend(
+                        {
+                            template: entityTemplate,
+                            model: this.model,
+                            onRender: function () {
+                                // Get rid of that pesky wrapping-div.
+                                // Assumes 1 child element present in template.
+                                this.$el = this.$el.children();
+                                // Unwrap the element to prevent infinitely
+                                // nesting elements during re-render.
+                                this.$el.unwrap();
+                                this.setElement(this.$el);
+                            }
+                        });
+
+                this.showChildView('fieldsRegion', new fieldsView());
+                this.bindUIElements();
             }
-
-            var fieldsView =
-                Backbone.Marionette.ItemView.extend(
-                    {
-                        template: entityTemplate,
-                        model: this.model
-                    });
-
-            this.fieldsRegion.show(new fieldsView());
 
             if (this.baseClassIds.indexOf(this.model.get('id')) === -1) {
                 this.$el.attr('data-index', this.collection.indexOf(this.model));
                 this.$el.attr('data-id', this.model.get('id'));
             }
-
-            this.bindUIElements();
         },
-        templateHelpers: function () {
+        templateContext: function () {
             var route = this.route;
 
             var allowEdit = this.allowableOperations.indexOf('edit') > -1;

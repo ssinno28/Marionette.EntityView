@@ -1,0 +1,11 @@
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+    <span data-cid="<%= cid %>" class="pficon pficon-close"></span>
+</button>
+<% if(!_.isNull(action)) { %>
+<div class="pull-right toast-pf-action">
+    <a href="#"><%= action.message %></a>
+</div>
+<% } %>
+
+<span class="pficon <%= iconClass %>"></span>
+<%= message %>

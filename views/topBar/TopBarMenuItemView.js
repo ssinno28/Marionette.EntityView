@@ -1,7 +1,7 @@
-var IconMenuItemView;
-(function ($, _, Backbone, Marionette, iconMenuItemTemplate, EventAggregator) {
-    IconMenuItemView = Marionette.ItemView.extend({
-        template: iconMenuItemTemplate,
+var TopBarMenuItemView;
+(function ($, _, Backbone, Marionette, topBarMenuItemTemplate, EventAggregator) {
+    TopBarMenuItemView = Marionette.View.extend({
+        template: topBarMenuItemTemplate,
         tagName: 'li',
         events: {
             'click .item': 'listItemClick'
@@ -9,9 +9,9 @@ var IconMenuItemView;
         listItemClick: function (e) {
             e.stopPropagation();
             var $target = $(e.target).closest('a');
-            EventAggregator.trigger('icon-menu:click:' + $target.data('type'), this.model, e, $target.attr('href'));
+            EventAggregator.trigger('top-bar:click:' + $target.data('type'), this.model, e, $target.attr('href'));
         },
-        templateHelpers: function () {
+        templateContext: function () {
             var outerScope = this,
                 routeUrl = _.isUndefined(outerScope.model.get('route')) ? '#' : outerScope.model.get('route'),
                 type = this.model.collection.type;
@@ -26,4 +26,4 @@ var IconMenuItemView;
             };
         }
     });
-})(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/iconMenu/iconMenuItemTemplate.html'], EventAggregator);
+})(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/topBar/iconMenuItemTemplate.html'], EventAggregator);

@@ -1,15 +1,12 @@
 var EntityListView;
-(function ($, _, Backbone, Marionette, entityListTemplate, EventAggregator) {
-    EntityListView = Marionette.EntityListView = Backbone.Marionette.CompositeView.extend({
-        template: entityListTemplate,
-        itemViewContainer: '.listings',
-        className: 'large-12 columns',
-        template: entityListTemplate,
+(function ($, _, Backbone, Marionette, EventAggregator) {
+    EntityListView = Marionette.EntityListView = Backbone.Marionette.CollectionView.extend({
+        className: 'col-sm-12',
         initialize: function (options) {
             this.fullCollection = options.fullCollection;
             this.parentViewCid = options.parentViewCid;
         },
-        onShow: function () {
+        onDomRefresh: function () {
             EventAggregator.trigger('list.view.activated.' + this.parentViewCid);
         },
         childViewOptions: function () {
@@ -36,4 +33,4 @@ var EntityListView;
             }
         }
     });
-})(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/entityListTemplate.html'], EventAggregator);
+})(jQuery, _, Backbone, Marionette, EventAggregator);

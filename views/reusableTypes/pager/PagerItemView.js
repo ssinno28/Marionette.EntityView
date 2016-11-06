@@ -1,7 +1,7 @@
 
 var PagerItemView;
 (function ($, _, Backbone, Marionette, pagerItemTemplate) {
-    PagerItemView = Marionette.ItemView.extend({
+    PagerItemView = Marionette.View.extend({
         template: pagerItemTemplate,
         tagName: 'li',
         className: function () {

@@ -1,10 +1,13 @@
-
 var SideNavLayoutView;
 (function ($, _, Backbone, Marionette, SideNavListView, sideNavLayoutTemplate) {
-    SideNavLayoutView = Marionette.LayoutView.extend({
+    SideNavLayoutView = Marionette.View.extend({
         template: sideNavLayoutTemplate,
+        className: 'nav-pf-vertical nav-pf-vertical-with-sub-menus nav-pf-persistent-secondary',
         regions: {
-            listingsRegion: '.listingsRegion'
+            listingsRegion: {
+                el: '.listingsRegion',
+                replaceElement: true
+            }
         },
         onDomRefresh: function () {
             var sideNavListView = new SideNavListView({listings: this.model.get('listings')});

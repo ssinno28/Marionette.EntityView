@@ -22,7 +22,7 @@ var EntityFormView;
 
             this.original = this.model.toJSON();
         },
-        onShow: function () {
+        onDomRefresh: function () {
             EventAggregator.trigger('form.view.activated.' + this.options.parentViewCid);
             this.checkDisabledFields();
         },
@@ -46,21 +46,22 @@ var EntityFormView;
             }
         },
         ui: {
-            '$actions': '.actions'
+            '$actions': '.actions',
+            '$spinner': '.spinner'
         },
-        templateHelpers: function () {
+        templateContext: function () {
             var self = this;
             return {
                 btnClass: self.options.btnClass
             };
         },
         renderForm: function (template) {
-            var formView = Backbone.Marionette.ItemView.extend({
+            var formView = Backbone.Marionette.View.extend({
                 template: template,
                 model: this.model
             });
 
-            this.entityFormRegion.show(new formView());
+            this.showChildView('entityFormRegion', new formView());
             this.bindUIElements();
         },
         events: {
@@ -77,7 +78,7 @@ var EntityFormView;
             $warningModal.find('.message').html(message);
 
             //show modal
-            $warningModal.foundation('reveal', 'open');
+            $warningModal.modal('show');
 
             if (_.isUndefined(noFunc) || _.isUndefined(yesFunc)) {
                 $warningModal.find('.buttons').hide();
@@ -90,7 +91,7 @@ var EntityFormView;
                     noFunc();
                 }
 
-                $warningModal.foundation('reveal', 'close');
+                $warningModal.modal('hide');
             });
 
             $warningModal.on('click', '.yes', function (e) {
@@ -100,7 +101,7 @@ var EntityFormView;
                     yesFunc();
                 }
 
-                $warningModal.foundation('reveal', 'close');
+                $warningModal.modal('hide');
             });
         },
         onSubmitFail: function (errors) {
@@ -111,18 +112,27 @@ var EntityFormView;
             $errors.remove();
 
             for (var errorObject in errors) {
-                var field = errors[errorObject].el;
-                var $selector = $(field);
+                var field = errors[errorObject].el,
+                    $selector = $(field),
+                    $formGroup = $selector.closest('.form-group');
+
+                $formGroup.addClass('has-error');
+
                 for (var i = 0; i < errors[errorObject].error.length; i++) {
-                    $selector.after('<small class="error">' + errors[errorObject].error[i] + '</small>');
+                    $selector.after('<span class="help-block">' + errors[errorObject].error[i] + '</span>');
                 }
             }
         },
         onSubmit: function (evt) {
             evt.preventDefault();
 
-            var $errors = $('.error');
+            var $errors = $('.help-block');
             $errors.remove();
+
+            _.each($errors, function ($error) {
+                var $formGroup = $error.closest('.form-group');
+                $formGroup.removeClass('has-error');
+            });
 
             this.setModelDefaults();
             this.saveModel();
@@ -141,9 +151,13 @@ var EntityFormView;
                 this.model.set(key, data[key]);
             }
         },
+        getHeaders: function () {
+            return {};
+        },
         saveModel: function () {
             var self = this;
             this.model.save(null, {
+                headers: this.getHeaders(),
                 success: function (model, response) {
                     if (model.isNew()) {
                         //check to see if something went wrong server side
@@ -162,8 +176,7 @@ var EntityFormView;
                         }
 
                         self.triggerMethod("ShowMessages", 'success', ['Item successfully created!']);
-
-                        EventAggregator.trigger("Entity.Created." + model.get('id'));
+                        self.onCreated();
                     } else {
                         self.triggerMethod("ShowMessages", 'success', ['Item successfully saved!']);
                         EventAggregator.trigger("Entity.Updated." + model.get('id'));
@@ -183,6 +196,7 @@ var EntityFormView;
                 }
             });
         },
+        onCreated: function(){},
         dropDownForRegion: function (collection, region, dataField, conditions) {
             var viewContext = this;
             if (!conditions) {
@@ -201,7 +215,7 @@ var EntityFormView;
                     currentlySetId = '';
                 }
 
-                region.show(new DropDownListView({
+                viewContext.showChildView(region, new DropDownListView({
                     collection: entities,
                     dataField: dataField,
                     selectedId: currentlySetId
@@ -231,12 +245,12 @@ var EntityFormView;
                     conditions: conditions
                 });
 
-            region.show(multiSelect);
+            this.showChildView(region, multiSelect);
         },
         autoCompleteForRegion: function (collection, region, dataField) {
             var selectedId = this.model.get(dataField);
 
-            region.show(
+            this.showChildView(region,
                 new AutoCompleteLayoutView({
                     collection: collection,
                     dataField: dataField,
@@ -246,20 +260,20 @@ var EntityFormView;
         radioButtonListForRegion: function (collection, region, dataField) {
             var selectedId = this.model.get(dataField);
 
-            region.show(new RadioButtonListView({
+            this.showChildView(region, new RadioButtonListView({
                 collection: collection,
                 dataField: dataField,
                 selectedId: selectedId
             }));
         },
         textAreaForRegion: function (model, region, dataField) {
-            region.show(new TextAreaView({
+            this.showChildView(region, new TextAreaView({
                 model: model,
                 dataField: dataField
             }));
         },
-        checkboxForRegion: function(model, region, dataField) {
-            region.show(new CheckBoxView({
+        checkboxForRegion: function (model, region, dataField) {
+            this.showChildView(region, new CheckBoxView({
                 model: model,
                 dataField: dataField
             }));

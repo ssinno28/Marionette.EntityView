@@ -1,3 +1,29 @@
+/*jshint sub:true*/
+
+/* MIT License
+
+Copyright (c) 2016 Sammi Maan Sinno
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+
 (function (root, factory) {
     "use strict";
     if (typeof define === 'function' && define.amd) {
@@ -21,21 +47,24 @@
     }
 }(this, function (Backbone, Marionette, jQuery, _, EventAggregator, App, Moment) {
 
+    /* jshint ignore:start */
     <%= templates %>
+    /* jshint ignore:end */
+
     <%= content %>
 
     return {
         SideNavLayoutView: SideNavLayoutView,
         SideNavItemView: SideNavItemView,
-        SideNavListView: SideNavListView,
+        SideNavListView: SideNavListView, 
         ErrorView: ErrorView,
         InfoView: InfoView,
         WarningView: WarningView,
         SuccessView: SuccessView,
         TimeoutUtil: TimeoutUtil,
         UriUtil: UriUtil,
-        IconMenuListView: IconMenuListView,
-        IconMenuItemView: IconMenuItemView,
+        TopBarListView: TopBarListView,
+        TopBarMenuItemView: TopBarMenuItemView,
         AutoCompleteLayoutView: AutoCompleteLayoutView,
         MultiSelectLayoutView: MultiSelectLayoutView,
         DateTimePickerView: DateTimePickerView,
@@ -46,13 +75,13 @@
         RadioButtonListView: RadioButtonListView,
         CheckBoxListView: CheckBoxListView,
         CheckBoxView: CheckBoxView,
-        SideNavLayoutView: SideNavLayoutView,
         SortableItemView: SortableItemView,
         SortableCollectionView: SortableCollectionView,
         FormValidator: FormValidator,
         ReusableTypeLayoutView: ReusableTypeLayoutView,
         Templates: this['FastTrack']['Templates'],
         MessageBehavior: MessageBehavior,
-        DropDownListView: DropDownListView
+        DropDownListView: DropDownListView,
+        ToastListView: ToastListView
     };
 }));

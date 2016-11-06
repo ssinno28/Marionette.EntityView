@@ -1,6 +1,6 @@
 var BaseValidationView;
 (function ($, _, Backbone, Marionette, ValidationModel, validationTemplate, MessageCollection, MessageListView) {
-    BaseValidationView = Marionette.BaseValidationView = Backbone.Marionette.LayoutView.extend({
+    BaseValidationView = Marionette.BaseValidationView = Backbone.Marionette.View.extend({
         tagName: 'div',
         template: validationTemplate,
         regions: {
@@ -11,7 +11,7 @@ var BaseValidationView;
             var messageCollection = new MessageCollection();
             messageCollection.setMessages(this.options);
 
-            this.validationMessages.show(new MessageListView({collection: messageCollection}));
+            this.showChildView('validationMessages', new MessageListView({collection: messageCollection}));
         }
     });
 

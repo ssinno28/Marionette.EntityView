@@ -5,7 +5,7 @@ define([
     'marionette',
     'text!template/breadcrumbs/breadcrumbItemTemplate.html'
 ], function ($, _, Backbone, Marionette, breadcrumbTemplate) {
-    var BreadcrumbsView = Marionette.ItemView.extend({
+    var BreadcrumbsView = Marionette.View.extend({
         className: 'li',
         template: Marionette.TemplateCache.get(breadcrumbTemplate)
     });

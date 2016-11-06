@@ -1,0 +1,24 @@
+<div class="fieldsRegion">
+
+</div>
+<td>
+    <% if(allowEdit || allowDelete){ %>
+    <ul>
+        <% if(allowEdit){ %>
+        <li>
+            <a class="edit" data-id="<%= id %>" href="#">
+                Edit
+            </a>
+        </li>
+        <% } %>
+
+        <% if(allowDelete){ %>
+        <li>
+            <a class="delete" href="#<%= route %>/delete/<%= id %>/">
+                Delete
+            </a>
+        </li>
+        <% } %>
+    </ul>
+    <% } %>
+</td>

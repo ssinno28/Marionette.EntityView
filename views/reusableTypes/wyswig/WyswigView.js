@@ -22,7 +22,7 @@ var WyswigView;
                 $img.attr('src', src);
             });
 
-            this.model.set({value: $hiddenDiv.html()})
+            this.model.set({ value: $hiddenDiv.html() });
         },
         tag: 'input',
         ui: {

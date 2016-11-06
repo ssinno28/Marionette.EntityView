@@ -1,6 +1,6 @@
 var EntityController;
 (function (App, $, _, Backbone, Marionette, EventAggregator, EntityLayoutView, headerTemplate, TimeoutUtil, EntityService) {
-    EntityController = Marionette.EntityController = Backbone.Marionette.Controller.extend({
+    EntityController = Marionette.EntityController = Marionette.Object.extend({
         initialize: function (options) {
             this.getEntityService(options);
         },

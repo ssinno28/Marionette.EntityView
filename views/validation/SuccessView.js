@@ -1,7 +1,10 @@
 var SuccessView;
 (function ($, _, Backbone, Marionette) {
     SuccessView = Marionette.BaseValidationView.extend({
-        className: 'success alert-box radius'
+        className: 'alert alert-success alert-dismissable',
+        templateContext: {
+            iconClass: 'pficon-ok'
+        }
     });
 
 })(jQuery, _, Backbone, Marionette);
