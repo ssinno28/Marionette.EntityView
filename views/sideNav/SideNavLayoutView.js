@@ -19,4 +19,4 @@ var SideNavLayoutView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, SideNavListView, this['FastTrack']['Templates']['./templates/sideNav/sideNavLayoutTemplate.html']);
+})(jQuery, _, Backbone, Marionette, SideNavListView, this['EntityView']['Templates']['./templates/sideNav/sideNavLayoutTemplate.html']);

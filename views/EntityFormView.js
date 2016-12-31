@@ -279,4 +279,4 @@ var EntityFormView;
             }));
         }
     });
-})(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/entityFormLayoutTemplate.html'], MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, EventAggregator, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView);
+})(jQuery, _, Backbone, Marionette, this['EntityView']['Templates']['./templates/entityFormLayoutTemplate.html'], MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, EventAggregator, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView);

@@ -3,4 +3,4 @@ var TextAreaView;
     TextAreaView = ReusableTypeLayoutView.extend({
         template: textAreaTemplate
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['FastTrack']['Templates']['./templates/reusableTypes/textAreaTemplate.html']);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['EntityView']['Templates']['./templates/reusableTypes/textAreaTemplate.html']);

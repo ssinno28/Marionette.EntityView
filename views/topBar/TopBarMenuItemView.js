@@ -26,4 +26,4 @@ var TopBarMenuItemView;
             };
         }
     });
-})(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/topBar/iconMenuItemTemplate.html'], EventAggregator);
+})(jQuery, _, Backbone, Marionette, this['EntityView']['Templates']['./templates/topBar/iconMenuItemTemplate.html'], EventAggregator);

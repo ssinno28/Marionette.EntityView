@@ -22,4 +22,4 @@ var ImageFieldView;
             this.updateImageUrl(App.API_URL + '/');
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['FastTrack']['Templates']['./templates/reusableTypes/image/imageFieldTemplate.html']);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['EntityView']['Templates']['./templates/reusableTypes/image/imageFieldTemplate.html']);

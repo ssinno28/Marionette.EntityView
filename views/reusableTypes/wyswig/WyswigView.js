@@ -40,4 +40,4 @@ var WyswigView;
             return /^https?:\/\//i.test(path);
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['FastTrack']['Templates']['./templates/reusableTypes/wyswigTemplate.html'], CKEDITOR);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['EntityView']['Templates']['./templates/reusableTypes/wyswigTemplate.html'], CKEDITOR);

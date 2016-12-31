@@ -330,4 +330,4 @@ var EntityService;
 
         return ctor;
     });
-})(jQuery, _, Backbone, Marionette, App, EntityLayoutView, this['FastTrack']['Templates']['./templates/headerTemplate.html'], EventAggregator);
+})(jQuery, _, Backbone, Marionette, App, EntityLayoutView, this['EntityView']['Templates']['./templates/headerTemplate.html'], EventAggregator);

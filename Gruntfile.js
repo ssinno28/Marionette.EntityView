@@ -99,7 +99,7 @@ module.exports = function (grunt) {
         },
         underscore: {
             options: {
-                namespace: 'FastTrack.Templates',
+                namespace: 'EntityView.Templates',
                 compile: true
             },
             demo: {

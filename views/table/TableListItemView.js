@@ -4,4 +4,4 @@ var TableListItemView;
         template: listItemTpl,
         tagName: 'tr'
     });
-})(jQuery, _, Backbone, Marionette, EntityListItemView, this['FastTrack']['Templates']['./templates/table/tableListItemTpl.html']);
+})(jQuery, _, Backbone, Marionette, EntityListItemView, this['EntityView']['Templates']['./templates/table/tableListItemTpl.html']);

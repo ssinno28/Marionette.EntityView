@@ -9,4 +9,4 @@ var TableLayoutView;
             this.$el.dataTable();
         }
     });
-})(jQuery, _, Backbone, Marionette, EntityLayoutView, this['FastTrack']['Templates']['./templates/table/tableLayoutTpl.html']);
+})(jQuery, _, Backbone, Marionette, EntityLayoutView, this['EntityView']['Templates']['./templates/table/tableLayoutTpl.html']);

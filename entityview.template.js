@@ -79,7 +79,7 @@ SOFTWARE.
         SortableCollectionView: SortableCollectionView,
         FormValidator: FormValidator,
         ReusableTypeLayoutView: ReusableTypeLayoutView,
-        Templates: this['FastTrack']['Templates'],
+        Templates: this['EntityView']['Templates'],
         MessageBehavior: MessageBehavior,
         DropDownListView: DropDownListView,
         ToastListView: ToastListView

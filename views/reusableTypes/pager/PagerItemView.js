@@ -16,4 +16,4 @@ var PagerItemView;
         }
     });
 
-})($, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/reusableTypes/pager/pagerItemTemplate.html']);
+})($, _, Backbone, Marionette, this['EntityView']['Templates']['./templates/reusableTypes/pager/pagerItemTemplate.html']);

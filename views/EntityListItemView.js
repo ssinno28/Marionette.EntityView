@@ -92,4 +92,4 @@ var EntityListItemView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, this['FastTrack']['Templates']['./templates/entityListItemTemplate.html'], DeleteWarnBehavior, EventAggregator);
+})(jQuery, _, Backbone, Marionette, this['EntityView']['Templates']['./templates/entityListItemTemplate.html'], DeleteWarnBehavior, EventAggregator);

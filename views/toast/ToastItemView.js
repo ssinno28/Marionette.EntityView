@@ -19,4 +19,4 @@ var ToastItemView;
             };
         }
     });
-})(jQuery, _, Backbone, Marionette, EventAggregator, this['FastTrack']['Templates']['./templates/toast/toastItemTpl.html']);
+})(jQuery, _, Backbone, Marionette, EventAggregator, this['EntityView']['Templates']['./templates/toast/toastItemTpl.html']);

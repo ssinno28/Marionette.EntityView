@@ -4,4 +4,4 @@ var SingleLineTextView;
         tag: 'input',
         template:singleLineTextTpl
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['FastTrack']['Templates']['./templates/reusableTypes/singleLineTextTemplate.html']);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['EntityView']['Templates']['./templates/reusableTypes/singleLineTextTemplate.html']);

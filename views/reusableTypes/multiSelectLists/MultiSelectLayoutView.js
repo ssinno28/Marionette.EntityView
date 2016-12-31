@@ -292,4 +292,4 @@ var MultiSelectLayoutView;
             EventAggregator.off(this.selectedItemsRoute + '.subcollection');
         }
     });
-})(Marionette, jQuery, _, this['FastTrack']['Templates']['./templates/reusableTypes/multiSelectLists/multiSelectLayoutTemplate.html'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, this['FastTrack']['Templates']['./templates/reusableTypes/multiSelectLists/headerTemplate.html'], EventAggregator);
+})(Marionette, jQuery, _, this['EntityView']['Templates']['./templates/reusableTypes/multiSelectLists/multiSelectLayoutTemplate.html'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, this['EntityView']['Templates']['./templates/reusableTypes/multiSelectLists/headerTemplate.html'], EventAggregator);
