@@ -63,4 +63,4 @@ var SideNavItemView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, this['EntityView']['Templates']['./templates/sideNav/sideNavItemTemplate.html'], EventAggregator, TreeCompositeView, this['FastTrack']["Templates"]["./templates/sideNav/sideNavChildrenTpl.html"]);
+})(jQuery, _, Backbone, Marionette, this['EntityView']['Templates']['./templates/sideNav/sideNavItemTemplate.html'], EventAggregator, TreeCompositeView, this['EntityView']["Templates"]["./templates/sideNav/sideNavChildrenTpl.html"]);
