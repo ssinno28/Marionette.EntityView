@@ -316,8 +316,8 @@ var EntityService;
 
         ctor.getData = function (page) {
             return {
-                page: page,
-                pageSize: window.pageSize
+                page: parseInt(page),
+                pageSize: parseInt(window.pageSize)
             };
         };
 

@@ -9,7 +9,7 @@ var EntityCollection;
      */
     EntityCollection = Backbone.EntityCollection = Backbone.PagedCollection.extend({
         baseUrl: function () {
-            return App.API_URL;
+            return _.isUndefined(App.API_URL) ? '' : App.API_URL;
         }
     });
 })(_, Backbone, jQuery, App);
