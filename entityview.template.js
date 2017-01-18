@@ -54,17 +54,12 @@ SOFTWARE.
     <%= content %>
 
     return {
-        SideNavLayoutView: SideNavLayoutView,
-        SideNavItemView: SideNavItemView,
-        SideNavListView: SideNavListView, 
         ErrorView: ErrorView,
         InfoView: InfoView,
         WarningView: WarningView,
         SuccessView: SuccessView,
         TimeoutUtil: TimeoutUtil,
         UriUtil: UriUtil,
-        TopBarListView: TopBarListView,
-        TopBarMenuItemView: TopBarMenuItemView,
         AutoCompleteLayoutView: AutoCompleteLayoutView,
         MultiSelectLayoutView: MultiSelectLayoutView,
         DateTimePickerView: DateTimePickerView,
@@ -82,6 +77,9 @@ SOFTWARE.
         Templates: this['EntityView']['Templates'],
         MessageBehavior: MessageBehavior,
         DropDownListView: DropDownListView,
-        ToastListView: ToastListView
+        EntityListItemView: EntityListItemView,
+        EntityListView: EntityListView,
+        EntityLayoutView: EntityLayoutView,
+        TreeCompositeView: TreeCompositeView
     };
 }));
