@@ -201,16 +201,17 @@ var EntityService;
 
         ctor.textSearch = function (startsWith, field) {
             var data = {
-                conditions: [
-                    {
-                        searchType: 'like',
-                        field: field,
-                        value: startsWith
-                    }
-                ],
-                page: 1,
-                pageSize: window.pageSize
-            };
+                    conditions: [
+                        {
+                            searchType: 'like',
+                            field: field,
+                            value: startsWith
+                        }
+                    ],
+                    page: 1,
+                    pageSize: window.pageSize
+                },
+                self = this;
 
             this.collection.query(this.track, data)
                 .done(_.bind(function (entities, key) {
