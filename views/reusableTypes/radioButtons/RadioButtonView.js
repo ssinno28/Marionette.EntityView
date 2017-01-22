@@ -6,4 +6,4 @@ var RadioButtonView;
         template: radioButtonTemplate
     });
 
-})(jQuery, _, Backbone, Marionette, this['EntityView']['Templates']['./templates/reusableTypes/radioButtonTemplate.html'], ReusableTypeView);
+})(jQuery, _, Backbone, Marionette, this['Templates']['radioButtonTemplate'], ReusableTypeView);
