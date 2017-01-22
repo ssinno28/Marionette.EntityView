@@ -4,4 +4,4 @@ var AutoCompleteView;
         tagName: 'li',
         template: liAutoCompleteTemplate
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeListView, this['EntityView']['Templates']['./templates/reusableTypes/autoComplete/liAutoCompleteTemplate.html']);
+})(jQuery, _, Backbone, Marionette, ReusableTypeListView, this['Templates']['liAutoCompleteTemplate']);

@@ -74,4 +74,4 @@ var DateTimePickerView;
             return $date.val() + ' ' + $time.val();
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['EntityView']['Templates']['./templates/reusableTypes/datePickerTemplate.html'], EventAggregator, Moment);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['datePickerTemplate'], EventAggregator, Moment);
