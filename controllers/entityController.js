@@ -27,4 +27,4 @@ var EntityController;
             EventAggregator.trigger(this.entityService.route + '.getType', page);
         }
     });
-})(App, jQuery, _, Backbone, Marionette, EventAggregator, EntityLayoutView, this['EntityView']['Templates']['./templates/headerTemplate.html'], TimeoutUtil, EntityService);
+})(App, jQuery, _, Backbone, Marionette, EventAggregator, EntityLayoutView, this['Templates']['headerTemplate'], TimeoutUtil, EntityService);

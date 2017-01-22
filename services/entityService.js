@@ -37,7 +37,7 @@ var EntityService;
             if (!_.isUndefined(this.header)) {
                 this.getHeader = function () {
                     return this.header;
-                }
+                };
             }
 
             EventAggregator.on(this.route + '.create', function () {
@@ -331,4 +331,4 @@ var EntityService;
 
         return ctor;
     });
-})(jQuery, _, Backbone, Marionette, App, EntityLayoutView, this['EntityView']['Templates']['./templates/headerTemplate.html'], EventAggregator);
+})(jQuery, _, Backbone, Marionette, App, EntityLayoutView, this['Templates']['headerTemplate'], EventAggregator);
