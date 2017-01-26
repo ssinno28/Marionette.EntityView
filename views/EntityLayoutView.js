@@ -281,4 +281,4 @@ var EntityLayoutView;
             }
         }
     });
-})(jQuery, _, Backbone, Marionette, this['EntityView']['Templates']['./templates/entityLayoutTemplate.html'], EntityLayoutModel, EventAggregator, TimeoutUtil, PagerBehavior);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, EventAggregator, TimeoutUtil, PagerBehavior);

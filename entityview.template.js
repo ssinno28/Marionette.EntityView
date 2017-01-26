@@ -74,7 +74,6 @@ SOFTWARE.
         SortableCollectionView: SortableCollectionView,
         FormValidator: FormValidator,
         ReusableTypeLayoutView: ReusableTypeLayoutView,
-        Templates: this['EntityView']['Templates'],
         MessageBehavior: MessageBehavior,
         DropDownListView: DropDownListView,
         EntityListItemView: EntityListItemView,

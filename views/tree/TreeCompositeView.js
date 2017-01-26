@@ -107,4 +107,4 @@ var TreeCompositeView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, this['EntityView']['Templates']['./templates/tree/treeCompositeTemplate.html']);
+})(jQuery, _, Backbone, Marionette, this['Templates']['treeCompositeTemplate']);

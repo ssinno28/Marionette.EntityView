@@ -32,7 +32,7 @@ var EntityService;
             if (!_.isUndefined(this.header)) {
                 this.getHeader = function () {
                     return this.header;
-                }
+                };
             }
 
             EventAggregator.on(this.route + '.create', function () {

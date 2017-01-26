@@ -5,4 +5,4 @@ var MessageView;
         tagName: 'li',
         template: messageTemplate
     });
-})(jQuery, _, Backbone, Marionette, MessageModel, this['EntityView']['Templates']['./templates/validation/messageTemplate.html']);
+})(jQuery, _, Backbone, Marionette, MessageModel, this['Templates']['messageTemplate']);
