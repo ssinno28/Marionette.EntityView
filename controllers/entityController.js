@@ -8,8 +8,7 @@ var EntityController;
             App.route = this.route;
         },
         getEntityService: function (options) {
-            this.entityService = new EntityService();
-            this.entityService.initialize(options);
+            this.entityService = new EntityService(options);
         },
         create: function () {
             EventAggregator.trigger(this.entityService.route + '.create');

@@ -1,14 +1,7 @@
 var MultiSelectService;
 (function ($, _, Backbone, Marionette, EntityService, App, MultiSelectListView) {
-    MultiSelectService = (function () {
-        var ctor = function () {
-
-        };
-
-        ctor.prototype = new EntityService();
-        ctor.prototype.$super = new EntityService();
-
-        ctor.prototype.getData = function (page) {
+    MultiSelectService = Marionette.EntityService.extend({
+        getData: function (page) {
             var data = {
                 conditions: [],
                 page: page,
@@ -16,27 +9,20 @@ var MultiSelectService;
             };
 
             data.conditions = data.conditions.concat(this.conditions);
-
             return data;
-        };
-
-        ctor.prototype.initialize = function (options) {
+        },
+        initialize: function (options) {
             this.model = null;
             this.listView = MultiSelectListView;
             this.formView = null;
 
-            this.$super.initialize.call(this, options);
-        };
-
-        ctor.prototype.getHeader = function () {
+            Marionette.EntityService.prototype.initialize.call(this, options);
+        },
+        getHeader: function () {
             return this.header;
-        };
-
-        ctor.prototype.getBtnClass = function () {
+        },
+        getBtnClass: function () {
             return 'tiny round';
-        };
-
-        return ctor;
-    })();
-
+        }
+    });
 })(jQuery, _, Backbone, Marionette, EntityService, App, MultiSelectListView);
