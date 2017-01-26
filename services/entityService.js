@@ -1,12 +1,7 @@
 var EntityService;
 (function ($, _, Backbone, Marionette, App, EntityLayoutView, headerTemplate, EventAggregator) {
-    EntityService = Marionette.EntityService = (function () {
-
-        var ctor = function () {
-
-        };
-
-        ctor.initialize = function (options) {
+    EntityService = Marionette.EntityService = Marionette.Object.extend({
+        initialize: function (options) {
             _.extend(this, options);
 
             this._entityLayoutView = null;
@@ -67,9 +62,8 @@ var EntityService;
             EventAggregator.on(this.route + '.destroy', function () {
                 self.destroy();
             });
-        };
-
-        ctor.destroy = function () {
+        },
+        destroy: function () {
             EventAggregator.off(this.route + '.create');
             EventAggregator.off(this.route + '.edit');
             EventAggregator.off(this.route + '.delete');
@@ -77,18 +71,15 @@ var EntityService;
             EventAggregator.off(this.route + '.getType');
             EventAggregator.off(this.route + '.textSearch');
             EventAggregator.off(this.route + '.destroy');
-        };
+        },
+        entityLayoutView: function (entities) {
+            if (_.isNull(this._entityLayoutView) || this._entityLayoutView.isDestroyed()) {
+                this._entityLayoutView = this.getEntityLayoutView(entities);
+            }
 
-        ctor.entityLayoutView =
-            function (entities) {
-                if (_.isNull(this._entityLayoutView) || this._entityLayoutView.isDestroyed()) {
-                    this._entityLayoutView = this.getEntityLayoutView(entities);
-                }
-
-                return this._entityLayoutView;
-            };
-
-        ctor.getEntityLayoutView = function (entities) {
+            return this._entityLayoutView;
+        },
+        getEntityLayoutView: function (entities) {
             var listView =
                 new this.listView
                 ({
@@ -108,25 +99,20 @@ var EntityService;
                 btnClass: this.getBtnClass(),
                 routing: this.routing
             });
-        };
-
-        ctor.getHeader = function () {
+        },
+        getHeader: function () {
             return {params: {title: this.title}, template: headerTemplate};
-        };
-
-        ctor.getBtnClass = function () {
+        },
+        getBtnClass: function () {
             return '';
-        };
-
-        ctor.getNewModel = function () {
+        },
+        getNewModel: function () {
             return new this.model();
-        };
-
-        ctor.getFormOptions = function () {
+        },
+        getFormOptions: function () {
             return {};
-        };
-
-        ctor.create = function () {
+        },
+        create: function () {
             var entity = this.getNewModel();
             App.currentRoute = 'create';
 
@@ -144,9 +130,8 @@ var EntityService;
             });
 
             this.entityLayoutView().showChildView('entityRegion', form);
-        };
-
-        ctor.edit = function (id) {
+        },
+        edit: function () {
             App.currentRoute = 'edit';
 
             if (this.region.currentView !== this.entityLayoutView()) {
@@ -166,9 +151,8 @@ var EntityService;
 
                     this.entityLayoutView().showChildView('entityRegion', form);
                 }, this));
-        };
-
-        ctor.delete = function (id) {
+        },
+        delete: function () {
             var self = this;
 
             if (this.region.currentView !== this.entityLayoutView()) {
@@ -197,9 +181,8 @@ var EntityService;
                         }
                     });
                 });
-        };
-
-        ctor.textSearch = function (startsWith, field) {
+        },
+        textSearch: function (startsWith, field) {
             var data = {
                     conditions: [
                         {
@@ -238,9 +221,8 @@ var EntityService;
                     EventAggregator.trigger(self.route + '.subcollection', models);
                     this.entityLayoutView().showChildView('entityRegion', listView);
                 }, this));
-        };
-
-        ctor.getAll = function (page, force) {
+        },
+        getAll: function (page, force) {
             var self = this;
 
             if (isNaN(page)) {
@@ -278,9 +260,8 @@ var EntityService;
                     EventAggregator.trigger(self.route + '.subcollection', models);
                     self.entityLayoutView().showChildView('entityRegion', listView);
                 });
-        };
-
-        ctor.getType = function (page, force) {
+        },
+        getType: function (page, force) {
             var self = this;
 
             if (isNaN(page)) {
@@ -313,22 +294,12 @@ var EntityService;
 
                     self.region.show(entityLayoutView);
                 });
-        };
-
-        ctor.getData = function (page) {
+        },
+        getData: function (page) {
             return {
                 page: parseInt(page),
                 pageSize: parseInt(window.pageSize)
             };
-        };
-
-        //set the context for all of the functions
-        for (var key in ctor) {
-            if (typeof(ctor[key]) === "function") {
-                _.bind(ctor[key], ctor);
-            }
         }
-
-        return ctor;
     });
-})(jQuery, _, Backbone, Marionette, App, EntityLayoutView, this['EntityView']['Templates']['./templates/headerTemplate.html'], EventAggregator);
+})(jQuery, _, Backbone, Marionette, App, EntityLayoutView, this['Templates']['headerTemplate'], EventAggregator);
