@@ -5,7 +5,6 @@ var EntityService;
             _.extend(this, options);
 
             this._entityLayoutView = null;
-            var self = this;
 
             if (!_.isUndefined(options.allowableOperations)) {
                 this.allowableOperations = options.allowableOperations;
@@ -35,42 +34,20 @@ var EntityService;
                 };
             }
 
-            EventAggregator.on(this.route + '.create', function () {
-                self.create();
-            });
+            this.channelName = this.route;
+            var radioRequests = {};
+            radioRequests['create'] = this.create;
+            radioRequests['edit'] = this.edit;
+            radioRequests['delete'] = this.delete;
+            radioRequests['getAll'] = this.getAll;
+            radioRequests['getType'] = this.getType;
+            radioRequests['textSearch'] = this.textSearch;
+            radioRequests['destroy'] = this.destroy;
 
-            EventAggregator.on(this.route + '.edit', function (id) {
-                self.edit(id);
-            });
-
-            EventAggregator.on(this.route + '.delete', function (id) {
-                self.delete(id);
-            });
-
-            EventAggregator.on(this.route + '.getAll', function (page, force) {
-                self.getAll(page, force);
-            });
-
-            EventAggregator.on(this.route + '.getType', function (page, force) {
-                self.getType(page, force);
-            });
-
-            EventAggregator.on(this.route + '.textSearch', function (startsWith, field) {
-                self.textSearch(startsWith, field);
-            });
-
-            EventAggregator.on(this.route + '.destroy', function () {
-                self.destroy();
-            });
+            _.extend(this.radioRequests, radioRequests);
         },
         destroy: function () {
-            EventAggregator.off(this.route + '.create');
-            EventAggregator.off(this.route + '.edit');
-            EventAggregator.off(this.route + '.delete');
-            EventAggregator.off(this.route + '.getAll');
-            EventAggregator.off(this.route + '.getType');
-            EventAggregator.off(this.route + '.textSearch');
-            EventAggregator.off(this.route + '.destroy');
+            Backbone.Radio.channel(this.route).reset();
         },
         entityLayoutView: function (entities) {
             if (_.isNull(this._entityLayoutView) || this._entityLayoutView.isDestroyed()) {
@@ -87,7 +64,7 @@ var EntityService;
                     baseClassIds: this.baseClassIds
                 });
 
-            listView.currentPage = entities === undefined ? 1 : entities.currentPage;
+            listView.currentPage = _.isUndefined(entities) ? 1 : entities.currentPage;
 
             return new this.entityLayoutViewType
             ({
@@ -218,7 +195,10 @@ var EntityService;
                     listView.allowableOperations = this.allowableOperations;
 
                     this.entityLayoutView().key = key;
-                    EventAggregator.trigger(self.route + '.subcollection', models);
+
+                    var channel = this.getChannel();
+                    channel(self.route).trigger('subcollection', models);
+
                     this.entityLayoutView().showChildView('entityRegion', listView);
                 }, this));
         },
@@ -257,7 +237,9 @@ var EntityService;
                     self.entityLayoutView().key = key;
                     self.entityLayoutView().listView = listView;
 
-                    EventAggregator.trigger(self.route + '.subcollection', models);
+                    var channel = this.getChannel();
+                    channel(self.route).trigger('subcollection', models);
+
                     self.entityLayoutView().showChildView('entityRegion', listView);
                 });
         },
@@ -288,7 +270,9 @@ var EntityService;
                     self.region.reset();
                     models.currentPage = page;
 
-                    EventAggregator.trigger(self.route + '.subcollection', models);
+                    var channel = this.getChannel();
+                    channel(self.route).trigger('subcollection', models);
+
                     var entityLayoutView = self.entityLayoutView(models);
                     entityLayoutView.key = key;
 

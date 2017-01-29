@@ -227,8 +227,6 @@ var MultiSelectLayoutView;
                 inPred = inPred.concat(this.options.selectedConditions);
             }
 
-            this.selectedItemsService = new MultiSelectService();
-
             var options = {
                 allowableOperations: [],
                 route: this.selectedItemsRoute,
@@ -239,7 +237,7 @@ var MultiSelectLayoutView;
                 collection: this.collection
             };
 
-            this.selectedItemsService.initialize(options);
+            this.selectedItemsService = new MultiSelectService(options);
 
             EventAggregator.on(this.selectedItemsRoute + '.subcollection', _.bind(function (entities) {
                 this.selectedItems = new Backbone.Collection(entities.models);
@@ -262,8 +260,6 @@ var MultiSelectLayoutView;
                 notInPred = notInPred.concat(this.options.conditions);
             }
 
-            this.excludedItemsService = new MultiSelectService();
-
             var options = {
                 allowableOperations: [],
                 route: this.excludedItemsRoute,
@@ -274,7 +270,7 @@ var MultiSelectLayoutView;
                 collection: this.collection
             };
 
-            this.excludedItemsService.initialize(options);
+            this.excludedItemsService = new MultiSelectService(options);
 
             EventAggregator.on(this.excludedItemsRoute + '.subcollection', _.bind(function (entities) {
                 this.nonSelectedItems = new Backbone.Collection(entities.models);

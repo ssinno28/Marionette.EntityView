@@ -3,6 +3,7 @@ var EntityController;
     EntityController = Marionette.EntityController = Marionette.Object.extend({
         initialize: function (options) {
             this.getEntityService(options);
+            this.channel = Backbone.Radio.Channel(this.entityService.route);
         },
         onActionExecuting: function (name, path) {
             App.route = this.route;
@@ -11,19 +12,19 @@ var EntityController;
             this.entityService = new EntityService(options);
         },
         create: function () {
-            EventAggregator.trigger(this.entityService.route + '.create');
+            this.channel.trigger('create');
         },
         edit: function (id) {
-            EventAggregator.trigger(this.entityService.route + '.edit', id);
+            this.channel.trigger('edit', id);
         },
         textSearch: function (startsWith, field) {
-            EventAggregator.trigger(this.entityService.route + '.textSearch', startsWith, field);
+            this.channel.trigger('textSearch', startsWith, field);
         },
         getAll: function (page) {
-            EventAggregator.trigger(this.entityService.route + '.getAll', page);
+            this.channel.trigger('getAll', page);
         },
         getType: function (page) {
-            EventAggregator.trigger(this.entityService.route + '.getType', page);
+            this.channel.trigger('getType', page);
         }
     });
 })(App, jQuery, _, Backbone, Marionette, EventAggregator, EntityLayoutView, this['Templates']['headerTemplate'], TimeoutUtil, EntityService);
