@@ -1,5 +1,5 @@
 var EntityService;
-(function ($, _, Backbone, Marionette, App, EntityLayoutView, headerTemplate, EventAggregator) {
+(function ($, _, Backbone, Marionette, App, EntityLayoutView, headerTemplate) {
     EntityService = Marionette.EntityService = Marionette.Object.extend({
         initialize: function (options) {
             _.extend(this, options);
@@ -286,4 +286,4 @@ var EntityService;
             };
         }
     });
-})(jQuery, _, Backbone, Marionette, App, EntityLayoutView, this['Templates']['headerTemplate'], EventAggregator);
+})(jQuery, _, Backbone, Marionette, App, EntityLayoutView, this['Templates']['headerTemplate']);

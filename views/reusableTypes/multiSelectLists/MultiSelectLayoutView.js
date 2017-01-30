@@ -238,14 +238,15 @@ var MultiSelectLayoutView;
             };
 
             this.selectedItemsService = new MultiSelectService(options);
+            var selectedItemsChannel = this.selectedItemsService.getChannel();
 
-            EventAggregator.on(this.selectedItemsRoute + '.subcollection', _.bind(function (entities) {
+            selectedItemsChannel.on('subcollection', _.bind(function (entities) {
                 this.selectedItems = new Backbone.Collection(entities.models);
 
                 this.showSelectedInHeader();
             }, this));
 
-            EventAggregator.trigger(this.selectedItemsRoute + '.getType', 1);
+            selectedItemsChannel.trigger('getType', 1);
         },
         showExcludedItems: function () {
             var notInPred = [
@@ -271,12 +272,13 @@ var MultiSelectLayoutView;
             };
 
             this.excludedItemsService = new MultiSelectService(options);
+            var excludedItemsChannel = this.excludedItemsService.getChannel();
 
-            EventAggregator.on(this.excludedItemsRoute + '.subcollection', _.bind(function (entities) {
+            excludedItemsChannel.on('subcollection', _.bind(function (entities) {
                 this.nonSelectedItems = new Backbone.Collection(entities.models);
             }, this));
 
-            EventAggregator.trigger(this.excludedItemsRoute + '.getType', 1);
+            excludedItemsChannel.trigger('getType');
         },
         onDomRefresh: function () {
             this.ui.$optionsRegion.hide();
@@ -284,8 +286,11 @@ var MultiSelectLayoutView;
             this.showSelectedItems();
         },
         onDestroy: function () {
-            EventAggregator.off(this.excludedItemsRoute + '.subcollection');
-            EventAggregator.off(this.selectedItemsRoute + '.subcollection');
+            var excludedItemsChannel = this.excludedItemsService.getChannel(),
+                selectedItemsChannel = this.selectedItemsService.getChannel();
+
+            excludedItemsChannel.trigger('destroy');
+            selectedItemsChannel.trigger('destroy');
         }
     });
 })(Marionette, jQuery, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, this['Templates']['headerTemplate'], EventAggregator);
