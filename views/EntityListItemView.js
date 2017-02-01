@@ -1,5 +1,5 @@
 var EntityListItemView;
-(function ($, _, Backbone, Marionette, entityListItemTemplate, DeleteWarnBehavior, EventAggregator) {
+(function ($, _, Backbone, Marionette, entityListItemTemplate, DeleteWarnBehavior) {
     EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.View.extend({
         regions: {
             fieldsRegion: {
@@ -84,12 +84,15 @@ var EntityListItemView;
                 behaviorClass: DeleteWarnBehavior,
                 message: "Are you sure you want to delete this item?",
                 yesFunc: function (e) {
-                    EventAggregator.trigger(this.view.route + '.delete', this.view.model.get('id'));
+                    this.view.getChannel().trigger(this.view.route + '.delete', this.view.model.get('id'));
                 },
                 noFunc: function (e) {
                 }
             }
+        },
+        getChannel: function () {
+            return Backbone.Radio.Channel(this.route);
         }
     });
 
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], DeleteWarnBehavior, EventAggregator);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], DeleteWarnBehavior);

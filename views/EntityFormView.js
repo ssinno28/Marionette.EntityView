@@ -1,5 +1,5 @@
 var EntityFormView;
-(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, EventAggregator, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView) {
+(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView) {
     EntityFormView = Marionette.EntityFormView = Backbone.Marionette.FormView.extend({
         template: entityFormLayoutTemplate,
         regions: {
@@ -22,8 +22,26 @@ var EntityFormView;
 
             this.original = this.model.toJSON();
         },
+        behaviors: {
+            Messages: {
+                behaviorClass: MessageBehavior
+            }
+        },
+        ui: {
+            '$actions': '.actions',
+            '$spinner': '.spinner'
+        },
+        templateContext: function () {
+            var self = this;
+            return {
+                btnClass: self.options.btnClass
+            };
+        },
+        events: {
+            'click .reset': 'resetForm'
+        },
         onDomRefresh: function () {
-            EventAggregator.trigger('form.view.activated.' + this.options.parentViewCid);
+            this.getChannel().trigger('form.view.activated.' + this.options.parentViewCid);
             this.checkDisabledFields();
         },
         checkDisabledFields: function () {
@@ -40,21 +58,6 @@ var EntityFormView;
                 this.ui.$actions.hide();
             }
         },
-        behaviors: {
-            Messages: {
-                behaviorClass: MessageBehavior
-            }
-        },
-        ui: {
-            '$actions': '.actions',
-            '$spinner': '.spinner'
-        },
-        templateContext: function () {
-            var self = this;
-            return {
-                btnClass: self.options.btnClass
-            };
-        },
         renderForm: function (template) {
             var formView = Backbone.Marionette.View.extend({
                 template: template,
@@ -64,8 +67,8 @@ var EntityFormView;
             this.showChildView('entityFormRegion', new formView());
             this.bindUIElements();
         },
-        events: {
-            'click .reset': 'resetForm'
+        getChannel: function () {
+            return Backbone.Radio.Channel(this.channelName);
         },
         resetForm: function (e) {
             e.preventDefault();
@@ -179,7 +182,7 @@ var EntityFormView;
                         self.onCreated();
                     } else {
                         self.triggerMethod("ShowMessages", 'success', ['Item successfully saved!']);
-                        EventAggregator.trigger("Entity.Updated." + model.get('id'));
+                        self.getChannel().trigger("Entity.Updated." + model.get('id'));
                     }
                 },
                 error: function (model, response) {
@@ -196,7 +199,8 @@ var EntityFormView;
                 }
             });
         },
-        onCreated: function(){},
+        onCreated: function () {
+        },
         dropDownForRegion: function (collection, region, dataField, conditions) {
             var viewContext = this;
             if (!conditions) {
@@ -279,4 +283,4 @@ var EntityFormView;
             }));
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityFormLayoutTemplate'], MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, EventAggregator, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityFormLayoutTemplate'], MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView);

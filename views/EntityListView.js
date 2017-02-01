@@ -1,5 +1,5 @@
 var EntityListView;
-(function ($, _, Backbone, Marionette, EventAggregator) {
+(function ($, _, Backbone, Marionette) {
     EntityListView = Marionette.EntityListView = Backbone.Marionette.CollectionView.extend({
         className: 'col-sm-12',
         initialize: function (options) {
@@ -7,7 +7,7 @@ var EntityListView;
             this.parentViewCid = options.parentViewCid;
         },
         onDomRefresh: function () {
-            EventAggregator.trigger('list.view.activated.' + this.parentViewCid);
+            this.getChannel().trigger('list.view.activated.' + this.parentViewCid);
         },
         childViewOptions: function () {
             var route = this.route,
@@ -31,6 +31,9 @@ var EntityListView;
             if (indexOf === 0 && !_.isUndefined(this.getTableHeader)) {
                 childView.$el.before(this.getTableHeader());
             }
+        },
+        getChannel: function(){
+            return Backbone.Radio.Channel(this.route);
         }
     });
-})(jQuery, _, Backbone, Marionette, EventAggregator);
+})(jQuery, _, Backbone, Marionette);

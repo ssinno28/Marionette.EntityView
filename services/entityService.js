@@ -35,19 +35,21 @@ var EntityService;
             }
 
             this.channelName = this.route;
-            var radioRequests = {};
-            radioRequests['create'] = this.create;
-            radioRequests['edit'] = this.edit;
-            radioRequests['delete'] = this.delete;
-            radioRequests['getAll'] = this.getAll;
-            radioRequests['getType'] = this.getType;
-            radioRequests['textSearch'] = this.textSearch;
-            radioRequests['destroy'] = this.destroy;
+        },
+        radioEvents: function () {
+            var radioEvents = {};
+            radioEvents['create'] = this.create;
+            radioEvents['edit'] = this.edit;
+            radioEvents['delete'] = this.delete;
+            radioEvents['getAll'] = this.getAll;
+            radioEvents['getType'] = this.getType;
+            radioEvents['textSearch'] = this.textSearch;
+            radioEvents['destroy'] = this.destroy;
 
-            _.extend(this.radioRequests, radioRequests);
+            return radioEvents;
         },
         destroy: function () {
-            Backbone.Radio.channel(this.route).reset();
+            this.getChannel().reset();
         },
         entityLayoutView: function (entities) {
             if (_.isNull(this._entityLayoutView) || this._entityLayoutView.isDestroyed()) {
@@ -91,7 +93,6 @@ var EntityService;
         },
         create: function () {
             var entity = this.getNewModel();
-            App.currentRoute = 'create';
 
             if (this.region.currentView !== this.entityLayoutView()) {
                 this.region.show(this.entityLayoutView());
@@ -109,8 +110,6 @@ var EntityService;
             this.entityLayoutView().showChildView('entityRegion', form);
         },
         edit: function () {
-            App.currentRoute = 'edit';
-
             if (this.region.currentView !== this.entityLayoutView()) {
                 this.region.show(this.entityLayoutView());
             }
@@ -123,7 +122,8 @@ var EntityService;
                         collection: this._entityLayoutView.listView.collection,
                         parentViewCid: this.entityLayoutView().cid,
                         btnClass: this.getBtnClass(),
-                        formOptions: this.getFormOptions()
+                        formOptions: this.getFormOptions(),
+                        channelName: this.channelName
                     });
 
                     this.entityLayoutView().showChildView('entityRegion', form);
@@ -170,8 +170,7 @@ var EntityService;
                     ],
                     page: 1,
                     pageSize: window.pageSize
-                },
-                self = this;
+                };
 
             this.collection.query(this.track, data)
                 .done(_.bind(function (entities, key) {
@@ -197,7 +196,7 @@ var EntityService;
                     this.entityLayoutView().key = key;
 
                     var channel = this.getChannel();
-                    channel(self.route).trigger('subcollection', models);
+                    channel.trigger('subcollection', models);
 
                     this.entityLayoutView().showChildView('entityRegion', listView);
                 }, this));
@@ -238,7 +237,7 @@ var EntityService;
                     self.entityLayoutView().listView = listView;
 
                     var channel = this.getChannel();
-                    channel(self.route).trigger('subcollection', models);
+                    channel.trigger('subcollection', models);
 
                     self.entityLayoutView().showChildView('entityRegion', listView);
                 });
@@ -271,7 +270,7 @@ var EntityService;
                     models.currentPage = page;
 
                     var channel = this.getChannel();
-                    channel(self.route).trigger('subcollection', models);
+                    channel.trigger('subcollection', models);
 
                     var entityLayoutView = self.entityLayoutView(models);
                     entityLayoutView.key = key;
