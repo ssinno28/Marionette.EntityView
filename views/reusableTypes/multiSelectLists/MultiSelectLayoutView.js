@@ -1,5 +1,5 @@
 var MultiSelectLayoutView;
-(function (Marionette, $, _, multiSelectLayoutTpl, ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, headerTemplate, EventAggregator) {
+(function (Marionette, $, _, multiSelectLayoutTpl, ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, headerTemplate) {
     MultiSelectLayoutView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
@@ -66,7 +66,7 @@ var MultiSelectLayoutView;
             });
 
             var addItemTrigger = this.dataField + ':removed';
-            EventAggregator.trigger(addItemTrigger, this.actionableOptions);
+            this.getChannel().trigger(addItemTrigger, this.actionableOptions);
 
             this.actionableOptions.reset();
             this.showSelectedInHeader();
@@ -92,7 +92,7 @@ var MultiSelectLayoutView;
             });
 
             var addItemTrigger = this.dataField + ':added';
-            EventAggregator.trigger(addItemTrigger, this.selectedItems);
+            this.getChannel().trigger(addItemTrigger, this.selectedItems);
 
             this.actionableOptions.reset();
             this.showSelectedInHeader();
@@ -118,7 +118,8 @@ var MultiSelectLayoutView;
             }
 
             this.excludedItemsService.conditions = notInPred;
-            EventAggregator.trigger(this.excludedItemsRoute + '.getAll', 1);
+            var channel = this.excludedItemsService.getChannel();
+            channel.trigger('getAll', 1);
 
             var inPred = [
                 {
@@ -133,7 +134,7 @@ var MultiSelectLayoutView;
             }
 
             this.selectedItemsService.conditions = inPred;
-            EventAggregator.trigger(this.selectedItemsRoute + '.getAll', 1);
+            channel.trigger('getAll', 1);
         },
         selectOption: function (e) {
             e.preventDefault();
@@ -293,4 +294,4 @@ var MultiSelectLayoutView;
             selectedItemsChannel.trigger('destroy');
         }
     });
-})(Marionette, jQuery, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, this['Templates']['headerTemplate'], EventAggregator);
+})(Marionette, jQuery, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, this['Templates']['headerTemplate']);

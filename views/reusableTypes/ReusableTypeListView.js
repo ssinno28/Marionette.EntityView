@@ -10,6 +10,12 @@ var ReusableTypeListView;
                 dataField: self.dataField,
                 selectedId: self.selectedId
             };
+        },
+        getChannel: function () {
+            return Backbone.Radio.Channel(this.dataField);
+        },
+        onDestroy: function () {
+            this.getChannel().reset();
         }
     });
 })(jQuery, _, Backbone, Marionette);

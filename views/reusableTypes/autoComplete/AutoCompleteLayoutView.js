@@ -1,5 +1,5 @@
 var AutoCompleteLayoutView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, autoCompleteTemplate, TimeoutUtil, EventAggregator, AutoCompleteListView) {
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, autoCompleteTemplate, TimeoutUtil, AutoCompleteListView) {
     AutoCompleteLayoutView = ReusableTypeLayoutView.extend({
         tag: 'div',
         template: autoCompleteTemplate,
@@ -10,8 +10,9 @@ var AutoCompleteLayoutView;
             this.collection = options.collection;
             this.timeoutUtil = new TimeoutUtil();
 
-            EventAggregator.on('auto-complete:list:complete:' + this.dataField, _.bind(this.listingRetrieved, this));
-            EventAggregator.on('auto-complete:selected:' + this.dataField, _.bind(this.entitySelected, this));
+            var channel = this.getChannel(this.dataField);
+            channel.on('auto-complete:list:complete', _.bind(this.listingRetrieved, this));
+            channel.on('auto-complete:selected', _.bind(this.entitySelected, this));
         },
         className: 'dropdown col-sm-12 nopadding',
         listingRetrieved: function () {
@@ -109,10 +110,6 @@ var AutoCompleteLayoutView;
                         self.ui.$selectedId.val(entity.get('id'));
                     });
             }
-        },
-        onDestroy: function () {
-            EventAggregator.off('auto-complete:list:complete:' + this.dataField);
-            EventAggregator.off('auto-complete:selected:' + this.dataField);
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['autoCompleteTemplate'], TimeoutUtil, EventAggregator, AutoCompleteListView);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['autoCompleteTemplate'], TimeoutUtil, AutoCompleteListView);

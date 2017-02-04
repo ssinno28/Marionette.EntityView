@@ -1,4 +1,3 @@
-
 var ReusableTypeLayoutView;
 (function ($, _, Backbone, Marionette) {
     ReusableTypeLayoutView = Marionette.ReusableTypeLayoutView = Backbone.Marionette.View.extend({
@@ -11,6 +10,12 @@ var ReusableTypeLayoutView;
             return {
                 dataField: self.dataField
             };
+        },
+        getChannel: function () {
+            return Backbone.Radio.Channel(this.dataField);
+        },
+        onDestroy: function () {
+            this.getChannel().reset();
         }
     });
 })(jQuery, _, Backbone, Marionette);

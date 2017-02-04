@@ -1,5 +1,5 @@
 var CheckBoxView;
-(function ($, _, Backbone, Marionette, checkBoxTemplate, ReusableTypeView, EventAggregator) {
+(function ($, _, Backbone, Marionette, checkBoxTemplate, ReusableTypeView) {
     CheckBoxView = ReusableTypeView.extend({
         onShow: function () {
             if (!_.isUndefined(this.model.get('id'))) {
@@ -13,7 +13,7 @@ var CheckBoxView;
             'click input[type=checkbox]': 'itemChecked'
         },
         itemChecked: function (e) {
-            EventAggregator.trigger(this.dataField + ':checked', this.model);
+            this.getChannel().trigger(this.dataField + ':checked', this.model);
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['checkBoxTemplate'], ReusableTypeView, EventAggregator);
+})(jQuery, _, Backbone, Marionette, this['Templates']['checkBoxTemplate'], ReusableTypeView);

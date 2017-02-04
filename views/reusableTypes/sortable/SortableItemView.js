@@ -36,7 +36,6 @@ var SortableItemView;
         },
         over: function (e) {
             e.preventDefault();
-
             return false;
         },
         drop: function (e) {
@@ -48,7 +47,10 @@ var SortableItemView;
                 collection = this.model.collection,
                 currentModel = collection.get(currentModelId);
 
-            EventAggregator.trigger('item:dropped', this.parent.draggedModel, currentModel);
+            this.getChannel().trigger('item:dropped', this.parent.draggedModel, currentModel);
+        },
+        getChannel: function () {
+            return Backbone.Radio.Channel(this.route);
         }
     });
 })(jQuery, _, Backbone, Marionette, EventAggregator);

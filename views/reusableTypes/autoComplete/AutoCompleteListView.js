@@ -1,5 +1,5 @@
 var AutoCompleteListView;
-(function ($, _, Backbone, Marionette, ReusableTypeListView, AutoCompleteView, EventAggregator) {
+(function ($, _, Backbone, Marionette, ReusableTypeListView, AutoCompleteView) {
     AutoCompleteListView = ReusableTypeListView.extend({
         className: 'dropdown-menu',
         tagName: 'ul',
@@ -8,14 +8,14 @@ var AutoCompleteListView;
             this.$el.attr('id', this.dataField);
         },
         onDomRefresh: function () {
-            EventAggregator.trigger('auto-complete:list:complete:' + this.dataField);
+            this.getChannel().trigger('auto-complete:list:complete:' + this.dataField);
             this.$el.dropdown('toggle');
         },
         events: {
             'click .autocomplete-item': 'autoCompleteSelected'
         },
         autoCompleteSelected: function (e) {
-            EventAggregator.trigger('auto-complete:selected:' + this.dataField, e);
+            this.getChannel().trigger('auto-complete:selected:' + this.dataField, e);
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeListView, AutoCompleteView, EventAggregator);
+})(jQuery, _, Backbone, Marionette, ReusableTypeListView, AutoCompleteView);

@@ -1,5 +1,5 @@
 var SortableCollectionView;
-(function ($, _, Backbone, Marionette, SortableItemView, EventAggregator) {
+(function ($, _, Backbone, Marionette, SortableItemView) {
     SortableCollectionView = Marionette.SortableCollectionView = Marionette.CollectionView.extend({
         tagName: 'ul',
         className: 'sortable-view',
@@ -8,7 +8,7 @@ var SortableCollectionView;
         initialize: function (options) {
             _.extend(this, options);
 
-            EventAggregator.on('item:dropped', _.bind(this.setPlacement, this));
+            this.getChannel().on('item:dropped', _.bind(this.setPlacement, this));
             this.setComparator();
         },
         setPlacement: function (draggedModel, overModel) {
@@ -65,7 +65,8 @@ var SortableCollectionView;
             var options = _.extend({
                     model: item,
                     overClass: this.overClass,
-                    parent: this
+                    parent: this,
+                    route: this.route
                 },
                 itemViewOptions);
 
@@ -81,7 +82,10 @@ var SortableCollectionView;
             }
         },
         onDestroy: function () {
-            EventAggregator.off('item:dropped');
+            this.getChannel().reset();
+        },
+        getChannel: function () {
+            return Backbone.Radio.Channel(this.route);
         }
     });
-})(jQuery, _, Backbone, Marionette, SortableItemView, EventAggregator);
+})(jQuery, _, Backbone, Marionette, SortableItemView);

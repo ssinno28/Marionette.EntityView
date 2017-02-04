@@ -1,12 +1,12 @@
 var DateTimePickerView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, datePickerTemplate, EventAggregator, Moment) {
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, datePickerTemplate, Moment) {
     DateTimePickerView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
             var value = this.model.get('value'),
                 timeFormat = !_.isUndefined(this.timeFormat) ? this.timeFormat : 'hh:mm:ss A',
-                dateFormat = !_.isUndefined(this.dateFormat) ? this.dateFormat: 'MM/DD/YYYY',
+                dateFormat = !_.isUndefined(this.dateFormat) ? this.dateFormat : 'MM/DD/YYYY',
                 date = Moment(value).format(dateFormat),
                 time = Moment(value).format(timeFormat);
 
@@ -29,9 +29,9 @@ var DateTimePickerView;
         template: datePickerTemplate,
         onDomRefresh: function () {
             this.ui.$datePicker.datepicker()
-                .on('changeDate', function (e) {
-                    EventAggregator.trigger('change:date:' + this.dataField, e);
-                });
+                .on('changeDate', _.bind(function (e) {
+                    this.getChannel().trigger('change:date:' + this.dataField, e);
+                }, this));
 
             this.ui.$timePicker.datetimepicker({
                 format: 'LT',
@@ -74,4 +74,4 @@ var DateTimePickerView;
             return $date.val() + ' ' + $time.val();
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['datePickerTemplate'], EventAggregator, Moment);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['datePickerTemplate'], Moment);

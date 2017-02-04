@@ -30,6 +30,12 @@ var ReusableTypeView;
                 dataField: self.dataField,
                 checked: self.checked
             };
+        },
+        getChannel: function () {
+            return Backbone.Radio.Channel(this.dataField);
+        },
+        onDestroy: function () {
+            this.getChannel().reset();
         }
     });
 
