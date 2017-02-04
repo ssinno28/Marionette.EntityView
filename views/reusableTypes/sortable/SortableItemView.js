@@ -1,5 +1,5 @@
 var SortableItemView;
-(function ($, _, Backbone, Marionette, EventAggregator) {
+(function ($, _, Backbone, Marionette) {
     SortableItemView = Marionette.SortableItemView = Marionette.View.extend({
         tagName: "li",
         attributes: {
@@ -53,4 +53,4 @@ var SortableItemView;
             return Backbone.Radio.Channel(this.route);
         }
     });
-})(jQuery, _, Backbone, Marionette, EventAggregator);
+})(jQuery, _, Backbone, Marionette);

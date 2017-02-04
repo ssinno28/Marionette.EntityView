@@ -1,14 +1,9 @@
-
-
 var TreeListView;
-(function ($, _, Backbone, Marionette, TreeCompositeView, EventAggregator) {
+(function ($, _, Backbone, Marionette, TreeCompositeView) {
     TreeListView = Marionette.TreeListView = Marionette.CollectionView.extend({
         childView: TreeCompositeView,
         initialize: function (options) {
             this.fullCollection = options.fullCollection;
-        },
-        onShow: function () {
-            EventAggregator.trigger('tree.view.activated');
         },
         onRender: function () {
             // Get rid of that pesky wrapping-div.
@@ -28,4 +23,4 @@ var TreeListView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, TreeCompositeView, EventAggregator);
+})(jQuery, _, Backbone, Marionette, TreeCompositeView);
