@@ -68,7 +68,7 @@ var EntityFormView;
             this.bindUIElements();
         },
         getChannel: function () {
-            return Backbone.Radio.Channel(this.channelName);
+            return Backbone.Radio.channel(this.getOption('channelName'));
         },
         resetForm: function (e) {
             e.preventDefault();

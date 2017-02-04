@@ -91,7 +91,7 @@ var EntityListItemView;
             }
         },
         getChannel: function () {
-            return Backbone.Radio.Channel(this.route);
+            return Backbone.Radio.channel(this.route);
         }
     });
 

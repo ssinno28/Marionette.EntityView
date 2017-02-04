@@ -50,7 +50,7 @@ var SortableItemView;
             this.getChannel().trigger('item:dropped', this.parent.draggedModel, currentModel);
         },
         getChannel: function () {
-            return Backbone.Radio.Channel(this.route);
+            return Backbone.Radio.channel(this.route);
         }
     });
 })(jQuery, _, Backbone, Marionette);

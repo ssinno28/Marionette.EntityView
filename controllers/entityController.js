@@ -2,14 +2,19 @@ var EntityController;
 (function (App, $, _, Backbone, Marionette, EntityLayoutView, headerTemplate, TimeoutUtil, EntityService) {
     EntityController = Marionette.EntityController = Marionette.Object.extend({
         initialize: function (options) {
+            this.channel = Backbone.Radio.channel(options.route);
             this.getEntityService(options);
-            this.channel = Backbone.Radio.Channel(this.entityService.route);
         },
         onActionExecuting: function (name, path) {
             App.route = this.route;
         },
         getEntityService: function (options) {
-            this.entityService = new EntityService(options);
+            var Definition =
+                _.isUndefined(options.service)
+                    ? EntityService.extend({channelName: options.route})
+                    : options.service.extend({channelName: options.route});
+
+            this.entityService = new Definition(options);
         },
         create: function () {
             this.channel.trigger('create');

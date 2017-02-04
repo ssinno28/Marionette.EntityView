@@ -12,7 +12,7 @@ var ReusableTypeLayoutView;
             };
         },
         getChannel: function () {
-            return Backbone.Radio.Channel(this.dataField);
+            return Backbone.Radio.channel(this.dataField);
         },
         onDestroy: function () {
             this.getChannel().reset();

@@ -34,19 +34,19 @@ var EntityService;
                 };
             }
 
-            this.channelName = this.route;
+            if(_.isUndefined(this.channelName)){
+                this.channelName = this.route;
+                this._initRadio();
+            }
         },
-        radioEvents: function () {
-            var radioEvents = {};
-            radioEvents['create'] = this.create;
-            radioEvents['edit'] = this.edit;
-            radioEvents['delete'] = this.delete;
-            radioEvents['getAll'] = this.getAll;
-            radioEvents['getType'] = this.getType;
-            radioEvents['textSearch'] = this.textSearch;
-            radioEvents['destroy'] = this.destroy;
-
-            return radioEvents;
+        radioEvents: {
+            'create': 'create',
+            'edit': 'edit',
+            'delete': 'delete',
+            'getAll': 'getAll',
+            'getType': 'getType',
+            'textSearch': 'textSearch',
+            'destroy': 'destroy'
         },
         destroy: function () {
             this.getChannel().reset();
@@ -109,7 +109,7 @@ var EntityService;
 
             this.entityLayoutView().showChildView('entityRegion', form);
         },
-        edit: function () {
+        edit: function (id) {
             if (this.region.currentView !== this.entityLayoutView()) {
                 this.region.show(this.entityLayoutView());
             }
@@ -161,16 +161,16 @@ var EntityService;
         },
         textSearch: function (startsWith, field) {
             var data = {
-                    conditions: [
-                        {
-                            searchType: 'like',
-                            field: field,
-                            value: startsWith
-                        }
-                    ],
-                    page: 1,
-                    pageSize: window.pageSize
-                };
+                conditions: [
+                    {
+                        searchType: 'like',
+                        field: field,
+                        value: startsWith
+                    }
+                ],
+                page: 1,
+                pageSize: window.pageSize
+            };
 
             this.collection.query(this.track, data)
                 .done(_.bind(function (entities, key) {
@@ -236,7 +236,7 @@ var EntityService;
                     self.entityLayoutView().key = key;
                     self.entityLayoutView().listView = listView;
 
-                    var channel = this.getChannel();
+                    var channel = self.getChannel();
                     channel.trigger('subcollection', models);
 
                     self.entityLayoutView().showChildView('entityRegion', listView);
@@ -269,7 +269,7 @@ var EntityService;
                     self.region.reset();
                     models.currentPage = page;
 
-                    var channel = this.getChannel();
+                    var channel = self.getChannel();
                     channel.trigger('subcollection', models);
 
                     var entityLayoutView = self.entityLayoutView(models);

@@ -266,7 +266,7 @@ var EntityLayoutView;
             }
 
             if (this.routing) {
-                this.getChannel().trigger('toggle-options', route);
+                location.hash = route;
             }
         },
         editClick: function (e) {
@@ -277,13 +277,13 @@ var EntityLayoutView;
                 id = $target.data('id');
 
             if (this.routing) {
-                this.getChannel().trigger('toggle-options', this.route + '/edit/' + id + '/');
+                location.hash = this.route + '/edit/' + id + '/';
             } else {
-                this.getChannel().trigger(this.route + '.edit', id);
+                this.getChannel().trigger('edit', id);
             }
         },
         getChannel: function () {
-            return Backbone.Radio.Channel(this.route);
+            return Backbone.Radio.channel(this.route);
         }
     });
 })(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, TimeoutUtil, PagerBehavior);

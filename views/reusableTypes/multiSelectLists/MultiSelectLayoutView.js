@@ -65,8 +65,7 @@ var MultiSelectLayoutView;
                 self.selectedId.splice(index, 1);
             });
 
-            var addItemTrigger = this.dataField + ':removed';
-            this.getChannel().trigger(addItemTrigger, this.actionableOptions);
+            this.getChannel().trigger('removed', this.actionableOptions);
 
             this.actionableOptions.reset();
             this.showSelectedInHeader();
@@ -91,8 +90,7 @@ var MultiSelectLayoutView;
                 self.selectedId.push(entity.get('id'));
             });
 
-            var addItemTrigger = this.dataField + ':added';
-            this.getChannel().trigger(addItemTrigger, this.selectedItems);
+            this.getChannel().trigger('added', this.selectedItems);
 
             this.actionableOptions.reset();
             this.showSelectedInHeader();
@@ -118,8 +116,7 @@ var MultiSelectLayoutView;
             }
 
             this.excludedItemsService.conditions = notInPred;
-            var channel = this.excludedItemsService.getChannel();
-            channel.trigger('getAll', 1);
+            this.excludedItemsService.getChannel().trigger('getAll', 1);
 
             var inPred = [
                 {
@@ -134,7 +131,7 @@ var MultiSelectLayoutView;
             }
 
             this.selectedItemsService.conditions = inPred;
-            channel.trigger('getAll', 1);
+            this.selectedItemsService.getChannel().trigger('getAll', 1);
         },
         selectOption: function (e) {
             e.preventDefault();
@@ -243,7 +240,6 @@ var MultiSelectLayoutView;
 
             selectedItemsChannel.on('subcollection', _.bind(function (entities) {
                 this.selectedItems = new Backbone.Collection(entities.models);
-
                 this.showSelectedInHeader();
             }, this));
 
@@ -285,13 +281,6 @@ var MultiSelectLayoutView;
             this.ui.$optionsRegion.hide();
             this.showExcludedItems();
             this.showSelectedItems();
-        },
-        onDestroy: function () {
-            var excludedItemsChannel = this.excludedItemsService.getChannel(),
-                selectedItemsChannel = this.selectedItemsService.getChannel();
-
-            excludedItemsChannel.trigger('destroy');
-            selectedItemsChannel.trigger('destroy');
         }
     });
 })(Marionette, jQuery, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, this['Templates']['headerTemplate']);
