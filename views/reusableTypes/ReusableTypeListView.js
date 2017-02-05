@@ -3,6 +3,9 @@ var ReusableTypeListView;
     ReusableTypeListView = Marionette.ReusableTypeListView = Backbone.Marionette.CollectionView.extend({
         initialize: function (options) {
             _.extend(this, options);
+
+            var channel = this._channel = Backbone.Radio.channel(this.dataField);
+            this.on('destroy', this._destroyRadio);
         },
         childViewOptions: function () {
             var self = this;
@@ -12,10 +15,10 @@ var ReusableTypeListView;
             };
         },
         getChannel: function () {
-            return Backbone.Radio.channel(this.dataField);
+            return this._channel;
         },
-        onDestroy: function () {
-            this.getChannel().reset();
+        _destroyRadio: function _destroyRadio() {
+            this._channel.stopReplying(null, null, this);
         }
     });
 })(jQuery, _, Backbone, Marionette);

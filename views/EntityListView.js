@@ -3,11 +3,15 @@ var EntityListView;
     EntityListView = Marionette.EntityListView = Backbone.Marionette.CollectionView.extend({
         className: 'col-sm-12',
         initialize: function (options) {
+            _.extend(this, options);
+
             this.fullCollection = options.fullCollection;
             this.parentViewCid = options.parentViewCid;
+
+            this._channel = Backbone.Radio.channel(this.route);
         },
         onDomRefresh: function () {
-            this.getChannel().trigger('list.view.activated.' + this.parentViewCid);
+            this._channel.trigger('list.view.activated.' + this.parentViewCid);
         },
         childViewOptions: function () {
             var route = this.route,
@@ -32,8 +36,8 @@ var EntityListView;
                 childView.$el.before(this.getTableHeader());
             }
         },
-        getChannel: function(){
-            return Backbone.Radio.channel(this.route);
+        getChannel: function () {
+            return this._channel;
         }
     });
 })(jQuery, _, Backbone, Marionette);

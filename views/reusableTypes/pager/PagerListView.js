@@ -30,9 +30,6 @@ var PagerListView;
                 channel.trigger('getAll', $target.data('number'));
             }
         },
-        onDestroy: function () {
-            this.getChannel().reset();
-        },
         getChannel: function () {
             return Backbone.Radio.channel(this.route);
         }

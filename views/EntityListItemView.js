@@ -11,6 +11,8 @@ var EntityListItemView;
         template: entityListItemTemplate,
         initialize: function (options) {
             _.extend(this, options);
+
+            this._channel = Backbone.Radio.channel(this.route);
         },
         ui: {
             $delete: '.delete',
@@ -84,14 +86,14 @@ var EntityListItemView;
                 behaviorClass: DeleteWarnBehavior,
                 message: "Are you sure you want to delete this item?",
                 yesFunc: function (e) {
-                    this.view.getChannel().trigger(this.view.route + '.delete', this.view.model.get('id'));
+                    this.view._channel.trigger('delete', this.view.model.get('id'));
                 },
                 noFunc: function (e) {
                 }
             }
         },
         getChannel: function () {
-            return Backbone.Radio.channel(this.route);
+            return this._channel;
         }
     });
 

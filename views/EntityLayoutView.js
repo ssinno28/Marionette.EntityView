@@ -32,9 +32,9 @@ var EntityLayoutView;
             this.listView.route = this.route;
             this.listView.parentViewCid = this.cid;
 
-            var channel = this.getChannel();
-            channel.on('list.view.activated.' + this.cid, _.bind(this.listViewActivated, this));
-            channel.on('form.view.activated.' + this.cid, _.bind(this.formViewActivated, this));
+            this._channel = Backbone.Radio.channel(this.route);
+            this._channel.on('list.view.activated.' + this.cid, _.bind(this.listViewActivated, this));
+            this._channel.on('form.view.activated.' + this.cid, _.bind(this.formViewActivated, this));
         },
         className: function () {
             var entityLayoutClass = ' entity-layout';
@@ -82,11 +82,6 @@ var EntityLayoutView;
                 route: route,
                 btnClass: btnClass
             };
-        },
-        onDestroy: function () {
-            var channel = this.getChannel();
-            channel.off('list.view.activated.' + this.cid);
-            channel.off('form.view.activated.' + this.cid);
         },
         onDomRefresh: function () {
             this.showListView();
@@ -217,11 +212,11 @@ var EntityLayoutView;
 
             this.timeoutUtil.suspendOperation(400, _.bind(function () {
                 if (name.length === 0) {
-                    this.getChannel().trigger(this.route + '.getAll', 1);
+                    this.getChannel().trigger('getAll', 1);
                     return;
                 }
 
-                this.getChannel().trigger(this.route + '.textSearch', name, 'name');
+                this.getChannel().trigger('textSearch', name, 'name');
             }, this));
         },
         showListView: function () {
@@ -283,7 +278,7 @@ var EntityLayoutView;
             }
         },
         getChannel: function () {
-            return Backbone.Radio.channel(this.route);
+            return this._channel;
         }
     });
 })(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, TimeoutUtil, PagerBehavior);

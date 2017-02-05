@@ -79,7 +79,7 @@ var MultiSelectLayoutView;
                 if (!this.options.allowMultipleItems &&
                     ((this.selectedItems.length >= 1 && this.actionableOptions.length >= 1) ||
                     this.actionableOptions.length > 1)) {
-                    alert("You can only add one content item.");
+                    alert("You can only add one item.");
                     this.$el.find('.entityRegion ul li').removeClass('selected');
                     this.actionableOptions.reset();
                 }
@@ -138,7 +138,7 @@ var MultiSelectLayoutView;
 
             var $target = $(e.target);
 
-            if(!$target.is('li')){
+            if (!$target.is('li')) {
                 $target = $target.closest('li');
             }
 
@@ -236,14 +236,14 @@ var MultiSelectLayoutView;
             };
 
             this.selectedItemsService = new MultiSelectService(options);
-            var selectedItemsChannel = this.selectedItemsService.getChannel();
+            this._selectedItemsChannel = this.selectedItemsService.getChannel();
 
-            selectedItemsChannel.on('subcollection', _.bind(function (entities) {
+            this._selectedItemsChannel.on('subcollection', _.bind(function (entities) {
                 this.selectedItems = new Backbone.Collection(entities.models);
                 this.showSelectedInHeader();
             }, this));
 
-            selectedItemsChannel.trigger('getType', 1);
+            this._selectedItemsChannel.trigger('getType', 1);
         },
         showExcludedItems: function () {
             var notInPred = [
@@ -269,18 +269,22 @@ var MultiSelectLayoutView;
             };
 
             this.excludedItemsService = new MultiSelectService(options);
-            var excludedItemsChannel = this.excludedItemsService.getChannel();
+            this._excludedItemsChannel = this.excludedItemsService.getChannel();
 
-            excludedItemsChannel.on('subcollection', _.bind(function (entities) {
+            this._excludedItemsChannel.on('subcollection', _.bind(function (entities) {
                 this.nonSelectedItems = new Backbone.Collection(entities.models);
             }, this));
 
-            excludedItemsChannel.trigger('getType');
+            this._excludedItemsChannel.trigger('getType');
         },
         onDomRefresh: function () {
             this.ui.$optionsRegion.hide();
             this.showExcludedItems();
             this.showSelectedItems();
+        },
+        onDestroy: function () {
+            this._excludedItemsChannel.reset();
+            this._selectedItemsChannel.reset();
         }
     });
 })(Marionette, jQuery, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, this['Templates']['headerTemplate']);

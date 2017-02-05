@@ -3,7 +3,10 @@ var ReusableTypeView;
     ReusableTypeView = Marionette.ReusableTypeView = Backbone.Marionette.View.extend({
         initialize: function (options) {
             _.extend(this, options);
+            var channel = this._channel = Backbone.Radio.channel(this.dataField);
+
             this.isSelected();
+            this.on('destroy', this._destroyRadio);
         },
         isSelected: function () {
             this.checked = "";
@@ -32,10 +35,10 @@ var ReusableTypeView;
             };
         },
         getChannel: function () {
-            return Backbone.Radio.channel(this.dataField);
+            return this._channel;
         },
-        onDestroy: function () {
-            this.getChannel().reset();
+        _destroyRadio: function _destroyRadio() {
+            this._channel.stopReplying(null, null, this);
         }
     });
 

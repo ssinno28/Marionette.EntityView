@@ -9,11 +9,7 @@ var EntityController;
             App.route = this.route;
         },
         getEntityService: function (options) {
-            var Definition =
-                _.isUndefined(options.service)
-                    ? EntityService.extend({channelName: options.route})
-                    : options.service.extend({channelName: options.route});
-
+            var Definition = _.isUndefined(options.service) ? EntityService : options.service;
             this.entityService = new Definition(options);
         },
         create: function () {

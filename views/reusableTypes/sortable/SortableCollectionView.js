@@ -81,9 +81,6 @@ var SortableCollectionView;
                 childrenContainer.children().eq(index).before(itemView.el);
             }
         },
-        onDestroy: function () {
-            this.getChannel().reset();
-        },
         getChannel: function () {
             return Backbone.Radio.channel(this.route);
         }

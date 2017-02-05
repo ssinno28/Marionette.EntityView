@@ -34,7 +34,7 @@ var EntityService;
                 };
             }
 
-            if(_.isUndefined(this.channelName)){
+            if (_.isUndefined(this.channelName)) {
                 this.channelName = this.route;
                 this._initRadio();
             }
@@ -45,11 +45,7 @@ var EntityService;
             'delete': 'delete',
             'getAll': 'getAll',
             'getType': 'getType',
-            'textSearch': 'textSearch',
-            'destroy': 'destroy'
-        },
-        destroy: function () {
-            this.getChannel().reset();
+            'textSearch': 'textSearch'
         },
         entityLayoutView: function (entities) {
             if (_.isNull(this._entityLayoutView) || this._entityLayoutView.isDestroyed()) {
@@ -63,7 +59,8 @@ var EntityService;
                 new this.listView
                 ({
                     collection: entities === undefined ? this.collection : entities,
-                    baseClassIds: this.baseClassIds
+                    baseClassIds: this.baseClassIds,
+                    route: this.route
                 });
 
             listView.currentPage = _.isUndefined(entities) ? 1 : entities.currentPage;
@@ -104,7 +101,8 @@ var EntityService;
                 collection: this._entityLayoutView.listView.collection,
                 parentViewCid: this.entityLayoutView().cid,
                 btnClass: this.getBtnClass(),
-                formOptions: this.getFormOptions()
+                formOptions: this.getFormOptions(),
+                channelName: this.route
             });
 
             this.entityLayoutView().showChildView('entityRegion', form);
@@ -129,7 +127,7 @@ var EntityService;
                     this.entityLayoutView().showChildView('entityRegion', form);
                 }, this));
         },
-        delete: function () {
+        delete: function (id) {
             var self = this;
 
             if (this.region.currentView !== this.entityLayoutView()) {
@@ -226,7 +224,8 @@ var EntityService;
                         ({
                             collection: models,
                             parentViewCid: self.entityLayoutView().cid,
-                            baseClassIds: self.baseClassIds
+                            baseClassIds: self.baseClassIds,
+                            route: self.route
                         });
 
                     listView.currentPage = page;
