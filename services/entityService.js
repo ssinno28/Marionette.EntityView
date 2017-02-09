@@ -9,7 +9,7 @@ var EntityService;
             if (!_.isUndefined(options.allowableOperations)) {
                 this.allowableOperations = options.allowableOperations;
             } else {
-                this.allowableOperations = ['create', 'delete', 'edit', 'delete-all', 'publish-all', 'view-live'];
+                this.allowableOperations = ['create', 'delete', 'edit', 'delete-all'];
             }
 
             if (_.isUndefined(options.routing)) {

@@ -1,4 +1,4 @@
-describe('Entity Service', function () {
+describe('Entity Service with Routing', function () {
     var App = new Marionette.Application(),
         MockEntityCollection = Backbone.EntityCollection.extend({
             query: function (track, data, force) {
