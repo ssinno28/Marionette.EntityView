@@ -33,8 +33,8 @@ var EntityLayoutView;
             this.listView.parentViewCid = this.cid;
 
             this._channel = Backbone.Radio.channel(this.route);
-            this._channel.on('list.view.activated.' + this.cid, _.bind(this.listViewActivated, this));
-            this._channel.on('form.view.activated.' + this.cid, _.bind(this.formViewActivated, this));
+            this._channel.on('list.view.activated', _.bind(this.listViewActivated, this));
+            this._channel.on('form.view.activated', _.bind(this.formViewActivated, this));
         },
         className: function () {
             var entityLayoutClass = ' entity-layout';

@@ -41,7 +41,7 @@ var EntityFormView;
             'click .reset': 'resetForm'
         },
         onDomRefresh: function () {
-            this.getChannel().trigger('form.view.activated.' + this.options.parentViewCid);
+            this.getChannel().trigger('form.view.activated');
             this.checkDisabledFields();
         },
         checkDisabledFields: function () {

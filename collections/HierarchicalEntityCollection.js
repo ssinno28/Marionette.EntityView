@@ -259,7 +259,7 @@ var HierarchicalEntityCollection;
                         var models = outerScope.addModelsToCollection(response);
 
                         if (track) {
-                            defer.resolve(outerScope.getSubCollection(response));
+                            defer.resolve(outerScope._getSubCollection(response));
                         } else {
                             defer.resolve(new Backbone.Collection(models));
                         }
