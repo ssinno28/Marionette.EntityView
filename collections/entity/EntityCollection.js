@@ -72,7 +72,7 @@ var EntityCollection;
         baseUrl: function () {
             return _.isUndefined(App.API_URL) ? '' : App.API_URL;
         },
-        addAttributes: function (model, data) {
+        setAttributes: function (model, data) {
 
         },
         getHeaders: function () {
@@ -497,7 +497,7 @@ var EntityCollection;
                         }
 
                         if (groupJoin === 'and') {
-                            conditionals.push(getAndCondition(model, leftConditions, rightCOnditions));
+                            conditionals.push(getAndCondition(model, leftConditions, rightConditions));
                         }
                     }
                 }
@@ -732,4 +732,4 @@ var EntityCollection;
             return deferred;
         }
     });
-})(_, Backbone, jQuery, App, lunr, Filters);
+})(_, Backbone, jQuery, App, lunr, EntityFilters);

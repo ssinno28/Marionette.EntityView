@@ -1,6 +1,6 @@
-var Filters;
+var EntityFilters;
 (function (Backbone, Marionette) {
-    Filters = Marionette.Object.extend({
+    EntityFilters = Marionette.EntityFilters = Marionette.Object.extend({
         like: function (model, condition) {
             return model.get(condition.field).toLowerCase().indexOf(condition.value.toLowerCase()) === 0;
         },
