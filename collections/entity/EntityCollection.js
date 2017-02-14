@@ -109,7 +109,7 @@ var EntityCollection;
                 var model = new this.model(models[i]);
                 model.url = this.getUrl(data);
 
-                this.addAttributes(model, data);
+                this.setAttributes(model, data);
 
                 this.add(model);
                 backboneArray.push(model);
