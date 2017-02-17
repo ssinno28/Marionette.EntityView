@@ -28,7 +28,7 @@ var HierarchicalEntityCollection;
                 url = this.getUrl(),
                 key = url + UriUtil.getUriHash(data);
 
-            var cachedDeferred = window.getCache(key);
+            var cachedDeferred = App.getCache(key);
             if (!_.isUndefined(cachedDeferred)) {
                 return cachedDeferred;
             }
@@ -71,7 +71,7 @@ var HierarchicalEntityCollection;
                 return result;
             });
 
-            window.setCache(key, getCollection);
+            App.setCache(key, getCollection);
             return getCollection;
         },
         /**
@@ -88,7 +88,7 @@ var HierarchicalEntityCollection;
                 data = {id: id, limit: limit},
                 key = url + UriUtil.getUriHash(data);
 
-            var cachedDeferred = window.getCache(key);
+            var cachedDeferred = App.getCache(key);
             if (!_.isUndefined(cachedDeferred)) {
                 return cachedDeferred;
             }
@@ -126,7 +126,7 @@ var HierarchicalEntityCollection;
                 return result;
             });
 
-            window.setCache(key, getCollection);
+            App.setCache(key, getCollection);
             return getCollection;
         },
         /**
@@ -279,7 +279,7 @@ var HierarchicalEntityCollection;
                 return result;
             });
 
-            return window.getCache(url, getCollection);
+            return App.getCache(url, getCollection);
         }
     });
 })(_, Backbone, jQuery, App, UriUtil, EntityCollection);

@@ -5,7 +5,7 @@ var MultiSelectService;
             var data = {
                 conditions: [],
                 page: page,
-                pageSize: window.pageSize
+                pageSize: App.pageSize
             };
 
             data.conditions = data.conditions.concat(this.conditions);

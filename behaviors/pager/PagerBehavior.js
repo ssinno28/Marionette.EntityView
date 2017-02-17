@@ -7,14 +7,14 @@ var PagerBehavior;
                 pagerRegion.reset();
             }
 
-            if (_.isUndefined(window.indexes)) {
+            if (_.isUndefined(App.indexes)) {
                 return;
             }
 
-            var count = window.indexes[this.view.key],
+            var count = App.indexes[this.view.key],
                 currentPage = this.view.listView.currentPage,
                 collection = new Backbone.Collection(),
-                noOfPages = Math.ceil(count / window.pageSize);
+                noOfPages = Math.ceil(count / App.pageSize);
 
             if (noOfPages === 1) {
                 pagerRegion.empty();

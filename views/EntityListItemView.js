@@ -27,12 +27,12 @@ var EntityListItemView;
                 this.ui.$multiAction.addClass('not-active');
             }
         },
-        onRender: function (entityTemplate) {
-            if (!_.isUndefined(entityTemplate)) {
+        onRender: function () {
+            if (!_.isUndefined(this.fieldsTemplate)) {
                 var fieldsView =
                     Backbone.Marionette.View.extend(
                         {
-                            template: entityTemplate,
+                            template: this.fieldsTemplate,
                             model: this.model,
                             onRender: function () {
                                 // Get rid of that pesky wrapping-div.
@@ -57,12 +57,12 @@ var EntityListItemView;
         templateContext: function () {
             var route = this.route;
 
-            var allowEdit = this.allowableOperations.indexOf('edit') > -1;
-            var allowDelete = this.allowableOperations.indexOf('delete') > -1;
-            var allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1;
-            var allowPublishAll = this.allowableOperations.indexOf('clone-all') > -1;
-            var allowAddAll = this.allowableOperations.indexOf('add-all') > -1;
-            var allowViewLive = this.allowableOperations.indexOf('view-live') > -1;
+            var allowEdit = this.allowableOperations.indexOf('edit') > -1,
+                allowDelete = this.allowableOperations.indexOf('delete') > -1,
+                allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1,
+                allowPublishAll = this.allowableOperations.indexOf('clone-all') > -1,
+                allowAddAll = this.allowableOperations.indexOf('add-all') > -1,
+                allowViewLive = this.allowableOperations.indexOf('view-live') > -1;
 
             return {
                 route: route,

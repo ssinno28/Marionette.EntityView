@@ -5,9 +5,6 @@ var EntityListView;
         initialize: function (options) {
             _.extend(this, options);
 
-            this.fullCollection = options.fullCollection;
-            this.parentViewCid = options.parentViewCid;
-
             this._channel = Backbone.Radio.channel(this.route);
         },
         onDomRefresh: function () {

@@ -18,9 +18,9 @@ var EntityLayoutView;
             }
         },
         initialize: function (options) {
-            this.timeoutUtil = new TimeoutUtil();
-
             _.extend(this, options);
+
+            this._timeoutUtil = new TimeoutUtil();
 
             if (options.additionalParams) {
                 this.additionalParams = options.additionalParams;
@@ -35,6 +35,8 @@ var EntityLayoutView;
             this._channel = Backbone.Radio.channel(this.route);
             this._channel.on('list.view.activated', _.bind(this.listViewActivated, this));
             this._channel.on('form.view.activated', _.bind(this.formViewActivated, this));
+
+            this.bindEvents(this, this._channel, this.radioEvents);
         },
         className: function () {
             var entityLayoutClass = ' entity-layout';
@@ -45,6 +47,9 @@ var EntityLayoutView;
             return 'entity-layout-view-' + this.cid + entityLayoutClass;
         },
         model: EntityLayoutModel,
+        radioEvents: {
+            'create': 'onCreate'
+        },
         events: {
             'click .sub-nav button': 'subNavClick',
             'click .edit': 'editClick',
@@ -83,6 +88,12 @@ var EntityLayoutView;
                 btnClass: btnClass
             };
         },
+        onCreate: function () {
+            this.ui.$subNavElements.removeClass('active');
+            this.ui.$createBtn.parent().addClass('active');
+
+            this.ui.$nameFilter.hide();
+        },
         onDomRefresh: function () {
             this.showListView();
             this.renderHeader();
@@ -96,13 +107,7 @@ var EntityLayoutView;
             this.showMultiActions();
         },
         formViewActivated: function () {
-            this.ui.$subNavElements.removeClass('active');
 
-            if (App.currentRoute === 'create') {
-                this.ui.$createBtn.parent().addClass('active');
-            }
-
-            this.ui.$nameFilter.hide();
         },
         publishAll: function (e) {
             e.preventDefault();
@@ -210,7 +215,7 @@ var EntityLayoutView;
             var $target = $(e.target),
                 name = $target.val();
 
-            this.timeoutUtil.suspendOperation(400, _.bind(function () {
+            this._timeoutUtil.suspendOperation(400, _.bind(function () {
                 if (name.length === 0) {
                     this.getChannel().trigger('getAll', 1);
                     return;

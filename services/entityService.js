@@ -167,7 +167,7 @@ var EntityService;
                     }
                 ],
                 page: 1,
-                pageSize: window.pageSize
+                pageSize: App.pageSize
             };
 
             this.collection.query(this.track, data)
@@ -280,7 +280,7 @@ var EntityService;
         getData: function (page) {
             return {
                 page: parseInt(page),
-                pageSize: parseInt(window.pageSize)
+                pageSize: parseInt(App.pageSize)
             };
         }
     });

@@ -1,36 +1,5 @@
 var EntityCollection;
 (function (_, Backbone, $, App, lunr, Filters) {
-
-    //set up simple caching
-    var cache = {};
-    window.getCache = function (key, store) {
-        if (cache[key]) {
-            return cache[key];
-        }
-
-        if (!store) {
-            return undefined;
-        }
-
-        var result;
-        if (typeof (store) === "function") {
-            result = store();
-        } else {
-            result = store;
-        }
-
-        cache[key] = result;
-        return result;
-    };
-
-    window.setCache = function (key, value) {
-        if (_.isUndefined(cache[key]) || _.isNull(cache[key])) {
-            cache[key] = value;
-        }
-    };
-
-    window.pageSize = 10;
-
     var addIndexFields = function (indexFields) {
         for (var j = 0; j < indexFields.length; j++) {
             var indexField = indexFields[j];
@@ -38,14 +7,6 @@ var EntityCollection;
         }
 
         this.ref('id');
-    };
-
-    var getLeftCondition = function (condition) {
-        return condition.group == data.groupJoins[j - 1];
-    };
-
-    var getRightCondition = function (condition) {
-        return condition.group == data.groupJoins[j + 1];
     };
 
     var getOrCondition = function (model, leftConditions, rightConditions) {
@@ -136,12 +97,12 @@ var EntityCollection;
         _addModelIndexes: function (key, models, data, count) {
             var modelIds = _.pluck(models, 'id');
 
-            if (_.isUndefined(window.indexes)) {
-                window.indexes = {};
+            if (_.isUndefined(App.indexes)) {
+                App.indexes = {};
             }
 
-            if (_.isUndefined(window.indexes[key]) && !isNaN(count)) {
-                window.indexes[key] = count;
+            if (_.isUndefined(App.indexes[key]) && !isNaN(count)) {
+                App.indexes[key] = count;
             }
 
             _.each(models, function (model) {
@@ -230,11 +191,11 @@ var EntityCollection;
 
                                 result.child.on('remove', function (removedModel) {
                                     self._alignIndexes(removedModel, url);
-                                    window.indexes[url]--;
+                                    App.indexes[url]--;
                                 });
 
                                 result.child.on('add', function () {
-                                    window.indexes[url]++;
+                                    App.indexes[url]++;
                                 });
 
                                 defer.resolve(result, url);
@@ -243,11 +204,11 @@ var EntityCollection;
 
                                 result.on('remove', function (removedModel) {
                                     self._alignIndexes(removedModel, url);
-                                    window.indexes[url]--;
+                                    App.indexes[url]--;
                                 });
 
                                 result.on('add', function () {
-                                    window.indexes[url]++;
+                                    App.indexes[url]++;
                                 });
 
                                 defer.resolve(result, url);
@@ -269,7 +230,7 @@ var EntityCollection;
                 });
 
             if (track) {
-                window.setCache(url, getCollection);
+                App.setCache(url, getCollection);
             }
 
             return getCollection;
@@ -391,12 +352,12 @@ var EntityCollection;
                                 result = self._getSubCollection(data, pageKey);
 
                                 result.child.on('add', function () {
-                                    window.indexes[pageKey]++;
+                                    App.indexes[pageKey]++;
                                 });
 
                                 result.child.on('remove', function (removedModel) {
                                     self._alignIndexes(removedModel, pageKey);
-                                    window.indexes[pageKey]--;
+                                    App.indexes[pageKey]--;
                                 });
 
                                 defer.resolve(result, pageKey);
@@ -404,12 +365,12 @@ var EntityCollection;
                                 result = new Backbone.Collection(models);
 
                                 result.on('add', function () {
-                                    window.indexes[pageKey]++;
+                                    App.indexes[pageKey]++;
                                 });
 
                                 result.on('remove', function (removedModel) {
                                     self._alignIndexes(removedModel, pageKey);
-                                    window.indexes[pageKey]--;
+                                    App.indexes[pageKey]--;
                                 });
 
                                 defer.resolve(result, pageKey);
@@ -432,7 +393,7 @@ var EntityCollection;
 
 
             if (_.isUndefined(force) || (!_.isUndefined(force) && !force)) {
-                window.setCache(key, getCollection);
+                App.setCache(key, getCollection);
             }
 
             return getCollection;
@@ -449,48 +410,34 @@ var EntityCollection;
                 conditionals = [];
 
             if (data.conditions) {
+                //get the filter from the _filters object by name and set the criterion so
+                //backbone.subcollection knows how to filter the collection.
                 for (var i = 0; i < data.conditions.length; i++) {
                     var currentCondition = data.conditions[i];
-                    switch (currentCondition.searchType) {
-                        case 'like':
-                            currentCondition.criterion = this._filters.like;
-                            break;
-                        case 'equals':
-                            currentCondition.criterion = this._filters.equals;
-                            break;
-                        case 'contains':
-                            currentCondition.criterion = this._filters.contains;
-                            break;
-                        case 'notEquals':
-                            currentCondition.criterion = this._filters.notEquals;
-                            break;
-                        case 'in':
-                            currentCondition.criterion = this._filters.idsFilter;
-                            break;
-                        case 'except':
-                            currentCondition.criterion = this._filters.except;
-                            break;
-                        case 'textsearch':
-                            currentCondition.criterion = this._filters.textSearchFilter;
-                            break;
-                    }
+                    currentCondition.criterion = this._filters[currentCondition.searchType];
                 }
 
-                if (!data.groupJoins) {
+                if (_.isUndefined(data.groupJoins)) {
                     _.each(data.conditions, function (condition) {
                         conditionals.push(condition);
                     });
                 } else {
                     for (var j = 0; j < data.groupJoins.length; j++) {
+                        var groupJoin = data.groupJoins[j];
+
                         if (parseInt(groupJoin)) {
                             continue;
                         }
 
                         var leftConditions =
-                            _.pluck(_.filter(data.conditions, getLeftCondition), 'criterion');
+                            _.pluck(_.filter(data.conditions, function (condition) {
+                                return condition.group == data.groupJoins[j - 1];
+                            }), 'criterion');
 
                         var rightConditions =
-                            _.pluck(_.filter(data.conditions, getRightCondition), 'criterion');
+                            _.pluck(_.filter(data.conditions, function (condition) {
+                                return condition.group == data.groupJoins[j + 1];
+                            }), 'criterion');
 
                         if (groupJoin === 'or') {
                             conditionals.push(getOrCondition(model, leftConditions, rightConditions));
@@ -534,8 +481,8 @@ var EntityCollection;
 
                 var pagingFilter =
                     function (model) {
-                        var firstResult = (page - 1) * window.pageSize,
-                            maxResults = firstResult + window.pageSize;
+                        var firstResult = (page - 1) * App.pageSize,
+                            maxResults = firstResult + App.pageSize;
 
                         if (_.isUndefined(model.indexes)) {
                             model.indexes = {};
@@ -572,7 +519,7 @@ var EntityCollection;
         },
         _predicate: function (model, conditionals) {
             for (var i = 0; i < conditionals.length; i++) {
-                var criterion = conditionals[i].criterion;
+                var criterion = _.bind(conditionals[i].criterion, this);
                 if ((_.isUndefined(criterion) && !conditionals[i](model)) || (!_.isUndefined(criterion) && !criterion(model, conditionals[i]))) {
                     return false;
                 }

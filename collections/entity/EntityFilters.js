@@ -25,7 +25,7 @@ var EntityFilters;
             }
         },
 
-        idsFilter: function (model, condition) {
+        in: function (model, condition) {
             var values;
             if (condition.value instanceof Array) {
                 values = condition.value;
@@ -66,8 +66,8 @@ var EntityFilters;
             return true;
         },
 
-        textSearchFilter: function (model, condition) {
-            var searchResults = self.searchIndex.search(condition.value);
+        textSearch: function (model, condition) {
+            var searchResults = this.searchIndex.search(condition.value);
             var filteredResult =
                 _.find(searchResults, function (searchResult) {
                     return searchResult.ref === model.get('id');

@@ -8,7 +8,7 @@ var AutoCompleteLayoutView;
 
             this.selectedId = options.selectedId;
             this.collection = options.collection;
-            this.timeoutUtil = new TimeoutUtil();
+            this._timeoutUtil = new TimeoutUtil();
 
             var channel = this.getChannel(this.dataField);
             channel.on('auto-complete:list:complete', _.bind(this.listingRetrieved, this));
@@ -72,7 +72,7 @@ var AutoCompleteLayoutView;
                 return;
             }
 
-            this.timeoutUtil.suspendOperation(400,
+            this._timeoutUtil.suspendOperation(400,
                 function () {
                     var data = {
                         conditions: [
