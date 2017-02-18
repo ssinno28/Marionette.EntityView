@@ -1,6 +1,6 @@
 var EntityLayoutView;
 (function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, TimeoutUtil, PagerBehavior) {
-    EntityLayoutView = Marionette.EntityLayoutView = Backbone.Marionette.View.extend({
+    EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
         template: entityListLayoutTpl,
         regions: {
             'entityRegion': {
@@ -36,7 +36,7 @@ var EntityLayoutView;
             this._channel.on('list.view.activated', _.bind(this.listViewActivated, this));
             this._channel.on('form.view.activated', _.bind(this.formViewActivated, this));
 
-            this.bindEvents(this, this._channel, this.radioEvents);
+            Marionette.bindEvents(this, this._channel, this.radioEvents);
         },
         className: function () {
             var entityLayoutClass = ' entity-layout';
@@ -107,7 +107,6 @@ var EntityLayoutView;
             this.showMultiActions();
         },
         formViewActivated: function () {
-
         },
         publishAll: function (e) {
             e.preventDefault();

@@ -1,29 +1,18 @@
 describe('Entity Service with Routing', function () {
-    var App = new Marionette.Application(),
-        MockEntityCollection = Backbone.EntityCollection.extend({
-            query: function (track, data, force) {
-                return $.Deferred(function(defer){
-                    defer.resolve(new Backbone.Collection());
-                });
-            }
-        }),
-        html = '<html><body><div id="test-region"></div></body></html>';
-
-    $(document.body ).append(html);
-
     var options = {
         collection: new MockEntityCollection(),
         model: Backbone.Model,
         formView: Marionette.EntityFormView,
-        listView: Marionette.EntityListView,
+        listView: MockListView,
         title: 'Testing',
         route: 'test',
-        region: new Backbone.Marionette.Region({el: '#test-region'})
+        region: region
     };
 
+    options.collection.add(new Backbone.Model({id: 1, name: 'testing'}));
     var entityService = new Marionette.EntityService(options);
 
-    it('has routing', function () {
+    it('defaults to have routing', function () {
         expect(entityService.routing).toEqual(true);
     });
 
@@ -31,11 +20,20 @@ describe('Entity Service with Routing', function () {
         expect(entityService.getChannel()).toEqual(Backbone.Radio.channel(options.route));
     });
 
-    it('calls getAll', function () {
-        entityService.region.show(entityService.entityLayoutView(new Backbone.Collection()));
+    it('getType makes call to getAll', function () {
+        entityService.region.show(entityService.entityLayoutView());
         spyOn(entityService, 'getAll');
 
         entityService.getType(1);
         expect(entityService.getAll).toHaveBeenCalled();
+    });
+
+    it('changes hash on route', function () {
+        entityService.region.show(entityService.entityLayoutView());
+
+        var $subNavBtn = entityService.entityLayoutView().$el.find('.sub-nav button:first-child');
+        $subNavBtn.trigger('click');
+
+        expect(location.hash).toEqual('#' + options.route + '/1/');
     });
 });

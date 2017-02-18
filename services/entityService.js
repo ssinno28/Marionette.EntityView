@@ -58,7 +58,7 @@ var EntityService;
             var listView =
                 new this.listView
                 ({
-                    collection: entities === undefined ? this.collection : entities,
+                    collection: _.isUndefined(entities) ? this.collection : entities,
                     baseClassIds: this.baseClassIds,
                     route: this.route
                 });

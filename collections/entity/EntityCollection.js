@@ -48,22 +48,21 @@ var EntityCollection;
          * @param {} models
          * @return
          */
-        addModelsToCollection: function (models, data) {
+        addRange: function (models, data) {
             console.log(models);
 
             if (_.isNull(models)) {
                 return [];
             }
 
-            var backboneArray = [],
-                self = this;
+            var range = [],
+                numOfResults = models.length;
 
-            var numOfResults = models.length;
             for (var i = numOfResults; i--;) {
                 var currentModel = this.get(models[i].id);
 
                 if (!_.isUndefined(currentModel)) {
-                    backboneArray.push(currentModel);
+                    range.push(currentModel);
                     continue;
                 }
 
@@ -73,12 +72,12 @@ var EntityCollection;
                 this.setAttributes(model, data);
 
                 this.add(model);
-                backboneArray.push(model);
+                range.push(model);
 
                 if (!_.isUndefined(this.indexFields)) {
                     if (_.isUndefined(this.searchIndex)) {
                         this.searchIndex =
-                            lunr(addIndexFields(self.indexFields));
+                            lunr(addIndexFields(this.indexFields));
                     }
 
                     var indexObject = {};
@@ -92,7 +91,7 @@ var EntityCollection;
                 }
             }
 
-            return backboneArray;
+            return range;
         },
         _addModelIndexes: function (key, models, data, count) {
             var modelIds = _.pluck(models, 'id');
@@ -101,7 +100,7 @@ var EntityCollection;
                 App.indexes = {};
             }
 
-            if (_.isUndefined(App.indexes[key]) && !isNaN(count)) {
+            if (_.isUndefined(App.indexes[key]) && _.isNumber(count)) {
                 App.indexes[key] = count;
             }
 
@@ -182,7 +181,7 @@ var EntityCollection;
                                 entities = response;
                             }
 
-                            var models = self.addModelsToCollection(entities);
+                            var models = self.addRange(entities);
                             self._addModelIndexes(url, models, data, parseInt(response.count));
 
                             var result;
@@ -344,7 +343,7 @@ var EntityCollection;
                                 entities = response;
                             }
 
-                            var models = self.addModelsToCollection(entities, data);
+                            var models = self.addRange(entities, data);
                             self._addModelIndexes(pageKey, models, data, parseInt(response.count));
 
                             var result;
@@ -422,11 +421,12 @@ var EntityCollection;
                         conditionals.push(condition);
                     });
                 } else {
-                    for (var j = 0; j < data.groupJoins.length; j++) {
-                        var groupJoin = data.groupJoins[j];
 
+                    var index = 0;
+                    _.each(data.groupJoins, function (groupJoin) {
                         if (parseInt(groupJoin)) {
-                            continue;
+                            index++;
+                            return;
                         }
 
                         var leftConditions =
@@ -446,7 +446,9 @@ var EntityCollection;
                         if (groupJoin === 'and') {
                             conditionals.push(getAndCondition(model, leftConditions, rightConditions));
                         }
-                    }
+
+                        index++;
+                    });
                 }
             }
 

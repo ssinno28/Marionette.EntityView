@@ -21,6 +21,8 @@ var EntityFormView;
             this.getCheckboxForRegion = _.bind(this.checkboxForRegion, this);
 
             this.original = this.model.toJSON();
+
+            this._channel = Backbone.Radio.channel(this.getOption('channelName'));
         },
         behaviors: {
             Messages: {
@@ -58,9 +60,13 @@ var EntityFormView;
                 this.ui.$actions.hide();
             }
         },
-        renderForm: function (template) {
+        onRender: function () {
+            if (_.isUndefined(this.formTemplate)) {
+                throw new Error("You have not set the formTemplate property!");
+            }
+
             var formView = Backbone.Marionette.View.extend({
-                template: template,
+                template: this.formTemplate,
                 model: this.model
             });
 
@@ -68,7 +74,7 @@ var EntityFormView;
             this.bindUIElements();
         },
         getChannel: function () {
-            return Backbone.Radio.channel(this.getOption('channelName'));
+            return this._channel;
         },
         resetForm: function (e) {
             e.preventDefault();
@@ -190,6 +196,7 @@ var EntityFormView;
                         if (!_.isUndefined(self.collection)) {
                             self.collection.remove(self.model.cid);
                         }
+
                         self.triggerMethod("ShowMessages", 'error', ['Could not create item!']);
                     } else {
                         self.triggerMethod("ShowMessages", 'error', ['Could not save item!']);

@@ -52,7 +52,7 @@ var HierarchicalEntityCollection;
                      * @return
                      */
                     success: function (response) {
-                        outerScope.addModelsToCollection(response);
+                        outerScope.addRange(response);
                         defer.resolve(outerScope.getChildrenCollection(parentId, includeEntity));
                     },
                     /**
@@ -107,7 +107,7 @@ var HierarchicalEntityCollection;
                      * @return
                      */
                     success: function (response) {
-                        outerScope.addModelsToCollection(response);
+                        outerScope.addRange(response);
                         defer.resolve(outerScope.getParentsCollection(id, includeEntity));
                     },
                     /**
@@ -256,7 +256,7 @@ var HierarchicalEntityCollection;
                      * @return
                      */
                     success: function (response) {
-                        var models = outerScope.addModelsToCollection(response);
+                        var models = outerScope.addRange(response);
 
                         if (track) {
                             defer.resolve(outerScope._getSubCollection(response));
