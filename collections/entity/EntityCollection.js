@@ -49,7 +49,6 @@ var EntityCollection;
          * @return
          */
         addRange: function (models, data) {
-            console.log(models);
 
             if (_.isNull(models)) {
                 return [];
@@ -101,6 +100,7 @@ var EntityCollection;
             }
 
             if (_.isUndefined(App.indexes[key]) && _.isNumber(count)) {
+                console.log('setting index key ' + key);
                 App.indexes[key] = count;
             }
 

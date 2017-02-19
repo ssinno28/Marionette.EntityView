@@ -13,12 +13,12 @@ var EntityFormView;
                 this.model.setUrl(this.collection.getUrl());
             }
 
-            this.getDropDownForRegion = _.bind(this.dropDownForRegion, this);
-            this.getRadioBtnsForRegion = _.bind(this.radioButtonListForRegion, this);
-            this.getAutoCompleteForRegion = _.bind(this.autoCompleteForRegion, this);
-            this.getMultiSelectForRegion = _.bind(this.multiSelectForRegion, this);
-            this.getTextAreaForRegion = _.bind(this.textAreaForRegion, this);
-            this.getCheckboxForRegion = _.bind(this.checkboxForRegion, this);
+            this.getDropDownForRegion = _.bind(this._dropDownForRegion, this);
+            this.getRadioBtnsForRegion = _.bind(this._radioButtonListForRegion, this);
+            this.getAutoCompleteForRegion = _.bind(this._autoCompleteForRegion, this);
+            this.getMultiSelectForRegion = _.bind(this._multiSelectForRegion, this);
+            this.getTextAreaForRegion = _.bind(this._textAreaForRegion, this);
+            this.getCheckboxForRegion = _.bind(this._checkboxForRegion, this);
 
             this.original = this.model.toJSON();
 
@@ -208,7 +208,7 @@ var EntityFormView;
         },
         onCreated: function () {
         },
-        dropDownForRegion: function (collection, region, dataField, conditions) {
+        _dropDownForRegion: function (collection, region, dataField, conditions) {
             var viewContext = this;
             if (!conditions) {
                 conditions = [];
@@ -233,7 +233,7 @@ var EntityFormView;
                 }));
             });
         },
-        multiSelectForRegion: function (collection, region, dataField, conditions) {
+        _multiSelectForRegion: function (collection, region, dataField, conditions) {
             var selectedIds = this.model.get(dataField);
 
             if (!conditions) {
@@ -258,7 +258,7 @@ var EntityFormView;
 
             this.showChildView(region, multiSelect);
         },
-        autoCompleteForRegion: function (collection, region, dataField) {
+        _autoCompleteForRegion: function (collection, region, dataField) {
             var selectedId = this.model.get(dataField);
 
             this.showChildView(region,
@@ -268,7 +268,7 @@ var EntityFormView;
                     selectedId: selectedId
                 }));
         },
-        radioButtonListForRegion: function (collection, region, dataField) {
+        _radioButtonListForRegion: function (collection, region, dataField) {
             var selectedId = this.model.get(dataField);
 
             this.showChildView(region, new RadioButtonListView({
@@ -277,13 +277,13 @@ var EntityFormView;
                 selectedId: selectedId
             }));
         },
-        textAreaForRegion: function (model, region, dataField) {
+        _textAreaForRegion: function (model, region, dataField) {
             this.showChildView(region, new TextAreaView({
                 model: model,
                 dataField: dataField
             }));
         },
-        checkboxForRegion: function (model, region, dataField) {
+        _checkboxForRegion: function (model, region, dataField) {
             this.showChildView(region, new CheckBoxView({
                 model: model,
                 dataField: dataField

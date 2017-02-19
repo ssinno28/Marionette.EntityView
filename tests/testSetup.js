@@ -1,5 +1,4 @@
-var App = new Marionette.Application(),
-    MockEntityCollection = Backbone.EntityCollection.extend({
+var MockEntityCollection = Backbone.EntityCollection.extend({
         query: function (track, data, force) {
             return $.Deferred(function (defer) {
                 defer.resolve(new Backbone.Collection());
@@ -14,3 +13,6 @@ var App = new Marionette.Application(),
     });
 
 $(document.body).append(html);
+
+//set pageSize to 5 for easier testing
+App.pageSize = 5;
