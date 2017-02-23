@@ -1,5 +1,5 @@
 var EntityFormView;
-(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView) {
+(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView) {
     EntityFormView = Marionette.EntityFormView = Backbone.Marionette.FormView.extend({
         template: entityFormLayoutTemplate,
         regions: {
@@ -19,8 +19,12 @@ var EntityFormView;
             this.getMultiSelectForRegion = _.bind(this._multiSelectForRegion, this);
             this.getTextAreaForRegion = _.bind(this._textAreaForRegion, this);
             this.getCheckboxForRegion = _.bind(this._checkboxForRegion, this);
+            this.getWyswigForRegion = _.bind(this._wyswigForRegion, this);
+            this.getImagePickerForRegion = _.bind(this._imagePickerForRegion, this);
 
-            this.original = this.model.toJSON();
+            if (!this.model.isNew()) {
+                this.original = this.model.toJSON();
+            }
 
             this._channel = Backbone.Radio.channel(this.getOption('channelName'));
         },
@@ -43,7 +47,7 @@ var EntityFormView;
             'click .reset': 'resetForm'
         },
         onDomRefresh: function () {
-            this.getChannel().trigger('form.view.activated');
+            this._channel.trigger('form.view.activated');
             this.checkDisabledFields();
         },
         checkDisabledFields: function () {
@@ -62,7 +66,7 @@ var EntityFormView;
         },
         onRender: function () {
             if (_.isUndefined(this.formTemplate)) {
-                throw new Error("You have not set the formTemplate property!");
+                throw new Error("The formTemplate property is undefined!");
             }
 
             var formView = Backbone.Marionette.View.extend({
@@ -208,6 +212,15 @@ var EntityFormView;
         },
         onCreated: function () {
         },
+        getSubServiceRoute: function (name) {
+            return location.hash.substring(1, location.hash.length) + name;
+        },
+        _wyswigForRegion: function (model, region, dataField) {
+            this.showChildView(region, new WyswigView({
+                model: model,
+                dataField: dataField
+            }));
+        },
         _dropDownForRegion: function (collection, region, dataField, conditions) {
             var viewContext = this;
             if (!conditions) {
@@ -236,7 +249,7 @@ var EntityFormView;
         _multiSelectForRegion: function (collection, region, dataField, conditions) {
             var selectedIds = this.model.get(dataField);
 
-            if (!conditions) {
+            if (_.isUndefined(conditions)) {
                 conditions = [];
             }
 
@@ -288,6 +301,19 @@ var EntityFormView;
                 model: model,
                 dataField: dataField
             }));
+        },
+        _imagePickerForRegion: function (model, region, dataField) {
+            this.showChildView(region, new ImageFieldView({
+                model: model,
+                dataField: dataField
+            }));
+        },
+        _dateTimePickerForRegion: function (model, region, dataField, dateType) {
+            this.showChildView(region, new DateTimePickerView({
+                model: model,
+                dataField: dataField,
+                dateType: dateType
+            }));
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityFormLayoutTemplate'], MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityFormLayoutTemplate'], MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView);

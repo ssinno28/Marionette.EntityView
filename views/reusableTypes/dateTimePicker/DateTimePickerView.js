@@ -1,5 +1,5 @@
 var DateTimePickerView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, datePickerTemplate, Moment) {
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, datePickerTemplate, moment) {
     DateTimePickerView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
@@ -7,8 +7,8 @@ var DateTimePickerView;
             var value = this.model.get('value'),
                 timeFormat = !_.isUndefined(this.timeFormat) ? this.timeFormat : 'hh:mm:ss A',
                 dateFormat = !_.isUndefined(this.dateFormat) ? this.dateFormat : 'MM/DD/YYYY',
-                date = Moment(value).format(dateFormat),
-                time = Moment(value).format(timeFormat);
+                date = moment(value).format(dateFormat),
+                time = moment(value).format(timeFormat);
 
             if (date !== 'Invalid date') {
                 this.model.set({date: date});
@@ -30,7 +30,7 @@ var DateTimePickerView;
         onDomRefresh: function () {
             this.ui.$datePicker.datepicker()
                 .on('changeDate', _.bind(function (e) {
-                    this.getChannel().trigger('change:date:' + this.dataField, e);
+                    this._channel.trigger('change:date:' + this.dataField, e);
                 }, this));
 
             this.ui.$timePicker.datetimepicker({
@@ -45,9 +45,9 @@ var DateTimePickerView;
             var $date = this.$el.find('.date'),
                 $time = this.$el.find('.time');
 
-            if (this.extensionType === 'Date') {
+            if (this.dateType === 'Date') {
                 $time.hide();
-            } else if (this.extensionType === 'Time') {
+            } else if (this.dateType === 'Time') {
                 $date.hide();
                 $time.attr('style', 'float:left');
             }
@@ -65,13 +65,13 @@ var DateTimePickerView;
             var $date = $('[data-field="' + this.dataField + '_date"]'),
                 $time = $('[data-field="' + this.dataField + '_time"]');
 
-            if (this.extensionType === 'Date') {
+            if (this.dateType === 'Date') {
                 $date.val();
-            } else if (this.extensionType === 'Time') {
+            } else if (this.dateType === 'Time') {
                 $time.val();
             }
 
             return $date.val() + ' ' + $time.val();
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['datePickerTemplate'], Moment);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['datePickerTemplate'], moment);

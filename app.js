@@ -69,4 +69,9 @@
         App.pageSize = 10;
     }
 
+    $('#file-manager').on('click', function (e) {
+        e.preventDefault();
+        BrowseServer();
+    });
+
 })(App);

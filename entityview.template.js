@@ -29,8 +29,8 @@ SOFTWARE.
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define(['backbone', 'marionette', 'jquery', 'underscore', 'app', 'moment'],
-            function (Backbone, Marionette, $, _, App, Moment) {
-                return factory(Backbone, Marionette, $, _, App, Moment);
+            function (Backbone, Marionette, $, _, App, moment) {
+                return factory(Backbone, Marionette, $, _, App, moment);
             });
     } else {
 
@@ -42,7 +42,7 @@ SOFTWARE.
         var exports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment);
         _.extend(root, exports);
     }
-}(this, function (Backbone, Marionette, jQuery, _, App, Moment) {
+}(this, function (Backbone, Marionette, jQuery, _, App, moment) {
 
     /* jshint ignore:start */
     <%= templates %>

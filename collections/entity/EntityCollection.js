@@ -283,7 +283,7 @@ var EntityCollection;
                 pageKey = this._getKeyWithOutPage(data);
 
             if (_.isUndefined(force) || (!_.isUndefined(force) && !force)) {
-                var cachedDeferred = window.getCache(key);
+                var cachedDeferred = App.getCache(key);
                 if (!_.isUndefined(cachedDeferred)) {
                     return cachedDeferred;
                 }
