@@ -431,12 +431,12 @@ var EntityCollection;
 
                         var leftConditions =
                             _.pluck(_.filter(data.conditions, function (condition) {
-                                return condition.group == data.groupJoins[j - 1];
+                                return condition.group == data.groupJoins[index - 1];
                             }), 'criterion');
 
                         var rightConditions =
                             _.pluck(_.filter(data.conditions, function (condition) {
-                                return condition.group == data.groupJoins[j + 1];
+                                return condition.group == data.groupJoins[index + 1];
                             }), 'criterion');
 
                         if (groupJoin === 'or') {
