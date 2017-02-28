@@ -84,8 +84,9 @@ var EntityFormView;
             e.preventDefault();
             this.render();
         },
-        showWarningModal: function (message, yesFunc, noFunc) {
-            var $warningModal = $('.warningModal');
+        showWarningModal: function (message, hasAction) {
+            var $warningModal = $('.warningModal'),
+                self = this;
 
             //update the message
             $warningModal.find('.message').html(message);
@@ -93,27 +94,21 @@ var EntityFormView;
             //show modal
             $warningModal.modal('show');
 
-            if (_.isUndefined(noFunc) || _.isUndefined(yesFunc)) {
+            if (!hasAction) {
                 $warningModal.find('.buttons').hide();
             }
 
             $warningModal.on('click', '.no', function (e) {
                 e.preventDefault();
 
-                if (!_.isUndefined(noFunc)) {
-                    noFunc();
-                }
-
+                self._channel.trigger('warning-modal:no');
                 $warningModal.modal('hide');
             });
 
             $warningModal.on('click', '.yes', function (e) {
                 e.preventDefault();
-
-                if (!_.isUndefined(yesFunc)) {
-                    yesFunc();
-                }
-
+                
+                self._channel.trigger('warning-modal:yes');
                 $warningModal.modal('hide');
             });
         },
