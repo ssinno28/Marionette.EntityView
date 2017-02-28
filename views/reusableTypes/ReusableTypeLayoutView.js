@@ -17,7 +17,7 @@ var ReusableTypeLayoutView;
         getChannel: function () {
             return this._channel;
         },
-        _destroyRadio: function _destroyRadio() {
+        _destroyRadio: function () {
             this._channel.stopReplying(null, null, this);
         }
     });
