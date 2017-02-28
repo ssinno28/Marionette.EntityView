@@ -21,6 +21,7 @@ var EntityFormView;
             this.getCheckboxForRegion = _.bind(this._checkboxForRegion, this);
             this.getWyswigForRegion = _.bind(this._wyswigForRegion, this);
             this.getImagePickerForRegion = _.bind(this._imagePickerForRegion, this);
+            this.getDatePickerForRegion = _.bind(this._dateTimePickerForRegion, this);
 
             if (!this.model.isNew()) {
                 this.original = this.model.toJSON();
