@@ -41,7 +41,8 @@ var EntityFormView;
         templateContext: function () {
             var self = this;
             return {
-                btnClass: self.options.btnClass
+                btnClass: self.options.btnClass,
+                isNew: this.model.isNew()
             };
         },
         events: {

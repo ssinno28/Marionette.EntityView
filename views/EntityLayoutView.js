@@ -227,7 +227,7 @@ var EntityLayoutView;
             this.showChildView('entityRegion', this.listView);
         },
         renderHeader: function () {
-            if (!this.header) {
+            if (_.isUndefined(this.header)) {
                 return;
             }
 
@@ -283,6 +283,10 @@ var EntityLayoutView;
         },
         getChannel: function () {
             return this._channel;
+        },
+        onDestroy: function () {
+            this._channel.off('list.view.activated');
+            this._channel.off('form.view.activated');
         }
     });
 })(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, TimeoutUtil, PagerBehavior);

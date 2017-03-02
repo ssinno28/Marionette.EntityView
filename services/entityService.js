@@ -200,6 +200,10 @@ var EntityService;
                 }, this));
         },
         getAll: function (page, force) {
+            if (this.region.currentView !== this._entityLayoutView) {
+                throw new Error('You need to call getType on this service before calling get all!!');
+            }
+
             var self = this;
 
             if (isNaN(page)) {
