@@ -49,7 +49,7 @@ var EntityFormView;
             'click .reset': 'resetForm'
         },
         onDomRefresh: function () {
-            this._channel.trigger('form.view.activated');
+            this._channel.trigger('view.form.activated');
             this.checkDisabledFields();
         },
         checkDisabledFields: function () {

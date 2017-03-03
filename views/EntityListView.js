@@ -8,7 +8,7 @@ var EntityListView;
             this._channel = Backbone.Radio.channel(this.route);
         },
         onDomRefresh: function () {
-            this._channel.trigger('list.view.activated');
+            this._channel.trigger('view.list.activated');
         },
         childViewOptions: function () {
             var route = this.route,

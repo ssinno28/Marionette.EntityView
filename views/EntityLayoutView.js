@@ -33,9 +33,6 @@ var EntityLayoutView;
             this.listView.parentViewCid = this.cid;
 
             this._channel = Backbone.Radio.channel(this.route);
-            this._channel.on('list.view.activated', _.bind(this.listViewActivated, this));
-            this._channel.on('form.view.activated', _.bind(this.formViewActivated, this));
-
             Marionette.bindEvents(this, this._channel, this.radioEvents);
         },
         className: function () {
@@ -48,7 +45,9 @@ var EntityLayoutView;
         },
         model: EntityLayoutModel,
         radioEvents: {
-            'create': 'onCreate'
+            'create': 'onCreate',
+            'view.list.activated': 'listViewActivated',
+            'view.form.activated': 'formViewActivated'
         },
         events: {
             'click .sub-nav button': 'subNavClick',
@@ -283,10 +282,6 @@ var EntityLayoutView;
         },
         getChannel: function () {
             return this._channel;
-        },
-        onDestroy: function () {
-            this._channel.off('list.view.activated');
-            this._channel.off('form.view.activated');
         }
     });
 })(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, TimeoutUtil, PagerBehavior);

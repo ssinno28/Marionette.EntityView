@@ -3,6 +3,7 @@ var MultiSelectOptionView;
     MultiSelectOptionView = EntityListItemView.extend({
         tagName: 'li',
         className: 'col-sm-12 multi-select-option nopadding',
+        fieldsTemplate: multiSelectLiTemplate,
         onRender: function () {
             EntityListItemView.prototype.onRender.call(this);
             this.$el.attr('data-id', this.model.get('id'));
