@@ -186,7 +186,7 @@ var EntityFormView;
                         }
 
                         self.triggerMethod("ShowMessages", 'success', ['Item successfully created!']);
-                        self.onCreated();
+                        self.getChannel().trigger("Entity.Created");
                     } else {
                         self.triggerMethod("ShowMessages", 'success', ['Item successfully saved!']);
                         self.getChannel().trigger("Entity.Updated." + model.get('id'));
@@ -206,8 +206,6 @@ var EntityFormView;
                     console.log(response.responseText);
                 }
             });
-        },
-        onCreated: function () {
         },
         getSubServiceRoute: function (name) {
             return location.hash.substring(1, location.hash.length) + name;
