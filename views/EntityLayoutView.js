@@ -211,7 +211,8 @@ var EntityLayoutView;
             e.stopPropagation();
 
             var $target = $(e.target),
-                name = $target.val();
+                name = $target.val(),
+                filterField = _.isUndefined(this.filterField) ? 'name' : this.filterField;
 
             this._timeoutUtil.suspendOperation(400, _.bind(function () {
                 if (name.length === 0) {
@@ -219,7 +220,7 @@ var EntityLayoutView;
                     return;
                 }
 
-                this.getChannel().trigger('textSearch', name, 'name');
+                this.getChannel().trigger('textSearch', name, filterField);
             }, this));
         },
         showListView: function () {

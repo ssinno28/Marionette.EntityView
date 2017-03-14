@@ -38,6 +38,10 @@ var EntityService;
                 this.channelName = this.route;
                 this._initRadio();
             }
+
+            if (_.isUndefined(this.filterField)) {
+                this.filterField = 'name';
+            }
         },
         radioEvents: {
             'create': 'create',
@@ -73,7 +77,8 @@ var EntityService;
                 header: this.getHeader(),
                 model: new Backbone.Model(),
                 btnClass: this.getBtnClass(),
-                routing: this.routing
+                routing: this.routing,
+                filterField: this.filterField
             });
         },
         getHeader: function () {
@@ -185,7 +190,8 @@ var EntityService;
                         ({
                             collection: models,
                             parentViewCid: this.entityLayoutView().cid,
-                            baseClassIds: this.baseClassIds
+                            baseClassIds: this.baseClassIds,
+                            route: this.route
                         });
 
                     listView.route = this.route;
