@@ -45,7 +45,6 @@ var EntityLayoutView;
         },
         model: EntityLayoutModel,
         radioEvents: {
-            'create': 'onCreate',
             'view.list.activated': 'listViewActivated',
             'view.form.activated': 'formViewActivated'
         },
@@ -56,7 +55,9 @@ var EntityLayoutView;
             'click .multi-action': 'showMultiActions',
             'click .delete-all': 'deleteAll',
             'click .publish-all': 'publishAll',
-            'click .add-all': 'addAll'
+            'click .add-all': 'addAll',
+            'click .sub-nav .create': 'createClick',
+            'click .sub-nav .get-all': 'getAllClick'
         },
         ui: {
             '$subNav': '.sub-nav',
@@ -87,11 +88,19 @@ var EntityLayoutView;
                 btnClass: btnClass
             };
         },
-        onCreate: function () {
+        createClick: function () {
             this.ui.$subNavElements.removeClass('active');
             this.ui.$createBtn.parent().addClass('active');
 
             this.ui.$nameFilter.hide();
+            
+            if (!this.routing) 
+            {
+               this._channel.trigger('create');
+            } else {
+                var route = this.route + '/create/';
+                location.hash = route;
+            }
         },
         onDomRefresh: function () {
             this.showListView();
@@ -234,11 +243,9 @@ var EntityLayoutView;
             var html = Marionette.Renderer.render(this.header.template, this.header.params);
             this.ui.$header.append(html);
         },
-        subNavClick: function (e) {
+        getAllClick: function (e) {
             e.preventDefault();
             e.stopPropagation();
-
-            var $target = $(e.target);
 
             var collection = this.listView.collection,
                 page = 1;
@@ -247,24 +254,10 @@ var EntityLayoutView;
                 page = this.listView.currentPage;
             }
 
-            var route = $target.attr('href');
-            if ($target.hasClass('get-all')) {
-                route = this.route + '/' + page + '/';
-
-                if (!this.routing) {
-                    this.getChannel().trigger('getAll', page);
-                }
-            } else if ($target.hasClass('create')) {
-                route = this.route + '/create/';
-
-                if (!this.routing) {
-                    this.getChannel().trigger('create');
-                }
-            } else if ($target.hasClass('get-tree')) {
-                route = this.route + '/tree-view/';
-            }
-
-            if (this.routing) {
+            var route = this.route + '/' + page + '/';
+            if (!this.routing) {
+                this._channel.trigger('getAll', page);
+            } else {
                 location.hash = route;
             }
         },
@@ -278,7 +271,7 @@ var EntityLayoutView;
             if (this.routing) {
                 location.hash = this.route + '/edit/' + id + '/';
             } else {
-                this.getChannel().trigger('edit', id);
+                this._channel.trigger('edit', id);
             }
         },
         getChannel: function () {
