@@ -49,7 +49,6 @@ var EntityLayoutView;
             'view.form.activated': 'formViewActivated'
         },
         events: {
-            'click .sub-nav button': 'subNavClick',
             'click .edit': 'editClick',
             'keyup .nameFilter': 'filterByName',
             'click .multi-action': 'showMultiActions',
