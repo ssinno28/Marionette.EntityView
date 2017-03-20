@@ -8,17 +8,9 @@
   "license": "MIT",
   "keywords": [
     "backbone",
-    "marionette",
-    "patternfly"
+    "marionette"
   ],
   "homepage": "https://github.com/ssinno28/Marionette.EntityView",
   "private": true,
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "Content/js/vendor",
-    "test",
-    "tests"
-  ]
+  "ignore": []
 }
