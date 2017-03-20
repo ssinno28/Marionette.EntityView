@@ -11,7 +11,7 @@ A shout out to the frameworks used to build Marionette.EntityView:
 3. Backbone.CollectionSubset
 4. File Manager
 
-Copyright (c) 2016 Sammi Maan Sinno
+Copyright (c) 2017 Sammi Maan Sinno
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
