@@ -4,6 +4,13 @@ Marionette.EntityView is a framework built to support building dashboards using 
 
 Check out the [wiki](https://github.com/ssinno28/Marionette.EntityView/wiki) to get started
 
+A shout out to the frameworks used to build Marionette.EntityView:
+
+1. Jasmine - unit testing
+2. Marionette.FormView - Used as the base view for Marionette.EntityFormView (with minor changes here and there)
+3. Backbone.CollectionSubset
+4. File Manager
+
 Copyright (c) 2016 Sammi Maan Sinno
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
