@@ -9,14 +9,6 @@ var HierarchicalEntityCollection;
     HierarchicalEntityCollection = Backbone.HierarchicalEntityCollection = EntityCollection.extend({
         /**
          * Description
-         * @method initialize
-         * @return
-         */
-        initialize: function () {
-            EntityCollection.prototype.initialize.apply(this);
-        },
-        /**
-         * Description
          * @method getChildren
          * @param {} parentId
          * @param {} limit
