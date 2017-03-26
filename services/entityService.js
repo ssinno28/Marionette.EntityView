@@ -42,6 +42,16 @@ var EntityService;
             if (_.isUndefined(this.filterField)) {
                 this.filterField = 'name';
             }
+
+            if (this.embedded && this.routing) {
+                var router = Marionette.EntityRouter.extend({
+                    urlRoot: this.route
+                });
+
+                this.router = new router({
+                    controller: this
+                });
+            }
         },
         radioEvents: {
             'create': 'create',

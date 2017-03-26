@@ -7,6 +7,12 @@ var MultiSelectOptionView;
         onRender: function () {
             EntityListItemView.prototype.onRender.call(this);
             this.$el.attr('data-id', this.model.get('id'));
+        },
+        templateContext: function () {
+            var context = EntityListItemView.prototype.templateContext.call(this);
+            return _.extend(context, {
+                displayField: this.model.get(this.displayField)
+            });
         }
     });
 

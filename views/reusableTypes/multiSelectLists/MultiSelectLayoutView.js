@@ -232,7 +232,8 @@ var MultiSelectLayoutView;
                 routing: false,
                 conditions: inPred,
                 region: this.getRegion('selectedOptionsRegion'),
-                collection: this.collection
+                collection: this.collection,
+                displayField: this.displayField
             };
 
             this.selectedItemsService = new MultiSelectService(options);
@@ -265,7 +266,8 @@ var MultiSelectLayoutView;
                 routing: false,
                 conditions: notInPred,
                 region: this.getRegion('optionsRegion'),
-                collection: this.collection
+                collection: this.collection,
+                displayField: this.displayField
             };
 
             this.excludedItemsService = new MultiSelectService(options);

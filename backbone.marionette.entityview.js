@@ -297,7 +297,7 @@ with (obj) {
 __p += '<a class="multi-select-option" data-id="' +
 ((__t = ( id )) == null ? '' : __t) +
 '" href="#">\r\n    ' +
-((__t = ( name )) == null ? '' : __t) +
+((__t = ( displayField )) == null ? '' : __t) +
 '\r\n</a>\r\n';
 
 }
@@ -2792,6 +2792,7 @@ var EntityListItemView;
                         {
                             template: this.fieldsTemplate,
                             model: this.model,
+                            templateContext: _.isFunction(this.templateContext) ? this.templateContext() : this.templateContext,
                             onRender: function () {
                                 // Get rid of that pesky wrapping-div.
                                 // Assumes 1 child element present in template.
@@ -3456,6 +3457,12 @@ var MultiSelectOptionView;
         onRender: function () {
             EntityListItemView.prototype.onRender.call(this);
             this.$el.attr('data-id', this.model.get('id'));
+        },
+        templateContext: function () {
+            var context = EntityListItemView.prototype.templateContext.call(this);
+            return _.extend(context, {
+                displayField: this.model.get(this.displayField)
+            });
         }
     });
 
@@ -3466,7 +3473,11 @@ var MultiSelectListView;
     MultiSelectListView = EntityListView.extend({
         tagName: 'ul',
         childView: MultiSelectOptionView,
-        className: 'multi-select-listings'
+        className: 'multi-select-listings',
+        childViewOptions: function () {
+            var options = EntityListView.prototype.childViewOptions.call(this);
+            return _.extend(options, {displayField: this.displayField});
+        }
     });
 })(jQuery, _, Backbone, Marionette, EntityListView, MultiSelectOptionView);
 
@@ -3513,6 +3524,16 @@ var EntityService;
 
             if (_.isUndefined(this.filterField)) {
                 this.filterField = 'name';
+            }
+
+            if (this.embedded && this.routing) {
+                var router = Marionette.EntityRouter.extend({
+                    urlRoot: this.route
+                });
+
+                this.router = new router({
+                    controller: this
+                });
             }
         },
         radioEvents: {
@@ -3783,7 +3804,10 @@ var MultiSelectService;
         },
         initialize: function (options) {
             this.model = null;
-            this.listView = MultiSelectListView;
+            this.listView = MultiSelectListView.extend({
+                displayField: options.displayField || 'name'
+            });
+
             this.formView = null;
 
             Marionette.EntityService.prototype.initialize.call(this, options);
@@ -4030,7 +4054,8 @@ var MultiSelectLayoutView;
                 routing: false,
                 conditions: inPred,
                 region: this.getRegion('selectedOptionsRegion'),
-                collection: this.collection
+                collection: this.collection,
+                displayField: this.displayField
             };
 
             this.selectedItemsService = new MultiSelectService(options);
@@ -4063,7 +4088,8 @@ var MultiSelectLayoutView;
                 routing: false,
                 conditions: notInPred,
                 region: this.getRegion('optionsRegion'),
-                collection: this.collection
+                collection: this.collection,
+                displayField: this.displayField
             };
 
             this.excludedItemsService = new MultiSelectService(options);
@@ -4330,7 +4356,7 @@ var EntityFormView;
                 }));
             });
         },
-        _multiSelectForRegion: function (collection, region, dataField, conditions) {
+        _multiSelectForRegion: function (collection, region, dataField, conditions, displayField) {
             var selectedIds = this.model.get(dataField);
 
             if (_.isUndefined(conditions)) {
@@ -4350,7 +4376,8 @@ var EntityFormView;
                     collection: collection,
                     dataField: dataField,
                     selectedId: selectedIds,
-                    conditions: conditions
+                    conditions: conditions,
+                    displayField: displayField
                 });
 
             this.showChildView(region, multiSelect);

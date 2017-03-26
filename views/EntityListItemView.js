@@ -34,6 +34,7 @@ var EntityListItemView;
                         {
                             template: this.fieldsTemplate,
                             model: this.model,
+                            templateContext: _.isFunction(this.templateContext) ? this.templateContext() : this.templateContext,
                             onRender: function () {
                                 // Get rid of that pesky wrapping-div.
                                 // Assumes 1 child element present in template.

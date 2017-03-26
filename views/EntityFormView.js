@@ -241,7 +241,7 @@ var EntityFormView;
                 }));
             });
         },
-        _multiSelectForRegion: function (collection, region, dataField, conditions) {
+        _multiSelectForRegion: function (collection, region, dataField, conditions, displayField) {
             var selectedIds = this.model.get(dataField);
 
             if (_.isUndefined(conditions)) {
@@ -261,7 +261,8 @@ var EntityFormView;
                     collection: collection,
                     dataField: dataField,
                     selectedId: selectedIds,
-                    conditions: conditions
+                    conditions: conditions,
+                    displayField: displayField
                 });
 
             this.showChildView(region, multiSelect);

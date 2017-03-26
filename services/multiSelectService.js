@@ -13,7 +13,10 @@ var MultiSelectService;
         },
         initialize: function (options) {
             this.model = null;
-            this.listView = MultiSelectListView;
+            this.listView = MultiSelectListView.extend({
+                displayField: options.displayField || 'name'
+            });
+
             this.formView = null;
 
             Marionette.EntityService.prototype.initialize.call(this, options);
