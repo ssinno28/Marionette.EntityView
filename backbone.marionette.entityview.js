@@ -2946,7 +2946,10 @@ var EntityLayoutView;
                 btnClass: btnClass
             };
         },
-        createClick: function () {
+        createClick: function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
             this.ui.$subNavElements.removeClass('active');
             this.ui.$createBtn.parent().addClass('active');
 
@@ -2996,7 +2999,7 @@ var EntityLayoutView;
 
             this.ui.$publishAllModal.on('click', '.yes', function (e) {
                 e.preventDefault();
-                this.getChannel().trigger('publish-all', ids);
+                this._channel.trigger('publish-all', ids);
                 self.ui.$publishAllModal.modal('hide');
             });
         },
@@ -3020,7 +3023,7 @@ var EntityLayoutView;
                         models.push(entity);
                     });
 
-                    this.getChannel().trigger('addAll', models);
+                    this._channel.trigger('addAll', models);
                     itemsSelected.attr('checked', false);
                     this.showMultiActions();
                 }, this));
@@ -3083,11 +3086,11 @@ var EntityLayoutView;
 
             this._timeoutUtil.suspendOperation(400, _.bind(function () {
                 if (name.length === 0) {
-                    this.getChannel().trigger('getAll', 1);
+                    this._channel.trigger('getAll', 1);
                     return;
                 }
 
-                this.getChannel().trigger('textSearch', name, filterField);
+                this._channel.trigger('textSearch', name, filterField);
             }, this));
         },
         showListView: function () {
