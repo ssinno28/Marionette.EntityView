@@ -109,7 +109,7 @@ var EntityFormView;
 
             $warningModal.on('click', '.yes', function (e) {
                 e.preventDefault();
-                
+
                 self._channel.trigger('warning-modal:yes:' + eventName);
                 $warningModal.modal('hide');
             });

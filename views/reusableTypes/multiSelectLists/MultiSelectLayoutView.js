@@ -46,9 +46,9 @@ var MultiSelectLayoutView;
                 toolTip = 'Selected items: ';
                 this.selectedItems.each(_.bind(function (entity) {
                     if (this.selectedItems.indexOf(entity) === (this.selectedItems.length - 1)) {
-                        toolTip = toolTip + entity.get('name');
+                        toolTip = toolTip + entity.get(this.displayField);
                     } else {
-                        toolTip = toolTip + entity.get('name') + ', ';
+                        toolTip = toolTip + entity.get(this.displayField) + ', ';
                     }
                 }, this));
             }

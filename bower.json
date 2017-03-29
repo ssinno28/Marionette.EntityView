@@ -1,6 +1,6 @@
 {
-  "name": "entityview-patternfly",
-  "description": "Backbone and Marionette framework used for creating dashboard UI with patternfly.",
+  "name": "Marionette.EntityView",
+  "description": "Backbone and Marionette framework used for creating dashboard UI with bootstrap.",
   "main": "backbone.marionette.entityview.js",
   "authors": [
     "sammi.sinno@gmail.com"
@@ -8,9 +8,19 @@
   "license": "MIT",
   "keywords": [
     "backbone",
-    "marionette"
+    "marionette",
+    "entityview"
   ],
   "homepage": "https://github.com/ssinno28/Marionette.EntityView",
   "private": true,
-  "ignore": []
+  "ignore": [],
+  "dependencies": {
+    "bootstrap": "3.3.6",
+    "jquery": "2.2.0",
+    "backbone": "^1.3.3",
+    "backbone.marionette": "^3.1.0",
+    "lunr.js": "lunr#^0.7.2",
+    "backbone.collectionsubset": "^0.1.3",
+    "ckeditor": "^4.6.1"
+  }
 }

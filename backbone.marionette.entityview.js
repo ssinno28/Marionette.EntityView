@@ -3868,9 +3868,9 @@ var MultiSelectLayoutView;
                 toolTip = 'Selected items: ';
                 this.selectedItems.each(_.bind(function (entity) {
                     if (this.selectedItems.indexOf(entity) === (this.selectedItems.length - 1)) {
-                        toolTip = toolTip + entity.get('name');
+                        toolTip = toolTip + entity.get(this.displayField);
                     } else {
-                        toolTip = toolTip + entity.get('name') + ', ';
+                        toolTip = toolTip + entity.get(this.displayField) + ', ';
                     }
                 }, this));
             }
@@ -4224,7 +4224,7 @@ var EntityFormView;
 
             $warningModal.on('click', '.yes', function (e) {
                 e.preventDefault();
-                
+
                 self._channel.trigger('warning-modal:yes:' + eventName);
                 $warningModal.modal('hide');
             });
