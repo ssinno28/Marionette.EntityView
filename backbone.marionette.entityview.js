@@ -2,27 +2,27 @@
 
 /* MIT License
 
-Copyright (c) 2017 Sammi Maan Sinno
+ Copyright (c) 2017 Sammi Maan Sinno
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
 
-*/
+ */
 
 (function (root, factory) {
     "use strict";
@@ -64,7 +64,7 @@ __p += '\r\n\r\n<div class="entity-form-layout form form-horizontal">\r\n    <di
 ((__t = ( btnClass )) == null ? '' : __t) +
 '"/>\r\n            <button type="button" class="btn btn-default ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
-' reset">Reset</button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModal" aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    <span class="pficon pficon-close"></span>\r\n                </button>\r\n                <h4 class="modal-title">Warning!</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>';
+' reset">Reset</button>\r\n        </div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -75,7 +75,7 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="container-fluid">\r\n    <div class="entity-header row">\r\n    </div>\r\n    <div class="row toolbar-pf">\r\n        <div class="col-sm-12">\r\n            <div class="toolbar-pf-actions">\r\n                <div class="form-group toolbar-pf-filter">\r\n                    <label class="sr-only" for="filter">Name</label>\r\n\r\n                    <div class="input-group col-sm-12">\r\n                        <input type="text" class="form-control nameFilter" id="filter" placeholder="Filter By Name...">\r\n                    </div><!-- /input-group -->\r\n                </div>\r\n                <div class="form-group sub-nav">\r\n                    <button type="button" class="get-all btn btn-default">\r\n                        All\r\n                    </button>\r\n                    ';
+__p += '<div class="container-fluid">\r\n    <div class="entity-header row">\r\n    </div>\r\n    <div class="row">\r\n        <div class="col-sm-12">\r\n            <div>\r\n                <div class="form-group">\r\n                    <label class="sr-only" for="filter">Name</label>\r\n\r\n                    <div class="input-group col-sm-12">\r\n                        <input type="text" class="form-control nameFilter" id="filter" placeholder="Filter By Name...">\r\n                    </div><!-- /input-group -->\r\n                </div>\r\n                <div class="form-group sub-nav">\r\n                    <button type="button" class="get-all btn btn-default">\r\n                        All\r\n                    </button>\r\n                    ';
  if(showCreate){ ;
 __p += '\r\n                    <button type="button" class="create btn btn-primary">\r\n                        Create\r\n                    </button>\r\n                    ';
  } ;
@@ -101,7 +101,7 @@ __p += '\r\n                    <button type="button" class="btn btn-default mul
  } ;
 __p += '\r\n                    ';
  } ;
-__p += '\r\n                </div>\r\n            </div>\r\n        </div><!-- /col -->\r\n    </div><!-- /row -->\r\n</div><!-- /container -->\r\n\r\n<div class="container-fluid">\r\n    <div class="list-group list-view-pf list-view-pf-view entityRegion">\r\n\r\n    </div>\r\n    <div class="filterEntities row">\r\n        <div class="pagerRegion col-sm-12"></div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade delete-all-modal" tabindex="-1" role="dialog" aria-labelledby="delete-all-modal"\r\n     aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    <span class="pficon pficon-close"></span>\r\n                </button>\r\n                <h4 class="modal-title">Delete All?</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n                Are you sure you want to delete these items?\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade publish-all-modal" tabindex="-1" role="dialog" aria-labelledby="publish-all-modal"\r\n     aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    <span class="pficon pficon-close"></span>\r\n                </button>\r\n                <h4 class="modal-title">Publish All?</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n                Are you sure you want to publish these items?\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    <span class="pficon pficon-close"></span>\r\n                </button>\r\n                <h4 class="modal-title">Delete Item</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n                Are you sure you want to delete this item?\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>';
+__p += '\r\n                </div>\r\n            </div>\r\n        </div><!-- /col -->\r\n    </div><!-- /row -->\r\n</div><!-- /container -->\r\n\r\n<div class="container-fluid">\r\n    <div class="list-group entityRegion">\r\n\r\n    </div>\r\n    <div class="filterEntities row">\r\n        <div class="pagerRegion col-sm-12"></div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade delete-all-modal" tabindex="-1" role="dialog" aria-labelledby="delete-all-modal"\r\n     aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    X\r\n                </button>\r\n                <h4 class="modal-title">Delete All?</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n                Are you sure you want to delete these items?\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade publish-all-modal" tabindex="-1" role="dialog" aria-labelledby="publish-all-modal"\r\n     aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    X\r\n                </button>\r\n                <h4 class="modal-title">Publish All?</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n                Are you sure you want to publish these items?\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    X\r\n                </button>\r\n                <h4 class="modal-title">Delete Item</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n                Are you sure you want to delete this item?\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -263,6 +263,16 @@ __p += '    <div class="col-sm-3">\r\n        <a style="display:none;" class="th
 '"/>\r\n    </div>\r\n    <div class="col-sm-9">\r\n        <button type="button" onclick="BrowseServer(\'' +
 ((__t = ( dataField )) == null ? '' : __t) +
 '\');" class="pickImage">Pick Image</button>\r\n    </div>';
+
+}
+return __p
+};
+
+this["Templates"]["modalTpl"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div class="modal fade warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModal" aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    <span class="pficon pficon-close"></span>\r\n                </button>\r\n                <h4 class="modal-title">Warning!</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -441,16 +451,40 @@ this["Templates"]["validationTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">\r\n    <span class="pficon pficon-close"></span>\r\n</button>\r\n<span class="pficon ' +
-((__t = ( iconClass )) == null ? '' : __t) +
-'"></span>\r\n<div class="validationMessages">\r\n\r\n</div>\r\n';
+__p += '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">\r\n    X\r\n</button>\r\n<div class="validation-messages">\r\n\r\n</div>\r\n\r\n';
 
 }
 return __p
 };
-    /* jshint ignore:end */
+        /* jshint ignore:end */
 
-    var FormValidator;
+    var injector = {
+    dependencies: {},
+    register: function(key, value) {
+        this.dependencies[key] = value;
+    },
+    resolve: function() {
+        var func, deps, scope, args = [], self = this;
+        if(typeof arguments[0] === 'string') {
+            func = arguments[1];
+            deps = arguments[0].replace(/ /g, '').split(',');
+            scope = arguments[2] || {};
+        } else {
+            func = arguments[0];
+            deps = func.toString().match(/^function\s*[^\(]*\(\s*([^\)]*)\)/m)[1].replace(/ /g, '').split(',');
+            scope = arguments[1] || {};
+        }
+        return function() {
+            var a = Array.prototype.slice.call(arguments, 0);
+            for(var i=0; i<deps.length; i++) {
+                var d = deps[i];
+                args.push(self.dependencies[d] && d != '' ? self.dependencies[d] : a.shift());
+            }
+            func.apply(scope || {}, args);
+        }
+    }
+};
+var FormValidator;
 (function ($, _, Backbone, Marionette) {
     FormValidator = Marionette.Object.extend({
         regex: {
@@ -1763,33 +1797,18 @@ var HierarchicalEntityCollection;
 
 var MessagesCollection;
 (function ($, _, Backbone, Marionette, App, MessageModel) {
-    /**
-     * @class MessagesCollection
-     * @type {Backbone.CollectionSubset.extend|*|dst|target|Object|a}
-     */
     MessagesCollection = Backbone.Collection.extend({
-        defaults: {
-            model: MessageModel
-        },
-        /**
-         * Description
-         * @method setMessages
-         * @param {} messages
-         * @return
-         */
+        model: MessageModel,
         setMessages: function (messages) {
-            var outerScope = this;
             this.reset();
-            _.each(messages, function (message) {
+            _.each(messages, _.bind(function (message) {
                 var messageModel = new MessageModel({message: message});
-                outerScope.add(messageModel);
-            });
+                this.add(messageModel);
+            }, this));
         }
     });
 })(jQuery, _, Backbone, Marionette, App, MessageModel);
-/**
- * Created by ssinno on 12/2/13.
- */
+
 
 var EntityRouter;
 (function ($, _, Backbone, Marionette) {
@@ -1843,11 +1862,11 @@ var MessageListView;
 })(jQuery, _, Backbone, Marionette, MessageView, MessagesCollection);
 var BaseValidationView;
 (function ($, _, Backbone, Marionette, ValidationModel, validationTemplate, MessageCollection, MessageListView) {
-    BaseValidationView = Marionette.BaseValidationView = Backbone.Marionette.View.extend({
+    BaseValidationView = Marionette.BaseValidationView = Marionette.View.extend({
         tagName: 'div',
         template: validationTemplate,
         regions: {
-            validationMessages: '.validationMessages'
+            validationMessages: '.validation-messages'
         },
         onRender: function () {
             this.$el.attr('data-alert', '');
@@ -1863,29 +1882,20 @@ var BaseValidationView;
 var ErrorView;
 (function ($, _, Backbone, Marionette) {
     ErrorView = Marionette.BaseValidationView.extend({
-        className: 'alert alert-danger alert-dismissable',
-        templateContext: {
-            iconClass: 'pficon-error-circle-o'
-        }
+        className: 'alert alert-danger alert-dismissable'
     });
 })(jQuery, _, Backbone, Marionette);
 
 var InfoView;
 (function ($, _, Backbone, Marionette) {
     InfoView = Marionette.BaseValidationView.extend({
-        className: 'alert alert-info alert-dismissable',
-        templateContext: {
-            iconClass: 'pficon-info'
-        }
+        className: 'alert alert-info alert-dismissable'
     });
 })(jQuery, _, Backbone, Marionette);
 var SuccessView;
 (function ($, _, Backbone, Marionette) {
     SuccessView = Marionette.BaseValidationView.extend({
-        className: 'alert alert-success alert-dismissable',
-        templateContext: {
-            iconClass: 'pficon-ok'
-        }
+        className: 'alert alert-success alert-dismissable'
     });
 
 })(jQuery, _, Backbone, Marionette);
@@ -1893,10 +1903,7 @@ var SuccessView;
 var WarningView;
 (function ($, _, Backbone, Marionette) {
     WarningView = Marionette.BaseValidationView.extend({
-        className: 'alert alert-warning alert-dismissable',
-        templateContext: {
-            iconClass: 'pficon-warning-triangle-o'
-        }
+        className: 'alert alert-warning alert-dismissable'
     });
 })(jQuery, _, Backbone, Marionette);
 
@@ -2754,6 +2761,7 @@ var EntityListView;
             return this._channel;
         }
     });
+
 })(jQuery, _, Backbone, Marionette);
 
 var EntityListItemView;
@@ -4600,7 +4608,7 @@ var EntityController;
 
 //# sourceMappingURL=main.js.map
 
-    return {
+    var exports = {
         ErrorView: ErrorView,
         InfoView: InfoView,
         WarningView: WarningView,
@@ -4628,4 +4636,16 @@ var EntityController;
         EntityLayoutView: EntityLayoutView,
         TreeCompositeView: TreeCompositeView
     };
+
+    for (var key in exports) {
+        if (!data.hasOwnProperty(key) || key === 'id') {
+            continue;
+        }
+
+        injector.register(key, exports[key]);
+    }
+
+    return _.extend(exports, {
+        injector: injector
+    });
 }));

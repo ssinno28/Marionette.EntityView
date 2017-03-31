@@ -1,10 +1,10 @@
 var BaseValidationView;
 (function ($, _, Backbone, Marionette, ValidationModel, validationTemplate, MessageCollection, MessageListView) {
-    BaseValidationView = Marionette.BaseValidationView = Backbone.Marionette.View.extend({
+    BaseValidationView = Marionette.BaseValidationView = Marionette.View.extend({
         tagName: 'div',
         template: validationTemplate,
         regions: {
-            validationMessages: '.validationMessages'
+            validationMessages: '.validation-messages'
         },
         onRender: function () {
             this.$el.attr('data-alert', '');

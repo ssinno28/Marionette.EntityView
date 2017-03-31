@@ -1,9 +1,6 @@
 var ErrorView;
 (function ($, _, Backbone, Marionette) {
     ErrorView = Marionette.BaseValidationView.extend({
-        className: 'alert alert-danger alert-dismissable',
-        templateContext: {
-            iconClass: 'pficon-error-circle-o'
-        }
+        className: 'alert alert-danger alert-dismissable'
     });
 })(jQuery, _, Backbone, Marionette);

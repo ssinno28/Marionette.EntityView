@@ -37,4 +37,5 @@ var EntityListView;
             return this._channel;
         }
     });
+
 })(jQuery, _, Backbone, Marionette);

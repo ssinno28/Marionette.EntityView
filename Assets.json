@@ -2,6 +2,7 @@
   "moduleName": "Marionette Entity View",
   "js": {
     "files": [
+      "injector.js",
       "util/formValidator.js",
       "util/timeoutUtil.js",
       "util/uriUtil.js",
@@ -60,9 +61,6 @@
       "views/EntityFormView.js",
       "views/tree/TreeCompositeView.js",
       "views/tree/TreeListView.js",
-      "views/sideNav/SideNavItemView.js",
-      "views/sideNav/SideNavListView.js",
-      "views/sideNav/SideNavLayoutView.js",
       "controllers/entityController.js"
     ],
     "template": "entityview.template.js",
