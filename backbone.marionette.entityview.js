@@ -272,7 +272,9 @@ this["Templates"]["modalTpl"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="modal fade warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModal" aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    <span class="pficon pficon-close"></span>\r\n                </button>\r\n                <h4 class="modal-title">Warning!</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>';
+__p += '<div class="modal-dialog">\r\n    <div class="modal-content">\r\n        <div class="modal-header">\r\n            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                <span class="pficon pficon-close"></span>\r\n            </button>\r\n            <h4 class="modal-title">Warning!</h4>\r\n        </div>\r\n        <div class="modal-body message">\r\n            ' +
+((__t = ( message )) == null ? '' : __t) +
+'\r\n        </div>\r\n        <div class="modal-footer">\r\n            <button type="button" class="btn btn-primary yes">Yes</button>\r\n            <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n        </div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -458,33 +460,7 @@ return __p
 };
         /* jshint ignore:end */
 
-    var injector = {
-    dependencies: {},
-    register: function(key, value) {
-        this.dependencies[key] = value;
-    },
-    resolve: function() {
-        var func, deps, scope, args = [], self = this;
-        if(typeof arguments[0] === 'string') {
-            func = arguments[1];
-            deps = arguments[0].replace(/ /g, '').split(',');
-            scope = arguments[2] || {};
-        } else {
-            func = arguments[0];
-            deps = func.toString().match(/^function\s*[^\(]*\(\s*([^\)]*)\)/m)[1].replace(/ /g, '').split(',');
-            scope = arguments[1] || {};
-        }
-        return function() {
-            var a = Array.prototype.slice.call(arguments, 0);
-            for(var i=0; i<deps.length; i++) {
-                var d = deps[i];
-                args.push(self.dependencies[d] && d != '' ? self.dependencies[d] : a.shift());
-            }
-            func.apply(scope || {}, args);
-        }
-    }
-};
-var FormValidator;
+    var FormValidator;
 (function ($, _, Backbone, Marionette) {
     FormValidator = Marionette.Object.extend({
         regex: {
