@@ -6,6 +6,7 @@ Check out the [wiki](https://github.com/ssinno28/Marionette.EntityView/wiki) to 
 
 A shout out to the frameworks used to build Marionette.EntityView:
 
+1. bottle.js
 1. lunr.js
 1. Bootstrap
 1. Backbone.js
