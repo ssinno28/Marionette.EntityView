@@ -234,7 +234,7 @@ var EntityFormView;
                     dataField: dataField,
                     selectedId: selectedIds,
                     conditions: conditions,
-                    displayField: displayField
+                    displayField: displayField || 'name'
                 });
 
             this.showChildView(region, multiSelect);

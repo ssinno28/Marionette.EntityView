@@ -1831,6 +1831,8 @@ var MessageListView;
 })(jQuery, _, Backbone, Marionette, MessageView, MessagesCollection);
 var BaseValidationView;
 (function ($, _, Backbone, Marionette, ValidationModel, validationTemplate, MessageCollection, MessageListView) {
+    Marionette.Validation = {};
+
     BaseValidationView = Marionette.BaseValidationView = Marionette.View.extend({
         tagName: 'div',
         template: validationTemplate,
@@ -2836,7 +2838,7 @@ var EntityListItemView;
 })(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], DeleteWarnBehavior);
 
 var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, TimeoutUtil, PagerBehavior, channel) {
+(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, TimeoutUtil, PagerBehavior) {
     EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
         template: entityListLayoutTpl,
         regions: {
@@ -2932,9 +2934,10 @@ var EntityLayoutView;
             this.ui.$createBtn.parent().addClass('active');
 
             this.ui.$nameFilter.hide();
-
-            if (!this.routing) {
-                this._channel.trigger('create');
+            
+            if (!this.routing) 
+            {
+               this._channel.trigger('create');
             } else {
                 var route = this.route + '/create/';
                 location.hash = route;
@@ -3116,14 +3119,7 @@ var EntityLayoutView;
             return this._channel;
         }
     });
-
-    channel.reply('extend:EntityLayoutView', function (result) {
-        if (!_.isUndefined(result)) {
-            EntityLayoutView = Marionette.EntityLayoutView = result;
-        }
-    });
-
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, TimeoutUtil, PagerBehavior, Backbone.Radio.channel('entity-view'));
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, TimeoutUtil, PagerBehavior);
 
 var FormView;
 (function ($, _, Backbone, Marionette, FormValidator) {
@@ -3789,7 +3785,7 @@ var MultiSelectService;
         initialize: function (options) {
             this.model = null;
             this.listView = MultiSelectListView.extend({
-                displayField: options.displayField || 'name'
+                displayField: _.isUndefined(options.displayField) ? 'name' : options.displayField
             });
 
             this.formView = null;
@@ -4333,7 +4329,7 @@ var EntityFormView;
                     dataField: dataField,
                     selectedId: selectedIds,
                     conditions: conditions,
-                    displayField: displayField
+                    displayField: displayField || 'name'
                 });
 
             this.showChildView(region, multiSelect);
@@ -4659,6 +4655,7 @@ var EntityController;
         EntityListItemView: EntityListItemView,
         EntityListView: EntityListView,
         TreeCompositeView: TreeCompositeView,
-        ModalView: ModalView
+        ModalView: ModalView,
+        EntityLayoutView: EntityLayoutView
     };
 }));

@@ -14,7 +14,7 @@ var MultiSelectService;
         initialize: function (options) {
             this.model = null;
             this.listView = MultiSelectListView.extend({
-                displayField: options.displayField || 'name'
+                displayField: _.isUndefined(options.displayField) ? 'name' : options.displayField
             });
 
             this.formView = null;

@@ -77,6 +77,7 @@
         EntityListItemView: EntityListItemView,
         EntityListView: EntityListView,
         TreeCompositeView: TreeCompositeView,
-        ModalView: ModalView
+        ModalView: ModalView,
+        EntityLayoutView: EntityLayoutView
     };
 }));
