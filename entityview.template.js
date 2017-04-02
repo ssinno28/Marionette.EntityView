@@ -50,7 +50,8 @@
 
     <%= content %>
 
-    var exports = {
+    return {
+        BaseValidationView: BaseValidationView,
         ErrorView: ErrorView,
         InfoView: InfoView,
         WarningView: WarningView,
@@ -75,19 +76,7 @@
         DropDownListView: DropDownListView,
         EntityListItemView: EntityListItemView,
         EntityListView: EntityListView,
-        EntityLayoutView: EntityLayoutView,
-        TreeCompositeView: TreeCompositeView
+        TreeCompositeView: TreeCompositeView,
+        ModalView: ModalView
     };
-
-    for (var key in exports) {
-        if (!data.hasOwnProperty(key) || key === 'id') {
-            continue;
-        }
-
-        injector.register(key, exports[key]);
-    }
-
-    return _.extend(exports, {
-        injector: injector
-    });
 }));

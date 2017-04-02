@@ -32,6 +32,8 @@ var FormView;
             //Attach Events to preexisting elements if we don't have a template
             if (!this.template) this.runInitializers();
             this.on('dom:refresh', this.runInitializers, this);
+
+            this._validator = new FormValidator();
         },
 
         changeFieldVal: function (model, fields) {
@@ -260,7 +262,7 @@ var FormView;
             // throw an error because it could be tough to troubleshoot if we just return false
             if (!validationRule) throw new Error('Not passed a validation to test');
 
-            if (validationRule === 'required') return FormValidator.required.evaluate(val);
+            if (validationRule === 'required') return this._validator.required.evaluate(val);
 
             if (validationRule.indexOf(':') !== -1) {
                 options = validationRule.split(":");
@@ -270,7 +272,7 @@ var FormView;
             if (this.rules && this.rules[validationRule]) {
                 return _(this.rules[validationRule].evaluate).bind(this)(val);
             } else {
-                return _(FormValidator.validate).bind(this)(validationRule, val, options);
+                return _(this._validator.validate).bind(this)(validationRule, val, options);
             }
             return true;
         },

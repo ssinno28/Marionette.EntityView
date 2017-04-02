@@ -60,7 +60,7 @@ __p += '\r\n<h2>Edit ' +
 ((__t = ( name )) == null ? '' : __t) +
 '</h2>\r\n';
  } ;
-__p += '\r\n\r\n<div class="entity-form-layout form form-horizontal">\r\n    <div class="entityFormRegion">\r\n\r\n    </div>\r\n    <div class="form-group">\r\n        <div class="messagesRegion col-sm-12">\r\n\r\n        </div>\r\n        <div class="col-sm-12 actions">\r\n            <input type="submit" value="Submit" name="submit" class="btn btn-primary ' +
+__p += '\r\n\r\n<div class="entity-form-layout form form-horizontal">\r\n    <div class="entity-form-region">\r\n\r\n    </div>\r\n    <div class="form-group">\r\n        <div class="messages-region col-sm-12">\r\n\r\n        </div>\r\n        <div class="col-sm-12 actions">\r\n            <input type="submit" value="Submit" name="submit" class="btn btn-primary ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
 '"/>\r\n            <button type="button" class="btn btn-default ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
@@ -272,7 +272,9 @@ this["Templates"]["modalTpl"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="modal-dialog">\r\n    <div class="modal-content">\r\n        <div class="modal-header">\r\n            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                <span class="pficon pficon-close"></span>\r\n            </button>\r\n            <h4 class="modal-title">Warning!</h4>\r\n        </div>\r\n        <div class="modal-body message">\r\n            ' +
+__p += '<div class="modal-dialog">\r\n    <div class="modal-content">\r\n        <div class="modal-header">\r\n            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n             X\r\n            </button>\r\n            <h4 class="modal-title">' +
+((__t = ( title )) == null ? '' : __t) +
+'</h4>\r\n        </div>\r\n        <div class="modal-body message">\r\n            ' +
 ((__t = ( message )) == null ? '' : __t) +
 '\r\n        </div>\r\n        <div class="modal-footer">\r\n            <button type="button" class="btn btn-primary yes">Yes</button>\r\n            <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n        </div>\r\n    </div>\r\n</div>';
 
@@ -604,83 +606,6 @@ var UriUtil;
         }
     };
 })(jQuery, _, Backbone);
-(function (App) {
-
-    var $config = $('#config');
-    if ($config.length > 0) {
-        var config = JSON.parse(decodeURIComponent($config.val()));
-        _.extend(App, config);
-    }
-
-    App.isMobile = function () {
-        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-        return ((/iPhone|iPod|iPad|Android|BlackBerry|Opera Mini|IEMobile/).test(userAgent));
-    };
-
-    App.keyStrokes = {
-        backspace: 8,
-        tab: 9,
-        enter: 13,
-        esc: 27,
-        space: 32,
-        pageup: 33,
-        pagedown: 34,
-        end: 35,
-        home: 36,
-        left: 37,
-        up: 38,
-        right: 39,
-        down: 40,
-        insert: 45,
-        del: 46
-    };
-
-    Backbone.Radio.DEBUG = App.DEBUG_MODE;
-
-    //turn on/off logging based on environment
-    if (!App.DEBUG_MODE) {
-        console.log = function () {
-        };
-    }
-
-    //set up simple caching
-    var cache = {};
-    App.getCache = function (key, store) {
-        if (cache[key]) {
-            return cache[key];
-        }
-
-        if (!store) {
-            return undefined;
-        }
-
-        var result;
-        if (typeof (store) === "function") {
-            result = store();
-        } else {
-            result = store;
-        }
-
-        cache[key] = result;
-        return result;
-    };
-
-    App.setCache = function (key, value) {
-        if (_.isUndefined(cache[key]) || _.isNull(cache[key])) {
-            cache[key] = value;
-        }
-    };
-
-    if (_.isUndefined(App.pageSize)) {
-        App.pageSize = 10;
-    }
-
-    $('#file-manager').on('click', function (e) {
-        e.preventDefault();
-        BrowseServer();
-    });
-
-})(App);
 var EntityModel;
 (function ($, _, Backbone) {
     EntityModel = Backbone.EntityModel = Backbone.Model.extend({
@@ -729,6 +654,16 @@ var ValidationModel;
     });
 
 })(jQuery, _, Backbone, Marionette, App);
+var ModalModel;
+(function ($, _, Backbone) {
+    ModalModel = Backbone.Model.extend({
+        defaults: {
+            title: '',
+            message: ''
+        }
+    });
+})(jQuery, _, Backbone);
+
 var EntityFilters;
 (function (Backbone, Marionette) {
     EntityFilters = Marionette.EntityFilters = Marionette.Object.extend({
@@ -1818,6 +1753,64 @@ var EntityRouter;
         }
     });
 })(jQuery, _, Backbone, Marionette);
+var ModalView;
+(function (_, Backbone, $, Marionette, modalTpl, ModalModel) {
+    ModalView = Marionette.View.extend({
+        model: ModalModel,
+        template: modalTpl,
+        constructor: function (options) {
+            _.each(options,
+                _.bind(function (option) {
+                    var funcName = option.type + 'Click';
+                    this.events['click .' + option.type] = funcName;
+
+                    this[funcName] = _.bind(function (e) {
+                        e.preventDefault();
+
+                        this._channel.trigger(this.getOption('name') + ':' + option.type);
+                        this.$el.modal('hide');
+                    }, this);
+                }, this));
+        },
+        initialize: function () {
+            this._channel = Backbone.Radio.channel(this.getOption('channel'));
+            this.on('destroy', this._destroyRadio);
+        },
+        ui: {
+            $modalFooter: '.modal-footer'
+        },
+        className: 'modal fade',
+        onRender: function () {
+            this.$el.attr('tabindex', -1);
+            this.$el.attr('role', 'dialog');
+            this.$el.attr('aria-labelledby', this.getOption('name'));
+            this.$el.attr('aria-hidden', true);
+
+            _.each(this.model.get('options',
+                _.bind(function (option) {
+                    var html =
+                        Marionette.Renderer.render(
+                            '<button type="button" class="btn btn-primary <%= type %>" ' +
+                            '<% if(dismiss) { %> data-dismiss="modal" <% } %>> <%= text %>' +
+                            '</button>',
+                            option
+                        );
+
+                    this.ui.$modalFooter.append(html);
+                }, this)));
+        },
+        onDomRefresh: function () {
+            if (_.isUndefined(this.model.get('name'))) {
+                this.$el.find('.buttons').hide();
+            }
+
+            this.$el.modal('show');
+        },
+        _destroyRadio: function () {
+            this._channel.stopReplying(null, null, this);
+        }
+    });
+})(_, Backbone, jQuery, Marionette, Templates.modalTpl, ModalModel);
 var MessageView;
 (function ($, _, Backbone, Marionette, MessageModel, messageTemplate) {
     MessageView = Marionette.MessageView = Backbone.Marionette.View.extend({
@@ -2843,7 +2836,7 @@ var EntityListItemView;
 })(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], DeleteWarnBehavior);
 
 var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, TimeoutUtil, PagerBehavior) {
+(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, TimeoutUtil, PagerBehavior, channel) {
     EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
         template: entityListLayoutTpl,
         regions: {
@@ -2939,10 +2932,9 @@ var EntityLayoutView;
             this.ui.$createBtn.parent().addClass('active');
 
             this.ui.$nameFilter.hide();
-            
-            if (!this.routing) 
-            {
-               this._channel.trigger('create');
+
+            if (!this.routing) {
+                this._channel.trigger('create');
             } else {
                 var route = this.route + '/create/';
                 location.hash = route;
@@ -3124,7 +3116,14 @@ var EntityLayoutView;
             return this._channel;
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, TimeoutUtil, PagerBehavior);
+
+    channel.reply('extend:EntityLayoutView', function (result) {
+        if (!_.isUndefined(result)) {
+            EntityLayoutView = Marionette.EntityLayoutView = result;
+        }
+    });
+
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, TimeoutUtil, PagerBehavior, Backbone.Radio.channel('entity-view'));
 
 var FormView;
 (function ($, _, Backbone, Marionette, FormValidator) {
@@ -3160,6 +3159,8 @@ var FormView;
             //Attach Events to preexisting elements if we don't have a template
             if (!this.template) this.runInitializers();
             this.on('dom:refresh', this.runInitializers, this);
+
+            this._validator = new FormValidator();
         },
 
         changeFieldVal: function (model, fields) {
@@ -3388,7 +3389,7 @@ var FormView;
             // throw an error because it could be tough to troubleshoot if we just return false
             if (!validationRule) throw new Error('Not passed a validation to test');
 
-            if (validationRule === 'required') return FormValidator.required.evaluate(val);
+            if (validationRule === 'required') return this._validator.required.evaluate(val);
 
             if (validationRule.indexOf(':') !== -1) {
                 options = validationRule.split(":");
@@ -3398,7 +3399,7 @@ var FormView;
             if (this.rules && this.rules[validationRule]) {
                 return _(this.rules[validationRule].evaluate).bind(this)(val);
             } else {
-                return _(FormValidator.validate).bind(this)(validationRule, val, options);
+                return _(this._validator.validate).bind(this)(validationRule, val, options);
             }
             return true;
         },
@@ -3704,7 +3705,6 @@ var EntityService;
                     } else {
                         models = entities.child;
                     }
-
 
                     var listView =
                         new self.listView
@@ -4102,8 +4102,8 @@ var EntityFormView;
     EntityFormView = Marionette.EntityFormView = Backbone.Marionette.FormView.extend({
         template: entityFormLayoutTemplate,
         regions: {
-            entityFormRegion: '.entityFormRegion',
-            'messagesRegion': '.messagesRegion'
+            entityFormRegion: '.entity-form-region',
+            'messagesRegion': '.messages-region'
         },
         initialize: function (options) {
             _.extend(this, options.formOptions);
@@ -4184,34 +4184,6 @@ var EntityFormView;
         resetForm: function (e) {
             e.preventDefault();
             this.render();
-        },
-        showWarningModal: function (message, eventName) {
-            var $warningModal = $('.warningModal'),
-                self = this;
-
-            //update the message
-            $warningModal.find('.message').html(message);
-
-            //show modal
-            $warningModal.modal('show');
-
-            if (_.isUndefined(eventName)) {
-                $warningModal.find('.buttons').hide();
-            }
-
-            $warningModal.on('click', '.no', function (e) {
-                e.preventDefault();
-
-                self._channel.trigger('warning-modal:no:' + eventName);
-                $warningModal.modal('hide');
-            });
-
-            $warningModal.on('click', '.yes', function (e) {
-                e.preventDefault();
-
-                self._channel.trigger('warning-modal:yes:' + eventName);
-                $warningModal.modal('hide');
-            });
         },
         onSubmitFail: function (errors) {
             console.log("FAIL");
@@ -4582,9 +4554,86 @@ var EntityController;
     });
 })(App, jQuery, _, Backbone, Marionette, EntityLayoutView, this['Templates']['headerTemplate'], TimeoutUtil, EntityService);
 
+(function (App) {
+    var $config = $('#config');
+    if ($config.length > 0) {
+        var config = JSON.parse(decodeURIComponent($config.val()));
+        _.extend(App, config);
+    }
+
+    App.isMobile = function () {
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        return ((/iPhone|iPod|iPad|Android|BlackBerry|Opera Mini|IEMobile/).test(userAgent));
+    };
+
+    App.keyStrokes = {
+        backspace: 8,
+        tab: 9,
+        enter: 13,
+        esc: 27,
+        space: 32,
+        pageup: 33,
+        pagedown: 34,
+        end: 35,
+        home: 36,
+        left: 37,
+        up: 38,
+        right: 39,
+        down: 40,
+        insert: 45,
+        del: 46
+    };
+
+    Backbone.Radio.DEBUG = App.DEBUG_MODE;
+
+    //turn on/off logging based on environment
+    if (!App.DEBUG_MODE) {
+        console.log = function () {
+        };
+    }
+
+    //set up simple caching
+    var cache = {};
+    App.getCache = function (key, store) {
+        if (cache[key]) {
+            return cache[key];
+        }
+
+        if (!store) {
+            return undefined;
+        }
+
+        var result;
+        if (typeof (store) === "function") {
+            result = store();
+        } else {
+            result = store;
+        }
+
+        cache[key] = result;
+        return result;
+    };
+
+    App.setCache = function (key, value) {
+        if (_.isUndefined(cache[key]) || _.isNull(cache[key])) {
+            cache[key] = value;
+        }
+    };
+
+    if (_.isUndefined(App.pageSize)) {
+        App.pageSize = 10;
+    }
+
+    $('#file-manager').on('click', function (e) {
+        e.preventDefault();
+        BrowseServer();
+    });
+
+})(App);
 //# sourceMappingURL=main.js.map
 
-    var exports = {
+    return {
+        BaseValidationView: BaseValidationView,
         ErrorView: ErrorView,
         InfoView: InfoView,
         WarningView: WarningView,
@@ -4609,19 +4658,7 @@ var EntityController;
         DropDownListView: DropDownListView,
         EntityListItemView: EntityListItemView,
         EntityListView: EntityListView,
-        EntityLayoutView: EntityLayoutView,
-        TreeCompositeView: TreeCompositeView
+        TreeCompositeView: TreeCompositeView,
+        ModalView: ModalView
     };
-
-    for (var key in exports) {
-        if (!data.hasOwnProperty(key) || key === 'id') {
-            continue;
-        }
-
-        injector.register(key, exports[key]);
-    }
-
-    return _.extend(exports, {
-        injector: injector
-    });
 }));

@@ -1,5 +1,4 @@
 (function (App) {
-
     var $config = $('#config');
     if ($config.length > 0) {
         var config = JSON.parse(decodeURIComponent($config.val()));

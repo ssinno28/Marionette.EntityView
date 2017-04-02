@@ -2,20 +2,20 @@
   "moduleName": "Marionette Entity View",
   "js": {
     "files": [
-      "injector.js",
       "util/formValidator.js",
       "util/timeoutUtil.js",
       "util/uriUtil.js",
-      "app.js",
       "models/EntityModel.js",
       "models/EntityLayoutModel.js",
       "models/validation/MessageModel.js",
       "models/validation/ValidationModel.js",
+      "models/ModalModel.js",
       "collections/entity/EntityFilters.js",
       "collections/entity/EntityCollection.js",
       "collections/HierarchicalEntityCollection.js",
       "collections/validation/MessagesCollection.js",
       "routers/entityRouter.js",
+      "views/reusableTypes/ModalView.js",
       "views/validation/MessageView.js",
       "views/validation/MessageListView.js",
       "views/validation/BaseValidationView.js",
@@ -61,7 +61,8 @@
       "views/EntityFormView.js",
       "views/tree/TreeCompositeView.js",
       "views/tree/TreeListView.js",
-      "controllers/entityController.js"
+      "controllers/entityController.js",
+      "app.js"
     ],
     "template": "entityview.template.js",
     "generatedFile": "backbone.marionette.entityview.js"

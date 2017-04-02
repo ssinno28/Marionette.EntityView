@@ -3,8 +3,8 @@ var EntityFormView;
     EntityFormView = Marionette.EntityFormView = Backbone.Marionette.FormView.extend({
         template: entityFormLayoutTemplate,
         regions: {
-            entityFormRegion: '.entityFormRegion',
-            'messagesRegion': '.messagesRegion'
+            entityFormRegion: '.entity-form-region',
+            'messagesRegion': '.messages-region'
         },
         initialize: function (options) {
             _.extend(this, options.formOptions);
@@ -85,34 +85,6 @@ var EntityFormView;
         resetForm: function (e) {
             e.preventDefault();
             this.render();
-        },
-        showWarningModal: function (message, eventName) {
-            var $warningModal = $('.warningModal'),
-                self = this;
-
-            //update the message
-            $warningModal.find('.message').html(message);
-
-            //show modal
-            $warningModal.modal('show');
-
-            if (_.isUndefined(eventName)) {
-                $warningModal.find('.buttons').hide();
-            }
-
-            $warningModal.on('click', '.no', function (e) {
-                e.preventDefault();
-
-                self._channel.trigger('warning-modal:no:' + eventName);
-                $warningModal.modal('hide');
-            });
-
-            $warningModal.on('click', '.yes', function (e) {
-                e.preventDefault();
-
-                self._channel.trigger('warning-modal:yes:' + eventName);
-                $warningModal.modal('hide');
-            });
         },
         onSubmitFail: function (errors) {
             console.log("FAIL");

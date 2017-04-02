@@ -238,7 +238,6 @@ var EntityService;
                         models = entities.child;
                     }
 
-
                     var listView =
                         new self.listView
                         ({
