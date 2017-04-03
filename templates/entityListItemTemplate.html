@@ -1,14 +1,14 @@
 
 <div class="list-group-item">
     <% if(allowPublishAll || allowDeleteAll || allowAddAll){ %>
-    <div class="list-view-pf-checkbox">
+    <div class="list-view-checkbox">
         <input class="multi-action" data-id="<%= id %>" id="<%= route %><%=id%>" type="checkbox">
     </div>
     <% } %>
 
     <% if(allowEdit || allowDelete){ %>
-    <div class="list-view-pf-actions">
-        <div class="dropdown pull-right dropdown-kebab-pf">
+    <div class="list-view-actions">
+        <div class="dropdown pull-right">
             <button class="btn btn-link dropdown-toggle" type="button" id="dropdown<%= route %><%=id%>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <span class="fa fa-ellipsis-v"></span>
             </button>
@@ -33,9 +33,9 @@
     </div>
     <% } %>
 
-    <div class="list-view-pf-main-info">
-        <div class="list-view-pf-body">
-            <div class="list-view-pf-additional-info fieldsRegion">
+    <div class="list-view-main-info">
+        <div class="list-view-body">
+            <div class="list-view-additional-info fieldsRegion">
             </div>
         </div>
     </div>

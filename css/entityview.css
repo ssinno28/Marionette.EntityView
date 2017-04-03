@@ -43,9 +43,9 @@ legend {
     margin-top: 15px;
 }
 
-    .formview .actions .btn + .btn {
-        margin-left: 5px;
-    }
+.formview .actions .btn + .btn {
+    margin-left: 5px;
+}
 
 /* Sortable View
 ------------------------------------------------------ */
@@ -64,35 +64,35 @@ legend {
     padding: 20px 0px 20px 30px;
 }
 
-    .sortable-view > li:after {
-        content: '';
-        position: absolute;
-        box-sizing: border-box;
-        left: 5px;
-        top: 10%;
-        height: 80%;
-        width: 6px;
-        border: 2px dotted rgba(0, 0, 0, 0.1);
-        background: transparent;
-        cursor: move;
-    }
+.sortable-view > li:after {
+    content: '';
+    position: absolute;
+    box-sizing: border-box;
+    left: 5px;
+    top: 10%;
+    height: 80%;
+    width: 6px;
+    border: 2px dotted rgba(0, 0, 0, 0.1);
+    background: transparent;
+    cursor: move;
+}
 
-    .sortable-view > li:hover:after {
-        border: 2px dotted rgba(0, 0, 0, 0.3);
-    }
+.sortable-view > li:hover:after {
+    border: 2px dotted rgba(0, 0, 0, 0.3);
+}
 
-    .sortable-view > li.over {
-        background-color: transparent;
-        border: 3px dotted rgba(0, 0, 0, 0.3);
-    }
+.sortable-view > li.over {
+    background-color: transparent;
+    border: 3px dotted rgba(0, 0, 0, 0.3);
+}
 
-        .sortable-view > li.over:after {
-            display: none;
-        }
+.sortable-view > li.over:after {
+    display: none;
+}
 
-        .sortable-view > li.over > * {
-            visibility: hidden;
-        }
+.sortable-view > li.over > * {
+    visibility: hidden;
+}
 
 /* Document Tree
 ------------------------------------------------------------*/
@@ -126,97 +126,97 @@ legend {
     background: #fafafa;
 }
 
-    .zselect .toolbar-pf {
-        background: none;
-    }
+.zselect .toolbar-pf {
+    background: none;
+}
 
-    .zselect .list-view-pf-main-info {
-        padding: 0 !important;
-    }
+.zselect .list-view-pf-main-info {
+    padding: 0 !important;
+}
 
-    .zselect .optionsRegion {
-        padding: .70rem;
-    }
+.zselect .optionsRegion {
+    padding: .70rem;
+}
 
-    .zselect ul.multi-select-listings {
-        display: block;
-        position: relative;
-        padding: 0;
-        margin: 11px 0 0 -0.76rem;
-        list-style-type: none;
-    }
+.zselect ul.multi-select-listings {
+    display: block;
+    position: relative;
+    padding: 0;
+    margin: 11px 0 0 -0.76rem;
+    list-style-type: none;
+}
 
-        .zselect ul .multi-select-listings .selected {
-            border: 2px solid yellowgreen;
-        }
+.zselect ul.multi-select-listings .selected {
+    border: 2px solid yellowgreen;
+}
 
-        .zselect ul.multi-select-listings li a {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
+.zselect ul.multi-select-listings li a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
 
-        .zselect ul.multi-select-listings li span {
-        }
+.zselect ul.multi-select-listings li span {
+}
 
-        .zselect ul.multi-select-listings li.disabled {
-            color: #808080;
-        }
+.zselect ul.multi-select-listings li.disabled {
+    color: #808080;
+}
 
-        .zselect ul.multi-select-listings li:hover {
-            border: 2px solid yellowgreen;
-        }
+.zselect ul.multi-select-listings li:hover {
+    border: 2px solid yellowgreen;
+}
 
-    .zselect span.zmshead {
-        padding: 0.70rem;
-        display: block;
-        background: #fafafa url("data:image/svg+xml;base64, PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI2cHgiIGhlaWdodD0iM3B4IiB2aWV3Qm94PSIwIDAgNiAzIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA2IDMiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxwb2x5Z29uIHBvaW50cz0iNS45OTIsMCAyLjk5MiwzIC0wLjAwOCwwICIvPjwvc3ZnPg==") no-repeat;
-        background-position: 97% center;
-        border-bottom: none;
-    }
+.zselect span.zmshead {
+    padding: 0.70rem;
+    display: block;
+    background: #fafafa url("data:image/svg+xml;base64, PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI2cHgiIGhlaWdodD0iM3B4IiB2aWV3Qm94PSIwIDAgNiAzIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA2IDMiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxwb2x5Z29uIHBvaW50cz0iNS45OTIsMCAyLjk5MiwzIC0wLjAwOCwwICIvPjwvc3ZnPg==") no-repeat;
+    background-position: 97% center;
+    border-bottom: none;
+}
 
-    .zselect ul li.zmsfilter,
-    .zselect ul li.zmsfilter:hover,
-    .zselect ul li.filterResult,
-    .zselect ul li.filterResult:hover,
-    .zselect ul li.optgroup,
-    .zselect ul li.optgroup:hover {
-        background-color: transparent;
-        color: #000;
-    }
+.zselect ul li.zmsfilter,
+.zselect ul li.zmsfilter:hover,
+.zselect ul li.filterResult,
+.zselect ul li.filterResult:hover,
+.zselect ul li.optgroup,
+.zselect ul li.optgroup:hover {
+    background-color: transparent;
+    color: #000;
+}
 
-        .zselect ul li.zmsfilter input {
-            margin-bottom: 0.3rem;
-        }
+.zselect ul li.zmsfilter input {
+    margin-bottom: 0.3rem;
+}
 
-    .zselect ul li input[type='checkbox'] {
-        padding: 0;
-        margin: 0;
-    }
+.zselect ul li input[type='checkbox'] {
+    padding: 0;
+    margin: 0;
+}
 
-    .zselect ul li.filterResult {
-        font-size: 0.8em;
-    }
+.zselect ul li.filterResult {
+    font-size: 0.8em;
+}
 
-    .zselect ul li.optgroup {
-        font-weight: bold;
-        cursor: pointer;
-    }
+.zselect ul li.optgroup {
+    font-weight: bold;
+    cursor: pointer;
+}
 
-    .zselect ul li.selectall {
-    }
+.zselect ul li.selectall {
+}
 
-    .zselect ul li.deselectall {
-    }
+.zselect ul li.deselectall {
+}
 
 .selectRegion {
     font-size: 21px;
 }
 
-    .selectRegion i {
-        clear: both;
-        float: left;
-    }
+.selectRegion i {
+    clear: both;
+    float: left;
+}
 
 /* Entity Layout
 ------------------------------------------------------------*/

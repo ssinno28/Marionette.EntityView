@@ -24,7 +24,7 @@ var DateTimePickerView;
         },
         ui: {
             $datePicker: '.bootstrap-datepicker',
-            $timePicker: '.time-picker-pf input'
+            $timePicker: '.time-picker input'
         },
         template: datePickerTemplate,
         onDomRefresh: function () {

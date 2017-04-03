@@ -135,6 +135,7 @@ var MultiSelectLayoutView;
         },
         selectOption: function (e) {
             e.preventDefault();
+            e.stopPropagation();
 
             var $target = $(e.target);
 

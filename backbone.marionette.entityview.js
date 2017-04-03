@@ -114,7 +114,7 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '\r\n<div class="list-group-item">\r\n    ';
  if(allowPublishAll || allowDeleteAll || allowAddAll){ ;
-__p += '\r\n    <div class="list-view-pf-checkbox">\r\n        <input class="multi-action" data-id="' +
+__p += '\r\n    <div class="list-view-checkbox">\r\n        <input class="multi-action" data-id="' +
 ((__t = ( id )) == null ? '' : __t) +
 '" id="' +
 ((__t = ( route )) == null ? '' : __t) +
@@ -124,7 +124,7 @@ __p += '\r\n    <div class="list-view-pf-checkbox">\r\n        <input class="mul
  } ;
 __p += '\r\n\r\n    ';
  if(allowEdit || allowDelete){ ;
-__p += '\r\n    <div class="list-view-pf-actions">\r\n        <div class="dropdown pull-right dropdown-kebab-pf">\r\n            <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
+__p += '\r\n    <div class="list-view-actions">\r\n        <div class="dropdown pull-right">\r\n            <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
@@ -148,7 +148,7 @@ __p += '\r\n                <li>\r\n                    <a class="delete" href="
  } ;
 __p += '\r\n            </ul>\r\n        </div>\r\n    </div>\r\n    ';
  } ;
-__p += '\r\n\r\n    <div class="list-view-pf-main-info">\r\n        <div class="list-view-pf-body">\r\n            <div class="list-view-pf-additional-info fieldsRegion">\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>';
+__p += '\r\n\r\n    <div class="list-view-main-info">\r\n        <div class="list-view-body">\r\n            <div class="list-view-additional-info fieldsRegion">\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -224,7 +224,7 @@ __p += '<div class="col-sm-6 date input-group">\r\n    <input type="text" class=
 ((__t = ( dataField )) == null ? '' : __t) +
 '_date"\r\n           value="' +
 ((__t = ( date )) == null ? '' : __t) +
-'"/>\r\n    <span class="input-group-addon">\r\n        <span class="fa fa-calendar"></span>\r\n    </span>\r\n</div>\r\n<div class="col-sm-6 time input-group time-picker-pf">\r\n    <input type="text" class="form-control" data-field="' +
+'"/>\r\n    <span class="input-group-addon">\r\n        <span class="fa fa-calendar"></span>\r\n    </span>\r\n</div>\r\n<div class="col-sm-6 time input-group time-picker">\r\n    <input type="text" class="form-control" data-field="' +
 ((__t = ( dataField )) == null ? '' : __t) +
 '_time" value="' +
 ((__t = ( time )) == null ? '' : __t) +
@@ -1831,8 +1831,6 @@ var MessageListView;
 })(jQuery, _, Backbone, Marionette, MessageView, MessagesCollection);
 var BaseValidationView;
 (function ($, _, Backbone, Marionette, ValidationModel, validationTemplate, MessageCollection, MessageListView) {
-    Marionette.Validation = {};
-
     BaseValidationView = Marionette.BaseValidationView = Marionette.View.extend({
         tagName: 'div',
         template: validationTemplate,
@@ -2341,7 +2339,7 @@ var DateTimePickerView;
         },
         ui: {
             $datePicker: '.bootstrap-datepicker',
-            $timePicker: '.time-picker-pf input'
+            $timePicker: '.time-picker input'
         },
         template: datePickerTemplate,
         onDomRefresh: function () {
@@ -3937,6 +3935,7 @@ var MultiSelectLayoutView;
         },
         selectOption: function (e) {
             e.preventDefault();
+            e.stopPropagation();
 
             var $target = $(e.target);
 
