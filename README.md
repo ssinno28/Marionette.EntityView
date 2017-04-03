@@ -4,18 +4,12 @@ Marionette.EntityView is a framework built to support building dashboards using 
 
 Check out the [wiki](https://github.com/ssinno28/Marionette.EntityView/wiki) to get started
 
-A shout out to the frameworks used to build Marionette.EntityView:
 
-1. bottle.js
-1. lunr.js
-1. Bootstrap
-1. Backbone.js
-1. Underscore.js
-1. Marionette.js
-1. Jasmine - unit testing
-2. Marionette.FormView - Used as the base view for Marionette.EntityFormView (with minor changes here and there)
-3. Backbone.CollectionSubset
-4. File Manager
+
+
+
+
+MIT License
 
 Copyright (c) 2017 Sammi Maan Sinno
 
