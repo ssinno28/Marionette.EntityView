@@ -48,7 +48,7 @@ var EntityService;
                     urlRoot: this.route
                 });
 
-                this.router = new router({
+                this._router = new router({
                     controller: this
                 });
             }
