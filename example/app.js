@@ -1,10 +1,16 @@
-var MockEntityCollection = Backbone.EntityCollection.extend({
+var MockModel = Backbone.EntityModel.extend({
+        defaults: {
+            email: 'example@gmail.com',
+            name: 'John Doe'
+        }
+    }),
+    MockEntityCollection = Backbone.EntityCollection.extend({
+        url: '/api/test',
+        model: MockModel,
         query: function (track, data, force) {
             return $.Deferred(_.bind(function (defer) {
                 var pageKey = this._getKeyWithOutPage(data),
                     result = this._getSubCollection(data, pageKey);
-
-                this._addModelIndexes(pageKey, result.child.toJSON(), data, result.length);
 
                 defer.resolve(result, pageKey);
             }, this));
@@ -21,27 +27,13 @@ var MockEntityCollection = Backbone.EntityCollection.extend({
 //set pageSize to 5 for easier testing
 App.pageSize = 5;
 
-var data = [
-    {id: 1, name: 'test'},
-    {id: 2, name: 'test 2'},
-    {id: 3, name: 'test 3'},
-    {id: 4, name: 'test 4'},
-    {id: 5, name: 'test 5'},
-    {id: 6, name: 'test 6'},
-    {id: 7, name: 'test 7'},
-    {id: 8, name: 'test 8'},
-    {id: 9, name: 'test 9'},
-    {id: 10, name: 'test 10'}
-];
-
 var formView = Marionette.EntityFormView.extend({
-    template: _.template('<script type="text/template">' +
-        '<fieldset>' +
+    formTemplate: _.template('<fieldset>' +
         '<legend>User Settings</legend>' +
-        '<div class="form-group username">' +
-        '<label class="label-control col-sm-2">Username</label>' +
+        '<div class="form-group name">' +
+        '<label class="label-control col-sm-2">Name</label>' +
         '<div class="col-sm-10">' +
-        '<input type="text" class="form-control" data-field="username" value="<%= userName %>" />' +
+        '<input type="text" class="form-control" data-field="name" value="<%= name %>" />' +
         '</div>' +
         '</div>' +
         '<div class="form-group email">' +
@@ -50,42 +42,85 @@ var formView = Marionette.EntityFormView.extend({
         '<input type="email" class="form-control" data-field="email" value="<%= email %>" />' +
         '</div>' +
         '</div>' +
-        '</fieldset>' +
-        '</script>'),
+        '<div class="form-group dob">' +
+        '<label class="label-control col-sm-2">Date Of Birth</label>' +
+        '<div class="dob-region">' +
+        '</div>' +
+        '</div>' +
+        '</fieldset>'),
     fields: {
         name: {
-            el: '.username input',
-            required: 'Please enter a Username.'
+            el: '.name input',
+            required: 'Please enter your full name.'
         },
         email: {
-            el: '.username input',
+            el: '.email input',
             required: 'Please enter an email address.',
             email: 'The email address is not in the correct format!'
+        },
+        dob: {
+            el: '[data-field="dob-date"]',
+            required: 'The DOB is required!!'
         }
+    },
+    onDomRefresh: function () {
+        this.getDatePickerForRegion('dobRegion', 'dob');
     }
 });
 
+App.Users = new MockEntityCollection();
+
+var data1 = [
+    {id: 1, name: 'Bob'},
+    {id: 2, name: 'Sherri'},
+    {id: 3, name: 'Sam'},
+    {id: 4, name: 'Marci'},
+    {id: 5, name: 'John'},
+];
+
+var data2 = [
+    {id: 6, name: 'Mike'},
+    {id: 7, name: 'Ted'},
+    {id: 8, name: 'Steve'},
+    {id: 9, name: 'Kevin'},
+    {id: 10, name: 'Matt'}
+];
+
+var firstData = {page: 1, pageSize: App.pageSize},
+    secondData = {page: 2, pageSize: App.pageSize},
+    pageKey = App.Users._getKeyWithOutPage(firstData);
+
+
+var models1 = App.Users.addRange(data1);
+App.Users._addModelIndexes(pageKey, models1, firstData, 10);
+
+var models2 = App.Users.addRange(data2);
+App.Users._addModelIndexes(pageKey, models2, secondData, 10);
+
 var options = {
-    collection: new MockEntityCollection(),
-    model: Backbone.Model,
+    collection: App.Users,
+    model: MockModel,
     formView: formView,
     listView: MockListView,
     title: 'Testing',
     route: 'test',
-    region: region
+    region: region,
+    header: {
+        template: _.template('<h3><%= title %></h3> <hr />'),
+        params: {title: 'Testing'}
+    }
 };
 
-options.collection.addRange(data);
+var router = Marionette.EntityRouter.extend({
+    urlRoot: 'test'
+});
 
 App.on('start', function () {
-    var router = new Marionette.EntityRouter({
-        controller: new Marionette.EntityController(options),
-        route: 'test'
+    new router({
+        controller: new Marionette.EntityController(options)
     });
 
     Backbone.history.start();
 });
 
 App.start();
-
-console.log('test!');

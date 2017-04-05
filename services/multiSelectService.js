@@ -22,7 +22,7 @@ var MultiSelectService;
             Marionette.EntityService.prototype.initialize.call(this, options);
         },
         getHeader: function () {
-            return this.header;
+            return Templates.multiSelectHeaderTpl;
         },
         getBtnClass: function () {
             return 'tiny round';

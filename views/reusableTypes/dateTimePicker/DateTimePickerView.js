@@ -1,10 +1,13 @@
 var DateTimePickerView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, datePickerTemplate, moment) {
     DateTimePickerView = ReusableTypeLayoutView.extend({
+        className: 'col-sm-10',
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
-            var value = this.model.get('value'),
+            this.model = new Backbone.Model();
+
+            var value = this.getOption('value'),
                 timeFormat = !_.isUndefined(this.timeFormat) ? this.timeFormat : 'hh:mm:ss A',
                 dateFormat = !_.isUndefined(this.dateFormat) ? this.dateFormat : 'MM/DD/YYYY',
                 date = moment(value).format(dateFormat),
@@ -21,16 +24,20 @@ var DateTimePickerView;
             } else {
                 this.model.set({time: ''});
             }
+
+            this.model.set({value: this.model.get('date') + ' ' + this.model.get('time')});
         },
         ui: {
             $datePicker: '.bootstrap-datepicker',
-            $timePicker: '.time-picker input'
+            $timePicker: '.time-picker input',
+            $inputVal: '.inputVal'
         },
         template: datePickerTemplate,
         onDomRefresh: function () {
             this.ui.$datePicker.datepicker()
                 .on('changeDate', _.bind(function (e) {
                     this._channel.trigger('change:date:' + this.dataField, e);
+                    this.ui.$inputVal.val(this.getDateTime());
                 }, this));
 
             this.ui.$timePicker.datetimepicker({
@@ -62,8 +69,8 @@ var DateTimePickerView;
             this.$el.datepicker('update', value);
         },
         getDateTime: function () {
-            var $date = $('[data-field="' + this.dataField + '_date"]'),
-                $time = $('[data-field="' + this.dataField + '_time"]');
+            var $date = $('[data-field="' + this.dataField + '-date"]'),
+                $time = $('[data-field="' + this.dataField + '-time"]');
 
             if (this.dateType === 'Date') {
                 $date.val();

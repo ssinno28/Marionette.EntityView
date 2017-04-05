@@ -37,7 +37,7 @@ var EntityLayoutView;
         },
         className: function () {
             var entityLayoutClass = ' entity-layout';
-            if (!this.routing) {
+            if (!this.getOption('routing')) {
                 entityLayoutClass = ' entity-layout-nested';
             }
 

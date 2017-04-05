@@ -182,13 +182,23 @@ var EntityFormView;
         getSubServiceRoute: function (name) {
             return location.hash.substring(1, location.hash.length) + name;
         },
-        _wyswigForRegion: function (model, region, dataField) {
+        _wyswigForRegion: function (region, dataField) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
             this.showChildView(region, new WyswigView({
-                model: model,
+                value: this.model.get(dataField),
                 dataField: dataField
             }));
         },
         _dropDownForRegion: function (collection, region, dataField, conditions) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
             var viewContext = this;
             if (!conditions) {
                 conditions = [];
@@ -214,8 +224,12 @@ var EntityFormView;
             });
         },
         _multiSelectForRegion: function (collection, region, dataField, conditions, displayField) {
-            var selectedIds = this.model.get(dataField);
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
 
+            var selectedIds = this.model.get(dataField);
             if (_.isUndefined(conditions)) {
                 conditions = [];
             }
@@ -240,8 +254,12 @@ var EntityFormView;
             this.showChildView(region, multiSelect);
         },
         _autoCompleteForRegion: function (collection, region, dataField) {
-            var selectedId = this.model.get(dataField);
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
 
+            var selectedId = this.model.get(dataField);
             this.showChildView(region,
                 new AutoCompleteLayoutView({
                     collection: collection,
@@ -250,38 +268,65 @@ var EntityFormView;
                 }));
         },
         _radioButtonListForRegion: function (collection, region, dataField) {
-            var selectedId = this.model.get(dataField);
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
 
+            var selectedId = this.model.get(dataField);
             this.showChildView(region, new RadioButtonListView({
                 collection: collection,
                 dataField: dataField,
                 selectedId: selectedId
             }));
         },
-        _textAreaForRegion: function (model, region, dataField) {
+        _textAreaForRegion: function (region, dataField) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
             this.showChildView(region, new TextAreaView({
-                model: model,
+                value: this.model.get(dataField),
                 dataField: dataField
             }));
         },
-        _checkboxForRegion: function (model, region, dataField) {
+        _checkboxForRegion: function (region, dataField) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
             this.showChildView(region, new CheckBoxView({
-                model: model,
+                value: this.model.get(dataField),
                 dataField: dataField
             }));
         },
         _imagePickerForRegion: function (model, region, dataField) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
             this.showChildView(region, new ImageFieldView({
-                model: model,
+                value: this.model.get(dataField),
                 dataField: dataField
             }));
         },
-        _dateTimePickerForRegion: function (model, region, dataField, dateType) {
+        _dateTimePickerForRegion: function (region, dataField, dateType) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
             this.showChildView(region, new DateTimePickerView({
-                model: model,
+                value: this.model.get(dataField),
                 dataField: dataField,
                 dateType: dateType
             }));
+        },
+        _formatRegionName: function(name){
+            return name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
         }
     });
 })(jQuery, _, Backbone, Marionette, this['Templates']['entityFormLayoutTemplate'], MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView);

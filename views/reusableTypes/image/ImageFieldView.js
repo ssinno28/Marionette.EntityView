@@ -4,6 +4,7 @@ var ImageFieldView;
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
+            this.model = new Backbone.Model({value: this.getOption('value')});
             $('[data-field="' + this.dataField + '"]').on('change', this.updateImageUrl);
         },
         template: imageFieldTemplate,

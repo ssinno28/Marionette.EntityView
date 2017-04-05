@@ -112,43 +112,43 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '\r\n<div class="list-group-item">\r\n    ';
+__p += '<div class="list-group-item">\r\n    <div class="row">\r\n        ';
  if(allowPublishAll || allowDeleteAll || allowAddAll){ ;
-__p += '\r\n    <div class="list-view-checkbox">\r\n        <input class="multi-action" data-id="' +
+__p += '\r\n        <div class="list-view-checkbox col-sm-1">\r\n            <input class="multi-action" data-id="' +
 ((__t = ( id )) == null ? '' : __t) +
 '" id="' +
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
-'" type="checkbox">\r\n    </div>\r\n    ';
+'" type="checkbox">\r\n        </div>\r\n        ';
  } ;
-__p += '\r\n\r\n    ';
+__p += '\r\n\r\n        <div class="col-sm-10 list-view-additional-info">\r\n            <div class="fieldsRegion"></div>\r\n        </div>\r\n\r\n        ';
  if(allowEdit || allowDelete){ ;
-__p += '\r\n    <div class="list-view-actions">\r\n        <div class="dropdown pull-right">\r\n            <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
+__p += '\r\n        <div class="list-view-actions col-sm-1">\r\n            <div class="dropdown pull-right">\r\n                <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
-'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">\r\n                <span class="fa fa-ellipsis-v"></span>\r\n            </button>\r\n            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown' +
+'"\r\n                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">\r\n                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>\r\n                </button>\r\n                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown' +
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
-'">\r\n                ';
+'">\r\n                    ';
  if(allowEdit){ ;
-__p += '\r\n                <li>\r\n                    <a class="edit" data-id="' +
+__p += '\r\n                    <li>\r\n                        <a class="edit" data-id="' +
 ((__t = ( id )) == null ? '' : __t) +
-'" href="#">\r\n                        Edit\r\n                    </a>\r\n                </li>\r\n                ';
+'" href="#">\r\n                            Edit\r\n                        </a>\r\n                    </li>\r\n                    ';
  } ;
-__p += '\r\n\r\n                ';
+__p += '\r\n\r\n                    ';
  if(allowDelete){ ;
-__p += '\r\n                <li>\r\n                    <a class="delete" href="#' +
+__p += '\r\n                    <li>\r\n                        <a class="delete" href="#' +
 ((__t = ( route )) == null ? '' : __t) +
 '/delete/' +
 ((__t = ( id )) == null ? '' : __t) +
-'/">\r\n                        Delete\r\n                    </a>\r\n                </li>\r\n                ';
+'/">\r\n                            Delete\r\n                        </a>\r\n                    </li>\r\n                    ';
  } ;
-__p += '\r\n            </ul>\r\n        </div>\r\n    </div>\r\n    ';
+__p += '\r\n                </ul>\r\n            </div>\r\n        </div>\r\n        ';
  } ;
-__p += '\r\n\r\n    <div class="list-view-main-info">\r\n        <div class="list-view-body">\r\n            <div class="list-view-additional-info fieldsRegion">\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>';
+__p += '\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -158,7 +158,7 @@ this["Templates"]["headerTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '    <h1>' +
+__p += '<h1>' +
 ((__t = ( title )) == null ? '' : __t) +
 '</h1>';
 
@@ -222,13 +222,17 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class="col-sm-6 date input-group">\r\n    <input type="text" class="form-control bootstrap-datepicker" data-field="' +
 ((__t = ( dataField )) == null ? '' : __t) +
-'_date"\r\n           value="' +
+'-date"\r\n           value="' +
 ((__t = ( date )) == null ? '' : __t) +
 '"/>\r\n    <span class="input-group-addon">\r\n        <span class="fa fa-calendar"></span>\r\n    </span>\r\n</div>\r\n<div class="col-sm-6 time input-group time-picker">\r\n    <input type="text" class="form-control" data-field="' +
 ((__t = ( dataField )) == null ? '' : __t) +
-'_time" value="' +
+'-time" value="' +
 ((__t = ( time )) == null ? '' : __t) +
-'"/>\r\n        <span class="input-group-addon btn btn-default">\r\n            <span class="fa fa-clock-o"></span>\r\n        </span>\r\n</div>';
+'"/>\r\n        <span class="input-group-addon btn btn-default">\r\n            <span class="fa fa-clock-o"></span>\r\n        </span>\r\n</div>\r\n\r\n<input class="inputVal" type="hidden" data-field="' +
+((__t = ( dataField )) == null ? '' : __t) +
+'" value="' +
+((__t = ( value )) == null ? '' : __t) +
+'" />\r\n';
 
 }
 return __p
@@ -282,7 +286,7 @@ __p += '<div class="modal-dialog">\r\n    <div class="modal-content">\r\n       
 return __p
 };
 
-this["Templates"]["headerTemplate"] = function(obj) {
+this["Templates"]["multSelectHeaderTpl"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
@@ -1053,10 +1057,11 @@ var EntityCollection;
                 }
             });
 
-            queryData.conditions = _.filter(queryData.conditions, function (condition) {
-                var index = queryData.conditions.indexOf(condition);
-                return indexes.indexOf(index) === -1;
-            });
+            queryData.conditions =
+                _.filter(queryData.conditions, function (condition) {
+                    var index = queryData.conditions.indexOf(condition);
+                    return indexes.indexOf(index) === -1;
+                });
 
             /**
              * Description
@@ -2175,6 +2180,11 @@ var NumberView;
 var TextAreaView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, textAreaTemplate) {
     TextAreaView = ReusableTypeLayoutView.extend({
+        initialize: function(options){
+            ReusableTypeLayoutView.prototype.initialize.call(this, options);
+
+            this.model = new Backbone.Model({value: this.getOption('value')});
+        },
         template: textAreaTemplate
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['textAreaTemplate']);
@@ -2259,6 +2269,7 @@ var ImageFieldView;
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
+            this.model = new Backbone.Model({value: this.getOption('value')});
             $('[data-field="' + this.dataField + '"]').on('change', this.updateImageUrl);
         },
         template: imageFieldTemplate,
@@ -2316,10 +2327,13 @@ var DropDownListView;
 var DateTimePickerView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, datePickerTemplate, moment) {
     DateTimePickerView = ReusableTypeLayoutView.extend({
+        className: 'col-sm-10',
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
-            var value = this.model.get('value'),
+            this.model = new Backbone.Model();
+
+            var value = this.getOption('value'),
                 timeFormat = !_.isUndefined(this.timeFormat) ? this.timeFormat : 'hh:mm:ss A',
                 dateFormat = !_.isUndefined(this.dateFormat) ? this.dateFormat : 'MM/DD/YYYY',
                 date = moment(value).format(dateFormat),
@@ -2336,16 +2350,20 @@ var DateTimePickerView;
             } else {
                 this.model.set({time: ''});
             }
+
+            this.model.set({value: this.model.get('date') + ' ' + this.model.get('time')});
         },
         ui: {
             $datePicker: '.bootstrap-datepicker',
-            $timePicker: '.time-picker input'
+            $timePicker: '.time-picker input',
+            $inputVal: '.inputVal'
         },
         template: datePickerTemplate,
         onDomRefresh: function () {
             this.ui.$datePicker.datepicker()
                 .on('changeDate', _.bind(function (e) {
                     this._channel.trigger('change:date:' + this.dataField, e);
+                    this.ui.$inputVal.val(this.getDateTime());
                 }, this));
 
             this.ui.$timePicker.datetimepicker({
@@ -2377,8 +2395,8 @@ var DateTimePickerView;
             this.$el.datepicker('update', value);
         },
         getDateTime: function () {
-            var $date = $('[data-field="' + this.dataField + '_date"]'),
-                $time = $('[data-field="' + this.dataField + '_time"]');
+            var $date = $('[data-field="' + this.dataField + '-date"]'),
+                $time = $('[data-field="' + this.dataField + '-time"]');
 
             if (this.dateType === 'Date') {
                 $date.val();
@@ -2874,7 +2892,7 @@ var EntityLayoutView;
         },
         className: function () {
             var entityLayoutClass = ' entity-layout';
-            if (!this.routing) {
+            if (!this.getOption('routing')) {
                 entityLayoutClass = ' entity-layout-nested';
             }
 
@@ -3287,7 +3305,8 @@ var FormView;
                  val.push(elem.data('id'));
                  }
                  });*/
-            } else if (el.is('input')) {
+            }
+            else if (el.is('input')) {
                 var inputType = el.attr('type').toLowerCase();
                 switch (inputType) {
                     case "radio":
@@ -3510,7 +3529,7 @@ var EntityService;
                     urlRoot: this.route
                 });
 
-                this.router = new router({
+                this._router = new router({
                     controller: this
                 });
             }
@@ -3791,7 +3810,7 @@ var MultiSelectService;
             Marionette.EntityService.prototype.initialize.call(this, options);
         },
         getHeader: function () {
-            return this.header;
+            return Templates.multiSelectHeaderTpl;
         },
         getBtnClass: function () {
             return 'tiny round';
@@ -4276,13 +4295,23 @@ var EntityFormView;
         getSubServiceRoute: function (name) {
             return location.hash.substring(1, location.hash.length) + name;
         },
-        _wyswigForRegion: function (model, region, dataField) {
+        _wyswigForRegion: function (region, dataField) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
             this.showChildView(region, new WyswigView({
-                model: model,
+                value: this.model.get(dataField),
                 dataField: dataField
             }));
         },
         _dropDownForRegion: function (collection, region, dataField, conditions) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
             var viewContext = this;
             if (!conditions) {
                 conditions = [];
@@ -4308,8 +4337,12 @@ var EntityFormView;
             });
         },
         _multiSelectForRegion: function (collection, region, dataField, conditions, displayField) {
-            var selectedIds = this.model.get(dataField);
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
 
+            var selectedIds = this.model.get(dataField);
             if (_.isUndefined(conditions)) {
                 conditions = [];
             }
@@ -4334,8 +4367,12 @@ var EntityFormView;
             this.showChildView(region, multiSelect);
         },
         _autoCompleteForRegion: function (collection, region, dataField) {
-            var selectedId = this.model.get(dataField);
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
 
+            var selectedId = this.model.get(dataField);
             this.showChildView(region,
                 new AutoCompleteLayoutView({
                     collection: collection,
@@ -4344,38 +4381,65 @@ var EntityFormView;
                 }));
         },
         _radioButtonListForRegion: function (collection, region, dataField) {
-            var selectedId = this.model.get(dataField);
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
 
+            var selectedId = this.model.get(dataField);
             this.showChildView(region, new RadioButtonListView({
                 collection: collection,
                 dataField: dataField,
                 selectedId: selectedId
             }));
         },
-        _textAreaForRegion: function (model, region, dataField) {
+        _textAreaForRegion: function (region, dataField) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
             this.showChildView(region, new TextAreaView({
-                model: model,
+                value: this.model.get(dataField),
                 dataField: dataField
             }));
         },
-        _checkboxForRegion: function (model, region, dataField) {
+        _checkboxForRegion: function (region, dataField) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
             this.showChildView(region, new CheckBoxView({
-                model: model,
+                value: this.model.get(dataField),
                 dataField: dataField
             }));
         },
         _imagePickerForRegion: function (model, region, dataField) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
             this.showChildView(region, new ImageFieldView({
-                model: model,
+                value: this.model.get(dataField),
                 dataField: dataField
             }));
         },
-        _dateTimePickerForRegion: function (model, region, dataField, dateType) {
+        _dateTimePickerForRegion: function (region, dataField, dateType) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
             this.showChildView(region, new DateTimePickerView({
-                model: model,
+                value: this.model.get(dataField),
                 dataField: dataField,
                 dateType: dateType
             }));
+        },
+        _formatRegionName: function(name){
+            return name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
         }
     });
 })(jQuery, _, Backbone, Marionette, this['Templates']['entityFormLayoutTemplate'], MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView);

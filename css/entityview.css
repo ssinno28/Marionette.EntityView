@@ -224,6 +224,14 @@ legend {
     margin: 15px 0px;
 }
 
+.entity-list-item {
+    margin-bottom: 5px;
+}
+
+.entity-list-item .btn {
+    padding: 0;
+}
+
 /* Icons
 ------------------------------------------------------------*/
 .size-12 {
