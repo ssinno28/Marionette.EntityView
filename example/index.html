@@ -12,6 +12,49 @@
     <![endif]-->
     <link href="../example/css/styles.css" rel="stylesheet"/>
     <link href="../css/entityview.css" rel="stylesheet"/>
+
+    <script type="text/javascript">
+        var urlobj = null;
+        function BrowseServer(obj) {
+            urlobj = obj;
+            OpenServerBrowser(
+                    '../node_modules/rich-filemanager/index.html',
+                    screen.width * 0.7,
+                    screen.height * 0.7);
+        }
+
+        function OpenServerBrowser(url, width, height) {
+            var iLeft = (screen.width - width) / 2;
+            var iTop = (screen.height - height) / 2;
+            var sOptions = "toolbar=no,status=no,resizable=yes,dependent=yes";
+            sOptions += ",width=" + width;
+            sOptions += ",height=" + height;
+            sOptions += ",left=" + iLeft;
+            sOptions += ",top=" + iTop;
+            var oWindow = window.open(url, "BrowseWindow", sOptions);
+        }
+
+        function FindByAttributeValue(attribute, value) {
+            var All = document.getElementsByTagName('*');
+            for (var i = 0; i < All.length; i++) {
+                if (All[i].getAttribute(attribute) == value) {
+                    return All[i];
+                }
+            }
+        }
+
+        function SetUrl(url, width, height, alt) {
+            var el = FindByAttributeValue('data-field', urlobj);
+            var imgEl = document.getElementById('uploadedImage' + urlobj);
+            if (url !== '' && url !== null && url !== undefined) {
+                imgEl.setAttribute('src', url);
+                imgEl.parentElement.setAttribute('style', '');
+            } else {
+                imgEl.parentElement.setAttribute('style', 'display:none;');
+            }
+            oWindow = null;
+        }
+    </script>
 </head>
 <body>
 <!-- Header -->
@@ -40,13 +83,8 @@
 
             <ul class="nav nav-stacked">
                 <li>
-                    <a href="http://www.bootply.com/85861" target="ext">
-                        <i class="glyphicon glyphicon-flash"></i> Alerts
-                    </a>
-                </li>
-                <li>
-                    <a href="http://www.bootply.com/85861" target="ext">
-                        <i class="glyphicon glyphicon-link"></i> Links
+                    <a href="#test">
+                        <i class="glyphicon glyphicon-flash"></i> Users
                     </a>
                 </li>
             </ul>
@@ -55,7 +93,7 @@
         <div class="col-sm-9">
 
             <!-- column 2 -->
-            <h3><i class="glyphicon glyphicon-dashboard"></i> Bootply Dashboard</h3>
+            <h3><i class="glyphicon glyphicon-dashboard"></i> Dashboard</h3>
             <hr>
 
             <div class="row">
@@ -68,23 +106,23 @@
 </div>
 <!-- /upper section -->
 
-<!-- script references -->
-<script type="javascript" src="../node_modules/jquery/dist/jquery.js"></script>
-<script type="javascript" src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
-<script type="javascript" src="../node_modules/moment/moment.js"></script>
-<script type="javascript" src="../node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
-<script type="javascript"
+<script src="../node_modules/jquery/dist/jquery.js"></script>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../node_modules/moment/moment.js"></script>
+<script src="../node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+<script
         src="../node_modules/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
-<script type="javascript" src="../node_modules/bootstrap-combobox/js/bootstrap-combobox.min.js"></script>
-<script type="javascript" src="../node_modules/underscore/underscore.js"></script>
-<script type="javascript" src="../node_modules/backbone/backbone.js"></script>
-<script type="javascript" src="../node_modules/backbone.collectionsubset/lib/backbone.collectionsubset.js"></script>
-<script type="javascript" src="../node_modules/backbone.radio/build/backbone.radio.js"></script>
-<script type="javascript" src="../node_modules/backbone.marionette/lib/backbone.marionette.js"></script>
-<script type="javascript" src="../node_modules/lunr/lunr.js"></script>
-<script type="javascript" src="../node_modules/pluralize/pluralize.js"></script>
-<script type="javascript" src="../node_modules/ckeditor/ckeditor.js"></script>
-<script type="javascript" src="../node_modules/ckeditor/adapters/jquery.js"></script>
-<script type="javascript" src="../backbone.marionette.entityview.js"></script>
+<script src="../node_modules/bootstrap-combobox/js/bootstrap-combobox.min.js"></script>
+<script src="../node_modules/underscore/underscore.js"></script>
+<script src="../node_modules/backbone/backbone.js"></script>
+<script src="../node_modules/backbone.collectionsubset/lib/backbone.collectionsubset.js"></script>
+<script src="../node_modules/backbone.radio/build/backbone.radio.js"></script>
+<script src="../node_modules/backbone.marionette/lib/backbone.marionette.js"></script>
+<script src="../node_modules/lunr/lunr.js"></script>
+<script src="../node_modules/pluralize/pluralize.js"></script>
+<script src="../node_modules/ckeditor/ckeditor.js"></script>
+<script src="../node_modules/ckeditor/adapters/jquery.js"></script>
+<script src="../backbone.marionette.entityview.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

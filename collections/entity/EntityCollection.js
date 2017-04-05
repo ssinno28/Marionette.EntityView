@@ -308,10 +308,11 @@ var EntityCollection;
                 }
             });
 
-            queryData.conditions = _.filter(queryData.conditions, function (condition) {
-                var index = queryData.conditions.indexOf(condition);
-                return indexes.indexOf(index) === -1;
-            });
+            queryData.conditions =
+                _.filter(queryData.conditions, function (condition) {
+                    var index = queryData.conditions.indexOf(condition);
+                    return indexes.indexOf(index) === -1;
+                });
 
             /**
              * Description
