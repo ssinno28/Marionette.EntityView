@@ -61,6 +61,8 @@
         AutoCompleteLayoutView: AutoCompleteLayoutView,
         MultiSelectLayoutView: MultiSelectLayoutView,
         DateTimePickerView: DateTimePickerView,
+        DatePickerView: DatePickerView,
+        TimePickerView: TimePickerView,
         SingleLineTextView: SingleLineTextView,
         WyswigView: WyswigView,
         ImageFieldView: ImageFieldView,

@@ -47,6 +47,11 @@ var formView = Marionette.EntityFormView.extend({
         '<div class="dob-region">' +
         '</div>' +
         '</div>' +
+        '<div class="form-group time-born">' +
+        '<label class="label-control col-sm-2">Time Of Birth</label>' +
+        '<div class="time-born-region">' +
+        '</div>' +
+        '</div>' +
         '</fieldset>'),
     fields: {
         name: {
@@ -59,12 +64,17 @@ var formView = Marionette.EntityFormView.extend({
             email: 'The email address is not in the correct format!'
         },
         dob: {
-            el: '[data-field="dob-date"]',
+            el: '[data-field="dob"]',
             required: 'The DOB is required!!'
+        },
+        timeBorn: {
+            el: '[data-field="timeBorn"]',
+            required: 'The time of your birth is required!!'
         }
     },
     onDomRefresh: function () {
         this.getDatePickerForRegion('dobRegion', 'dob');
+        this.getTimePickerForRegion('timeBornRegion', 'timeBorn');
     }
 });
 
@@ -75,7 +85,7 @@ var data1 = [
     {id: 2, name: 'Sherri'},
     {id: 3, name: 'Sam'},
     {id: 4, name: 'Marci'},
-    {id: 5, name: 'John'},
+    {id: 5, name: 'John'}
 ];
 
 var data2 = [

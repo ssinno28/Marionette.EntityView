@@ -57,7 +57,7 @@ var EntityCollection;
             var range = [],
                 numOfResults = models.length;
 
-            for (var i = numOfResults; i--;) {
+            for (var i = 0; i < numOfResults; i++) {
                 var currentModel = this.get(models[i].id);
 
                 if (!_.isUndefined(currentModel)) {

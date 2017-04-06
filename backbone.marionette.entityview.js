@@ -75,33 +75,33 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="container-fluid">\r\n    <div class="entity-header row">\r\n    </div>\r\n    <div class="row">\r\n        <div class="col-sm-12">\r\n            <div>\r\n                <div class="form-group">\r\n                    <label class="sr-only" for="filter">Name</label>\r\n\r\n                    <div class="input-group col-sm-12">\r\n                        <input type="text" class="form-control nameFilter" id="filter" placeholder="Filter By Name...">\r\n                    </div><!-- /input-group -->\r\n                </div>\r\n                <div class="form-group sub-nav">\r\n                    <button type="button" class="get-all btn btn-default">\r\n                        All\r\n                    </button>\r\n                    ';
+__p += '<div class="row">\r\n    <div class="entity-header col-sm-12">\r\n    </div>\r\n    <div class="col-sm-12">\r\n        <div>\r\n            <div class="form-group">\r\n                <label class="sr-only" for="filter">Name</label>\r\n\r\n                <div class="input-group col-sm-12">\r\n                    <input type="text" class="form-control nameFilter" id="filter" placeholder="Filter By Name...">\r\n                </div><!-- /input-group -->\r\n            </div>\r\n            <div class="form-group sub-nav">\r\n                <button type="button" class="get-all btn btn-default">\r\n                    All\r\n                </button>\r\n                ';
  if(showCreate){ ;
-__p += '\r\n                    <button type="button" class="create btn btn-primary">\r\n                        Create\r\n                    </button>\r\n                    ';
+__p += '\r\n                <button type="button" class="create btn btn-primary">\r\n                    Create\r\n                </button>\r\n                ';
  } ;
-__p += '\r\n                    ';
+__p += '\r\n                ';
  if(allowDeleteAll || allowPublishAll || allowAddAll) { ;
-__p += '\r\n                    ';
+__p += '\r\n                ';
  if(allowDeleteAll){ ;
-__p += '\r\n                    <button type="button" class="btn btn-danger multi-action-requests ' +
+__p += '\r\n                <button type="button" class="btn btn-danger multi-action-requests ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
-' delete-all">Delete All</button>\r\n                    ';
+' delete-all">Delete\r\n                    All\r\n                </button>\r\n                ';
  } ;
-__p += '\r\n\r\n                    ';
+__p += '\r\n\r\n                ';
  if(allowPublishAll){ ;
-__p += '\r\n                    <button type="button" class="btn btn-default multi-action-requests ' +
+__p += '\r\n                <button type="button" class="btn btn-default multi-action-requests ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
-' publish-all">Publish All</button>\r\n                    ';
+' publish-all">Publish\r\n                    All\r\n                </button>\r\n                ';
  } ;
-__p += '\r\n\r\n                    ';
+__p += '\r\n\r\n                ';
  if(allowAddAll){ ;
-__p += '\r\n                    <button type="button" class="btn btn-default multi-action-requests ' +
+__p += '\r\n                <button type="button" class="btn btn-default multi-action-requests ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
-' add-all">Add All</button>\r\n                    ';
+' add-all">Add All\r\n                </button>\r\n                ';
  } ;
-__p += '\r\n                    ';
+__p += '\r\n                ';
  } ;
-__p += '\r\n                </div>\r\n            </div>\r\n        </div><!-- /col -->\r\n    </div><!-- /row -->\r\n</div><!-- /container -->\r\n\r\n<div class="container-fluid">\r\n    <div class="list-group entityRegion">\r\n\r\n    </div>\r\n    <div class="filterEntities row">\r\n        <div class="pagerRegion col-sm-12"></div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade delete-all-modal" tabindex="-1" role="dialog" aria-labelledby="delete-all-modal"\r\n     aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    X\r\n                </button>\r\n                <h4 class="modal-title">Delete All?</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n                Are you sure you want to delete these items?\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade publish-all-modal" tabindex="-1" role="dialog" aria-labelledby="publish-all-modal"\r\n     aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    X\r\n                </button>\r\n                <h4 class="modal-title">Publish All?</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n                Are you sure you want to publish these items?\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    X\r\n                </button>\r\n                <h4 class="modal-title">Delete Item</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n                Are you sure you want to delete this item?\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>';
+__p += '\r\n            </div>\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n\r\n<div class="row">\r\n    <div class="col-sm-12">\r\n        <div class="list-group entityRegion">\r\n\r\n        </div>\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-sm-12">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade delete-all-modal" tabindex="-1" role="dialog" aria-labelledby="delete-all-modal"\r\n     aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    X\r\n                </button>\r\n                <h4 class="modal-title">Delete All?</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n                Are you sure you want to delete these items?\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade publish-all-modal" tabindex="-1" role="dialog" aria-labelledby="publish-all-modal"\r\n     aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    X\r\n                </button>\r\n                <h4 class="modal-title">Publish All?</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n                Are you sure you want to publish these items?\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    X\r\n                </button>\r\n                <h4 class="modal-title">Delete Item</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n                Are you sure you want to delete this item?\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -216,23 +216,15 @@ __p += '    <label for="' +
 return __p
 };
 
-this["Templates"]["datePickerTemplate"] = function(obj) {
+this["Templates"]["dateTimePickerTpl"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="col-sm-6 date input-group">\r\n    <input type="text" class="form-control bootstrap-datepicker" data-field="' +
-((__t = ( dataField )) == null ? '' : __t) +
-'-date"\r\n           value="' +
-((__t = ( date )) == null ? '' : __t) +
-'"/>\r\n    <span class="input-group-addon">\r\n        <span class="fa fa-calendar"></span>\r\n    </span>\r\n</div>\r\n<div class="col-sm-6 time input-group time-picker">\r\n    <input type="text" class="form-control" data-field="' +
-((__t = ( dataField )) == null ? '' : __t) +
-'-time" value="' +
-((__t = ( time )) == null ? '' : __t) +
-'"/>\r\n        <span class="input-group-addon btn btn-default">\r\n            <span class="fa fa-clock-o"></span>\r\n        </span>\r\n</div>\r\n\r\n<input class="inputVal" type="hidden" data-field="' +
+__p += '<div class="input-group date">\r\n    <input type="text" class="form-control bootstrap-datepicker" data-field="' +
 ((__t = ( dataField )) == null ? '' : __t) +
 '" value="' +
 ((__t = ( value )) == null ? '' : __t) +
-'" />\r\n';
+'"/>\r\n<span class="input-group-addon">\r\n        <span class="fa fa-calendar"></span>\r\n    </span>\r\n</div>\r\n\r\n';
 
 }
 return __p
@@ -806,7 +798,7 @@ var EntityCollection;
             var range = [],
                 numOfResults = models.length;
 
-            for (var i = numOfResults; i--;) {
+            for (var i = 0; i < numOfResults; i++) {
                 var currentModel = this.get(models[i].id);
 
                 if (!_.isUndefined(currentModel)) {
@@ -2325,65 +2317,28 @@ var DropDownListView;
 })($, _, Backbone, Marionette, OptionView, ReusableTypeListView);
 
 var DateTimePickerView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, datePickerTemplate, moment) {
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, dateTimePickerTpl, moment) {
     DateTimePickerView = ReusableTypeLayoutView.extend({
         className: 'col-sm-10',
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
-            this.model = new Backbone.Model();
-
-            var value = this.getOption('value'),
-                timeFormat = !_.isUndefined(this.timeFormat) ? this.timeFormat : 'hh:mm:ss A',
-                dateFormat = !_.isUndefined(this.dateFormat) ? this.dateFormat : 'MM/DD/YYYY',
-                date = moment(value).format(dateFormat),
-                time = moment(value).format(timeFormat);
-
-            if (date !== 'Invalid date') {
-                this.model.set({date: date});
-            } else {
-                this.model.set({date: ''});
+            this.model = new Backbone.Model({value: this.getOption('value')});
+            if(_.isUndefined(this.dateFormat)){
+                this.dateFormat = 'mm/dd/yyyy HH:mm:ss P'
             }
-
-            if (time !== 'Invalid date') {
-                this.model.set({time: time});
-            } else {
-                this.model.set({time: ''});
-            }
-
-            this.model.set({value: this.model.get('date') + ' ' + this.model.get('time')});
         },
         ui: {
-            $datePicker: '.bootstrap-datepicker',
-            $timePicker: '.time-picker input',
-            $inputVal: '.inputVal'
+            $datePicker: '.bootstrap-datepicker'
         },
-        template: datePickerTemplate,
+        template: dateTimePickerTpl,
         onDomRefresh: function () {
-            this.ui.$datePicker.datepicker()
+            this.ui.$datePicker.datetimepicker({
+                    format: this.dateFormat
+                })
                 .on('changeDate', _.bind(function (e) {
                     this._channel.trigger('change:date:' + this.dataField, e);
-                    this.ui.$inputVal.val(this.getDateTime());
                 }, this));
-
-            this.ui.$timePicker.datetimepicker({
-                format: 'LT',
-                keyBinds: {
-                    enter: function () {
-                        this.hide();
-                    }
-                }
-            });
-
-            var $date = this.$el.find('.date'),
-                $time = this.$el.find('.time');
-
-            if (this.dateType === 'Date') {
-                $time.hide();
-            } else if (this.dateType === 'Time') {
-                $date.hide();
-                $time.attr('style', 'float:left');
-            }
         },
         show: function () {
             this.$el.datepicker('show');
@@ -2393,21 +2348,82 @@ var DateTimePickerView;
         },
         update: function (value) {
             this.$el.datepicker('update', value);
-        },
-        getDateTime: function () {
-            var $date = $('[data-field="' + this.dataField + '-date"]'),
-                $time = $('[data-field="' + this.dataField + '-time"]');
-
-            if (this.dateType === 'Date') {
-                $date.val();
-            } else if (this.dateType === 'Time') {
-                $time.val();
-            }
-
-            return $date.val() + ' ' + $time.val();
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['datePickerTemplate'], moment);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['dateTimePickerTpl'], moment);
+
+var TimePickerView;
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, timePickerTpl, moment) {
+    TimePickerView = ReusableTypeLayoutView.extend({
+        className: 'col-sm-10',
+        initialize: function (options) {
+            ReusableTypeLayoutView.prototype.initialize.call(this, options);
+
+            this.model = new Backbone.Model({value: this.getOption('value')});
+            if(_.isUndefined(this.dateFormat)){
+                this.dateFormat = 'HH:mm:ss A'
+            }
+        },
+        ui: {
+            $datePicker: '.bootstrap-datepicker'
+        },
+        template: timePickerTpl,
+        onDomRefresh: function () {
+            this.ui.$datePicker.datetimepicker({
+                    format: this.dateFormat
+                })
+                .on('changeDate', _.bind(function (e) {
+                    this._channel.trigger('change:date:' + this.dataField, e);
+                }, this));
+        },
+        show: function () {
+            this.$el.datepicker('show');
+        },
+        hide: function () {
+            this.$el.datepicker('hide');
+        },
+        update: function (value) {
+            this.$el.datepicker('update', value);
+        }
+    });
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['dateTimePickerTpl'], moment);
+
+var DatePickerView;
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, datePickerTemplate, moment) {
+    DatePickerView = ReusableTypeLayoutView.extend({
+        className: 'col-sm-10',
+        initialize: function (options) {
+            ReusableTypeLayoutView.prototype.initialize.call(this, options);
+
+            this.model = new Backbone.Model({value: this.getOption('value')});
+            if(_.isUndefined(this.dateFormat)){
+                this.dateFormat = 'mm/dd/yyyy'
+            }
+        },
+        ui: {
+            $datePicker: '.bootstrap-datepicker'
+        },
+        template: datePickerTemplate,
+        onDomRefresh: function () {
+            this.ui.$datePicker.datepicker({
+                    format: this.dateFormat,
+                    pickTime: false
+                })
+                .on('changeDate', _.bind(function (e) {
+                    this._channel.trigger('change:date:' + this.dataField, e);
+                }, this));
+        },
+        show: function () {
+            this.$el.datepicker('show');
+        },
+        hide: function () {
+            this.$el.datepicker('hide');
+        },
+        update: function (value) {
+            this.$el.datepicker('update', value);
+        }
+    });
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['dateTimePickerTpl'], moment);
 
 var CheckBoxView;
 (function ($, _, Backbone, Marionette, checkBoxTemplate, ReusableTypeView) {
@@ -3305,8 +3321,7 @@ var FormView;
                  val.push(elem.data('id'));
                  }
                  });*/
-            }
-            else if (el.is('input')) {
+            } else if (el.is('input')) {
                 var inputType = el.attr('type').toLowerCase();
                 switch (inputType) {
                     case "radio":
@@ -4112,7 +4127,7 @@ var MultiSelectLayoutView;
 })(Marionette, jQuery, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, this['Templates']['headerTemplate']);
 
 var EntityFormView;
-(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView) {
+(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView, DatePickerView, TimePickerView) {
     EntityFormView = Marionette.EntityFormView = Backbone.Marionette.FormView.extend({
         template: entityFormLayoutTemplate,
         regions: {
@@ -4134,7 +4149,9 @@ var EntityFormView;
             this.getCheckboxForRegion = _.bind(this._checkboxForRegion, this);
             this.getWyswigForRegion = _.bind(this._wyswigForRegion, this);
             this.getImagePickerForRegion = _.bind(this._imagePickerForRegion, this);
-            this.getDatePickerForRegion = _.bind(this._dateTimePickerForRegion, this);
+            this.getDateTimePickerForRegion = _.bind(this._dateTimePickerForRegion, this);
+            this.getTimePickerForRegion = _.bind(this._timePickerForRegion, this);
+            this.getDatePickerForRegion = _.bind(this._datePickerForRegion, this);
 
             if (!this.model.isNew()) {
                 this.original = this.model.toJSON();
@@ -4203,7 +4220,7 @@ var EntityFormView;
             console.log("FAIL");
             console.log(errors);
 
-            var $errors = $('.error');
+            var $errors = $('.help-block');
             $errors.remove();
 
             for (var errorObject in errors) {
@@ -4214,7 +4231,7 @@ var EntityFormView;
                 $formGroup.addClass('has-error');
 
                 for (var i = 0; i < errors[errorObject].error.length; i++) {
-                    $selector.after('<span class="help-block">' + errors[errorObject].error[i] + '</span>');
+                    $selector.parent().after('<span class="help-block">' + errors[errorObject].error[i] + '</span>');
                 }
             }
         },
@@ -4426,7 +4443,7 @@ var EntityFormView;
                 dataField: dataField
             }));
         },
-        _dateTimePickerForRegion: function (region, dataField, dateType) {
+        _dateTimePickerForRegion: function (region, dataField, dateFormat) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4435,14 +4452,54 @@ var EntityFormView;
             this.showChildView(region, new DateTimePickerView({
                 value: this.model.get(dataField),
                 dataField: dataField,
-                dateType: dateType
+                dateFormat: dateFormat
             }));
         },
-        _formatRegionName: function(name){
+        _timePickerForRegion: function (region, dataField, dateFormat) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new TimePickerView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                dateFormat: dateFormat
+            }));
+        },
+        _datePickerForRegion: function (region, dataField, dateFormat) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new DatePickerView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                dateFormat: dateFormat
+            }));
+        },
+        _formatRegionName: function (name) {
             return name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityFormLayoutTemplate'], MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView);
+})(jQuery,
+    _,
+    Backbone,
+    Marionette,
+    this['Templates']['entityFormLayoutTemplate'],
+    MultiSelectLayoutView,
+    DropDownListView,
+    AutoCompleteLayoutView,
+    MessageBehavior,
+    RadioButtonListView,
+    TextAreaView,
+    CheckBoxView,
+    WyswigView,
+    ImageFieldView,
+    DateTimePickerView,
+    DatePickerView,
+    TimePickerView);
 
 
 var TreeCompositeView;
@@ -4702,6 +4759,8 @@ var EntityController;
         AutoCompleteLayoutView: AutoCompleteLayoutView,
         MultiSelectLayoutView: MultiSelectLayoutView,
         DateTimePickerView: DateTimePickerView,
+        DatePickerView: DatePickerView,
+        TimePickerView: TimePickerView,
         SingleLineTextView: SingleLineTextView,
         WyswigView: WyswigView,
         ImageFieldView: ImageFieldView,

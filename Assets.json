@@ -40,6 +40,8 @@
       "views/reusableTypes/dropDownLists/OptionView.js",
       "views/reusableTypes/dropDownLists/DropDownListView.js",
       "views/reusableTypes/dateTimePicker/DateTimePickerView.js",
+      "views/reusableTypes/dateTimePicker/TimePickerView.js",
+      "views/reusableTypes/dateTimePicker/DatePickerView.js",
       "views/reusableTypes/checkBoxes/CheckBoxView.js",
       "views/reusableTypes/checkBoxes/CheckBoxListView.js",
       "views/reusableTypes/autoComplete/AutoCompleteView.js",

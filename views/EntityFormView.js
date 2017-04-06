@@ -1,5 +1,5 @@
 var EntityFormView;
-(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView) {
+(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView, DatePickerView, TimePickerView) {
     EntityFormView = Marionette.EntityFormView = Backbone.Marionette.FormView.extend({
         template: entityFormLayoutTemplate,
         regions: {
@@ -21,7 +21,9 @@ var EntityFormView;
             this.getCheckboxForRegion = _.bind(this._checkboxForRegion, this);
             this.getWyswigForRegion = _.bind(this._wyswigForRegion, this);
             this.getImagePickerForRegion = _.bind(this._imagePickerForRegion, this);
-            this.getDatePickerForRegion = _.bind(this._dateTimePickerForRegion, this);
+            this.getDateTimePickerForRegion = _.bind(this._dateTimePickerForRegion, this);
+            this.getTimePickerForRegion = _.bind(this._timePickerForRegion, this);
+            this.getDatePickerForRegion = _.bind(this._datePickerForRegion, this);
 
             if (!this.model.isNew()) {
                 this.original = this.model.toJSON();
@@ -90,7 +92,7 @@ var EntityFormView;
             console.log("FAIL");
             console.log(errors);
 
-            var $errors = $('.error');
+            var $errors = $('.help-block');
             $errors.remove();
 
             for (var errorObject in errors) {
@@ -101,7 +103,7 @@ var EntityFormView;
                 $formGroup.addClass('has-error');
 
                 for (var i = 0; i < errors[errorObject].error.length; i++) {
-                    $selector.after('<span class="help-block">' + errors[errorObject].error[i] + '</span>');
+                    $selector.parent().after('<span class="help-block">' + errors[errorObject].error[i] + '</span>');
                 }
             }
         },
@@ -313,7 +315,7 @@ var EntityFormView;
                 dataField: dataField
             }));
         },
-        _dateTimePickerForRegion: function (region, dataField, dateType) {
+        _dateTimePickerForRegion: function (region, dataField, dateFormat) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -322,11 +324,51 @@ var EntityFormView;
             this.showChildView(region, new DateTimePickerView({
                 value: this.model.get(dataField),
                 dataField: dataField,
-                dateType: dateType
+                dateFormat: dateFormat
             }));
         },
-        _formatRegionName: function(name){
+        _timePickerForRegion: function (region, dataField, dateFormat) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new TimePickerView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                dateFormat: dateFormat
+            }));
+        },
+        _datePickerForRegion: function (region, dataField, dateFormat) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new DatePickerView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                dateFormat: dateFormat
+            }));
+        },
+        _formatRegionName: function (name) {
             return name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityFormLayoutTemplate'], MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView);
+})(jQuery,
+    _,
+    Backbone,
+    Marionette,
+    this['Templates']['entityFormLayoutTemplate'],
+    MultiSelectLayoutView,
+    DropDownListView,
+    AutoCompleteLayoutView,
+    MessageBehavior,
+    RadioButtonListView,
+    TextAreaView,
+    CheckBoxView,
+    WyswigView,
+    ImageFieldView,
+    DateTimePickerView,
+    DatePickerView,
+    TimePickerView);
