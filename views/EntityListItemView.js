@@ -11,8 +11,12 @@ var EntityListItemView;
         template: entityListItemTemplate,
         initialize: function (options) {
             _.extend(this, options);
-
             this._channel = Backbone.Radio.channel(this.route);
+        },
+        behaviors: {
+            Modal: {
+                behaviorClass: ModalBehavior
+            }
         },
         ui: {
             $delete: '.delete',

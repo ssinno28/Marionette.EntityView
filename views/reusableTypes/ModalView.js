@@ -3,21 +3,18 @@ var ModalView;
     ModalView = Marionette.View.extend({
         model: ModalModel,
         template: modalTpl,
-        constructor: function (options) {
-            _.each(options,
+        initialize: function (options) {
+            _.each(options.choices,
                 _.bind(function (option) {
                     var funcName = option.type + 'Click';
                     this.events['click .' + option.type] = funcName;
 
                     this[funcName] = _.bind(function (e) {
-                        e.preventDefault();
-
-                        this._channel.trigger(this.getOption('name') + ':' + option.type);
+                        this._channel.trigger(this.getOption('name') + ':' + option.type, e);
                         this.$el.modal('hide');
                     }, this);
                 }, this));
-        },
-        initialize: function () {
+
             this._channel = Backbone.Radio.channel(this.getOption('channel'));
             this.on('destroy', this._destroyRadio);
         },
@@ -31,25 +28,22 @@ var ModalView;
             this.$el.attr('aria-labelledby', this.getOption('name'));
             this.$el.attr('aria-hidden', true);
 
-            _.each(this.model.get('options',
+            _.each(this.options.choices,
                 _.bind(function (option) {
                     var html =
                         Marionette.Renderer.render(
-                            '<button type="button" class="btn btn-primary <%= type %>" ' +
-                            '<% if(dismiss) { %> data-dismiss="modal" <% } %>> <%= text %>' +
-                            '</button>',
+                            _.template('<button type="button" class="btn btn-primary <%= type %>" ' +
+                            '<% if(dismiss) { %> data-dismiss="modal" <% } %> > <%= text %> </button>'),
                             option
                         );
 
                     this.ui.$modalFooter.append(html);
-                }, this)));
+                }, this));
         },
         onDomRefresh: function () {
             if (_.isUndefined(this.model.get('name'))) {
                 this.$el.find('.buttons').hide();
             }
-
-            this.$el.modal('show');
         },
         _destroyRadio: function () {
             this._channel.stopReplying(null, null, this);

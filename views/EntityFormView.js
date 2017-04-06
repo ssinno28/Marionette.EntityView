@@ -34,6 +34,9 @@ var EntityFormView;
         behaviors: {
             Messages: {
                 behaviorClass: MessageBehavior
+            },
+            Modal: {
+                behaviorClass: ModalBehavior
             }
         },
         ui: {

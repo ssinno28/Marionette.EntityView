@@ -19,7 +19,7 @@ var PagerBehavior;
             if (noOfPages === 1) {
                 pagerRegion.empty();
                 if (this.view.routing) {
-                    location.hash = '/' + this.view.route + '/' + 1 + '/' + this.view.additionalParams;
+                    location.hash = '/' + this.view.route + '/' + 1 + '/';
                 }
 
                 return;
@@ -27,7 +27,7 @@ var PagerBehavior;
 
             for (var i = 1; i <= noOfPages; i++) {
                 var pagerItem = new Backbone.Model(),
-                    route = '/' + this.view.route + '/' + i + '/' + this.view.additionalParams;
+                    route = '/' + this.view.route + '/' + i + '/';
 
                 pagerItem.set({route: route, currentPage: i == currentPage, number: i});
                 collection.add(pagerItem);

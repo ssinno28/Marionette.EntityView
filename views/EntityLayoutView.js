@@ -1,5 +1,5 @@
 var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, TimeoutUtil, PagerBehavior) {
+(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, TimeoutUtil, PagerBehavior, ModalBehavior) {
     EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
         template: entityListLayoutTpl,
         regions: {
@@ -15,6 +15,9 @@ var EntityLayoutView;
         behaviors: {
             Pager: {
                 behaviorClass: PagerBehavior
+            },
+            Modal: {
+                behaviorClass: ModalBehavior
             }
         },
         initialize: function (options) {
@@ -22,11 +25,26 @@ var EntityLayoutView;
 
             this._timeoutUtil = new TimeoutUtil();
 
-            if (options.additionalParams) {
-                this.additionalParams = options.additionalParams;
-            } else {
-                this.additionalParams = '';
-            }
+            this.addModal('deleteAllModal')
+                .message('Are you sure you want to delete these items?')
+                .title('Delete All?')
+                .choice(false, 'Yes', 'yes')
+                .choice(true, 'No', 'no')
+                .triggerAdd();
+
+            this.addModal('publishAllModal')
+                .message('Are you sure you want to publish these items?')
+                .title('Publish All?')
+                .choice(false, 'Yes', 'yes')
+                .choice(true, 'No', 'no')
+                .triggerAdd();
+
+            this.addModal('deleteItemModal')
+                .message('Are you sure you want to delete this item?')
+                .title('Delete Item?')
+                .choice(false, 'Yes', 'yes')
+                .choice(true, 'No', 'no')
+                .triggerAdd();
 
             this.listView.allowableOperations = this.allowableOperations;
             this.listView.route = this.route;
@@ -65,10 +83,11 @@ var EntityLayoutView;
             '$listBtn': '.get-all',
             '$subNavElements': '.sub-nav > dd',
             '$multiActionRequests': '.multi-action-requests',
-            '$deleteAllModal': '.delete-all-modal',
             '$publishAllModal': '.publish-all-modal',
             '$treeBtn': '.get-tree',
             '$header': '.entity-header'
+        },
+        onRender: function () {
         },
         templateContext: function () {
             var showCreate = this.allowableOperations.indexOf('create') > -1,
@@ -95,10 +114,9 @@ var EntityLayoutView;
             this.ui.$createBtn.parent().addClass('active');
 
             this.ui.$nameFilter.hide();
-            
-            if (!this.routing) 
-            {
-               this._channel.trigger('create');
+
+            if (!this.routing) {
+                this._channel.trigger('create');
             } else {
                 var route = this.route + '/create/';
                 location.hash = route;
@@ -117,32 +135,6 @@ var EntityLayoutView;
             this.showMultiActions();
         },
         formViewActivated: function () {
-        },
-        publishAll: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            var itemsSelected = this.$el.find('.multi-action:checked'),
-                self = this,
-                ids = [];
-
-            _.each(itemsSelected, function (item) {
-                var id = $(item).data('id');
-                ids.push(id);
-            });
-
-            this.ui.$publishAllModal.modal('show');
-
-            this.ui.$publishAllModal.on('click', '.no', function (e) {
-                e.preventDefault();
-                self.ui.$publishAllModal.modal('hide');
-            });
-
-            this.ui.$publishAllModal.on('click', '.yes', function (e) {
-                e.preventDefault();
-                this._channel.trigger('publish-all', ids);
-                self.ui.$publishAllModal.modal('hide');
-            });
         },
         addAll: function (e) {
             e.preventDefault();
@@ -175,25 +167,26 @@ var EntityLayoutView;
 
             var itemsSelected = this.$el.find('.multi-action:checked'),
                 ids = [],
-                self = this,
-                fullCollection = this.listView.collection;
+                fullCollection = this.listView.collection,
+                $modal = this.getRegion('deleteAllModal').currentView.$el;
 
             _.each(itemsSelected, function (item) {
                 ids.push($(item).data('id'));
             });
 
-            this.ui.$deleteAllModal.modal('show');
+            $modal.modal('show');
 
-            this.ui.$deleteAllModal.on('click', '.no', function (e) {
+            this._channel.on('deleteAllModal:no', function (e) {
                 e.preventDefault();
-                self.ui.$deleteAllModal.modal('hide');
+                $modal.modal('hide');
             });
 
-            this.ui.$deleteAllModal.on('click', '.yes', function (e) {
+            this._channel.on('deleteAllModal:yes', function (e) {
                 e.preventDefault();
+
                 fullCollection.deleteByIds(ids)
                     .done(function () {
-                        self.ui.$deleteAllModal.modal('hide');
+                        $modal.modal('hide');
                     });
             });
         },
@@ -280,4 +273,4 @@ var EntityLayoutView;
             return this._channel;
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, TimeoutUtil, PagerBehavior);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, TimeoutUtil, PagerBehavior, ModalBehavior);
