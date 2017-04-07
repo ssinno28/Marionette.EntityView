@@ -70,7 +70,8 @@ var EntityLayoutView;
         },
         childViewEvents: function(){
          'model.deleteAllModal.yes' : 'deleteAllYes',
-         'model.deleteAllModal.no' : 'deleteAllNo'
+         'model.deleteAllModal.no' : 'deleteAllNo',
+         'delete:item' : 'showDeleteItem'
         }
         ui: {
             '$subNav': '.sub-nav',
@@ -156,6 +157,13 @@ var EntityLayoutView;
                     itemsSelected.attr('checked', false);
                     this.showMultiActions();
                 }, this));
+        },
+        showDeleteItem: function(view, e) {
+            e.preventDefault();
+            e.stopPropagation(); 
+            
+            var $modal = this.getRegion('deleteItemModal').currentView.$el;
+            $modal.modal('show');
         },
         deleteAll: function (e) {
             e.preventDefault();
