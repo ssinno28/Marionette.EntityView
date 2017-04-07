@@ -1,10 +1,14 @@
 var ModalMixin;
 (function ($, _, Backbone, Marionette) {
     ModalMixin = {
-        addModal: function (name) {
+        modal: function (name) {
             var modal = {name: name};
 
-            var triggerAddFunc = _.bind(function () {
+            var addFunc = _.bind(function () {
+                if(_.isUndefined(modal.message) || _.isUndefined(modal.title)){
+                    throw 'You need to specify both a message and a title!'
+                }
+                
                 this.triggerMethod('addModal', modal);
             }, this);
 
@@ -21,7 +25,7 @@ var ModalMixin;
 
                 return {
                     choice: choiceFunc,
-                    triggerAdd: triggerAddFunc
+                    add: addFunc
                 };
             };
 
@@ -30,7 +34,8 @@ var ModalMixin;
 
                 return {
                     title: titleFunc,
-                    choice: choiceFunc
+                    choice: choiceFunc,
+                    add: addFunc
                 };
             };
 
@@ -39,7 +44,8 @@ var ModalMixin;
 
                 return {
                     message: messageFunc,
-                    choice: choiceFunc
+                    choice: choiceFunc,
+                    add: addFunc
                 };
             };
 
