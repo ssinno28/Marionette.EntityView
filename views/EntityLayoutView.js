@@ -31,6 +31,13 @@ var EntityLayoutView;
                 .choice('Yes', 'yes')
                 .choice('No', 'no', true)
                 .add();
+            
+            this.modal('deleteItemModal')
+                .message('Are you sure you want to delete this item?')
+                .title('Delete Item?')
+                .choice('Yes', 'yes')
+                .choice('No', 'no', true)
+                .add();
 
             this.listView.allowableOperations = this.allowableOperations;
             this.listView.route = this.route;
