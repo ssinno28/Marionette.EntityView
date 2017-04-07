@@ -32,13 +32,6 @@ var EntityLayoutView;
                 .choice('No', 'no', true)
                 .add();
 
-            this.modal('deleteItemModal')
-                .message('Are you sure you want to delete this item?')
-                .title('Delete Item?')
-                .choice('Yes', 'yes')
-                .choice('No', 'no', true)
-                .add();
-
             this.listView.allowableOperations = this.allowableOperations;
             this.listView.route = this.route;
             this.listView.parentViewCid = this.cid;
@@ -68,6 +61,10 @@ var EntityLayoutView;
             'click .sub-nav .create': 'createClick',
             'click .sub-nav .get-all': 'getAllClick'
         },
+        childViewEvents: function(){
+         'model.deleteAllModal.yes' : 'deleteAllYes',
+         'model.deleteAllModal.no' : 'deleteAllNo'
+        }
         ui: {
             '$subNav': '.sub-nav',
             '$nameFilter': '.filterEntities',
@@ -155,33 +152,28 @@ var EntityLayoutView;
         },
         deleteAll: function (e) {
             e.preventDefault();
-            e.stopPropagation();
-
+            e.stopPropagation(); 
+            
+            var $modal = this.getRegion('deleteAllModal').currentView.$el;
+            $modal.modal('show');
+        },
+        deleteAllYes: function(view, e) {            
             var itemsSelected = this.$el.find('.multi-action:checked'),
-                ids = [],
-                fullCollection = this.listView.collection,
-                $modal = this.getRegion('deleteAllModal').currentView.$el;
+            ids = [],
+            fullCollection = this.listView.collection;
 
             _.each(itemsSelected, function (item) {
                 ids.push($(item).data('id'));
             });
 
-            $modal.modal('show');
-
-            this._channel.on('deleteAllModal:no', function (e) {
-                e.preventDefault();
-                $modal.modal('hide');
-            });
-
-            this._channel.on('deleteAllModal:yes', function (e) {
-                e.preventDefault();
-
-                fullCollection.deleteByIds(ids)
-                    .done(function () {
-                        $modal.modal('hide');
-                    });
-            });
+            fullCollection.deleteByIds(ids)
+                .done(function () {
+                    view.$el.modal('hide');
+                });
         },
+        deleteAllNo: function(view, e) {
+            view.$el.modal('hide');
+        }
         showMultiActions: function (e) {
             if (e) {
                 e.stopPropagation();
