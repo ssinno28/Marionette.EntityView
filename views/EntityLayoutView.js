@@ -25,26 +25,19 @@ var EntityLayoutView;
 
             this._timeoutUtil = new TimeoutUtil();
 
-            this.addModal('deleteAllModal')
+            this.modal('deleteAllModal')
                 .message('Are you sure you want to delete these items?')
                 .title('Delete All?')
                 .choice('Yes', 'yes')
                 .choice('No', 'no', true)
-                .triggerAdd();
+                .add();
 
-            this.addModal('publishAllModal')
-                .message('Are you sure you want to publish these items?')
-                .title('Publish All?')
-                .choice('Yes', 'yes')
-                .choice('No', 'no', true)
-                .triggerAdd();
-
-            this.addModal('deleteItemModal')
+            this.modal('deleteItemModal')
                 .message('Are you sure you want to delete this item?')
                 .title('Delete Item?')
                 .choice('Yes', 'yes')
                 .choice('No', 'no', true)
-                .triggerAdd();
+                .add();
 
             this.listView.allowableOperations = this.allowableOperations;
             this.listView.route = this.route;
@@ -71,7 +64,6 @@ var EntityLayoutView;
             'keyup .nameFilter': 'filterByName',
             'click .multi-action': 'showMultiActions',
             'click .delete-all': 'deleteAll',
-            'click .publish-all': 'publishAll',
             'click .add-all': 'addAll',
             'click .sub-nav .create': 'createClick',
             'click .sub-nav .get-all': 'getAllClick'
