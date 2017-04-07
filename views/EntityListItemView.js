@@ -18,6 +18,9 @@ var EntityListItemView;
                 behaviorClass: ModalBehavior
             }
         },
+        triggers: {
+         'click .delete': 'delete:item'   
+        }
         ui: {
             $delete: '.delete',
             $edit: '.edit',
