@@ -17,7 +17,7 @@ var ModalBehavior;
                 this.view.$el.append('<div class="' + modal.name + '"></div>');
                 this.view.addRegion(modal.name, '.' + modal.name);
 
-                var modalView = new ModalView({model: model, choices: modal.choices, channel: this.view.getChannel()});
+                var modalView = new ModalView({model: model, choices: modal.choices});
                 this.view.showChildView(modal.name, modalView);
             }, this));
         }
