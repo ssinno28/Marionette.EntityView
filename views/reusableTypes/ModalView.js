@@ -7,16 +7,8 @@ var ModalView;
             _.each(options.choices,
                 _.bind(function (option) {
                     var funcName = option.type + 'Click';
-                    this.events['click .' + option.type] = funcName;
-
-                    this[funcName] = _.bind(function (e) {
-                        this._channel.trigger(this.getOption('name') + ':' + option.type, e);
-                        this.$el.modal('hide');
-                    }, this);
+                    this.triggers['click .' + option.type] = 'modal.' + this.getOption('name') + '.' + option.type;
                 }, this));
-
-            this._channel = Backbone.Radio.channel(this.getOption('channel'));
-            this.on('destroy', this._destroyRadio);
         },
         ui: {
             $modalFooter: '.modal-footer'
@@ -44,9 +36,6 @@ var ModalView;
             if (_.isUndefined(this.model.get('name'))) {
                 this.$el.find('.buttons').hide();
             }
-        },
-        _destroyRadio: function () {
-            this._channel.stopReplying(null, null, this);
         }
     });
 })(_, Backbone, jQuery, Marionette, Templates.modalTpl, ModalModel);
