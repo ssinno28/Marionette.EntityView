@@ -28,22 +28,22 @@ var EntityLayoutView;
             this.addModal('deleteAllModal')
                 .message('Are you sure you want to delete these items?')
                 .title('Delete All?')
-                .choice(false, 'Yes', 'yes')
-                .choice(true, 'No', 'no')
+                .choice('Yes', 'yes')
+                .choice('No', 'no', true)
                 .triggerAdd();
 
             this.addModal('publishAllModal')
                 .message('Are you sure you want to publish these items?')
                 .title('Publish All?')
-                .choice(false, 'Yes', 'yes')
-                .choice(true, 'No', 'no')
+                .choice('Yes', 'yes')
+                .choice('No', 'no', true)
                 .triggerAdd();
 
             this.addModal('deleteItemModal')
                 .message('Are you sure you want to delete this item?')
                 .title('Delete Item?')
-                .choice(false, 'Yes', 'yes')
-                .choice(true, 'No', 'no')
+                .choice('Yes', 'yes')
+                .choice('No', 'no', true)
                 .triggerAdd();
 
             this.listView.allowableOperations = this.allowableOperations;

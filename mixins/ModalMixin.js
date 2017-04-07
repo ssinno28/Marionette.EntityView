@@ -8,7 +8,7 @@ var ModalMixin;
                 this.triggerMethod('addModal', modal);
             }, this);
 
-            var choiceFunc = function (dismiss, text, type) {
+            var choiceFunc = function (text, type, dismiss) {
                 if (_.isUndefined(modal.choices)) {
                     modal.choices = [];
                 }
