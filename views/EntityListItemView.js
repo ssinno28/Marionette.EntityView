@@ -86,17 +86,6 @@ var EntityListItemView;
                 '</a> ' +
                 '</li>');
         },
-        behaviors: {
-            ConfirmModal: {
-                behaviorClass: DeleteWarnBehavior,
-                message: "Are you sure you want to delete this item?",
-                yesFunc: function (e) {
-                    this.view._channel.trigger('delete', this.view.model.get('id'));
-                },
-                noFunc: function (e) {
-                }
-            }
-        },
         getChannel: function () {
             return this._channel;
         }
