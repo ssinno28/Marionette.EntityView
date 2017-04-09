@@ -21,19 +21,20 @@
                 <% } %>
                 <% if(allowDeleteAll || allowPublishAll || allowAddAll) { %>
                 <% if(allowDeleteAll){ %>
-                <button type="button" class="btn btn-danger multi-action-requests <%= btnClass %> delete-all">Delete
-                    All
+                <button type="button" class="btn btn-danger multi-action-requests <%= btnClass %> delete-all-modal-show">
+                    Delete All
                 </button>
                 <% } %>
 
                 <% if(allowPublishAll){ %>
-                <button type="button" class="btn btn-default multi-action-requests <%= btnClass %> publish-all">Publish
-                    All
+                <button type="button" class="btn btn-default multi-action-requests <%= btnClass %> publish-all">
+                    Publish All
                 </button>
                 <% } %>
 
                 <% if(allowAddAll){ %>
-                <button type="button" class="btn btn-default multi-action-requests <%= btnClass %> add-all">Add All
+                <button type="button" class="btn btn-default multi-action-requests <%= btnClass %> add-all">
+                    Add All
                 </button>
                 <% } %>
                 <% } %>

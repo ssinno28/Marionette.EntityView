@@ -44,9 +44,8 @@ var EntityFormView;
             '$spinner': '.spinner'
         },
         templateContext: function () {
-            var self = this;
             return {
-                btnClass: self.options.btnClass,
+                btnClass: this.options.btnClass,
                 isNew: this.model.isNew()
             };
         },

@@ -85,23 +85,23 @@ __p += '\r\n                ';
  if(allowDeleteAll){ ;
 __p += '\r\n                <button type="button" class="btn btn-danger multi-action-requests ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
-' delete-all">Delete\r\n                    All\r\n                </button>\r\n                ';
+' delete-all-modal-show">\r\n                    Delete All\r\n                </button>\r\n                ';
  } ;
 __p += '\r\n\r\n                ';
  if(allowPublishAll){ ;
 __p += '\r\n                <button type="button" class="btn btn-default multi-action-requests ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
-' publish-all">Publish\r\n                    All\r\n                </button>\r\n                ';
+' publish-all">\r\n                    Publish All\r\n                </button>\r\n                ';
  } ;
 __p += '\r\n\r\n                ';
  if(allowAddAll){ ;
 __p += '\r\n                <button type="button" class="btn btn-default multi-action-requests ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
-' add-all">Add All\r\n                </button>\r\n                ';
+' add-all">\r\n                    Add All\r\n                </button>\r\n                ';
  } ;
 __p += '\r\n                ';
  } ;
-__p += '\r\n            </div>\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n\r\n<div class="row">\r\n    <div class="col-sm-12">\r\n        <div class="list-group entityRegion">\r\n\r\n        </div>\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-sm-12">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade publish-all-modal" tabindex="-1" role="dialog" aria-labelledby="publish-all-modal"\r\n     aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    X\r\n                </button>\r\n                <h4 class="modal-title">Publish All?</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n                Are you sure you want to publish these items?\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class="modal fade deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">\r\n    <div class="modal-dialog">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n                    X\r\n                </button>\r\n                <h4 class="modal-title">Delete Item</h4>\r\n            </div>\r\n            <div class="modal-body message">\r\n                Are you sure you want to delete this item?\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-primary yes">Yes</button>\r\n                <button type="button" class="btn btn-default no" data-dismiss="modal">No</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>';
+__p += '\r\n            </div>\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n\r\n<div class="row">\r\n    <div class="col-sm-12">\r\n        <div class="list-group entityRegion">\r\n\r\n        </div>\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-sm-12">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -140,7 +140,7 @@ __p += '\r\n                    <li>\r\n                        <a class="edit" 
  } ;
 __p += '\r\n\r\n                    ';
  if(allowDelete){ ;
-__p += '\r\n                    <li>\r\n                        <a class="delete" href="#' +
+__p += '\r\n                    <li>\r\n                        <a class="delete delete-item-modal-show" href="#' +
 ((__t = ( route )) == null ? '' : __t) +
 '/delete/' +
 ((__t = ( id )) == null ? '' : __t) +
@@ -461,14 +461,18 @@ return __p
     var ModalMixin;
 (function ($, _, Backbone, Marionette) {
     ModalMixin = {
-        addModal: function (name) {
+        modal: function (name) {
             var modal = {name: name};
 
-            var triggerAddFunc = _.bind(function () {
+            var addFunc = _.bind(function () {
+                if(_.isUndefined(modal.message) || _.isUndefined(modal.title)){
+                    throw 'You need to specify both a message and a title!'
+                }
+                
                 this.triggerMethod('addModal', modal);
             }, this);
 
-            var choiceFunc = function (dismiss, text, type) {
+            var choiceFunc = function (text, type, dismiss) {
                 if (_.isUndefined(modal.choices)) {
                     modal.choices = [];
                 }
@@ -481,7 +485,7 @@ return __p
 
                 return {
                     choice: choiceFunc,
-                    triggerAdd: triggerAddFunc
+                    add: addFunc
                 };
             };
 
@@ -490,7 +494,8 @@ return __p
 
                 return {
                     title: titleFunc,
-                    choice: choiceFunc
+                    choice: choiceFunc,
+                    add: addFunc
                 };
             };
 
@@ -499,7 +504,8 @@ return __p
 
                 return {
                     message: messageFunc,
-                    choice: choiceFunc
+                    choice: choiceFunc,
+                    add: addFunc
                 };
             };
 
@@ -510,6 +516,7 @@ return __p
         }
     }
 })(jQuery, _, Backbone, Marionette);
+
 var FormValidator;
 (function ($, _, Backbone, Marionette) {
     FormValidator = Marionette.Object.extend({
@@ -1808,19 +1815,18 @@ var ModalView;
         model: ModalModel,
         template: modalTpl,
         initialize: function (options) {
+            if (_.isUndefined(this.triggers)) {
+                this.triggers = {};
+            }
+
             _.each(options.choices,
                 _.bind(function (option) {
-                    var funcName = option.type + 'Click';
-                    this.events['click .' + option.type] = funcName;
-
-                    this[funcName] = _.bind(function (e) {
-                        this._channel.trigger(this.getOption('name') + ':' + option.type, e);
-                        this.$el.modal('hide');
-                    }, this);
+                    this.triggers['click .' + option.type] = {
+                        event: 'modal:' + this.getOption('safeName') + ':' + option.type,
+                        preventDefault: true,
+                        stopPropagation: true
+                    };
                 }, this));
-
-            this._channel = Backbone.Radio.channel(this.getOption('channel'));
-            this.on('destroy', this._destroyRadio);
         },
         ui: {
             $modalFooter: '.modal-footer'
@@ -1837,23 +1843,27 @@ var ModalView;
                     var html =
                         Marionette.Renderer.render(
                             _.template('<button type="button" class="btn btn-primary <%= type %>" ' +
-                            '<% if(dismiss) { %> data-dismiss="modal" <% } %> > <%= text %> </button>'),
+                                '<% if(dismiss) { %> data-dismiss="modal" <% } %> > <%= text %> </button>'),
                             option
                         );
 
                     this.ui.$modalFooter.append(html);
                 }, this));
         },
+        onShowModal: function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            this.$el.modal('show');
+        },
         onDomRefresh: function () {
             if (_.isUndefined(this.model.get('name'))) {
                 this.$el.find('.buttons').hide();
             }
-        },
-        _destroyRadio: function () {
-            this._channel.stopReplying(null, null, this);
         }
     });
 })(_, Backbone, jQuery, Marionette, Templates.modalTpl, ModalModel);
+
 var MessageView;
 (function ($, _, Backbone, Marionette, MessageModel, messageTemplate) {
     MessageView = Marionette.MessageView = Backbone.Marionette.View.extend({
@@ -2652,21 +2662,44 @@ var ModalBehavior;
         onAddModal: function (modal) {
             this.options.modals.push(modal);
         },
+        events: function () {
+            var events = {};
+            _.each(this.options.modals, _.bind(function (modal) {
+                var className = this._formatRegionName(modal.name),
+                    showFuncName = 'show' + modal.name;
+
+                events['click .' + className + '-show'] = showFuncName;
+            }, this));
+
+            return events;
+        },
         onRender: function () {
             _.each(this.options.modals, _.bind(function (modal) {
                 var model = new ModalModel({
-                    message: modal.message,
-                    title: modal.title
-                });
+                        message: modal.message,
+                        title: modal.title
+                    }),
+                    className = this._formatRegionName(modal.name);
 
-                this.view.$el.append('<div class="' + modal.name + '"></div>');
-                this.view.addRegion(modal.name, '.' + modal.name);
+                this.view.$el.append('<div class="' + className + '"></div>');
+                this.view.addRegion(modal.name, '.' + className);
 
-                this.view.showChildView(modal.name, new ModalView({model: model, choices: modal.choices, channel: this.view.getChannel()}));
+                var modalView = new ModalView({model: model, choices: modal.choices, safeName: className});
+                this.view.showChildView(modal.name, modalView);
+
+                var showFuncName = 'show' + modal.name;
+                this[showFuncName] =
+                    _.bind(function () {
+                        modalView.triggerMethod('show:modal');
+                    }, this);
             }, this));
+        },
+        _formatRegionName: function (name) {
+            return name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
         }
     });
 })(jQuery, _, Backbone, Marionette, ModalView, ModalModel);
+
 var MessageBehavior;
 (function ($, _, Backbone, Marionette, SuccessView, ErrorView, InfoView) {
     MessageBehavior = Marionette.Behavior.extend({
@@ -2772,7 +2805,7 @@ var PagerBehavior;
             if (noOfPages === 1) {
                 pagerRegion.empty();
                 if (this.view.routing) {
-                    location.hash = '/' + this.view.route + '/' + 1 + '/' + this.view.additionalParams;
+                    location.hash = '/' + this.view.route + '/' + 1 + '/';
                 }
 
                 return;
@@ -2780,7 +2813,7 @@ var PagerBehavior;
 
             for (var i = 1; i <= noOfPages; i++) {
                 var pagerItem = new Backbone.Model(),
-                    route = '/' + this.view.route + '/' + i + '/' + this.view.additionalParams;
+                    route = '/' + this.view.route + '/' + i + '/';
 
                 pagerItem.set({route: route, currentPage: i == currentPage, number: i});
                 collection.add(pagerItem);
@@ -2852,11 +2885,6 @@ var EntityListItemView;
             _.extend(this, options);
             this._channel = Backbone.Radio.channel(this.route);
         },
-        behaviors: {
-            Modal: {
-                behaviorClass: ModalBehavior
-            }
-        },
         ui: {
             $delete: '.delete',
             $edit: '.edit',
@@ -2925,17 +2953,6 @@ var EntityListItemView;
                 '</a> ' +
                 '</li>');
         },
-        behaviors: {
-            ConfirmModal: {
-                behaviorClass: DeleteWarnBehavior,
-                message: "Are you sure you want to delete this item?",
-                yesFunc: function (e) {
-                    this.view._channel.trigger('delete', this.view.model.get('id'));
-                },
-                noFunc: function (e) {
-                }
-            }
-        },
         getChannel: function () {
             return this._channel;
         }
@@ -2944,7 +2961,7 @@ var EntityListItemView;
 })(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], DeleteWarnBehavior);
 
 var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, TimeoutUtil, PagerBehavior, ModalBehavior) {
+(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior, ModalBehavior) {
     EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
         template: entityListLayoutTpl,
         regions: {
@@ -2968,14 +2985,19 @@ var EntityLayoutView;
         initialize: function (options) {
             _.extend(this, options);
 
-            this._timeoutUtil = new TimeoutUtil();
-
-            this.addModal('deleteAllModal')
+            this.modal('deleteAllModal')
                 .message('Are you sure you want to delete these items?')
                 .title('Delete All?')
-                .choice(false, 'Yes', 'yes')
-                .choice(true, 'No', 'no')
-                .triggerAdd();
+                .choice('Yes', 'yes')
+                .choice('No', 'no', true)
+                .add();
+
+            this.modal('deleteItemModal')
+                .message('Are you sure you want to delete this item?')
+                .title('Delete Item?')
+                .choice('Yes', 'yes')
+                .choice('No', 'no', true)
+                .add();
 
             this.listView.allowableOperations = this.allowableOperations;
             this.listView.route = this.route;
@@ -3001,11 +3023,15 @@ var EntityLayoutView;
             'click .edit': 'editClick',
             'keyup .nameFilter': 'filterByName',
             'click .multi-action': 'showMultiActions',
-            'click .delete-all': 'deleteAll',
-            'click .publish-all': 'publishAll',
             'click .add-all': 'addAll',
             'click .sub-nav .create': 'createClick',
             'click .sub-nav .get-all': 'getAllClick'
+        },
+        childViewEvents: {
+            'model:delete-all-modal:yes': 'deleteAllYes',
+            'model:delete-all-modal:no': 'deleteAllNo',
+            'model:delete-item-modal:yes': 'deleteItemYes',
+            'model:delete-item-modal:no': 'deleteItemNo'
         },
         ui: {
             '$subNav': '.sub-nav',
@@ -3014,11 +3040,8 @@ var EntityLayoutView;
             '$listBtn': '.get-all',
             '$subNavElements': '.sub-nav > dd',
             '$multiActionRequests': '.multi-action-requests',
-            '$publishAllModal': '.publish-all-modal',
             '$treeBtn': '.get-tree',
             '$header': '.entity-header'
-        },
-        onRender: function () {
         },
         templateContext: function () {
             var showCreate = this.allowableOperations.indexOf('create') > -1,
@@ -3067,32 +3090,6 @@ var EntityLayoutView;
         },
         formViewActivated: function () {
         },
-        publishAll: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            var itemsSelected = this.$el.find('.multi-action:checked'),
-                self = this,
-                ids = [];
-
-            _.each(itemsSelected, function (item) {
-                var id = $(item).data('id');
-                ids.push(id);
-            });
-
-            this.ui.$publishAllModal.modal('show');
-
-            this.ui.$publishAllModal.on('click', '.no', function (e) {
-                e.preventDefault();
-                self.ui.$publishAllModal.modal('hide');
-            });
-
-            this.ui.$publishAllModal.on('click', '.yes', function (e) {
-                e.preventDefault();
-                this._channel.trigger('publish-all', ids);
-                self.ui.$publishAllModal.modal('hide');
-            });
-        },
         addAll: function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -3118,35 +3115,22 @@ var EntityLayoutView;
                     this.showMultiActions();
                 }, this));
         },
-        deleteAll: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
+        deleteAllYes: function (view, e) {
             var itemsSelected = this.$el.find('.multi-action:checked'),
                 ids = [],
-                self = this,
-                fullCollection = this.listView.collection,
-                $modal = this.getRegion('deleteAllModal').currentView.$el;
+                fullCollection = this.listView.collection;
 
             _.each(itemsSelected, function (item) {
                 ids.push($(item).data('id'));
             });
 
-            $modal.modal('show');
-
-            this._channel.on('deleteAllModal:no', function (e) {
-                e.preventDefault();
-                $modal.modal('hide');
-            });
-
-            this._channel.on('deleteAllModal:yes', function (e) {
-                e.preventDefault();
-
-                fullCollection.deleteByIds(ids)
-                    .done(function () {
-                        $modal.modal('hide');
-                    });
-            });
+            fullCollection.deleteByIds(ids)
+                .done(function () {
+                    view.$el.modal('hide');
+                });
+        },
+        deleteAllNo: function (view, e) {
+            view.$el.modal('hide');
         },
         showMultiActions: function (e) {
             if (e) {
@@ -3176,14 +3160,14 @@ var EntityLayoutView;
                 name = $target.val(),
                 filterField = _.isUndefined(this.filterField) ? 'name' : this.filterField;
 
-            this._timeoutUtil.suspendOperation(400, _.bind(function () {
+            _.debounce(_.bind(function () {
                 if (name.length === 0) {
                     this._channel.trigger('getAll', 1);
                     return;
                 }
 
                 this._channel.trigger('textSearch', name, filterField);
-            }, this));
+            }, this), 400);
         },
         showListView: function () {
             this.showChildView('entityRegion', this.listView);
@@ -3231,7 +3215,7 @@ var EntityLayoutView;
             return this._channel;
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, TimeoutUtil, PagerBehavior, ModalBehavior);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior, ModalBehavior);
 
 var FormView;
 (function ($, _, Backbone, Marionette, FormValidator) {
@@ -4252,9 +4236,8 @@ var EntityFormView;
             '$spinner': '.spinner'
         },
         templateContext: function () {
-            var self = this;
             return {
-                btnClass: self.options.btnClass,
+                btnClass: this.options.btnClass,
                 isNew: this.model.isNew()
             };
         },

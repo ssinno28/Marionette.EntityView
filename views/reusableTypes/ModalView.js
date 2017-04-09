@@ -4,10 +4,17 @@ var ModalView;
         model: ModalModel,
         template: modalTpl,
         initialize: function (options) {
+            if (_.isUndefined(this.triggers)) {
+                this.triggers = {};
+            }
+
             _.each(options.choices,
                 _.bind(function (option) {
-                    var funcName = option.type + 'Click';
-                    this.triggers['click .' + option.type] = 'modal.' + this.getOption('name') + '.' + option.type;
+                    this.triggers['click .' + option.type] = {
+                        event: 'modal:' + this.getOption('safeName') + ':' + option.type,
+                        preventDefault: true,
+                        stopPropagation: true
+                    };
                 }, this));
         },
         ui: {
@@ -25,12 +32,18 @@ var ModalView;
                     var html =
                         Marionette.Renderer.render(
                             _.template('<button type="button" class="btn btn-primary <%= type %>" ' +
-                            '<% if(dismiss) { %> data-dismiss="modal" <% } %> > <%= text %> </button>'),
+                                '<% if(dismiss) { %> data-dismiss="modal" <% } %> > <%= text %> </button>'),
                             option
                         );
 
                     this.ui.$modalFooter.append(html);
                 }, this));
+        },
+        onShowModal: function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            this.$el.modal('show');
         },
         onDomRefresh: function () {
             if (_.isUndefined(this.model.get('name'))) {

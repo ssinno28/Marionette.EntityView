@@ -13,14 +13,6 @@ var EntityListItemView;
             _.extend(this, options);
             this._channel = Backbone.Radio.channel(this.route);
         },
-        behaviors: {
-            Modal: {
-                behaviorClass: ModalBehavior
-            }
-        },
-        triggers: {
-         'click .delete': 'delete:item'   
-        }
         ui: {
             $delete: '.delete',
             $edit: '.edit',

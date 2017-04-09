@@ -1,5 +1,5 @@
 var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, TimeoutUtil, PagerBehavior, ModalBehavior) {
+(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior, ModalBehavior) {
     EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
         template: entityListLayoutTpl,
         regions: {
@@ -23,15 +23,13 @@ var EntityLayoutView;
         initialize: function (options) {
             _.extend(this, options);
 
-            this._timeoutUtil = new TimeoutUtil();
-
             this.modal('deleteAllModal')
                 .message('Are you sure you want to delete these items?')
                 .title('Delete All?')
                 .choice('Yes', 'yes')
                 .choice('No', 'no', true)
                 .add();
-            
+
             this.modal('deleteItemModal')
                 .message('Are you sure you want to delete this item?')
                 .title('Delete Item?')
@@ -63,16 +61,16 @@ var EntityLayoutView;
             'click .edit': 'editClick',
             'keyup .nameFilter': 'filterByName',
             'click .multi-action': 'showMultiActions',
-            'click .delete-all': 'deleteAll',
             'click .add-all': 'addAll',
             'click .sub-nav .create': 'createClick',
             'click .sub-nav .get-all': 'getAllClick'
         },
-        childViewEvents: function(){
-         'model.deleteAllModal.yes' : 'deleteAllYes',
-         'model.deleteAllModal.no' : 'deleteAllNo',
-         'delete:item' : 'showDeleteItem'
-        }
+        childViewEvents: {
+            'model:delete-all-modal:yes': 'deleteAllYes',
+            'model:delete-all-modal:no': 'deleteAllNo',
+            'model:delete-item-modal:yes': 'deleteItemYes',
+            'model:delete-item-modal:no': 'deleteItemNo'
+        },
         ui: {
             '$subNav': '.sub-nav',
             '$nameFilter': '.filterEntities',
@@ -80,11 +78,8 @@ var EntityLayoutView;
             '$listBtn': '.get-all',
             '$subNavElements': '.sub-nav > dd',
             '$multiActionRequests': '.multi-action-requests',
-            '$publishAllModal': '.publish-all-modal',
             '$treeBtn': '.get-tree',
             '$header': '.entity-header'
-        },
-        onRender: function () {
         },
         templateContext: function () {
             var showCreate = this.allowableOperations.indexOf('create') > -1,
@@ -158,24 +153,10 @@ var EntityLayoutView;
                     this.showMultiActions();
                 }, this));
         },
-        showDeleteItem: function(view, e) {
-            e.preventDefault();
-            e.stopPropagation(); 
-            
-            var $modal = this.getRegion('deleteItemModal').currentView.$el;
-            $modal.modal('show');
-        },
-        deleteAll: function (e) {
-            e.preventDefault();
-            e.stopPropagation(); 
-            
-            var $modal = this.getRegion('deleteAllModal').currentView.$el;
-            $modal.modal('show');
-        },
-        deleteAllYes: function(view, e) {            
+        deleteAllYes: function (view, e) {
             var itemsSelected = this.$el.find('.multi-action:checked'),
-            ids = [],
-            fullCollection = this.listView.collection;
+                ids = [],
+                fullCollection = this.listView.collection;
 
             _.each(itemsSelected, function (item) {
                 ids.push($(item).data('id'));
@@ -186,9 +167,9 @@ var EntityLayoutView;
                     view.$el.modal('hide');
                 });
         },
-        deleteAllNo: function(view, e) {
+        deleteAllNo: function (view, e) {
             view.$el.modal('hide');
-        }
+        },
         showMultiActions: function (e) {
             if (e) {
                 e.stopPropagation();
@@ -217,14 +198,14 @@ var EntityLayoutView;
                 name = $target.val(),
                 filterField = _.isUndefined(this.filterField) ? 'name' : this.filterField;
 
-            this._timeoutUtil.suspendOperation(400, _.bind(function () {
+            _.debounce(_.bind(function () {
                 if (name.length === 0) {
                     this._channel.trigger('getAll', 1);
                     return;
                 }
 
                 this._channel.trigger('textSearch', name, filterField);
-            }, this));
+            }, this), 400);
         },
         showListView: function () {
             this.showChildView('entityRegion', this.listView);
@@ -272,4 +253,4 @@ var EntityLayoutView;
             return this._channel;
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, TimeoutUtil, PagerBehavior, ModalBehavior);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior, ModalBehavior);
