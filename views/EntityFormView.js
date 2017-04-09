@@ -352,9 +352,6 @@ var EntityFormView;
                 dataField: dataField,
                 dateFormat: dateFormat
             }));
-        },
-        _formatRegionName: function (name) {
-            return name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
         }
     });
 })(jQuery,

@@ -167,9 +167,6 @@ var EntityLayoutView;
                     view.$el.modal('hide');
                 });
         },
-        deleteAllNo: function (view, e) {
-            view.$el.modal('hide');
-        },
         showMultiActions: function (e) {
             if (e) {
                 e.stopPropagation();

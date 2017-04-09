@@ -3,6 +3,7 @@
   "js": {
     "files": [
       "mixins/ModalMixin.js",
+      "mixins/UtilitiesMixin.js",
       "util/formValidator.js",
       "util/timeoutUtil.js",
       "util/uriUtil.js",

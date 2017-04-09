@@ -85,7 +85,7 @@ __p += '\r\n                ';
  if(allowDeleteAll){ ;
 __p += '\r\n                <button type="button" class="btn btn-danger multi-action-requests ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
-' delete-all-modal-show">\r\n                    Delete All\r\n                </button>\r\n                ';
+' delete-all-show">\r\n                    Delete All\r\n                </button>\r\n                ';
  } ;
 __p += '\r\n\r\n                ';
  if(allowPublishAll){ ;
@@ -465,11 +465,20 @@ return __p
             var modal = {name: name};
 
             var addFunc = _.bind(function () {
-                if(_.isUndefined(modal.message) || _.isUndefined(modal.title)){
+                if (_.isUndefined(modal.message) || _.isUndefined(modal.title)) {
                     throw 'You need to specify both a message and a title!'
                 }
-                
+
                 this.triggerMethod('addModal', modal);
+
+                var safeName = this._formatRegionName(modal.name),
+                    showEventName = 'modal:' + safeName + ":show";
+
+                if (_.isUndefined(this.triggers)) {
+                    this.triggers = {};
+                }
+
+                this.triggers['click .' + safeName] = showEventName;
             }, this);
 
             var choiceFunc = function (text, type, dismiss) {
@@ -513,8 +522,20 @@ return __p
                 title: titleFunc,
                 message: messageFunc
             };
+        },
+        closeModal: function (view, e) {
+            view.$el.modal('hide');
         }
     }
+})(jQuery, _, Backbone, Marionette);
+
+var UtilitiesMixin;
+(function ($, _, Backbone, Marionette) {
+    UtilitiesMixin = {
+        _formatRegionName: function (name) {
+            return name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+        }
+    };
 })(jQuery, _, Backbone, Marionette);
 
 var FormValidator;
@@ -2662,17 +2683,6 @@ var ModalBehavior;
         onAddModal: function (modal) {
             this.options.modals.push(modal);
         },
-        events: function () {
-            var events = {};
-            _.each(this.options.modals, _.bind(function (modal) {
-                var className = this._formatRegionName(modal.name),
-                    showFuncName = 'show' + modal.name;
-
-                events['click .' + className + '-show'] = showFuncName;
-            }, this));
-
-            return events;
-        },
         onRender: function () {
             _.each(this.options.modals, _.bind(function (modal) {
                 var model = new ModalModel({
@@ -2687,15 +2697,10 @@ var ModalBehavior;
                 var modalView = new ModalView({model: model, choices: modal.choices, safeName: className});
                 this.view.showChildView(modal.name, modalView);
 
-                var showFuncName = 'show' + modal.name;
-                this[showFuncName] =
-                    _.bind(function () {
-                        modalView.triggerMethod('show:modal');
-                    }, this);
+                this.view.on('modal:' + className + ':show', function () {
+                    modalView.triggerMethod('show:modal');
+                });
             }, this));
-        },
-        _formatRegionName: function (name) {
-            return name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
         }
     });
 })(jQuery, _, Backbone, Marionette, ModalView, ModalModel);
@@ -2886,7 +2891,6 @@ var EntityListItemView;
             this._channel = Backbone.Radio.channel(this.route);
         },
         ui: {
-            $delete: '.delete',
             $edit: '.edit',
             $multiAction: '.multi-action',
             $actions: '.actions'
@@ -3128,9 +3132,6 @@ var EntityLayoutView;
                 .done(function () {
                     view.$el.modal('hide');
                 });
-        },
-        deleteAllNo: function (view, e) {
-            view.$el.modal('hide');
         },
         showMultiActions: function (e) {
             if (e) {
@@ -4544,9 +4545,6 @@ var EntityFormView;
                 dataField: dataField,
                 dateFormat: dateFormat
             }));
-        },
-        _formatRegionName: function (name) {
-            return name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
         }
     });
 })(jQuery,
@@ -4736,7 +4734,7 @@ var EntityController;
     });
 })(App, jQuery, _, Backbone, Marionette, EntityLayoutView, this['Templates']['headerTemplate'], TimeoutUtil, EntityService);
 
-(function (_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin) {
+(function (_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin) {
     var $config = $('#config');
     if ($config.length > 0) {
         var config = JSON.parse(decodeURIComponent($config.val()));
@@ -4815,7 +4813,12 @@ var EntityController;
     _.extend(EntityListItemView.prototype, ModalMixin);
     _.extend(EntityFormView.prototype, ModalMixin);
 
-})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin);
+    _.extend(EntityLayoutView.prototype, UtilitiesMixin);
+    _.extend(EntityListItemView.prototype, UtilitiesMixin);
+    _.extend(EntityFormView.prototype, UtilitiesMixin);
+    _.extend(ModalBehavior.prototype, UtilitiesMixin);
+
+})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin);
 //# sourceMappingURL=main.js.map
 
     return {

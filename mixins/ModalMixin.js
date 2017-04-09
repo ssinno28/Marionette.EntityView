@@ -5,11 +5,20 @@ var ModalMixin;
             var modal = {name: name};
 
             var addFunc = _.bind(function () {
-                if(_.isUndefined(modal.message) || _.isUndefined(modal.title)){
+                if (_.isUndefined(modal.message) || _.isUndefined(modal.title)) {
                     throw 'You need to specify both a message and a title!'
                 }
-                
+
                 this.triggerMethod('addModal', modal);
+
+                var safeName = this._formatRegionName(modal.name),
+                    showEventName = 'modal:' + safeName + ":show";
+
+                if (_.isUndefined(this.triggers)) {
+                    this.triggers = {};
+                }
+
+                this.triggers['click .' + safeName + '-show'] = showEventName;
             }, this);
 
             var choiceFunc = function (text, type, dismiss) {
@@ -53,6 +62,9 @@ var ModalMixin;
                 title: titleFunc,
                 message: messageFunc
             };
+        },
+        closeModal: function (view, e) {
+            view.$el.modal('hide');
         }
     }
 })(jQuery, _, Backbone, Marionette);

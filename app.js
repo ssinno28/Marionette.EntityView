@@ -1,4 +1,4 @@
-(function (_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin) {
+(function (_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin) {
     var $config = $('#config');
     if ($config.length > 0) {
         var config = JSON.parse(decodeURIComponent($config.val()));
@@ -77,4 +77,9 @@
     _.extend(EntityListItemView.prototype, ModalMixin);
     _.extend(EntityFormView.prototype, ModalMixin);
 
-})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin);
+    _.extend(EntityLayoutView.prototype, UtilitiesMixin);
+    _.extend(EntityListItemView.prototype, UtilitiesMixin);
+    _.extend(EntityFormView.prototype, UtilitiesMixin);
+    _.extend(ModalBehavior.prototype, UtilitiesMixin);
+
+})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin);

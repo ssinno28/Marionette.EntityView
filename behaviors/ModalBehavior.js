@@ -7,17 +7,6 @@ var ModalBehavior;
         onAddModal: function (modal) {
             this.options.modals.push(modal);
         },
-        events: function () {
-            var events = {};
-            _.each(this.options.modals, _.bind(function (modal) {
-                var className = this._formatRegionName(modal.name),
-                    showFuncName = 'show' + modal.name;
-
-                events['click .' + className + '-show'] = showFuncName;
-            }, this));
-
-            return events;
-        },
         onRender: function () {
             _.each(this.options.modals, _.bind(function (modal) {
                 var model = new ModalModel({
@@ -32,15 +21,10 @@ var ModalBehavior;
                 var modalView = new ModalView({model: model, choices: modal.choices, safeName: className});
                 this.view.showChildView(modal.name, modalView);
 
-                var showFuncName = 'show' + modal.name;
-                this[showFuncName] =
-                    _.bind(function () {
-                        modalView.triggerMethod('show:modal');
-                    }, this);
+                this.view.on('modal:' + className + ':show', function () {
+                    modalView.triggerMethod('show:modal');
+                });
             }, this));
-        },
-        _formatRegionName: function (name) {
-            return name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
         }
     });
 })(jQuery, _, Backbone, Marionette, ModalView, ModalModel);

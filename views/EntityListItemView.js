@@ -14,7 +14,6 @@ var EntityListItemView;
             this._channel = Backbone.Radio.channel(this.route);
         },
         ui: {
-            $delete: '.delete',
             $edit: '.edit',
             $multiAction: '.multi-action',
             $actions: '.actions'
