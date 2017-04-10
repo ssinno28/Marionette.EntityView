@@ -10,12 +10,19 @@ var ModalView;
 
             _.each(options.choices,
                 _.bind(function (option) {
+                    if (option.dismiss) {
+                        this.events['click .' + option.type] = 'closeModal';
+                        return;
+                    }
+
                     this.triggers['click .' + option.type] = {
                         event: 'modal:' + this.getOption('safeName') + ':' + option.type,
                         preventDefault: true,
                         stopPropagation: true
                     };
                 }, this));
+
+            this.delegateEvents();
         },
         ui: {
             $modalFooter: '.modal-footer'
@@ -39,11 +46,14 @@ var ModalView;
                     this.ui.$modalFooter.append(html);
                 }, this));
         },
-        onShowModal: function (e) {
+        onShowModal: function () {
+            this.$el.modal('show');
+        },
+        closeModal: function (e) {
             e.preventDefault();
             e.stopPropagation();
 
-            this.$el.modal('show');
+            this.$el.modal('hide');
         },
         onDomRefresh: function () {
             if (_.isUndefined(this.model.get('name'))) {

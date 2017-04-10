@@ -85,7 +85,7 @@ __p += '\r\n                ';
  if(allowDeleteAll){ ;
 __p += '\r\n                <button type="button" class="btn btn-danger multi-action-requests ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
-' delete-all-show">\r\n                    Delete All\r\n                </button>\r\n                ';
+' delete-all-modal-show">\r\n                    Delete All\r\n                </button>\r\n                ';
  } ;
 __p += '\r\n\r\n                ';
  if(allowPublishAll){ ;
@@ -470,15 +470,6 @@ return __p
                 }
 
                 this.triggerMethod('addModal', modal);
-
-                var safeName = this._formatRegionName(modal.name),
-                    showEventName = 'modal:' + safeName + ":show";
-
-                if (_.isUndefined(this.triggers)) {
-                    this.triggers = {};
-                }
-
-                this.triggers['click .' + safeName] = showEventName;
             }, this);
 
             var choiceFunc = function (text, type, dismiss) {
@@ -522,9 +513,6 @@ return __p
                 title: titleFunc,
                 message: messageFunc
             };
-        },
-        closeModal: function (view, e) {
-            view.$el.modal('hide');
         }
     }
 })(jQuery, _, Backbone, Marionette);
@@ -1842,12 +1830,19 @@ var ModalView;
 
             _.each(options.choices,
                 _.bind(function (option) {
+                    if (option.dismiss) {
+                        this.events['click .' + option.type] = 'closeModal';
+                        return;
+                    }
+
                     this.triggers['click .' + option.type] = {
                         event: 'modal:' + this.getOption('safeName') + ':' + option.type,
                         preventDefault: true,
                         stopPropagation: true
                     };
                 }, this));
+
+            this.delegateEvents();
         },
         ui: {
             $modalFooter: '.modal-footer'
@@ -1871,11 +1866,14 @@ var ModalView;
                     this.ui.$modalFooter.append(html);
                 }, this));
         },
-        onShowModal: function (e) {
+        onShowModal: function () {
+            this.$el.modal('show');
+        },
+        closeModal: function (e) {
             e.preventDefault();
             e.stopPropagation();
 
-            this.$el.modal('show');
+            this.$el.modal('hide');
         },
         onDomRefresh: function () {
             if (_.isUndefined(this.model.get('name'))) {
@@ -2697,9 +2695,20 @@ var ModalBehavior;
                 var modalView = new ModalView({model: model, choices: modal.choices, safeName: className});
                 this.view.showChildView(modal.name, modalView);
 
-                this.view.on('modal:' + className + ':show', function () {
-                    modalView.triggerMethod('show:modal');
-                });
+                var $modalBtn = this.view.$el.find('.' + className + '-show');
+                if ($modalBtn.length === 0) {
+                    $modalBtn = this.view.$el.find('.' + className + '-show:hidden');
+                }
+
+                if ($modalBtn.length > 0) {
+                    $modalBtn.on('click', function () {
+                        modalView.triggerMethod('show:modal');
+                    });
+
+                    this.view.on('destroy', function () {
+                        $modalBtn.off('click');
+                    });
+                }
             }, this));
         }
     });
@@ -3185,9 +3194,7 @@ var EntityLayoutView;
             e.preventDefault();
             e.stopPropagation();
 
-            var collection = this.listView.collection,
-                page = 1;
-
+            var page = 1;
             if (!_.isUndefined(this.listView.currentPage) && this.listView.currentPage !== 0) {
                 page = this.listView.currentPage;
             }

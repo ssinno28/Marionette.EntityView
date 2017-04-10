@@ -219,9 +219,7 @@ var EntityLayoutView;
             e.preventDefault();
             e.stopPropagation();
 
-            var collection = this.listView.collection,
-                page = 1;
-
+            var page = 1;
             if (!_.isUndefined(this.listView.currentPage) && this.listView.currentPage !== 0) {
                 page = this.listView.currentPage;
             }

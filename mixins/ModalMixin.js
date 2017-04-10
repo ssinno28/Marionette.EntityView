@@ -10,15 +10,6 @@ var ModalMixin;
                 }
 
                 this.triggerMethod('addModal', modal);
-
-                var safeName = this._formatRegionName(modal.name),
-                    showEventName = 'modal:' + safeName + ":show";
-
-                if (_.isUndefined(this.triggers)) {
-                    this.triggers = {};
-                }
-
-                this.triggers['click .' + safeName + '-show'] = showEventName;
             }, this);
 
             var choiceFunc = function (text, type, dismiss) {
@@ -62,9 +53,6 @@ var ModalMixin;
                 title: titleFunc,
                 message: messageFunc
             };
-        },
-        closeModal: function (view, e) {
-            view.$el.modal('hide');
         }
     }
 })(jQuery, _, Backbone, Marionette);
