@@ -28,20 +28,8 @@ var MockModel = Backbone.EntityModel.extend({
 App.pageSize = 5;
 
 var formView = Marionette.EntityFormView.extend({
-    formTemplate: _.template('<fieldset>' +
+    formTemplate: _.template('<fieldset id="user-settings">' +
         '<legend>User Settings</legend>' +
-        '<div class="form-group name">' +
-        '<label class="label-control col-sm-2">Name</label>' +
-        '<div class="col-sm-10">' +
-        '<input type="text" class="form-control" data-field="name" value="<%= name %>" />' +
-        '</div>' +
-        '</div>' +
-        '<div class="form-group email">' +
-        '<label class="label-control col-sm-2">Email</label>' +
-        '<div class="col-sm-10">' +
-        '<input type="email" class="form-control" data-field="email" value="<%= email %>" />' +
-        '</div>' +
-        '</div>' +
         '<div class="form-group dob">' +
         '<label class="label-control col-sm-2">Date Of Birth</label>' +
         '<div class="dob-region">' +
@@ -54,15 +42,6 @@ var formView = Marionette.EntityFormView.extend({
         '</div>' +
         '</fieldset>'),
     fields: {
-        name: {
-            el: '.name input',
-            required: 'Please enter your full name.'
-        },
-        email: {
-            el: '.email input',
-            required: 'Please enter an email address.',
-            email: 'The email address is not in the correct format!'
-        },
         dob: {
             el: '[data-field="dob"]',
             required: 'The DOB is required!!'
@@ -75,6 +54,19 @@ var formView = Marionette.EntityFormView.extend({
     onDomRefresh: function () {
         this.getDatePickerForRegion('dobRegion', 'dob');
         this.getTimePickerForRegion('timeBornRegion', 'timeBorn');
+
+        this.field('name')
+            .label('Name')
+            .fieldset('User Settings', '#user-settings')
+            .required('Please enter your full name.')
+            .singleLine();
+
+        this.field('email')
+            .label('Email')
+            .fieldset('User Settings', '#user-settings')
+            .required('Please enter an email address.')
+            .email('The email address is not in the correct format!')
+            .singleLine();
     }
 });
 

@@ -82,4 +82,6 @@
     _.extend(EntityFormView.prototype, UtilitiesMixin);
     _.extend(ModalBehavior.prototype, UtilitiesMixin);
 
+    _.extend(EntityFormView.prototype, FieldsMixin);
+
 })(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin);

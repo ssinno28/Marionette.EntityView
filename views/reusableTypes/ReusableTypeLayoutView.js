@@ -11,7 +11,8 @@ var ReusableTypeLayoutView;
             var self = this;
 
             return {
-                dataField: self.dataField
+                dataField: self.dataField,
+                value: self.value
             };
         },
         getChannel: function () {

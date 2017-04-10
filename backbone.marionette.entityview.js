@@ -524,6 +524,210 @@ var UtilitiesMixin;
     };
 })(jQuery, _, Backbone, Marionette);
 
+var FieldsMixin;
+(function ($, _, Backbone, Marionette) {
+    FieldsMixin = {
+        field: function (name) {
+            var field = {},
+                options = {},
+                currentField = field[name] = {
+                    el: '.' + name
+                },
+                formRegion = this.getRegion('entityFormRegion'),
+                $fields = $(formRegion.el),
+                dataField = name,
+                fieldRegion = dataField + '-region',
+                editors = {},
+                validations = {},
+                returnObj;
+
+            //validations
+            currentField.validations = {};
+            var required = function (message) {
+                currentField.required = message;
+                return returnObj;
+            };
+
+            var min = function (message) {
+                currentField.validations.min = message;
+                return returnObj;
+            };
+
+            var max = function (message) {
+                currentField.validations.max = message;
+                return returnObj;
+            };
+
+            var numeric = function (message) {
+                currentField.validations.numeric = message;
+                return returnObj;
+            };
+
+            var alpha = function (message) {
+                currentField.validations.alpha = message;
+                return returnObj;
+            };
+
+            var alphanum = function (message) {
+                currentField.validations.alphanum = message;
+                return returnObj;
+            };
+
+            var email = function (message) {
+                currentField.email = message;
+                return returnObj;
+            };
+
+            var boolean = function (message) {
+                currentField.validations.boolean = message;
+                return returnObj;
+            };
+
+            validations = {
+                min: min,
+                required: required,
+                max: max,
+                numeric: numeric,
+                alpha: alpha,
+                alphanum: alphanum,
+                email: email,
+                boolean: boolean
+            };
+
+            var addField = _.bind(function () {
+                var $el = null;
+                if (!_.isUndefined(options.fieldset.$el)) {
+                    $el = options.fieldset.$el;
+                } else {
+                    $el = $fields;
+                }
+
+                var fieldWrapperTpl = _.template('<div class="form-group fieldWrapper">' +
+                    '<label class="col-sm-2 control-label"><%= label %></label>' +
+                    '<div class="col-sm-10 <%= dataField %>">' +
+                    '<div class="<%= dataField %>-region"></div>' +
+                    '</div>' +
+                    '</div>');
+
+                var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
+                    label: options.label.text,
+                    dataField: dataField
+                });
+
+                $el.append(fieldHtml);
+                this.fields = _.extend(field, this.fields);
+            }, this);
+
+            var datePicker = _.bind(function (dateFormat) {
+                addField();
+                this._datePickerForRegion(fieldRegion, dataField, dateFormat);
+            }, this);
+
+            var timePicker = _.bind(function (dateFormat) {
+                addField();
+                this._timePickerForRegion(fieldRegion, dataField, dateFormat);
+            }, this);
+
+            var dateTimePicker = _.bind(function (dateFormat) {
+                addField();
+                this._dateTimePickerForRegion(fieldRegion, dataField, dateFormat);
+            }, this);
+
+            var imagePicker = _.bind(function () {
+                addField();
+                this._imagePickerForRegion(fieldRegion, dataField);
+            }, this);
+
+            var checkbox = _.bind(function () {
+                addField();
+                this._checkboxForRegion(fieldRegion, dataField);
+            }, this);
+
+            var textArea = _.bind(function () {
+                addField();
+                this._textAreaForRegion(fieldRegion, dataField);
+            }, this);
+
+            var radioBtns = _.bind(function (collection) {
+                addField();
+                this._radioButtonListForRegion(collection, fieldRegion, dataField);
+            }, this);
+
+            var autocomplete = _.bind(function (collection) {
+                addField();
+                this._autoCompleteForRegion(collection, fieldRegion, dataField);
+            }, this);
+
+            var multiSelect = _.bind(function (collection, conditions, displayField) {
+                addField();
+                this._multiSelectForRegion(collection, fieldRegion, dataField, conditions, displayField);
+            }, this);
+
+            var dropdown = _.bind(function (collection, conditions) {
+                addField();
+                this._dropDownForRegion(collection, fieldRegion, dataField, conditions);
+            }, this);
+
+            var wyswig = _.bind(function () {
+                addField();
+                this._wyswigForRegion(fieldRegion, dataField);
+            }, this);
+
+            var singleLine = _.bind(function () {
+                addField();
+                this._singleLineForRegion(fieldRegion, dataField);
+            }, this);
+
+            editors = {
+                wyswig: wyswig,
+                dropdown: dropdown,
+                autocomplete: autocomplete,
+                radioBtns: radioBtns,
+                textArea: textArea,
+                checkbox: checkbox,
+                imagePicker: imagePicker,
+                dateTimePicker: dateTimePicker,
+                timePicker: timePicker,
+                singleLine: singleLine
+            };
+
+            returnObj = _.extend(validations, editors);
+
+            //options
+            var label = function (text) {
+                options.label = {};
+                options.label.text = text;
+
+                return _.extend({
+                    fieldset: fieldset
+                }, returnObj);
+            };
+
+            var fieldset = _.bind(function (text, fieldsetId) {
+                options.fieldset = {};
+                options.fieldset.text = text;
+
+                var $fieldset = this.$el.find(fieldsetId);
+
+                if ($fieldset.length === 0) {
+                    $fields.append('<fieldset id="' + fieldsetId + '"></fieldset>');
+                    $fieldset = this.$el.find(fieldsetId);
+                }
+
+                options.fieldset.$el = $fieldset;
+                return _.extend({
+                    label: label
+                }, returnObj);
+            }, this);
+
+            return {
+                label: label,
+                fieldset: fieldset
+            };
+        }
+    };
+})(jQuery, _, Backbone, Marionette);
+
 var FormValidator;
 (function ($, _, Backbone, Marionette) {
     FormValidator = Marionette.Object.extend({
@@ -1950,7 +2154,8 @@ var ReusableTypeLayoutView;
             var self = this;
 
             return {
-                dataField: self.dataField
+                dataField: self.dataField,
+                value: self.value
             };
         },
         getChannel: function () {
@@ -2225,7 +2430,16 @@ var SingleLineTextView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, singleLineTextTpl) {
     SingleLineTextView = ReusableTypeLayoutView.extend({
         tag: 'input',
-        template:singleLineTextTpl
+        template: singleLineTextTpl,
+        onRender: function () {
+            // Get rid of that pesky wrapping-div.
+            // Assumes 1 child element present in template.
+            this.$el = this.$el.children();
+            // Unwrap the element to prevent infinitely
+            // nesting elements during re-render.
+            this.$el.unwrap();
+            this.setElement(this.$el);
+        }
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['singleLineTextTemplate']);
 
@@ -4135,7 +4349,7 @@ var MultiSelectLayoutView;
 })(Marionette, jQuery, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, this['Templates']['headerTemplate']);
 
 var EntityFormView;
-(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView, DatePickerView, TimePickerView) {
+(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView, DatePickerView, TimePickerView, SingleLineTextView) {
     EntityFormView = Marionette.EntityFormView = Marionette.FormView.extend({
         template: entityFormLayoutTemplate,
         regions: {
@@ -4169,7 +4383,7 @@ var EntityFormView;
             this._channel = Backbone.Radio.channel(this.getOption('channelName'));
 
             this.on('before:attach', this.runRenderers, this);
-            this.on('dom:refresh', this.runInitializers, this);
+            this.on('dom:refresh', this.runFormInitializers, this);
         },
         behaviors: {
             Messages: {
@@ -4192,7 +4406,7 @@ var EntityFormView;
         events: {
             'click .reset': 'resetForm'
         },
-        runInitializers: function () {
+        runFormInitializers: function () {
             this._channel.trigger('view.form.activated');
             this.checkDisabledFields();
         },
@@ -4212,7 +4426,7 @@ var EntityFormView;
         },
         runRenderers: function () {
             if (_.isUndefined(this.formTemplate)) {
-                throw new Error("The formTemplate property is undefined!");
+                return;
             }
 
             var formView = Backbone.Marionette.View.extend({
@@ -4236,6 +4450,11 @@ var EntityFormView;
 
             var $errors = $('.help-block');
             $errors.remove();
+
+            var $formGroups = $('.has-error')
+            _.each($formGroups, function ($formGroup) {
+                $formGroup.removeClass('has-error');
+            });
 
             for (var errorObject in errors) {
                 var field = errors[errorObject].el,
@@ -4333,6 +4552,17 @@ var EntityFormView;
             });
 
             this.showChildView(region, new WyswigView({
+                value: this.model.get(dataField),
+                dataField: dataField
+            }));
+        },
+        _singleLineForRegion: function (region, dataField) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new SingleLineTextView({
                 value: this.model.get(dataField),
                 dataField: dataField
             }));
@@ -4445,7 +4675,7 @@ var EntityFormView;
                 dataField: dataField
             }));
         },
-        _imagePickerForRegion: function (model, region, dataField) {
+        _imagePickerForRegion: function (region, dataField) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4509,7 +4739,8 @@ var EntityFormView;
     ImageFieldView,
     DateTimePickerView,
     DatePickerView,
-    TimePickerView);
+    TimePickerView,
+    SingleLineTextView);
 
 
 var TreeCompositeView;
@@ -4763,6 +4994,8 @@ var EntityController;
     _.extend(EntityListItemView.prototype, UtilitiesMixin);
     _.extend(EntityFormView.prototype, UtilitiesMixin);
     _.extend(ModalBehavior.prototype, UtilitiesMixin);
+
+    _.extend(EntityFormView.prototype, FieldsMixin);
 
 })(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin);
 //# sourceMappingURL=main.js.map

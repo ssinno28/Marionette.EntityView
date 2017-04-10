@@ -4,6 +4,7 @@
     "files": [
       "mixins/ModalMixin.js",
       "mixins/UtilitiesMixin.js",
+      "mixins/FieldsMixin.js",
       "util/formValidator.js",
       "util/timeoutUtil.js",
       "util/uriUtil.js",

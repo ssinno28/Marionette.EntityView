@@ -1,5 +1,5 @@
 var EntityFormView;
-(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView, DatePickerView, TimePickerView) {
+(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView, DatePickerView, TimePickerView, SingleLineTextView) {
     EntityFormView = Marionette.EntityFormView = Marionette.FormView.extend({
         template: entityFormLayoutTemplate,
         regions: {
@@ -33,7 +33,7 @@ var EntityFormView;
             this._channel = Backbone.Radio.channel(this.getOption('channelName'));
 
             this.on('before:attach', this.runRenderers, this);
-            this.on('dom:refresh', this.runInitializers, this);
+            this.on('dom:refresh', this.runFormInitializers, this);
         },
         behaviors: {
             Messages: {
@@ -56,7 +56,7 @@ var EntityFormView;
         events: {
             'click .reset': 'resetForm'
         },
-        runInitializers: function () {
+        runFormInitializers: function () {
             this._channel.trigger('view.form.activated');
             this.checkDisabledFields();
         },
@@ -76,7 +76,7 @@ var EntityFormView;
         },
         runRenderers: function () {
             if (_.isUndefined(this.formTemplate)) {
-                throw new Error("The formTemplate property is undefined!");
+                return;
             }
 
             var formView = Backbone.Marionette.View.extend({
@@ -100,6 +100,11 @@ var EntityFormView;
 
             var $errors = $('.help-block');
             $errors.remove();
+
+            var $formGroups = $('.has-error')
+            _.each($formGroups, function ($formGroup) {
+                $formGroup.removeClass('has-error');
+            });
 
             for (var errorObject in errors) {
                 var field = errors[errorObject].el,
@@ -197,6 +202,17 @@ var EntityFormView;
             });
 
             this.showChildView(region, new WyswigView({
+                value: this.model.get(dataField),
+                dataField: dataField
+            }));
+        },
+        _singleLineForRegion: function (region, dataField) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new SingleLineTextView({
                 value: this.model.get(dataField),
                 dataField: dataField
             }));
@@ -309,7 +325,7 @@ var EntityFormView;
                 dataField: dataField
             }));
         },
-        _imagePickerForRegion: function (model, region, dataField) {
+        _imagePickerForRegion: function (region, dataField) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -373,4 +389,5 @@ var EntityFormView;
     ImageFieldView,
     DateTimePickerView,
     DatePickerView,
-    TimePickerView);
+    TimePickerView,
+    SingleLineTextView);
