@@ -2,14 +2,6 @@ var FormView;
 (function ($, _, Backbone, Marionette, FormValidator) {
     "use strict";
 
-    /**
-     * FormView Extension of Backbone.Marionette.View
-     *
-     * @param {Object} options                   Options defining this FormView
-     * @param {Object} [options.data]            Form Data. (Required if options.model is not set)
-     * @param {Object} [options.fields]          Which Fields to include
-     *
-     */
     FormView = Marionette.FormView = Marionette.View.extend({
 
         className: "formView",

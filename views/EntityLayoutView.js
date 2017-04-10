@@ -66,10 +66,10 @@ var EntityLayoutView;
             'click .sub-nav .get-all': 'getAllClick'
         },
         childViewEvents: {
-            'model:delete-all-modal:yes': 'deleteAllYes',
-            'model:delete-all-modal:no': 'deleteAllNo',
-            'model:delete-item-modal:yes': 'deleteItemYes',
-            'model:delete-item-modal:no': 'deleteItemNo'
+            'modal:delete-all-modal:yes': 'deleteAllYes',
+            'modal:delete-all-modal:no': 'deleteAllNo',
+            'modal:delete-item-modal:yes': 'deleteItemYes',
+            'modal:delete-item-modal:no': 'deleteItemNo'
         },
         ui: {
             '$subNav': '.sub-nav',

@@ -1,5 +1,5 @@
 var EntityListItemView;
-(function ($, _, Backbone, Marionette, entityListItemTemplate, DeleteWarnBehavior) {
+(function ($, _, Backbone, Marionette, entityListItemTpl) {
     EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.View.extend({
         regions: {
             fieldsRegion: {
@@ -8,7 +8,7 @@ var EntityListItemView;
             }
         },
         className: 'row entity-list-item',
-        template: entityListItemTemplate,
+        template: entityListItemTpl,
         initialize: function (options) {
             _.extend(this, options);
             this._channel = Backbone.Radio.channel(this.route);
@@ -16,7 +16,8 @@ var EntityListItemView;
         ui: {
             $edit: '.edit',
             $multiAction: '.multi-action',
-            $actions: '.actions'
+            $actions: '.actions',
+            $delete: '.delete-item-modal-show'
         },
         onDomRefresh: function () {
             if (this.options.baseClassIds.indexOf(this.model.get('id')) > -1) {
@@ -28,7 +29,7 @@ var EntityListItemView;
         onRender: function () {
             if (!_.isUndefined(this.fieldsTemplate)) {
                 var fieldsView =
-                    Backbone.Marionette.View.extend(
+                    Marionette.View.extend(
                         {
                             template: this.fieldsTemplate,
                             model: this.model,
@@ -85,4 +86,4 @@ var EntityListItemView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], DeleteWarnBehavior);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate']);

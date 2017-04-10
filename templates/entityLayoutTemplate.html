@@ -21,7 +21,7 @@
                 <% } %>
                 <% if(allowDeleteAll || allowPublishAll || allowAddAll) { %>
                 <% if(allowDeleteAll){ %>
-                <button type="button" class="btn btn-danger multi-action-requests <%= btnClass %> delete-all-modal-show">
+                <button data-toggle="modal" data-target="#delete-all-modal" type="button" class="btn btn-danger multi-action-requests <%= btnClass %> delete-all-modal-show">
                     Delete All
                 </button>
                 <% } %>

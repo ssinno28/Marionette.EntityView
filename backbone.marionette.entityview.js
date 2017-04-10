@@ -83,7 +83,7 @@ __p += '\r\n                ';
  if(allowDeleteAll || allowPublishAll || allowAddAll) { ;
 __p += '\r\n                ';
  if(allowDeleteAll){ ;
-__p += '\r\n                <button type="button" class="btn btn-danger multi-action-requests ' +
+__p += '\r\n                <button data-toggle="modal" data-target="#delete-all-modal" type="button" class="btn btn-danger multi-action-requests ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
 ' delete-all-modal-show">\r\n                    Delete All\r\n                </button>\r\n                ';
  } ;
@@ -140,7 +140,7 @@ __p += '\r\n                    <li>\r\n                        <a class="edit" 
  } ;
 __p += '\r\n\r\n                    ';
  if(allowDelete){ ;
-__p += '\r\n                    <li>\r\n                        <a class="delete delete-item-modal-show" href="#' +
+__p += '\r\n                    <li>\r\n                        <a data-toggle="modal" data-target="#delete-item-modal" class="delete-item-modal-show" href="#' +
 ((__t = ( route )) == null ? '' : __t) +
 '/delete/' +
 ((__t = ( id )) == null ? '' : __t) +
@@ -1830,11 +1830,6 @@ var ModalView;
 
             _.each(options.choices,
                 _.bind(function (option) {
-                    if (option.dismiss) {
-                        this.events['click .' + option.type] = 'closeModal';
-                        return;
-                    }
-
                     this.triggers['click .' + option.type] = {
                         event: 'modal:' + this.getOption('safeName') + ':' + option.type,
                         preventDefault: true,
@@ -1853,6 +1848,7 @@ var ModalView;
             this.$el.attr('role', 'dialog');
             this.$el.attr('aria-labelledby', this.getOption('name'));
             this.$el.attr('aria-hidden', true);
+            this.$el.attr('id', this.getOption('safeName'));
 
             _.each(this.options.choices,
                 _.bind(function (option) {
@@ -1865,15 +1861,6 @@ var ModalView;
 
                     this.ui.$modalFooter.append(html);
                 }, this));
-        },
-        onShowModal: function () {
-            this.$el.modal('show');
-        },
-        closeModal: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            this.$el.modal('hide');
         },
         onDomRefresh: function () {
             if (_.isUndefined(this.model.get('name'))) {
@@ -2675,8 +2662,10 @@ var AutoCompleteLayoutView;
 var ModalBehavior;
 (function ($, _, Backbone, Marionette, ModalView, ModalModel) {
     ModalBehavior = Marionette.Behavior.extend({
-        defaults: {
-            modals: []
+        defaults: function () {
+            return {
+                modals: []
+            };
         },
         onAddModal: function (modal) {
             this.options.modals.push(modal);
@@ -2690,25 +2679,13 @@ var ModalBehavior;
                     className = this._formatRegionName(modal.name);
 
                 this.view.$el.append('<div class="' + className + '"></div>');
-                this.view.addRegion(modal.name, '.' + className);
+                this.view.addRegion(modal.name, {
+                    el: '.' + className,
+                    replaceElement: true
+                });
 
                 var modalView = new ModalView({model: model, choices: modal.choices, safeName: className});
                 this.view.showChildView(modal.name, modalView);
-
-                var $modalBtn = this.view.$el.find('.' + className + '-show');
-                if ($modalBtn.length === 0) {
-                    $modalBtn = this.view.$el.find('.' + className + '-show:hidden');
-                }
-
-                if ($modalBtn.length > 0) {
-                    $modalBtn.on('click', function () {
-                        modalView.triggerMethod('show:modal');
-                    });
-
-                    this.view.on('destroy', function () {
-                        $modalBtn.off('click');
-                    });
-                }
             }, this));
         }
     });
@@ -2752,52 +2729,6 @@ var MessageBehavior;
         }
     });
 })(jQuery, _, Backbone, Marionette, SuccessView, ErrorView, InfoView);
-
-var ConfirmModalBehavior;
-(function ($, _, Backbone, Marionette) {
-    ConfirmModalBehavior = Marionette.Behavior.extend({
-        defaults: {
-            message: "Are you sure you want to do this?",
-            yesFunc: function (e) {
-            },
-            noFunc: function (e) {
-            }
-        },
-        showWarningModal: function (e) {
-            e.preventDefault();
-
-            var $confirmModal = this.getModal();
-            //update the message
-            $confirmModal.find('.message').html(this.options.message);
-
-            //show modal
-            $confirmModal.modal('show');
-
-            $confirmModal.on('click', '.no', _.bind(function (e) {
-                e.preventDefault();
-                _.bind(this.options.noFunc, this)(e);
-                $confirmModal.modal('hide');
-            }, this));
-
-            $confirmModal.on('click', '.yes', _.bind(function (e) {
-                e.preventDefault();
-                _.bind(this.options.yesFunc, this)(e);
-                $confirmModal.modal('hide');
-            }, this));
-        }
-    });
-})(jQuery, _, Backbone, Marionette);
-var DeleteWarnBehavior;
-(function ($, _, Backbone, Marionette, ConfirmModalBehavior) {
-    DeleteWarnBehavior = ConfirmModalBehavior.extend({
-        events: {
-            "click .delete": "showWarningModal"
-        },
-        getModal: function () {
-            return $('.deleteModal');
-        }
-    });
-})(jQuery, _, Backbone, Marionette, ConfirmModalBehavior);
 var PagerBehavior;
 (function ($, _, Backbone, Marionette, App, PagerListView) {
     PagerBehavior = Marionette.Behavior.extend({
@@ -2885,7 +2816,7 @@ var EntityListView;
 })(jQuery, _, Backbone, Marionette);
 
 var EntityListItemView;
-(function ($, _, Backbone, Marionette, entityListItemTemplate, DeleteWarnBehavior) {
+(function ($, _, Backbone, Marionette, entityListItemTpl) {
     EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.View.extend({
         regions: {
             fieldsRegion: {
@@ -2894,7 +2825,7 @@ var EntityListItemView;
             }
         },
         className: 'row entity-list-item',
-        template: entityListItemTemplate,
+        template: entityListItemTpl,
         initialize: function (options) {
             _.extend(this, options);
             this._channel = Backbone.Radio.channel(this.route);
@@ -2902,7 +2833,8 @@ var EntityListItemView;
         ui: {
             $edit: '.edit',
             $multiAction: '.multi-action',
-            $actions: '.actions'
+            $actions: '.actions',
+            $delete: '.delete-item-modal-show'
         },
         onDomRefresh: function () {
             if (this.options.baseClassIds.indexOf(this.model.get('id')) > -1) {
@@ -2914,7 +2846,7 @@ var EntityListItemView;
         onRender: function () {
             if (!_.isUndefined(this.fieldsTemplate)) {
                 var fieldsView =
-                    Backbone.Marionette.View.extend(
+                    Marionette.View.extend(
                         {
                             template: this.fieldsTemplate,
                             model: this.model,
@@ -2971,7 +2903,7 @@ var EntityListItemView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], DeleteWarnBehavior);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate']);
 
 var EntityLayoutView;
 (function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior, ModalBehavior) {
@@ -3041,10 +2973,10 @@ var EntityLayoutView;
             'click .sub-nav .get-all': 'getAllClick'
         },
         childViewEvents: {
-            'model:delete-all-modal:yes': 'deleteAllYes',
-            'model:delete-all-modal:no': 'deleteAllNo',
-            'model:delete-item-modal:yes': 'deleteItemYes',
-            'model:delete-item-modal:no': 'deleteItemNo'
+            'modal:delete-all-modal:yes': 'deleteAllYes',
+            'modal:delete-all-modal:no': 'deleteAllNo',
+            'modal:delete-item-modal:yes': 'deleteItemYes',
+            'modal:delete-item-modal:no': 'deleteItemNo'
         },
         ui: {
             '$subNav': '.sub-nav',
@@ -3228,15 +3160,7 @@ var EntityLayoutView;
 var FormView;
 (function ($, _, Backbone, Marionette, FormValidator) {
     "use strict";
-
-    /**
-     * FormView Extension of Backbone.Marionette.View
-     *
-     * @param {Object} options                   Options defining this FormView
-     * @param {Object} [options.data]            Form Data. (Required if options.model is not set)
-     * @param {Object} [options.fields]          Which Fields to include
-     *
-     */
+    
     FormView = Marionette.FormView = Marionette.View.extend({
 
         className: "formView",

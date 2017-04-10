@@ -10,11 +10,6 @@ var ModalView;
 
             _.each(options.choices,
                 _.bind(function (option) {
-                    if (option.dismiss) {
-                        this.events['click .' + option.type] = 'closeModal';
-                        return;
-                    }
-
                     this.triggers['click .' + option.type] = {
                         event: 'modal:' + this.getOption('safeName') + ':' + option.type,
                         preventDefault: true,
@@ -33,6 +28,7 @@ var ModalView;
             this.$el.attr('role', 'dialog');
             this.$el.attr('aria-labelledby', this.getOption('name'));
             this.$el.attr('aria-hidden', true);
+            this.$el.attr('id', this.getOption('safeName'));
 
             _.each(this.options.choices,
                 _.bind(function (option) {
@@ -45,15 +41,6 @@ var ModalView;
 
                     this.ui.$modalFooter.append(html);
                 }, this));
-        },
-        onShowModal: function () {
-            this.$el.modal('show');
-        },
-        closeModal: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            this.$el.modal('hide');
         },
         onDomRefresh: function () {
             if (_.isUndefined(this.model.get('name'))) {
