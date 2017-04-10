@@ -140,11 +140,9 @@ __p += '\r\n                    <li>\r\n                        <a class="edit" 
  } ;
 __p += '\r\n\r\n                    ';
  if(allowDelete){ ;
-__p += '\r\n                    <li>\r\n                        <a data-toggle="modal" data-target="#delete-item-modal" class="delete-item-modal-show" href="#' +
-((__t = ( route )) == null ? '' : __t) +
-'/delete/' +
+__p += '\r\n                    <li>\r\n                        <a data-toggle="modal" data-target="#delete-item-modal" class="delete-item-modal-show" data-id="' +
 ((__t = ( id )) == null ? '' : __t) +
-'/">\r\n                            Delete\r\n                        </a>\r\n                    </li>\r\n                    ';
+'" href="#">\r\n                            Delete\r\n                        </a>\r\n                    </li>\r\n                    ';
  } ;
 __p += '\r\n                </ul>\r\n            </div>\r\n        </div>\r\n        ';
  } ;
@@ -1838,6 +1836,10 @@ var ModalView;
                 }, this));
 
             this.delegateEvents();
+
+            this.$el.on('show.bs.modal', _.bind(function (e) {
+                this.modalData = $(e.relatedTarget).data();
+            }, this));
         },
         ui: {
             $modalFooter: '.modal-footer'
@@ -2826,9 +2828,14 @@ var EntityListItemView;
         },
         className: 'row entity-list-item',
         template: entityListItemTpl,
-        initialize: function (options) {
+        constructor: function (options) {
+            Marionette.View.prototype.constructor.apply(this, arguments);
+
             _.extend(this, options);
             this._channel = Backbone.Radio.channel(this.route);
+
+            this.on('before:attach', this.runRenderers, this);
+            this.on('dom:refresh', this.runInitializers, this);
         },
         ui: {
             $edit: '.edit',
@@ -2836,14 +2843,14 @@ var EntityListItemView;
             $actions: '.actions',
             $delete: '.delete-item-modal-show'
         },
-        onDomRefresh: function () {
+        runInitializers: function () {
             if (this.options.baseClassIds.indexOf(this.model.get('id')) > -1) {
                 this.ui.$delete.addClass('not-active');
                 this.ui.$edit.addClass('not-active');
                 this.ui.$multiAction.addClass('not-active');
             }
         },
-        onRender: function () {
+        runRenderers: function () {
             if (!_.isUndefined(this.fieldsTemplate)) {
                 var fieldsView =
                     Marionette.View.extend(
@@ -2927,7 +2934,8 @@ var EntityLayoutView;
                 behaviorClass: ModalBehavior
             }
         },
-        initialize: function (options) {
+        constructor: function (options) {
+            Marionette.View.prototype.constructor.apply(this, arguments);
             _.extend(this, options);
 
             this.modal('deleteAllModal')
@@ -2950,6 +2958,8 @@ var EntityLayoutView;
 
             this._channel = Backbone.Radio.channel(this.route);
             Marionette.bindEvents(this, this._channel, this.radioEvents);
+
+            this.on('dom:refresh', this.runInitializers, this);
         },
         className: function () {
             var entityLayoutClass = ' entity-layout';
@@ -2974,9 +2984,7 @@ var EntityLayoutView;
         },
         childViewEvents: {
             'modal:delete-all-modal:yes': 'deleteAllYes',
-            'modal:delete-all-modal:no': 'deleteAllNo',
-            'modal:delete-item-modal:yes': 'deleteItemYes',
-            'modal:delete-item-modal:no': 'deleteItemNo'
+            'modal:delete-item-modal:yes': 'deleteItemYes'
         },
         ui: {
             '$subNav': '.sub-nav',
@@ -3021,7 +3029,7 @@ var EntityLayoutView;
                 location.hash = route;
             }
         },
-        onDomRefresh: function () {
+        runInitializers: function () {
             this.showListView();
             this.renderHeader();
             this.showMultiActions();
@@ -3073,6 +3081,10 @@ var EntityLayoutView;
                 .done(function () {
                     view.$el.modal('hide');
                 });
+        },
+        deleteItemYes: function (view, e) {
+            var data = view.modalData;
+            this._channel('delete', data.id);
         },
         showMultiActions: function (e) {
             if (e) {
@@ -3160,7 +3172,7 @@ var EntityLayoutView;
 var FormView;
 (function ($, _, Backbone, Marionette, FormValidator) {
     "use strict";
-    
+
     FormView = Marionette.FormView = Marionette.View.extend({
 
         className: "formView",
@@ -4124,15 +4136,16 @@ var MultiSelectLayoutView;
 
 var EntityFormView;
 (function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView, DatePickerView, TimePickerView) {
-    EntityFormView = Marionette.EntityFormView = Backbone.Marionette.FormView.extend({
+    EntityFormView = Marionette.EntityFormView = Marionette.FormView.extend({
         template: entityFormLayoutTemplate,
         regions: {
             entityFormRegion: '.entity-form-region',
             'messagesRegion': '.messages-region'
         },
-        initialize: function (options) {
-            _.extend(this, options.formOptions);
+        constructor: function (options) {
+            Marionette.FormView.prototype.constructor.apply(this, arguments);
 
+            _.extend(this, options.formOptions);
             if (!_.isUndefined(this.collection)) {
                 this.model.setUrl(this.collection.getUrl());
             }
@@ -4154,6 +4167,9 @@ var EntityFormView;
             }
 
             this._channel = Backbone.Radio.channel(this.getOption('channelName'));
+
+            this.on('before:attach', this.runRenderers, this);
+            this.on('dom:refresh', this.runInitializers, this);
         },
         behaviors: {
             Messages: {
@@ -4176,7 +4192,7 @@ var EntityFormView;
         events: {
             'click .reset': 'resetForm'
         },
-        onDomRefresh: function () {
+        runInitializers: function () {
             this._channel.trigger('view.form.activated');
             this.checkDisabledFields();
         },
@@ -4194,7 +4210,7 @@ var EntityFormView;
                 this.ui.$actions.hide();
             }
         },
-        onRender: function () {
+        runRenderers: function () {
             if (_.isUndefined(this.formTemplate)) {
                 throw new Error("The formTemplate property is undefined!");
             }
@@ -4327,7 +4343,6 @@ var EntityFormView;
                 replaceElement: true
             });
 
-            var viewContext = this;
             if (!conditions) {
                 conditions = [];
             }
@@ -4336,20 +4351,20 @@ var EntityFormView;
                 conditions: conditions
             };
 
-            collection.query(false, data).done(function (entities) {
-                var currentlySetId = viewContext.model.get(dataField);
+            collection.query(false, data).done(_.bind(function (entities) {
+                var currentlySetId = this.model.get(dataField);
 
                 if (_.isUndefined(currentlySetId) || _.isNull(currentlySetId) || currentlySetId === '' || currentlySetId === 0) {
                     entities.add(new Backbone.Model({name: 'Select', id: ''}), {at: 0});
                     currentlySetId = '';
                 }
 
-                viewContext.showChildView(region, new DropDownListView({
+                this.showChildView(region, new DropDownListView({
                     collection: entities,
                     dataField: dataField,
                     selectedId: currentlySetId
                 }));
-            });
+            }, this));
         },
         _multiSelectForRegion: function (collection, region, dataField, conditions, displayField) {
             this.addRegion(region, {

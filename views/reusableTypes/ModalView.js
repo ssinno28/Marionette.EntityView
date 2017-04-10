@@ -18,6 +18,10 @@ var ModalView;
                 }, this));
 
             this.delegateEvents();
+
+            this.$el.on('show.bs.modal', _.bind(function (e) {
+                this.modalData = $(e.relatedTarget).data();
+            }, this));
         },
         ui: {
             $modalFooter: '.modal-footer'

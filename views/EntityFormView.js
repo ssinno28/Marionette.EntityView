@@ -1,14 +1,15 @@
 var EntityFormView;
 (function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView, DatePickerView, TimePickerView) {
-    EntityFormView = Marionette.EntityFormView = Backbone.Marionette.FormView.extend({
+    EntityFormView = Marionette.EntityFormView = Marionette.FormView.extend({
         template: entityFormLayoutTemplate,
         regions: {
             entityFormRegion: '.entity-form-region',
             'messagesRegion': '.messages-region'
         },
-        initialize: function (options) {
-            _.extend(this, options.formOptions);
+        constructor: function (options) {
+            Marionette.FormView.prototype.constructor.apply(this, arguments);
 
+            _.extend(this, options.formOptions);
             if (!_.isUndefined(this.collection)) {
                 this.model.setUrl(this.collection.getUrl());
             }
@@ -30,6 +31,9 @@ var EntityFormView;
             }
 
             this._channel = Backbone.Radio.channel(this.getOption('channelName'));
+
+            this.on('before:attach', this.runRenderers, this);
+            this.on('dom:refresh', this.runInitializers, this);
         },
         behaviors: {
             Messages: {
@@ -52,7 +56,7 @@ var EntityFormView;
         events: {
             'click .reset': 'resetForm'
         },
-        onDomRefresh: function () {
+        runInitializers: function () {
             this._channel.trigger('view.form.activated');
             this.checkDisabledFields();
         },
@@ -70,7 +74,7 @@ var EntityFormView;
                 this.ui.$actions.hide();
             }
         },
-        onRender: function () {
+        runRenderers: function () {
             if (_.isUndefined(this.formTemplate)) {
                 throw new Error("The formTemplate property is undefined!");
             }
@@ -203,7 +207,6 @@ var EntityFormView;
                 replaceElement: true
             });
 
-            var viewContext = this;
             if (!conditions) {
                 conditions = [];
             }
@@ -212,20 +215,20 @@ var EntityFormView;
                 conditions: conditions
             };
 
-            collection.query(false, data).done(function (entities) {
-                var currentlySetId = viewContext.model.get(dataField);
+            collection.query(false, data).done(_.bind(function (entities) {
+                var currentlySetId = this.model.get(dataField);
 
                 if (_.isUndefined(currentlySetId) || _.isNull(currentlySetId) || currentlySetId === '' || currentlySetId === 0) {
                     entities.add(new Backbone.Model({name: 'Select', id: ''}), {at: 0});
                     currentlySetId = '';
                 }
 
-                viewContext.showChildView(region, new DropDownListView({
+                this.showChildView(region, new DropDownListView({
                     collection: entities,
                     dataField: dataField,
                     selectedId: currentlySetId
                 }));
-            });
+            }, this));
         },
         _multiSelectForRegion: function (collection, region, dataField, conditions, displayField) {
             this.addRegion(region, {

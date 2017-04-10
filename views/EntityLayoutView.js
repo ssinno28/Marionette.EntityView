@@ -20,7 +20,8 @@ var EntityLayoutView;
                 behaviorClass: ModalBehavior
             }
         },
-        initialize: function (options) {
+        constructor: function (options) {
+            Marionette.View.prototype.constructor.apply(this, arguments);
             _.extend(this, options);
 
             this.modal('deleteAllModal')
@@ -43,6 +44,8 @@ var EntityLayoutView;
 
             this._channel = Backbone.Radio.channel(this.route);
             Marionette.bindEvents(this, this._channel, this.radioEvents);
+
+            this.on('dom:refresh', this.runInitializers, this);
         },
         className: function () {
             var entityLayoutClass = ' entity-layout';
@@ -67,9 +70,7 @@ var EntityLayoutView;
         },
         childViewEvents: {
             'modal:delete-all-modal:yes': 'deleteAllYes',
-            'modal:delete-all-modal:no': 'deleteAllNo',
-            'modal:delete-item-modal:yes': 'deleteItemYes',
-            'modal:delete-item-modal:no': 'deleteItemNo'
+            'modal:delete-item-modal:yes': 'deleteItemYes'
         },
         ui: {
             '$subNav': '.sub-nav',
@@ -114,7 +115,7 @@ var EntityLayoutView;
                 location.hash = route;
             }
         },
-        onDomRefresh: function () {
+        runInitializers: function () {
             this.showListView();
             this.renderHeader();
             this.showMultiActions();
@@ -166,6 +167,10 @@ var EntityLayoutView;
                 .done(function () {
                     view.$el.modal('hide');
                 });
+        },
+        deleteItemYes: function (view, e) {
+            var data = view.modalData;
+            this._channel('delete', data.id);
         },
         showMultiActions: function (e) {
             if (e) {

@@ -9,9 +9,14 @@ var EntityListItemView;
         },
         className: 'row entity-list-item',
         template: entityListItemTpl,
-        initialize: function (options) {
+        constructor: function (options) {
+            Marionette.View.prototype.constructor.apply(this, arguments);
+
             _.extend(this, options);
             this._channel = Backbone.Radio.channel(this.route);
+
+            this.on('before:attach', this.runRenderers, this);
+            this.on('dom:refresh', this.runInitializers, this);
         },
         ui: {
             $edit: '.edit',
@@ -19,14 +24,14 @@ var EntityListItemView;
             $actions: '.actions',
             $delete: '.delete-item-modal-show'
         },
-        onDomRefresh: function () {
+        runInitializers: function () {
             if (this.options.baseClassIds.indexOf(this.model.get('id')) > -1) {
                 this.ui.$delete.addClass('not-active');
                 this.ui.$edit.addClass('not-active');
                 this.ui.$multiAction.addClass('not-active');
             }
         },
-        onRender: function () {
+        runRenderers: function () {
             if (!_.isUndefined(this.fieldsTemplate)) {
                 var fieldsView =
                     Marionette.View.extend(
