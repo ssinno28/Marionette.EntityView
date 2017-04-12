@@ -34,11 +34,13 @@ var formView = Marionette.EntityFormView.extend({
         '<label class="label-control col-sm-2">Date Of Birth</label>' +
         '<div class="dob-region">' +
         '</div>' +
+        '<div class="col-sm-10 col-sm-offset-2 errors"></div>' +
         '</div>' +
         '<div class="form-group time-born">' +
         '<label class="label-control col-sm-2">Time Of Birth</label>' +
         '<div class="time-born-region">' +
         '</div>' +
+        '<div class="col-sm-10 col-sm-offset-2 errors"></div>' +
         '</div>' +
         '</fieldset>'),
     fields: {

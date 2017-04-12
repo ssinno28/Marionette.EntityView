@@ -2,7 +2,6 @@
   "moduleName": "Marionette Entity View",
   "js": {
     "files": [
-      "mixins/ModalMixin.js",
       "mixins/UtilitiesMixin.js",
       "mixins/FieldsMixin.js",
       "util/formValidator.js",
@@ -19,6 +18,7 @@
       "collections/validation/MessagesCollection.js",
       "routers/entityRouter.js",
       "views/reusableTypes/ModalView.js",
+      "mixins/ModalMixin.js",
       "views/validation/MessageView.js",
       "views/validation/MessageListView.js",
       "views/validation/BaseValidationView.js",

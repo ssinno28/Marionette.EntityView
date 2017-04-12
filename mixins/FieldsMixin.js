@@ -76,12 +76,18 @@ var FieldsMixin;
                     $el = $fields;
                 }
 
-                var fieldWrapperTpl = _.template('<div class="form-group fieldWrapper">' +
-                    '<label class="col-sm-2 control-label"><%= label %></label>' +
-                    '<div class="col-sm-10 <%= dataField %>">' +
-                    '<div class="<%= dataField %>-region"></div>' +
-                    '</div>' +
-                    '</div>');
+                var fieldWrapperTpl = null;
+                if (_.isUndefined(options.template)) {
+                    fieldWrapperTpl = _.template('<div class="form-group">' +
+                        '<label class="col-sm-2 control-label"><%= label %></label>' +
+                        '<div class="col-sm-10 <%= dataField %>">' +
+                        '<div class="<%= dataField %>-region"></div>' +
+                        '</div>' +
+                        '<div class="col-sm-10 col-sm-offset-2 errors"></div>' +
+                        '</div>');
+                } else {
+                    fieldWrapperTpl = options.template;
+                }
 
                 var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
                     label: options.label.text,
@@ -167,13 +173,23 @@ var FieldsMixin;
 
             returnObj = _.extend(validations, editors);
 
+            var template = function (template) {
+                options.template = template;
+
+                return _.extend({
+                    fieldset: fieldset,
+                    label: label
+                }, returnObj);
+            };
+
             //options
             var label = function (text) {
                 options.label = {};
                 options.label.text = text;
 
                 return _.extend({
-                    fieldset: fieldset
+                    fieldset: fieldset,
+                    template: template
                 }, returnObj);
             };
 
@@ -190,13 +206,15 @@ var FieldsMixin;
 
                 options.fieldset.$el = $fieldset;
                 return _.extend({
-                    label: label
+                    label: label,
+                    template: template
                 }, returnObj);
             }, this);
 
             return {
                 label: label,
-                fieldset: fieldset
+                fieldset: fieldset,
+                template: template
             };
         }
     };

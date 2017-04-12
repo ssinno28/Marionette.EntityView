@@ -15,7 +15,7 @@ var EntityListItemView;
             _.extend(this, options);
             this._channel = Backbone.Radio.channel(this.route);
 
-            this.on('before:attach', this.runRenderers, this);
+            this.on('render', this.runRenderers, this);
             this.on('dom:refresh', this.runInitializers, this);
         },
         ui: {

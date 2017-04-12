@@ -1,5 +1,5 @@
 var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior, ModalBehavior) {
+(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior) {
     EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
         template: entityListLayoutTpl,
         regions: {
@@ -15,28 +15,11 @@ var EntityLayoutView;
         behaviors: {
             Pager: {
                 behaviorClass: PagerBehavior
-            },
-            Modal: {
-                behaviorClass: ModalBehavior
             }
         },
         constructor: function (options) {
             Marionette.View.prototype.constructor.apply(this, arguments);
             _.extend(this, options);
-
-            this.modal('deleteAllModal')
-                .message('Are you sure you want to delete these items?')
-                .title('Delete All?')
-                .choice('Yes', 'yes')
-                .choice('No', 'no', true)
-                .add();
-
-            this.modal('deleteItemModal')
-                .message('Are you sure you want to delete this item?')
-                .title('Delete Item?')
-                .choice('Yes', 'yes')
-                .choice('No', 'no', true)
-                .add();
 
             this.listView.allowableOperations = this.allowableOperations;
             this.listView.route = this.route;
@@ -45,6 +28,7 @@ var EntityLayoutView;
             this._channel = Backbone.Radio.channel(this.route);
             Marionette.bindEvents(this, this._channel, this.radioEvents);
 
+            this.on('render', this.runRenderers, this);
             this.on('dom:refresh', this.runInitializers, this);
         },
         className: function () {
@@ -119,6 +103,21 @@ var EntityLayoutView;
             this.showListView();
             this.renderHeader();
             this.showMultiActions();
+        },
+        runRenderers: function () {
+            this.modal('deleteAllModal')
+                .message('Are you sure you want to delete these items?')
+                .title('Delete All?')
+                .choice('Yes', 'yes')
+                .choice('No', 'no', true)
+                .add();
+
+            this.modal('deleteItemModal')
+                .message('Are you sure you want to delete this item?')
+                .title('Delete Item?')
+                .choice('Yes', 'yes')
+                .choice('No', 'no', true)
+                .add();
         },
         listViewActivated: function () {
             this.ui.$subNavElements.removeClass('active');
@@ -207,7 +206,7 @@ var EntityLayoutView;
                 }
 
                 this._channel.trigger('textSearch', name, filterField);
-            }, this), 400);
+            }, this), 400)();
         },
         showListView: function () {
             this.showChildView('entityRegion', this.listView);
@@ -253,4 +252,4 @@ var EntityLayoutView;
             return this._channel;
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior, ModalBehavior);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior);

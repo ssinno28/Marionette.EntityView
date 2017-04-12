@@ -456,66 +456,7 @@ return __p
 };
         /* jshint ignore:end */
 
-    var ModalMixin;
-(function ($, _, Backbone, Marionette) {
-    ModalMixin = {
-        modal: function (name) {
-            var modal = {name: name};
-
-            var addFunc = _.bind(function () {
-                if (_.isUndefined(modal.message) || _.isUndefined(modal.title)) {
-                    throw 'You need to specify both a message and a title!'
-                }
-
-                this.triggerMethod('addModal', modal);
-            }, this);
-
-            var choiceFunc = function (text, type, dismiss) {
-                if (_.isUndefined(modal.choices)) {
-                    modal.choices = [];
-                }
-
-                modal.choices.push({
-                    dismiss: dismiss,
-                    text: text,
-                    type: type
-                });
-
-                return {
-                    choice: choiceFunc,
-                    add: addFunc
-                };
-            };
-
-            var messageFunc = function (message) {
-                modal.message = message;
-
-                return {
-                    title: titleFunc,
-                    choice: choiceFunc,
-                    add: addFunc
-                };
-            };
-
-            var titleFunc = function (title) {
-                modal.title = title;
-
-                return {
-                    message: messageFunc,
-                    choice: choiceFunc,
-                    add: addFunc
-                };
-            };
-
-            return {
-                title: titleFunc,
-                message: messageFunc
-            };
-        }
-    }
-})(jQuery, _, Backbone, Marionette);
-
-var UtilitiesMixin;
+    var UtilitiesMixin;
 (function ($, _, Backbone, Marionette) {
     UtilitiesMixin = {
         _formatRegionName: function (name) {
@@ -602,12 +543,18 @@ var FieldsMixin;
                     $el = $fields;
                 }
 
-                var fieldWrapperTpl = _.template('<div class="form-group fieldWrapper">' +
-                    '<label class="col-sm-2 control-label"><%= label %></label>' +
-                    '<div class="col-sm-10 <%= dataField %>">' +
-                    '<div class="<%= dataField %>-region"></div>' +
-                    '</div>' +
-                    '</div>');
+                var fieldWrapperTpl = null;
+                if (_.isUndefined(options.template)) {
+                    fieldWrapperTpl = _.template('<div class="form-group">' +
+                        '<label class="col-sm-2 control-label"><%= label %></label>' +
+                        '<div class="col-sm-10 <%= dataField %>">' +
+                        '<div class="<%= dataField %>-region"></div>' +
+                        '</div>' +
+                        '<div class="col-sm-10 col-sm-offset-2 errors"></div>' +
+                        '</div>');
+                } else {
+                    fieldWrapperTpl = options.template;
+                }
 
                 var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
                     label: options.label.text,
@@ -693,13 +640,23 @@ var FieldsMixin;
 
             returnObj = _.extend(validations, editors);
 
+            var template = function (template) {
+                options.template = template;
+
+                return _.extend({
+                    fieldset: fieldset,
+                    label: label
+                }, returnObj);
+            };
+
             //options
             var label = function (text) {
                 options.label = {};
                 options.label.text = text;
 
                 return _.extend({
-                    fieldset: fieldset
+                    fieldset: fieldset,
+                    template: template
                 }, returnObj);
             };
 
@@ -716,13 +673,15 @@ var FieldsMixin;
 
                 options.fieldset.$el = $fieldset;
                 return _.extend({
-                    label: label
+                    label: label,
+                    template: template
                 }, returnObj);
             }, this);
 
             return {
                 label: label,
-                fieldset: fieldset
+                fieldset: fieldset,
+                template: template
             };
         }
     };
@@ -2076,6 +2035,78 @@ var ModalView;
     });
 })(_, Backbone, jQuery, Marionette, Templates.modalTpl, ModalModel);
 
+var ModalMixin;
+(function ($, _, Backbone, Marionette, ModalModel) {
+    ModalMixin = {
+        modal: function (name) {
+            var modal = {name: name};
+
+            var addFunc = _.bind(function () {
+                if (_.isUndefined(modal.message) || _.isUndefined(modal.title)) {
+                    throw 'You need to specify both a message and a title!'
+                }
+
+                var model = new ModalModel({
+                        message: modal.message,
+                        title: modal.title
+                    }),
+                    className = this._formatRegionName(modal.name);
+
+                this.$el.append('<div class="' + className + '"></div>');
+                this.addRegion(modal.name, {
+                    el: '.' + className,
+                    replaceElement: true
+                });
+
+                var modalView = new ModalView({model: model, choices: modal.choices, safeName: className});
+                this.showChildView(modal.name, modalView);
+            }, this);
+
+            var choiceFunc = function (text, type, dismiss) {
+                if (_.isUndefined(modal.choices)) {
+                    modal.choices = [];
+                }
+
+                modal.choices.push({
+                    dismiss: dismiss,
+                    text: text,
+                    type: type
+                });
+
+                return {
+                    choice: choiceFunc,
+                    add: addFunc
+                };
+            };
+
+            var messageFunc = function (message) {
+                modal.message = message;
+
+                return {
+                    title: titleFunc,
+                    choice: choiceFunc,
+                    add: addFunc
+                };
+            };
+
+            var titleFunc = function (title) {
+                modal.title = title;
+
+                return {
+                    message: messageFunc,
+                    choice: choiceFunc,
+                    add: addFunc
+                };
+            };
+
+            return {
+                title: titleFunc,
+                message: messageFunc
+            };
+        }
+    }
+})(jQuery, _, Backbone, Marionette, ModalModel);
+
 var MessageView;
 (function ($, _, Backbone, Marionette, MessageModel, messageTemplate) {
     MessageView = Marionette.MessageView = Backbone.Marionette.View.extend({
@@ -3048,7 +3079,7 @@ var EntityListItemView;
             _.extend(this, options);
             this._channel = Backbone.Radio.channel(this.route);
 
-            this.on('before:attach', this.runRenderers, this);
+            this.on('render', this.runRenderers, this);
             this.on('dom:refresh', this.runInitializers, this);
         },
         ui: {
@@ -3127,7 +3158,7 @@ var EntityListItemView;
 })(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate']);
 
 var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior, ModalBehavior) {
+(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior) {
     EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
         template: entityListLayoutTpl,
         regions: {
@@ -3143,28 +3174,11 @@ var EntityLayoutView;
         behaviors: {
             Pager: {
                 behaviorClass: PagerBehavior
-            },
-            Modal: {
-                behaviorClass: ModalBehavior
             }
         },
         constructor: function (options) {
             Marionette.View.prototype.constructor.apply(this, arguments);
             _.extend(this, options);
-
-            this.modal('deleteAllModal')
-                .message('Are you sure you want to delete these items?')
-                .title('Delete All?')
-                .choice('Yes', 'yes')
-                .choice('No', 'no', true)
-                .add();
-
-            this.modal('deleteItemModal')
-                .message('Are you sure you want to delete this item?')
-                .title('Delete Item?')
-                .choice('Yes', 'yes')
-                .choice('No', 'no', true)
-                .add();
 
             this.listView.allowableOperations = this.allowableOperations;
             this.listView.route = this.route;
@@ -3173,6 +3187,7 @@ var EntityLayoutView;
             this._channel = Backbone.Radio.channel(this.route);
             Marionette.bindEvents(this, this._channel, this.radioEvents);
 
+            this.on('render', this.runRenderers, this);
             this.on('dom:refresh', this.runInitializers, this);
         },
         className: function () {
@@ -3247,6 +3262,21 @@ var EntityLayoutView;
             this.showListView();
             this.renderHeader();
             this.showMultiActions();
+        },
+        runRenderers: function () {
+            this.modal('deleteAllModal')
+                .message('Are you sure you want to delete these items?')
+                .title('Delete All?')
+                .choice('Yes', 'yes')
+                .choice('No', 'no', true)
+                .add();
+
+            this.modal('deleteItemModal')
+                .message('Are you sure you want to delete this item?')
+                .title('Delete Item?')
+                .choice('Yes', 'yes')
+                .choice('No', 'no', true)
+                .add();
         },
         listViewActivated: function () {
             this.ui.$subNavElements.removeClass('active');
@@ -3335,7 +3365,7 @@ var EntityLayoutView;
                 }
 
                 this._channel.trigger('textSearch', name, filterField);
-            }, this), 400);
+            }, this), 400)();
         },
         showListView: function () {
             this.showChildView('entityRegion', this.listView);
@@ -3381,7 +3411,7 @@ var EntityLayoutView;
             return this._channel;
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior, ModalBehavior);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior);
 
 var FormView;
 (function ($, _, Backbone, Marionette, FormValidator) {
@@ -4382,15 +4412,12 @@ var EntityFormView;
 
             this._channel = Backbone.Radio.channel(this.getOption('channelName'));
 
-            this.on('before:attach', this.runRenderers, this);
+            this.on('render', this.runRenderers, this);
             this.on('dom:refresh', this.runFormInitializers, this);
         },
         behaviors: {
             Messages: {
                 behaviorClass: MessageBehavior
-            },
-            Modal: {
-                behaviorClass: ModalBehavior
             }
         },
         ui: {
@@ -4451,9 +4478,9 @@ var EntityFormView;
             var $errors = $('.help-block');
             $errors.remove();
 
-            var $formGroups = $('.has-error')
+            var $formGroups = $('.has-error');
             _.each($formGroups, function ($formGroup) {
-                $formGroup.removeClass('has-error');
+                $($formGroup).removeClass('has-error');
             });
 
             for (var errorObject in errors) {
@@ -4464,7 +4491,7 @@ var EntityFormView;
                 $formGroup.addClass('has-error');
 
                 for (var i = 0; i < errors[errorObject].error.length; i++) {
-                    $selector.parent().after('<span class="help-block">' + errors[errorObject].error[i] + '</span>');
+                    $formGroup.find('.errors').append('<span class="help-block">' + errors[errorObject].error[i] + '</span>');
                 }
             }
         },

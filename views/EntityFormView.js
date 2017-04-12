@@ -32,15 +32,12 @@ var EntityFormView;
 
             this._channel = Backbone.Radio.channel(this.getOption('channelName'));
 
-            this.on('before:attach', this.runRenderers, this);
+            this.on('render', this.runRenderers, this);
             this.on('dom:refresh', this.runFormInitializers, this);
         },
         behaviors: {
             Messages: {
                 behaviorClass: MessageBehavior
-            },
-            Modal: {
-                behaviorClass: ModalBehavior
             }
         },
         ui: {
@@ -101,9 +98,9 @@ var EntityFormView;
             var $errors = $('.help-block');
             $errors.remove();
 
-            var $formGroups = $('.has-error')
+            var $formGroups = $('.has-error');
             _.each($formGroups, function ($formGroup) {
-                $formGroup.removeClass('has-error');
+                $($formGroup).removeClass('has-error');
             });
 
             for (var errorObject in errors) {
@@ -114,7 +111,7 @@ var EntityFormView;
                 $formGroup.addClass('has-error');
 
                 for (var i = 0; i < errors[errorObject].error.length; i++) {
-                    $selector.parent().after('<span class="help-block">' + errors[errorObject].error[i] + '</span>');
+                    $formGroup.find('.errors').append('<span class="help-block">' + errors[errorObject].error[i] + '</span>');
                 }
             }
         },

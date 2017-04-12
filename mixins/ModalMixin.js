@@ -1,5 +1,5 @@
 var ModalMixin;
-(function ($, _, Backbone, Marionette) {
+(function ($, _, Backbone, Marionette, ModalModel) {
     ModalMixin = {
         modal: function (name) {
             var modal = {name: name};
@@ -9,7 +9,20 @@ var ModalMixin;
                     throw 'You need to specify both a message and a title!'
                 }
 
-                this.triggerMethod('addModal', modal);
+                var model = new ModalModel({
+                        message: modal.message,
+                        title: modal.title
+                    }),
+                    className = this._formatRegionName(modal.name);
+
+                this.$el.append('<div class="' + className + '"></div>');
+                this.addRegion(modal.name, {
+                    el: '.' + className,
+                    replaceElement: true
+                });
+
+                var modalView = new ModalView({model: model, choices: modal.choices, safeName: className});
+                this.showChildView(modal.name, modalView);
             }, this);
 
             var choiceFunc = function (text, type, dismiss) {
@@ -55,4 +68,4 @@ var ModalMixin;
             };
         }
     }
-})(jQuery, _, Backbone, Marionette);
+})(jQuery, _, Backbone, Marionette, ModalModel);
