@@ -109,7 +109,6 @@ var EntityFormView;
                     $formGroup = $selector.closest('.form-group');
 
                 $formGroup.addClass('has-error');
-
                 for (var i = 0; i < errors[errorObject].error.length; i++) {
                     $formGroup.find('.errors').append('<span class="help-block">' + errors[errorObject].error[i] + '</span>');
                 }

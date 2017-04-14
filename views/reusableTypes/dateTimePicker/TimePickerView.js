@@ -1,7 +1,6 @@
 var TimePickerView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, timePickerTpl, moment) {
     TimePickerView = ReusableTypeLayoutView.extend({
-        className: 'col-sm-10',
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 

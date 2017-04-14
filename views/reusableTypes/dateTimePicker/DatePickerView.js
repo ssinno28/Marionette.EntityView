@@ -1,7 +1,6 @@
 var DatePickerView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, datePickerTemplate, moment) {
     DatePickerView = ReusableTypeLayoutView.extend({
-        className: 'col-sm-10',
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 

@@ -7,10 +7,9 @@ var FieldsMixin;
                 currentField = field[name] = {
                     el: '.' + name
                 },
-                formRegion = this.getRegion('entityFormRegion'),
-                $fields = $(formRegion.el),
+                $fields = this.$el.find('.entity-form-region'),
                 dataField = name,
-                fieldRegion = dataField + '-region',
+                fieldRegion =  this._formatRegionName(dataField) + '-region',
                 editors = {},
                 validations = {},
                 returnObj;
@@ -81,7 +80,7 @@ var FieldsMixin;
                     fieldWrapperTpl = _.template('<div class="form-group">' +
                         '<label class="col-sm-2 control-label"><%= label %></label>' +
                         '<div class="col-sm-10 <%= dataField %>">' +
-                        '<div class="<%= dataField %>-region"></div>' +
+                        '<div class="<%= fieldRegion %>"></div>' +
                         '</div>' +
                         '<div class="col-sm-10 col-sm-offset-2 errors"></div>' +
                         '</div>');
@@ -91,7 +90,8 @@ var FieldsMixin;
 
                 var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
                     label: options.label.text,
-                    dataField: dataField
+                    dataField: dataField,
+                    fieldRegion: fieldRegion
                 });
 
                 $el.append(fieldHtml);
@@ -168,6 +168,7 @@ var FieldsMixin;
                 imagePicker: imagePicker,
                 dateTimePicker: dateTimePicker,
                 timePicker: timePicker,
+                datePicker: datePicker,
                 singleLine: singleLine
             };
 
@@ -197,11 +198,13 @@ var FieldsMixin;
                 options.fieldset = {};
                 options.fieldset.text = text;
 
-                var $fieldset = this.$el.find(fieldsetId);
+                var $fieldset = this.$el.find('#' + fieldsetId);
 
                 if ($fieldset.length === 0) {
-                    $fields.append('<fieldset id="' + fieldsetId + '"></fieldset>');
-                    $fieldset = this.$el.find(fieldsetId);
+                    $fields.append('<fieldset id="' + fieldsetId + '">' +
+                        '<legend>' + text + '</legend>' +
+                        '</fieldset>');
+                    $fieldset = $fields.find('#' + fieldsetId);
                 }
 
                 options.fieldset.$el = $fieldset;

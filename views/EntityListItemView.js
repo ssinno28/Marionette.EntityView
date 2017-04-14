@@ -79,13 +79,6 @@ var EntityListItemView;
                 allowViewLive: allowViewLive
             };
         },
-        appendAction: function (action, icon) {
-            this.ui.$actions.append('<li>' +
-                '<a class="live" href="#' + this.route + '/' + action + '/' + this.model.get('id') + '/">' +
-                '<i data-id="' + this.model.get('id') + '" class="' + icon + ' size-21"></i> ' +
-                '</a> ' +
-                '</li>');
-        },
         getChannel: function () {
             return this._channel;
         }

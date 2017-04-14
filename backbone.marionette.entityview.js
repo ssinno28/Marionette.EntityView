@@ -474,10 +474,9 @@ var FieldsMixin;
                 currentField = field[name] = {
                     el: '.' + name
                 },
-                formRegion = this.getRegion('entityFormRegion'),
-                $fields = $(formRegion.el),
+                $fields = this.$el.find('.entity-form-region'),
                 dataField = name,
-                fieldRegion = dataField + '-region',
+                fieldRegion =  this._formatRegionName(dataField) + '-region',
                 editors = {},
                 validations = {},
                 returnObj;
@@ -548,7 +547,7 @@ var FieldsMixin;
                     fieldWrapperTpl = _.template('<div class="form-group">' +
                         '<label class="col-sm-2 control-label"><%= label %></label>' +
                         '<div class="col-sm-10 <%= dataField %>">' +
-                        '<div class="<%= dataField %>-region"></div>' +
+                        '<div class="<%= fieldRegion %>"></div>' +
                         '</div>' +
                         '<div class="col-sm-10 col-sm-offset-2 errors"></div>' +
                         '</div>');
@@ -558,7 +557,8 @@ var FieldsMixin;
 
                 var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
                     label: options.label.text,
-                    dataField: dataField
+                    dataField: dataField,
+                    fieldRegion: fieldRegion
                 });
 
                 $el.append(fieldHtml);
@@ -635,6 +635,7 @@ var FieldsMixin;
                 imagePicker: imagePicker,
                 dateTimePicker: dateTimePicker,
                 timePicker: timePicker,
+                datePicker: datePicker,
                 singleLine: singleLine
             };
 
@@ -664,11 +665,13 @@ var FieldsMixin;
                 options.fieldset = {};
                 options.fieldset.text = text;
 
-                var $fieldset = this.$el.find(fieldsetId);
+                var $fieldset = this.$el.find('#' + fieldsetId);
 
                 if ($fieldset.length === 0) {
-                    $fields.append('<fieldset id="' + fieldsetId + '"></fieldset>');
-                    $fieldset = this.$el.find(fieldsetId);
+                    $fields.append('<fieldset id="' + fieldsetId + '">' +
+                        '<legend>' + text + '</legend>' +
+                        '</fieldset>');
+                    $fieldset = $fields.find('#' + fieldsetId);
                 }
 
                 options.fieldset.$el = $fieldset;
@@ -2180,6 +2183,16 @@ var ReusableTypeLayoutView;
 
             this._channel = Backbone.Radio.channel(this.dataField);
             this.on('destroy', this._destroyRadio);
+            this.on('render', this.runRenderers);
+        },
+        runRenderers: function () {
+            // Get rid of that pesky wrapping-div.
+            // Assumes 1 child element present in template.
+            this.$el = this.$el.children();
+            // Unwrap the element to prevent infinitely
+            // nesting elements during re-render.
+            this.$el.unwrap();
+            this.setElement(this.$el);
         },
         templateContext: function () {
             var self = this;
@@ -2461,16 +2474,7 @@ var SingleLineTextView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, singleLineTextTpl) {
     SingleLineTextView = ReusableTypeLayoutView.extend({
         tag: 'input',
-        template: singleLineTextTpl,
-        onRender: function () {
-            // Get rid of that pesky wrapping-div.
-            // Assumes 1 child element present in template.
-            this.$el = this.$el.children();
-            // Unwrap the element to prevent infinitely
-            // nesting elements during re-render.
-            this.$el.unwrap();
-            this.setElement(this.$el);
-        }
+        template: singleLineTextTpl
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['singleLineTextTemplate']);
 
@@ -2628,7 +2632,6 @@ var DropDownListView;
 var DateTimePickerView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, dateTimePickerTpl, moment) {
     DateTimePickerView = ReusableTypeLayoutView.extend({
-        className: 'col-sm-10',
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
@@ -2664,7 +2667,6 @@ var DateTimePickerView;
 var TimePickerView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, timePickerTpl, moment) {
     TimePickerView = ReusableTypeLayoutView.extend({
-        className: 'col-sm-10',
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
@@ -2700,7 +2702,6 @@ var TimePickerView;
 var DatePickerView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, datePickerTemplate, moment) {
     DatePickerView = ReusableTypeLayoutView.extend({
-        className: 'col-sm-10',
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
@@ -3142,13 +3143,6 @@ var EntityListItemView;
                 allowAddAll: allowAddAll,
                 allowViewLive: allowViewLive
             };
-        },
-        appendAction: function (action, icon) {
-            this.ui.$actions.append('<li>' +
-                '<a class="live" href="#' + this.route + '/' + action + '/' + this.model.get('id') + '/">' +
-                '<i data-id="' + this.model.get('id') + '" class="' + icon + ' size-21"></i> ' +
-                '</a> ' +
-                '</li>');
         },
         getChannel: function () {
             return this._channel;
@@ -4489,7 +4483,6 @@ var EntityFormView;
                     $formGroup = $selector.closest('.form-group');
 
                 $formGroup.addClass('has-error');
-
                 for (var i = 0; i < errors[errorObject].error.length; i++) {
                     $formGroup.find('.errors').append('<span class="help-block">' + errors[errorObject].error[i] + '</span>');
                 }

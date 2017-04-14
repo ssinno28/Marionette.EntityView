@@ -28,47 +28,31 @@ var MockModel = Backbone.EntityModel.extend({
 App.pageSize = 5;
 
 var formView = Marionette.EntityFormView.extend({
-    formTemplate: _.template('<fieldset id="user-settings">' +
-        '<legend>User Settings</legend>' +
-        '<div class="form-group dob">' +
-        '<label class="label-control col-sm-2">Date Of Birth</label>' +
-        '<div class="dob-region">' +
-        '</div>' +
-        '<div class="col-sm-10 col-sm-offset-2 errors"></div>' +
-        '</div>' +
-        '<div class="form-group time-born">' +
-        '<label class="label-control col-sm-2">Time Of Birth</label>' +
-        '<div class="time-born-region">' +
-        '</div>' +
-        '<div class="col-sm-10 col-sm-offset-2 errors"></div>' +
-        '</div>' +
-        '</fieldset>'),
-    fields: {
-        dob: {
-            el: '[data-field="dob"]',
-            required: 'The DOB is required!!'
-        },
-        timeBorn: {
-            el: '[data-field="timeBorn"]',
-            required: 'The time of your birth is required!!'
-        }
-    },
-    onDomRefresh: function () {
-        this.getDatePickerForRegion('dobRegion', 'dob');
-        this.getTimePickerForRegion('timeBornRegion', 'timeBorn');
-
+    onRender: function () {
         this.field('name')
             .label('Name')
-            .fieldset('User Settings', '#user-settings')
+            .fieldset('User Settings', 'user-settings')
             .required('Please enter your full name.')
             .singleLine();
 
         this.field('email')
             .label('Email')
-            .fieldset('User Settings', '#user-settings')
+            .fieldset('User Settings', 'user-settings')
             .required('Please enter an email address.')
             .email('The email address is not in the correct format!')
             .singleLine();
+
+        this.field('dob')
+            .label('Date of Birth')
+            .fieldset('User Settings', 'user-settings')
+            .required('The DOB is required!!')
+            .datePicker();
+
+        this.field('timeBorn')
+            .label('Time of Birth')
+            .fieldset('User Settings', 'user-settings')
+            .required('The time of your birth is required!!')
+            .timePicker();
     }
 });
 
@@ -93,7 +77,6 @@ var data2 = [
 var firstData = {page: 1, pageSize: App.pageSize},
     secondData = {page: 2, pageSize: App.pageSize},
     pageKey = App.Users._getKeyWithOutPage(firstData);
-
 
 var models1 = App.Users.addRange(data1);
 App.Users._addModelIndexes(pageKey, models1, firstData, 10);

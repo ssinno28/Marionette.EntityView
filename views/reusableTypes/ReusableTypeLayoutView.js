@@ -6,6 +6,16 @@ var ReusableTypeLayoutView;
 
             this._channel = Backbone.Radio.channel(this.dataField);
             this.on('destroy', this._destroyRadio);
+            this.on('render', this.runRenderers);
+        },
+        runRenderers: function () {
+            // Get rid of that pesky wrapping-div.
+            // Assumes 1 child element present in template.
+            this.$el = this.$el.children();
+            // Unwrap the element to prevent infinitely
+            // nesting elements during re-render.
+            this.$el.unwrap();
+            this.setElement(this.$el);
         },
         templateContext: function () {
             var self = this;
