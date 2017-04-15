@@ -4,9 +4,8 @@ var WyswigView;
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
-            var value = this.model.get('value'),
-                $hiddenDiv = $('<div></div>'),
-                html = $hiddenDiv.html(value),
+            var $hiddenDiv = $('<div></div>'),
+                html = $hiddenDiv.html(this.value),
                 imgs = $(html).find('img'),
                 self = this;
 
@@ -22,16 +21,14 @@ var WyswigView;
                 $img.attr('src', src);
             });
 
-            this.model.set({ value: $hiddenDiv.html() });
+            this.value = $hiddenDiv.html();
         },
         tag: 'input',
         ui: {
             $editor: '.editor'
         },
         onDomRefresh: function () {
-            var self = this;
-
-            CKEDITOR.replace(self.dataField, {
+            CKEDITOR.replace(this.dataField, {
                 filebrowserBrowseUrl: App.FILE_BROWSER_URL
             });
         },

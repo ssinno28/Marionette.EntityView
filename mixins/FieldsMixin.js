@@ -9,7 +9,7 @@ var FieldsMixin;
                 },
                 $fields = this.$el.find('.entity-form-region'),
                 dataField = name,
-                fieldRegion =  this._formatRegionName(dataField) + '-region',
+                fieldRegion = this._formatRegionName(dataField) + '-region',
                 editors = {},
                 validations = {},
                 returnObj;
@@ -56,6 +56,11 @@ var FieldsMixin;
                 return returnObj;
             };
 
+            var rule = _.bind(function (name, message, func) {
+                this.rules[name] = func;
+                currentField.validations[name] = message;
+            }, this);
+
             validations = {
                 min: min,
                 required: required,
@@ -64,7 +69,8 @@ var FieldsMixin;
                 alpha: alpha,
                 alphanum: alphanum,
                 email: email,
-                boolean: boolean
+                boolean: boolean,
+                rule: rule
             };
 
             var addField = _.bind(function () {
@@ -158,6 +164,20 @@ var FieldsMixin;
                 this._singleLineForRegion(fieldRegion, dataField);
             }, this);
 
+            var custom = _.bind(function (view) {
+                addField();
+
+                this.addRegion(region, {
+                    el: '.' + this._formatRegionName(fieldRegion),
+                    replaceElement: true
+                });
+
+                this.showChildView(region, new view({
+                    value: this.model.get(dataField),
+                    dataField: dataField
+                }));
+            }, this);
+
             editors = {
                 wyswig: wyswig,
                 dropdown: dropdown,
@@ -169,7 +189,8 @@ var FieldsMixin;
                 dateTimePicker: dateTimePicker,
                 timePicker: timePicker,
                 datePicker: datePicker,
-                singleLine: singleLine
+                singleLine: singleLine,
+                custom: custom
             };
 
             returnObj = _.extend(validations, editors);
@@ -194,13 +215,13 @@ var FieldsMixin;
                 }, returnObj);
             };
 
-            var fieldset = _.bind(function (text, fieldsetId) {
+            var fieldset = _.bind(function (fieldsetId, text) {
                 options.fieldset = {};
-                options.fieldset.text = text;
 
                 var $fieldset = this.$el.find('#' + fieldsetId);
-
                 if ($fieldset.length === 0) {
+                    options.fieldset.text = text;
+
                     $fields.append('<fieldset id="' + fieldsetId + '">' +
                         '<legend>' + text + '</legend>' +
                         '</fieldset>');

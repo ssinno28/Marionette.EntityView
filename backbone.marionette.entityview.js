@@ -246,7 +246,7 @@ this["Templates"]["imageFieldTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '    <div class="col-sm-3">\r\n        <a style="display:none;" class="th radius" href="#">\r\n            <img id="uploadedImage' +
+__p += '<div class="row">\r\n    <div class="col-sm-3">\r\n        <a style="display:none;" class="th radius" href="#">\r\n            <img id="uploadedImage' +
 ((__t = ( dataField )) == null ? '' : __t) +
 '" class="uploadedImage"/>\r\n        </a>\r\n        <input name="' +
 ((__t = ( dataField )) == null ? '' : __t) +
@@ -256,7 +256,7 @@ __p += '    <div class="col-sm-3">\r\n        <a style="display:none;" class="th
 ((__t = ( value )) == null ? '' : __t) +
 '"/>\r\n    </div>\r\n    <div class="col-sm-9">\r\n        <button type="button" onclick="BrowseServer(\'' +
 ((__t = ( dataField )) == null ? '' : __t) +
-'\');" class="pickImage">Pick Image</button>\r\n    </div>';
+'\');" class="pickImage btn btn-default">Pick Image</button>\r\n    </div>\r\n</div>\r\n';
 
 }
 return __p
@@ -476,7 +476,7 @@ var FieldsMixin;
                 },
                 $fields = this.$el.find('.entity-form-region'),
                 dataField = name,
-                fieldRegion =  this._formatRegionName(dataField) + '-region',
+                fieldRegion = this._formatRegionName(dataField) + '-region',
                 editors = {},
                 validations = {},
                 returnObj;
@@ -523,6 +523,11 @@ var FieldsMixin;
                 return returnObj;
             };
 
+            var rule = _.bind(function (name, message, func) {
+                this.rules[name] = func;
+                currentField.validations[name] = message;
+            }, this);
+
             validations = {
                 min: min,
                 required: required,
@@ -531,7 +536,8 @@ var FieldsMixin;
                 alpha: alpha,
                 alphanum: alphanum,
                 email: email,
-                boolean: boolean
+                boolean: boolean,
+                rule: rule
             };
 
             var addField = _.bind(function () {
@@ -625,6 +631,20 @@ var FieldsMixin;
                 this._singleLineForRegion(fieldRegion, dataField);
             }, this);
 
+            var custom = _.bind(function (view) {
+                addField();
+
+                this.addRegion(region, {
+                    el: '.' + this._formatRegionName(fieldRegion),
+                    replaceElement: true
+                });
+
+                this.showChildView(region, new view({
+                    value: this.model.get(dataField),
+                    dataField: dataField
+                }));
+            }, this);
+
             editors = {
                 wyswig: wyswig,
                 dropdown: dropdown,
@@ -636,7 +656,8 @@ var FieldsMixin;
                 dateTimePicker: dateTimePicker,
                 timePicker: timePicker,
                 datePicker: datePicker,
-                singleLine: singleLine
+                singleLine: singleLine,
+                custom: custom
             };
 
             returnObj = _.extend(validations, editors);
@@ -661,13 +682,13 @@ var FieldsMixin;
                 }, returnObj);
             };
 
-            var fieldset = _.bind(function (text, fieldsetId) {
+            var fieldset = _.bind(function (fieldsetId, text) {
                 options.fieldset = {};
-                options.fieldset.text = text;
 
                 var $fieldset = this.$el.find('#' + fieldsetId);
-
                 if ($fieldset.length === 0) {
+                    options.fieldset.text = text;
+
                     $fields.append('<fieldset id="' + fieldsetId + '">' +
                         '<legend>' + text + '</legend>' +
                         '</fieldset>');
@@ -2288,9 +2309,8 @@ var WyswigView;
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
-            var value = this.model.get('value'),
-                $hiddenDiv = $('<div></div>'),
-                html = $hiddenDiv.html(value),
+            var $hiddenDiv = $('<div></div>'),
+                html = $hiddenDiv.html(this.value),
                 imgs = $(html).find('img'),
                 self = this;
 
@@ -2306,16 +2326,14 @@ var WyswigView;
                 $img.attr('src', src);
             });
 
-            this.model.set({ value: $hiddenDiv.html() });
+            this.value = $hiddenDiv.html();
         },
         tag: 'input',
         ui: {
             $editor: '.editor'
         },
         onDomRefresh: function () {
-            var self = this;
-
-            CKEDITOR.replace(self.dataField, {
+            CKEDITOR.replace(this.dataField, {
                 filebrowserBrowseUrl: App.FILE_BROWSER_URL
             });
         },
@@ -2574,7 +2592,6 @@ var ImageFieldView;
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
-            this.model = new Backbone.Model({value: this.getOption('value')});
             $('[data-field="' + this.dataField + '"]').on('change', this.updateImageUrl);
         },
         template: imageFieldTemplate,

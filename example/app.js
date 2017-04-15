@@ -7,6 +7,7 @@ var MockModel = Backbone.EntityModel.extend({
     MockEntityCollection = Backbone.EntityCollection.extend({
         url: '/api/test',
         model: MockModel,
+        //for demo purposes only, never override the query method!
         query: function (track, data, force) {
             return $.Deferred(_.bind(function (defer) {
                 var pageKey = this._getKeyWithOutPage(data),
@@ -31,28 +32,40 @@ var formView = Marionette.EntityFormView.extend({
     onRender: function () {
         this.field('name')
             .label('Name')
-            .fieldset('User Settings', 'user-settings')
+            .fieldset('user-settings', 'User Settings')
             .required('Please enter your full name.')
             .singleLine();
 
         this.field('email')
             .label('Email')
-            .fieldset('User Settings', 'user-settings')
+            .fieldset('user-settings')
             .required('Please enter an email address.')
             .email('The email address is not in the correct format!')
             .singleLine();
 
         this.field('dob')
             .label('Date of Birth')
-            .fieldset('User Settings', 'user-settings')
+            .fieldset('user-settings')
             .required('The DOB is required!!')
             .datePicker();
 
         this.field('timeBorn')
             .label('Time of Birth')
-            .fieldset('User Settings', 'user-settings')
+            .fieldset('user-settings')
             .required('The time of your birth is required!!')
             .timePicker();
+
+        this.field('photo')
+            .label('Photo')
+            .fieldset('user-settings')
+            .required('Your picture is required!')
+            .imagePicker();
+
+        this.field('bio')
+            .label('Your Bio')
+            .fieldset('user-settings')
+            .required('Your Bio is required!!')
+            .wyswig();
     }
 });
 
@@ -103,6 +116,8 @@ var router = Marionette.EntityRouter.extend({
 });
 
 App.on('start', function () {
+    App.FILE_BROWSER_URL = '../node_modules/rich-filemanager/index.html';
+
     new router({
         controller: new Marionette.EntityController(options)
     });
