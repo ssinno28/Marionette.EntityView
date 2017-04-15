@@ -292,7 +292,7 @@ this["Templates"]["multiSelectLayoutTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<span data-toggle="tooltip" data-placement="left" aria-haspopup="true" title="" class="has-tip zmshead">\r\n        Selected\r\n    </span>\r\n<div class="row optionsRegion">\r\n    <div class="col-sm-6">\r\n        <div class="col-sm-12 options"></div>\r\n        <div class="col-sm-12 text-center">\r\n            <button style="display:none;" class="btn btn-default add-items" href="#">Add</button>\r\n        </div>\r\n    </div>\r\n    <div class="col-sm-6">\r\n        <div class="col-sm-12 selectedOptions"></div>\r\n        <div class="col-sm-12 text-center">\r\n            <button style="display:none;" class="btn btn-default text-center remove-items">Remove</button>\r\n        </div>\r\n    </div>\r\n    <div class="clearfix"></div>\r\n</div>';
+__p += '<div class="zselect">\r\n    <span data-toggle="tooltip" data-placement="left" aria-haspopup="true" title="" class="has-tip zmshead">\r\n        Selected\r\n    </span>\r\n    <div class="row optionsRegion">\r\n        <div class="col-sm-6">\r\n            <div class="col-sm-12 options"></div>\r\n            <div class="col-sm-12 text-center">\r\n                <button style="display:none;" class="btn btn-default add-items" href="#">Add</button>\r\n            </div>\r\n        </div>\r\n        <div class="col-sm-6">\r\n            <div class="col-sm-12 selectedOptions"></div>\r\n            <div class="col-sm-12 text-center">\r\n                <button style="display:none;" class="btn btn-default text-center remove-items">Remove</button>\r\n            </div>\r\n        </div>\r\n        <div class="clearfix"></div>\r\n    </div>\r\n</div>\r\n';
 
 }
 return __p
@@ -2198,8 +2198,9 @@ var WarningView;
 
 var ReusableTypeLayoutView;
 (function ($, _, Backbone, Marionette) {
-    ReusableTypeLayoutView = Marionette.ReusableTypeLayoutView = Backbone.Marionette.View.extend({
-        initialize: function (options) {
+    ReusableTypeLayoutView = Marionette.ReusableTypeLayoutView = Marionette.View.extend({
+        constructor: function (options) {
+            Marionette.View.prototype.constructor.call(this, options);
             _.extend(this, options);
 
             this._channel = Backbone.Radio.channel(this.dataField);
@@ -3731,7 +3732,6 @@ var MultiSelectOptionView;
         className: 'col-sm-12 multi-select-option nopadding',
         fieldsTemplate: multiSelectLiTemplate,
         onRender: function () {
-            EntityListItemView.prototype.onRender.call(this);
             this.$el.attr('data-id', this.model.get('id'));
         },
         templateContext: function () {
@@ -4084,11 +4084,7 @@ var MultiSelectService;
             });
 
             this.formView = null;
-
             Marionette.EntityService.prototype.initialize.call(this, options);
-        },
-        getHeader: function () {
-            return Templates.multiSelectHeaderTpl;
         },
         getBtnClass: function () {
             return 'tiny round';
@@ -4096,11 +4092,9 @@ var MultiSelectService;
     });
 })(jQuery, _, Backbone, Marionette, EntityService, App, MultiSelectListView);
 var MultiSelectLayoutView;
-(function (Marionette, $, _, multiSelectLayoutTpl, ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, headerTemplate) {
+(function (Marionette, $, _, multiSelectLayoutTpl, ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel) {
     MultiSelectLayoutView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
-            ReusableTypeLayoutView.prototype.initialize.call(this, options);
-
             this.collection = options.collection;
             this.excludedItemsRoute = this.dataField + '-excluded-items';
             this.selectedItemsRoute = this.dataField + '-included-items';
@@ -4117,7 +4111,6 @@ var MultiSelectLayoutView;
         onRender: function () {
             this.$el.attr('data-field', this.dataField);
         },
-        className: 'zselect',
         template: multiSelectLayoutTpl,
         regions: {
             'optionsRegion': '.options',
@@ -4326,7 +4319,12 @@ var MultiSelectLayoutView;
             var options = {
                 allowableOperations: [],
                 route: this.selectedItemsRoute,
-                header: {params: {title: "Remove an Item"}, template: headerTemplate},
+                header: {
+                    params: {title: "Select an Item"},
+                    template: _.template('<div class="col-sm-12 nopadding">' +
+                        '<h5><%= title %></h5>' +
+                        '</div>')
+                },
                 routing: false,
                 conditions: inPred,
                 region: this.getRegion('selectedOptionsRegion'),
@@ -4360,7 +4358,12 @@ var MultiSelectLayoutView;
             var options = {
                 allowableOperations: [],
                 route: this.excludedItemsRoute,
-                header: {params: {title: "Select an Item"}, template: headerTemplate},
+                header: {
+                    params: {title: "Select an Item"},
+                    template: _.template('<div class="col-sm-12 nopadding">' +
+                        '<h5><%= title %></h5>' +
+                        '</div>')
+                },
                 routing: false,
                 conditions: notInPred,
                 region: this.getRegion('optionsRegion'),
@@ -4387,7 +4390,7 @@ var MultiSelectLayoutView;
             this._selectedItemsChannel.reset();
         }
     });
-})(Marionette, jQuery, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, this['Templates']['headerTemplate']);
+})(Marionette, jQuery, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel);
 
 var EntityFormView;
 (function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView, DatePickerView, TimePickerView, SingleLineTextView) {

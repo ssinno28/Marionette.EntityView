@@ -18,11 +18,7 @@ var MultiSelectService;
             });
 
             this.formView = null;
-
             Marionette.EntityService.prototype.initialize.call(this, options);
-        },
-        getHeader: function () {
-            return Templates.multiSelectHeaderTpl;
         },
         getBtnClass: function () {
             return 'tiny round';

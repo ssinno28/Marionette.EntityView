@@ -5,7 +5,6 @@ var MultiSelectOptionView;
         className: 'col-sm-12 multi-select-option nopadding',
         fieldsTemplate: multiSelectLiTemplate,
         onRender: function () {
-            EntityListItemView.prototype.onRender.call(this);
             this.$el.attr('data-id', this.model.get('id'));
         },
         templateContext: function () {

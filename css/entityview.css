@@ -130,6 +130,10 @@ legend {
     background: none;
 }
 
+.zelect .toolbar-pf-filter {
+    width: 50%;
+}
+
 .zselect .list-view-pf-main-info {
     padding: 0 !important;
 }

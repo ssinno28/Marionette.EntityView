@@ -1,9 +1,7 @@
 var MultiSelectLayoutView;
-(function (Marionette, $, _, multiSelectLayoutTpl, ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, headerTemplate) {
+(function (Marionette, $, _, multiSelectLayoutTpl, ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel) {
     MultiSelectLayoutView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
-            ReusableTypeLayoutView.prototype.initialize.call(this, options);
-
             this.collection = options.collection;
             this.excludedItemsRoute = this.dataField + '-excluded-items';
             this.selectedItemsRoute = this.dataField + '-included-items';
@@ -20,7 +18,6 @@ var MultiSelectLayoutView;
         onRender: function () {
             this.$el.attr('data-field', this.dataField);
         },
-        className: 'zselect',
         template: multiSelectLayoutTpl,
         regions: {
             'optionsRegion': '.options',
@@ -229,7 +226,12 @@ var MultiSelectLayoutView;
             var options = {
                 allowableOperations: [],
                 route: this.selectedItemsRoute,
-                header: {params: {title: "Remove an Item"}, template: headerTemplate},
+                header: {
+                    params: {title: "Select an Item"},
+                    template: _.template('<div class="col-sm-12 nopadding">' +
+                        '<h5><%= title %></h5>' +
+                        '</div>')
+                },
                 routing: false,
                 conditions: inPred,
                 region: this.getRegion('selectedOptionsRegion'),
@@ -263,7 +265,12 @@ var MultiSelectLayoutView;
             var options = {
                 allowableOperations: [],
                 route: this.excludedItemsRoute,
-                header: {params: {title: "Select an Item"}, template: headerTemplate},
+                header: {
+                    params: {title: "Select an Item"},
+                    template: _.template('<div class="col-sm-12 nopadding">' +
+                        '<h5><%= title %></h5>' +
+                        '</div>')
+                },
                 routing: false,
                 conditions: notInPred,
                 region: this.getRegion('optionsRegion'),
@@ -290,4 +297,4 @@ var MultiSelectLayoutView;
             this._selectedItemsChannel.reset();
         }
     });
-})(Marionette, jQuery, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel, this['Templates']['headerTemplate']);
+})(Marionette, jQuery, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel);

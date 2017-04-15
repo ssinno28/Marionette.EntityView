@@ -1,7 +1,8 @@
 var ReusableTypeLayoutView;
 (function ($, _, Backbone, Marionette) {
-    ReusableTypeLayoutView = Marionette.ReusableTypeLayoutView = Backbone.Marionette.View.extend({
-        initialize: function (options) {
+    ReusableTypeLayoutView = Marionette.ReusableTypeLayoutView = Marionette.View.extend({
+        constructor: function (options) {
+            Marionette.View.prototype.constructor.call(this, options);
             _.extend(this, options);
 
             this._channel = Backbone.Radio.channel(this.dataField);
