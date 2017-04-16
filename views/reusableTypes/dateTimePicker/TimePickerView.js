@@ -4,7 +4,6 @@ var TimePickerView;
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
-            this.model = new Backbone.Model({value: this.getOption('value')});
             if(_.isUndefined(this.dateFormat)){
                 this.dateFormat = 'HH:mm:ss A'
             }

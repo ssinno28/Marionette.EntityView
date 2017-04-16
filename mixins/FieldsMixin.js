@@ -75,7 +75,7 @@ var FieldsMixin;
 
             var addField = _.bind(function () {
                 var $el = null;
-                if (!_.isUndefined(options.fieldset.$el)) {
+                if (!_.isUndefined(options.fieldset) && !_.isUndefined(options.fieldset.$el)) {
                     $el = options.fieldset.$el;
                 } else {
                     $el = $fields;
@@ -164,6 +164,11 @@ var FieldsMixin;
                 this._singleLineForRegion(fieldRegion, dataField);
             }, this);
 
+            var checkboxes = _.bind(function (collection, conditions) {
+                addField();
+                this._checkboxesForRegion(collection, fieldRegion, dataField, conditions);
+            }, this);
+
             var custom = _.bind(function (view) {
                 addField();
 
@@ -178,6 +183,55 @@ var FieldsMixin;
                 }));
             }, this);
 
+            var service = _.bind(function (serviceType, serviceOptions) {
+                var $el = null;
+                if (!_.isUndefined(options.fieldset) && !_.isUndefined(options.fieldset.$el)) {
+                    $el = options.fieldset.$el;
+                } else {
+                    $el = $fields;
+                }
+
+                var fieldWrapperTpl = null;
+                if (_.isUndefined(options.template)) {
+                    fieldWrapperTpl = _.template('<div class="form-group">' +
+                        '<div class="col-sm-12">' +
+                        '<div class="<%= fieldRegion %>" data-fieldtype="array" data-field="<%= dataField %>">' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>');
+                } else {
+                    fieldWrapperTpl = options.template;
+                }
+
+                var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
+                    dataField: dataField,
+                    fieldRegion: fieldRegion
+                });
+
+                $el.append(fieldHtml);
+                this.fields = _.extend(field, this.fields);
+
+                this.addRegion(fieldRegion, {
+                    el: '.' + fieldRegion,
+                    replaceElement: false
+                });
+
+                this['_' + name + 'Service'] = new serviceType(_.extend(serviceOptions, {
+                    region: this.getRegion(fieldRegion),
+                    route: this.getSubServiceRoute(name)
+                }));
+
+                this['_' + name + 'Channel'] = this['_' + name + 'Service'].getChannel();
+
+                this.on('dom:refresh', _.bind(function () {
+                    this['_' + name + 'Channel'].trigger('getType', 1);
+                }, this));
+
+                this.on('destroy', _.bind(function () {
+                    this['_' + name + 'Service'].destroy();
+                }, this));
+            }, this);
+
             editors = {
                 wyswig: wyswig,
                 dropdown: dropdown,
@@ -190,7 +244,9 @@ var FieldsMixin;
                 timePicker: timePicker,
                 datePicker: datePicker,
                 singleLine: singleLine,
-                custom: custom
+                custom: custom,
+                checkboxes: checkboxes,
+                service: service
             };
 
             returnObj = _.extend(validations, editors);

@@ -7,7 +7,7 @@ var EntityListItemView;
                 replaceElement: true
             }
         },
-        className: 'row entity-list-item',
+        className: 'list-group-item',
         template: entityListItemTpl,
         constructor: function (options) {
             Marionette.View.prototype.constructor.apply(this, arguments);

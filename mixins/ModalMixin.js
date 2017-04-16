@@ -4,7 +4,7 @@ var ModalMixin;
         modal: function (name) {
             var modal = {name: name};
 
-            var addFunc = _.bind(function () {
+            var addFunc = _.bind(function ($el, text) {
                 if (_.isUndefined(modal.message) || _.isUndefined(modal.title)) {
                     throw 'You need to specify both a message and a title!'
                 }
@@ -23,6 +23,12 @@ var ModalMixin;
 
                 var modalView = new ModalView({model: model, choices: modal.choices, safeName: className});
                 this.showChildView(modal.name, modalView);
+
+                if (!_.isUndefined($el) && $el.length > 0 && !_.isUndefined(text)) {
+                    $el.append('<button data-toggle="modal" data-target="#' + className + '" class="' + className + '-show btn btn-default">' +
+                        text +
+                        '</button>');
+                }
             }, this);
 
             var choiceFunc = function (text, type, dismiss) {

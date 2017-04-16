@@ -112,41 +112,41 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="list-group-item">\r\n    <div class="row">\r\n        ';
+__p += '<div class="row">\r\n    ';
  if(allowPublishAll || allowDeleteAll || allowAddAll){ ;
-__p += '\r\n        <div class="list-view-checkbox col-sm-1">\r\n            <input class="multi-action" data-id="' +
+__p += '\r\n    <div class="list-view-checkbox col-sm-1">\r\n        <input class="multi-action" data-id="' +
 ((__t = ( id )) == null ? '' : __t) +
 '" id="' +
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
-'" type="checkbox">\r\n        </div>\r\n        ';
+'" type="checkbox">\r\n    </div>\r\n    ';
  } ;
-__p += '\r\n\r\n        <div class="col-sm-10 list-view-additional-info">\r\n            <div class="fieldsRegion"></div>\r\n        </div>\r\n\r\n        ';
+__p += '\r\n\r\n    <div class="col-sm-10 list-view-additional-info">\r\n        <div class="fieldsRegion"></div>\r\n    </div>\r\n\r\n    ';
  if(allowEdit || allowDelete){ ;
-__p += '\r\n        <div class="list-view-actions col-sm-1">\r\n            <div class="dropdown pull-right">\r\n                <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
+__p += '\r\n    <div class="list-view-actions col-sm-1">\r\n        <div class="dropdown pull-right">\r\n            <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
-'"\r\n                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">\r\n                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>\r\n                </button>\r\n                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown' +
+'"\r\n                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">\r\n                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>\r\n            </button>\r\n            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown' +
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
-'">\r\n                    ';
+'">\r\n                ';
  if(allowEdit){ ;
-__p += '\r\n                    <li>\r\n                        <a class="edit" data-id="' +
+__p += '\r\n                <li>\r\n                    <a class="edit" data-id="' +
 ((__t = ( id )) == null ? '' : __t) +
-'" href="#">\r\n                            Edit\r\n                        </a>\r\n                    </li>\r\n                    ';
+'" href="#">\r\n                        Edit\r\n                    </a>\r\n                </li>\r\n                ';
  } ;
-__p += '\r\n\r\n                    ';
+__p += '\r\n\r\n                ';
  if(allowDelete){ ;
-__p += '\r\n                    <li>\r\n                        <a data-toggle="modal" data-target="#delete-item-modal" class="delete-item-modal-show" data-id="' +
+__p += '\r\n                <li>\r\n                    <a data-toggle="modal" data-target="#delete-item-modal" class="delete-item-modal-show"\r\n                       data-id="' +
 ((__t = ( id )) == null ? '' : __t) +
-'" href="#">\r\n                            Delete\r\n                        </a>\r\n                    </li>\r\n                    ';
+'" href="#">\r\n                        Delete\r\n                    </a>\r\n                </li>\r\n                ';
  } ;
-__p += '\r\n                </ul>\r\n            </div>\r\n        </div>\r\n        ';
+__p += '\r\n            </ul>\r\n        </div>\r\n    </div>\r\n    ';
  } ;
-__p += '\r\n    </div>\r\n</div>';
+__p += '\r\n</div>';
 
 }
 return __p
@@ -542,7 +542,7 @@ var FieldsMixin;
 
             var addField = _.bind(function () {
                 var $el = null;
-                if (!_.isUndefined(options.fieldset.$el)) {
+                if (!_.isUndefined(options.fieldset) && !_.isUndefined(options.fieldset.$el)) {
                     $el = options.fieldset.$el;
                 } else {
                     $el = $fields;
@@ -631,6 +631,11 @@ var FieldsMixin;
                 this._singleLineForRegion(fieldRegion, dataField);
             }, this);
 
+            var checkboxes = _.bind(function (collection, conditions) {
+                addField();
+                this._checkboxesForRegion(collection, fieldRegion, dataField, conditions);
+            }, this);
+
             var custom = _.bind(function (view) {
                 addField();
 
@@ -645,6 +650,55 @@ var FieldsMixin;
                 }));
             }, this);
 
+            var service = _.bind(function (serviceType, serviceOptions) {
+                var $el = null;
+                if (!_.isUndefined(options.fieldset) && !_.isUndefined(options.fieldset.$el)) {
+                    $el = options.fieldset.$el;
+                } else {
+                    $el = $fields;
+                }
+
+                var fieldWrapperTpl = null;
+                if (_.isUndefined(options.template)) {
+                    fieldWrapperTpl = _.template('<div class="form-group">' +
+                        '<div class="col-sm-12">' +
+                        '<div class="<%= fieldRegion %>" data-fieldtype="array" data-field="<%= dataField %>">' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>');
+                } else {
+                    fieldWrapperTpl = options.template;
+                }
+
+                var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
+                    dataField: dataField,
+                    fieldRegion: fieldRegion
+                });
+
+                $el.append(fieldHtml);
+                this.fields = _.extend(field, this.fields);
+
+                this.addRegion(fieldRegion, {
+                    el: '.' + fieldRegion,
+                    replaceElement: false
+                });
+
+                this['_' + name + 'Service'] = new serviceType(_.extend(serviceOptions, {
+                    region: this.getRegion(fieldRegion),
+                    route: this.getSubServiceRoute(name)
+                }));
+
+                this['_' + name + 'Channel'] = this['_' + name + 'Service'].getChannel();
+
+                this.on('dom:refresh', _.bind(function () {
+                    this['_' + name + 'Channel'].trigger('getType', 1);
+                }, this));
+
+                this.on('destroy', _.bind(function () {
+                    this['_' + name + 'Service'].destroy();
+                }, this));
+            }, this);
+
             editors = {
                 wyswig: wyswig,
                 dropdown: dropdown,
@@ -657,7 +711,9 @@ var FieldsMixin;
                 timePicker: timePicker,
                 datePicker: datePicker,
                 singleLine: singleLine,
-                custom: custom
+                custom: custom,
+                checkboxes: checkboxes,
+                service: service
             };
 
             returnObj = _.extend(validations, editors);
@@ -2065,7 +2121,7 @@ var ModalMixin;
         modal: function (name) {
             var modal = {name: name};
 
-            var addFunc = _.bind(function () {
+            var addFunc = _.bind(function ($el, text) {
                 if (_.isUndefined(modal.message) || _.isUndefined(modal.title)) {
                     throw 'You need to specify both a message and a title!'
                 }
@@ -2084,6 +2140,12 @@ var ModalMixin;
 
                 var modalView = new ModalView({model: model, choices: modal.choices, safeName: className});
                 this.showChildView(modal.name, modalView);
+
+                if (!_.isUndefined($el) && $el.length > 0 && !_.isUndefined(text)) {
+                    $el.append('<button data-toggle="modal" data-target="#' + className + '" class="' + className + '-show btn btn-default">' +
+                        text +
+                        '</button>');
+                }
             }, this);
 
             var choiceFunc = function (text, type, dismiss) {
@@ -2688,7 +2750,6 @@ var TimePickerView;
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
-            this.model = new Backbone.Model({value: this.getOption('value')});
             if(_.isUndefined(this.dateFormat)){
                 this.dateFormat = 'HH:mm:ss A'
             }
@@ -3090,7 +3151,7 @@ var EntityListItemView;
                 replaceElement: true
             }
         },
-        className: 'row entity-list-item',
+        className: 'list-group-item',
         template: entityListItemTpl,
         constructor: function (options) {
             Marionette.View.prototype.constructor.apply(this, arguments);
@@ -3865,7 +3926,7 @@ var EntityService;
         create: function () {
             var entity = this.getNewModel();
 
-            if (this.region.currentView !== this.entityLayoutView()) {
+            if (_.isUndefined(this.formRegion) && this.region.currentView !== this.entityLayoutView()) {
                 this.region.show(this.entityLayoutView());
             }
 
@@ -3879,10 +3940,14 @@ var EntityService;
                 channelName: this.route
             });
 
-            this.entityLayoutView().showChildView('entityRegion', form);
+            if (_.isUndefined(this.formRegion)) {
+                this.entityLayoutView().showChildView('entityRegion', form);
+            } else {
+                this.formRegion.show(form);
+            }
         },
         edit: function (id) {
-            if (this.region.currentView !== this.entityLayoutView()) {
+            if (_.isUndefined(this.formRegion) && this.region.currentView !== this.entityLayoutView()) {
                 this.region.show(this.entityLayoutView());
             }
 
@@ -3898,7 +3963,11 @@ var EntityService;
                         channelName: this.channelName
                     });
 
-                    this.entityLayoutView().showChildView('entityRegion', form);
+                    if (_.isUndefined(this.formRegion)) {
+                        this.entityLayoutView().showChildView('entityRegion', form);
+                    } else {
+                        this.formRegion.show(form);
+                    }
                 }, this));
         },
         delete: function (id) {
@@ -4393,7 +4462,7 @@ var MultiSelectLayoutView;
 })(Marionette, jQuery, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel);
 
 var EntityFormView;
-(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView, DatePickerView, TimePickerView, SingleLineTextView) {
+(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView, DatePickerView, TimePickerView, SingleLineTextView, CheckboxListView) {
     EntityFormView = Marionette.EntityFormView = Marionette.FormView.extend({
         template: entityFormLayoutTemplate,
         regions: {
@@ -4419,6 +4488,7 @@ var EntityFormView;
             this.getDateTimePickerForRegion = _.bind(this._dateTimePickerForRegion, this);
             this.getTimePickerForRegion = _.bind(this._timePickerForRegion, this);
             this.getDatePickerForRegion = _.bind(this._datePickerForRegion, this);
+            this.getCheckboxsForRegion = _.bind(this._checkboxesForRegion, this);
 
             if (!this.model.isNew()) {
                 this.original = this.model.toJSON();
@@ -4428,6 +4498,9 @@ var EntityFormView;
 
             this.on('render', this.runRenderers, this);
             this.on('dom:refresh', this.runFormInitializers, this);
+
+            this.events['click .reset'] = 'resetForm';
+            this.delegateEvents();
         },
         behaviors: {
             Messages: {
@@ -4443,9 +4516,6 @@ var EntityFormView;
                 btnClass: this.options.btnClass,
                 isNew: this.model.isNew()
             };
-        },
-        events: {
-            'click .reset': 'resetForm'
         },
         runFormInitializers: function () {
             this._channel.trigger('view.form.activated');
@@ -4606,6 +4676,29 @@ var EntityFormView;
                 value: this.model.get(dataField),
                 dataField: dataField
             }));
+        },
+        _checkboxesForRegion: function (collection, region, dataField, conditions) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            var selectedIds = this.model.get(dataField);
+            if (!conditions) {
+                conditions = [];
+            }
+
+            var data = {
+                conditions: conditions
+            };
+
+            collection.query(false, data).done(_.bind(function (entities) {
+                this.showChildView(region, new CheckBoxListView({
+                    collection: entities,
+                    dataField: dataField,
+                    selectedId: selectedIds
+                }));
+            }, this));
         },
         _dropDownForRegion: function (collection, region, dataField, conditions) {
             this.addRegion(region, {
@@ -4780,7 +4873,8 @@ var EntityFormView;
     DateTimePickerView,
     DatePickerView,
     TimePickerView,
-    SingleLineTextView);
+    SingleLineTextView,
+    CheckBoxListView);
 
 
 var TreeCompositeView;

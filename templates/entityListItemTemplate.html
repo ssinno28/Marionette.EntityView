@@ -1,41 +1,40 @@
-<div class="list-group-item">
-    <div class="row">
-        <% if(allowPublishAll || allowDeleteAll || allowAddAll){ %>
-        <div class="list-view-checkbox col-sm-1">
-            <input class="multi-action" data-id="<%= id %>" id="<%= route %><%=id%>" type="checkbox">
-        </div>
-        <% } %>
-
-        <div class="col-sm-10 list-view-additional-info">
-            <div class="fieldsRegion"></div>
-        </div>
-
-        <% if(allowEdit || allowDelete){ %>
-        <div class="list-view-actions col-sm-1">
-            <div class="dropdown pull-right">
-                <button class="btn btn-link dropdown-toggle" type="button" id="dropdown<%= route %><%=id%>"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown<%= route %><%=id%>">
-                    <% if(allowEdit){ %>
-                    <li>
-                        <a class="edit" data-id="<%= id %>" href="#">
-                            Edit
-                        </a>
-                    </li>
-                    <% } %>
-
-                    <% if(allowDelete){ %>
-                    <li>
-                        <a data-toggle="modal" data-target="#delete-item-modal" class="delete-item-modal-show" data-id="<%= id %>" href="#">
-                            Delete
-                        </a>
-                    </li>
-                    <% } %>
-                </ul>
-            </div>
-        </div>
-        <% } %>
+<div class="row">
+    <% if(allowPublishAll || allowDeleteAll || allowAddAll){ %>
+    <div class="list-view-checkbox col-sm-1">
+        <input class="multi-action" data-id="<%= id %>" id="<%= route %><%=id%>" type="checkbox">
     </div>
+    <% } %>
+
+    <div class="col-sm-10 list-view-additional-info">
+        <div class="fieldsRegion"></div>
+    </div>
+
+    <% if(allowEdit || allowDelete){ %>
+    <div class="list-view-actions col-sm-1">
+        <div class="dropdown pull-right">
+            <button class="btn btn-link dropdown-toggle" type="button" id="dropdown<%= route %><%=id%>"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown<%= route %><%=id%>">
+                <% if(allowEdit){ %>
+                <li>
+                    <a class="edit" data-id="<%= id %>" href="#">
+                        Edit
+                    </a>
+                </li>
+                <% } %>
+
+                <% if(allowDelete){ %>
+                <li>
+                    <a data-toggle="modal" data-target="#delete-item-modal" class="delete-item-modal-show"
+                       data-id="<%= id %>" href="#">
+                        Delete
+                    </a>
+                </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+    <% } %>
 </div>

@@ -106,7 +106,7 @@ var EntityService;
         create: function () {
             var entity = this.getNewModel();
 
-            if (this.region.currentView !== this.entityLayoutView()) {
+            if (_.isUndefined(this.formRegion) && this.region.currentView !== this.entityLayoutView()) {
                 this.region.show(this.entityLayoutView());
             }
 
@@ -120,10 +120,14 @@ var EntityService;
                 channelName: this.route
             });
 
-            this.entityLayoutView().showChildView('entityRegion', form);
+            if (_.isUndefined(this.formRegion)) {
+                this.entityLayoutView().showChildView('entityRegion', form);
+            } else {
+                this.formRegion.show(form);
+            }
         },
         edit: function (id) {
-            if (this.region.currentView !== this.entityLayoutView()) {
+            if (_.isUndefined(this.formRegion) && this.region.currentView !== this.entityLayoutView()) {
                 this.region.show(this.entityLayoutView());
             }
 
@@ -139,7 +143,11 @@ var EntityService;
                         channelName: this.channelName
                     });
 
-                    this.entityLayoutView().showChildView('entityRegion', form);
+                    if (_.isUndefined(this.formRegion)) {
+                        this.entityLayoutView().showChildView('entityRegion', form);
+                    } else {
+                        this.formRegion.show(form);
+                    }
                 }, this));
         },
         delete: function (id) {

@@ -1,5 +1,5 @@
 var EntityFormView;
-(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView, DatePickerView, TimePickerView, SingleLineTextView) {
+(function ($, _, Backbone, Marionette, entityFormLayoutTemplate, MultiSelectLayoutView, DropDownListView, AutoCompleteLayoutView, MessageBehavior, RadioButtonListView, TextAreaView, CheckBoxView, WyswigView, ImageFieldView, DateTimePickerView, DatePickerView, TimePickerView, SingleLineTextView, CheckboxListView) {
     EntityFormView = Marionette.EntityFormView = Marionette.FormView.extend({
         template: entityFormLayoutTemplate,
         regions: {
@@ -25,6 +25,7 @@ var EntityFormView;
             this.getDateTimePickerForRegion = _.bind(this._dateTimePickerForRegion, this);
             this.getTimePickerForRegion = _.bind(this._timePickerForRegion, this);
             this.getDatePickerForRegion = _.bind(this._datePickerForRegion, this);
+            this.getCheckboxsForRegion = _.bind(this._checkboxesForRegion, this);
 
             if (!this.model.isNew()) {
                 this.original = this.model.toJSON();
@@ -34,6 +35,9 @@ var EntityFormView;
 
             this.on('render', this.runRenderers, this);
             this.on('dom:refresh', this.runFormInitializers, this);
+
+            this.events['click .reset'] = 'resetForm';
+            this.delegateEvents();
         },
         behaviors: {
             Messages: {
@@ -49,9 +53,6 @@ var EntityFormView;
                 btnClass: this.options.btnClass,
                 isNew: this.model.isNew()
             };
-        },
-        events: {
-            'click .reset': 'resetForm'
         },
         runFormInitializers: function () {
             this._channel.trigger('view.form.activated');
@@ -212,6 +213,29 @@ var EntityFormView;
                 value: this.model.get(dataField),
                 dataField: dataField
             }));
+        },
+        _checkboxesForRegion: function (collection, region, dataField, conditions) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            var selectedIds = this.model.get(dataField);
+            if (!conditions) {
+                conditions = [];
+            }
+
+            var data = {
+                conditions: conditions
+            };
+
+            collection.query(false, data).done(_.bind(function (entities) {
+                this.showChildView(region, new CheckBoxListView({
+                    collection: entities,
+                    dataField: dataField,
+                    selectedId: selectedIds
+                }));
+            }, this));
         },
         _dropDownForRegion: function (collection, region, dataField, conditions) {
             this.addRegion(region, {
@@ -386,4 +410,5 @@ var EntityFormView;
     DateTimePickerView,
     DatePickerView,
     TimePickerView,
-    SingleLineTextView);
+    SingleLineTextView,
+    CheckBoxListView);
