@@ -6,7 +6,7 @@ var ModalMixin;
 
             var addFunc = _.bind(function ($el, text) {
                 if (_.isUndefined(modal.message) || _.isUndefined(modal.title)) {
-                    throw 'You need to specify both a message and a title!'
+                    throw 'You need to specify both a message and a title!';
                 }
 
                 var model = new ModalModel({
@@ -73,5 +73,5 @@ var ModalMixin;
                 message: messageFunc
             };
         }
-    }
+    };
 })(jQuery, _, Backbone, Marionette, ModalModel);

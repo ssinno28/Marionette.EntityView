@@ -302,11 +302,11 @@ this["Templates"]["multiSelectLiTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<a class="multi-select-option" data-id="' +
+__p += '<span class="multi-select-option" data-id="' +
 ((__t = ( id )) == null ? '' : __t) +
 '" href="#">\r\n    ' +
 ((__t = ( displayField )) == null ? '' : __t) +
-'\r\n</a>\r\n';
+'\r\n</span>\r\n';
 
 }
 return __p
@@ -2123,7 +2123,7 @@ var ModalMixin;
 
             var addFunc = _.bind(function ($el, text) {
                 if (_.isUndefined(modal.message) || _.isUndefined(modal.title)) {
-                    throw 'You need to specify both a message and a title!'
+                    throw 'You need to specify both a message and a title!';
                 }
 
                 var model = new ModalModel({
@@ -2190,7 +2190,7 @@ var ModalMixin;
                 message: messageFunc
             };
         }
-    }
+    };
 })(jQuery, _, Backbone, Marionette, ModalModel);
 
 var MessageView;
