@@ -1,7 +1,7 @@
 var FieldsMixin;
 (function ($, _, Backbone, Marionette) {
     FieldsMixin = {
-        field: function (name) {
+        field: function (name, isDocProp) {
             var field = {},
                 options = {},
                 currentField = field[name] = {
@@ -13,6 +13,8 @@ var FieldsMixin;
                 editors = {},
                 validations = {},
                 returnObj;
+
+            options.isDocProp = _.isUndefined(isDocProp) ? false : isDocProp;
 
             //validations
             currentField.validations = {};
@@ -85,7 +87,7 @@ var FieldsMixin;
                 if (_.isUndefined(options.template)) {
                     fieldWrapperTpl = _.template('<div class="form-group">' +
                         '<label class="col-sm-2 control-label"><%= label %></label>' +
-                        '<div class="col-sm-10 <%= dataField %>">' +
+                        '<div <% if(isDocProp) { %> data-property <% } %> class="col-sm-10 <%= dataField %>">' +
                         '<div class="<%= fieldRegion %>"></div>' +
                         '</div>' +
                         '<div class="col-sm-10 col-sm-offset-2 errors"></div>' +
@@ -97,7 +99,8 @@ var FieldsMixin;
                 var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
                     label: options.label.text,
                     dataField: dataField,
-                    fieldRegion: fieldRegion
+                    fieldRegion: fieldRegion,
+                    isDocProp: isDocProp
                 });
 
                 $el.append(fieldHtml);
@@ -167,6 +170,37 @@ var FieldsMixin;
             var checkboxes = _.bind(function (collection, conditions) {
                 addField();
                 this._checkboxesForRegion(collection, fieldRegion, dataField, conditions);
+            }, this);
+
+            var document = _.bind(function (channel, type, id) {
+                var $el = null;
+                if (!_.isUndefined(options.fieldset) && !_.isUndefined(options.fieldset.$el)) {
+                    $el = options.fieldset.$el;
+                } else {
+                    $el = $fields;
+                }
+
+                var fieldWrapperTpl = null;
+                if (_.isUndefined(options.template)) {
+                    fieldWrapperTpl = _.template('<div class="<%= fieldRegion %>" data-fieldtype="object" data-field="<%= dataField %>"></div>');
+                } else {
+                    fieldWrapperTpl = options.template;
+                }
+
+                var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
+                    dataField: dataField,
+                    fieldRegion: fieldRegion
+                });
+
+                $el.append(fieldHtml);
+                this.fields = _.extend(field, this.fields);
+
+                this.addRegion(fieldRegion, {
+                    el: '.' + fieldRegion,
+                    replaceElement: false
+                });
+
+                channel.request('document:' + type + ':' + id, this);
             }, this);
 
             var custom = _.bind(function (view) {
@@ -246,7 +280,8 @@ var FieldsMixin;
                 singleLine: singleLine,
                 custom: custom,
                 checkboxes: checkboxes,
-                service: service
+                service: service,
+                document: document
             };
 
             returnObj = _.extend(validations, editors);
