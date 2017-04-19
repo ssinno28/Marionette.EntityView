@@ -3672,6 +3672,8 @@ var FormView;
                         self.inputVal(elem, val[prop]);
                     }
                 });
+
+                val = JSON.stringify(val);
             }
             else if (el.data('fieldtype') === 'array') {
                 if (mode === 'get') val = [];
