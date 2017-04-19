@@ -138,7 +138,12 @@ var FormView;
             var self = this, mode = typeof val === 'undefined' ? 'get' : 'set';
 
             if (el.data('fieldtype') === 'object') {
-                if (mode === 'get') val = {};
+                if (mode === 'get') {
+                    val = {};
+                } else {
+                    val = JSON.parse(val);
+                }
+
                 el.find('[data-property]').each(function () {
                     var elem = $(this);
                     var prop = elem.attr('data-property');
@@ -212,9 +217,15 @@ var FormView;
             }
             else if (el.is('textarea')) {
                 if (mode === 'get') {
-                    var editor = CKEDITOR.instances[input];
+                    var editor;
+                    if (!_.isUndefined(input.jquery)) {
+                        editor = CKEDITOR.instances[input.attr('data-field')];
+                    } else {
+                        editor = CKEDITOR.instances[input];
+                    }
+
                     if (!_.isUndefined(editor)) {
-                        val = $.trim(CKEDITOR.instances[input].getData());
+                        val = $.trim(editor.getData());
                         var $hiddenDiv = $('<div></div>'),
                             html = $hiddenDiv.html(val),
                             imgs = $(html).find('img');

@@ -11,7 +11,8 @@ var ReusableTypeListView;
             var self = this;
             return {
                 dataField: self.dataField,
-                selectedId: self.selectedId
+                selectedId: self.selectedId,
+                isDocProp: self.isDocProp
             };
         },
         getChannel: function () {

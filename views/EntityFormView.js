@@ -192,7 +192,7 @@ var EntityFormView;
         getSubServiceRoute: function (name) {
             return location.hash.substring(1, location.hash.length) + name;
         },
-        _wyswigForRegion: function (region, dataField) {
+        _wyswigForRegion: function (region, dataField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -200,10 +200,11 @@ var EntityFormView;
 
             this.showChildView(region, new WyswigView({
                 value: this.model.get(dataField),
-                dataField: dataField
+                dataField: dataField,
+                isDocProp: isDocProp
             }));
         },
-        _singleLineForRegion: function (region, dataField) {
+        _singleLineForRegion: function (region, dataField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -211,10 +212,11 @@ var EntityFormView;
 
             this.showChildView(region, new SingleLineTextView({
                 value: this.model.get(dataField),
-                dataField: dataField
+                dataField: dataField,
+                isDocProp: isDocProp
             }));
         },
-        _checkboxesForRegion: function (collection, region, dataField, conditions) {
+        _checkboxesForRegion: function (collection, region, dataField, conditions, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -233,11 +235,12 @@ var EntityFormView;
                 this.showChildView(region, new CheckBoxListView({
                     collection: entities,
                     dataField: dataField,
-                    selectedId: selectedIds
+                    selectedId: selectedIds,
+                    isDocProp: isDocProp
                 }));
             }, this));
         },
-        _dropDownForRegion: function (collection, region, dataField, conditions) {
+        _dropDownForRegion: function (collection, region, dataField, conditions, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -262,11 +265,12 @@ var EntityFormView;
                 this.showChildView(region, new DropDownListView({
                     collection: entities,
                     dataField: dataField,
-                    selectedId: currentlySetId
+                    selectedId: currentlySetId,
+                    isDocProp: isDocProp
                 }));
             }, this));
         },
-        _multiSelectForRegion: function (collection, region, dataField, conditions, displayField) {
+        _multiSelectForRegion: function (collection, region, dataField, conditions, displayField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -291,12 +295,13 @@ var EntityFormView;
                     dataField: dataField,
                     selectedId: selectedIds,
                     conditions: conditions,
-                    displayField: displayField || 'name'
+                    displayField: displayField || 'name',
+                    isDocProp: isDocProp
                 });
 
             this.showChildView(region, multiSelect);
         },
-        _autoCompleteForRegion: function (collection, region, dataField) {
+        _autoCompleteForRegion: function (collection, region, dataField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -307,10 +312,11 @@ var EntityFormView;
                 new AutoCompleteLayoutView({
                     collection: collection,
                     dataField: dataField,
-                    selectedId: selectedId
+                    selectedId: selectedId,
+                    isDocProp: isDocProp
                 }));
         },
-        _radioButtonListForRegion: function (collection, region, dataField) {
+        _radioButtonListForRegion: function (collection, region, dataField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -320,10 +326,11 @@ var EntityFormView;
             this.showChildView(region, new RadioButtonListView({
                 collection: collection,
                 dataField: dataField,
-                selectedId: selectedId
+                selectedId: selectedId,
+                isDocProp: isDocProp
             }));
         },
-        _textAreaForRegion: function (region, dataField) {
+        _textAreaForRegion: function (region, dataField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -334,7 +341,7 @@ var EntityFormView;
                 dataField: dataField
             }));
         },
-        _checkboxForRegion: function (region, dataField) {
+        _checkboxForRegion: function (region, dataField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -342,10 +349,11 @@ var EntityFormView;
 
             this.showChildView(region, new CheckBoxView({
                 value: this.model.get(dataField),
-                dataField: dataField
+                dataField: dataField,
+                isDocProp: isDocProp
             }));
         },
-        _imagePickerForRegion: function (region, dataField) {
+        _imagePickerForRegion: function (region, dataField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -353,10 +361,11 @@ var EntityFormView;
 
             this.showChildView(region, new ImageFieldView({
                 value: this.model.get(dataField),
-                dataField: dataField
+                dataField: dataField,
+                isDocProp: isDocProp
             }));
         },
-        _dateTimePickerForRegion: function (region, dataField, dateFormat) {
+        _dateTimePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -365,10 +374,11 @@ var EntityFormView;
             this.showChildView(region, new DateTimePickerView({
                 value: this.model.get(dataField),
                 dataField: dataField,
-                dateFormat: dateFormat
+                dateFormat: dateFormat,
+                isDocProp: isDocProp
             }));
         },
-        _timePickerForRegion: function (region, dataField, dateFormat) {
+        _timePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -377,10 +387,11 @@ var EntityFormView;
             this.showChildView(region, new TimePickerView({
                 value: this.model.get(dataField),
                 dataField: dataField,
-                dateFormat: dateFormat
+                dateFormat: dateFormat,
+                isDocProp: isDocProp
             }));
         },
-        _datePickerForRegion: function (region, dataField, dateFormat) {
+        _datePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -389,7 +400,8 @@ var EntityFormView;
             this.showChildView(region, new DatePickerView({
                 value: this.model.get(dataField),
                 dataField: dataField,
-                dateFormat: dateFormat
+                dateFormat: dateFormat,
+                isDocProp: isDocProp
             }));
         }
     });

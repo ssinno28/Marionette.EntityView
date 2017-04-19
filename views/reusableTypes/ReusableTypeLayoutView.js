@@ -17,6 +17,12 @@ var ReusableTypeLayoutView;
             // nesting elements during re-render.
             this.$el.unwrap();
             this.setElement(this.$el);
+
+            if (this.getOption('isDocProp')) {
+                this.$el.attr('data-property', this.getOption('dataField'));
+            } else {
+                this.$el.attr('data-field', this.getOption('dataField'));
+            }
         },
         templateContext: function () {
             var self = this;

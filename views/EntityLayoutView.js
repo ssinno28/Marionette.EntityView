@@ -169,7 +169,8 @@ var EntityLayoutView;
         },
         deleteItemYes: function (view, e) {
             var data = view.modalData;
-            this._channel('delete', data.id);
+            this._channel.trigger('delete', data.id);
+            view.$el.modal('hide');
         },
         showMultiActions: function (e) {
             if (e) {
@@ -185,7 +186,6 @@ var EntityLayoutView;
             }
 
             var itemsSelected = this.$el.find('.multi-action:checked');
-
             if (itemsSelected.length > 0) {
                 this.ui.$multiActionRequests.show();
             } else {

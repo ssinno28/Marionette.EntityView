@@ -196,13 +196,20 @@ return __p
 
 this["Templates"]["checkBoxTemplate"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '    <label for="' +
 ((__t = ( name )) == null ? '' : __t) +
 '">\r\n        <input ' +
 ((__t = ( checked )) == null ? '' : __t) +
-' type="checkbox" data-field="' +
+' type="checkbox" data-';
+ if(isDocType) { ;
+__p += 'property';
+ } else { ;
+__p += 'field';
+ } ;
+__p += '="' +
 ((__t = ( dataField )) == null ? '' : __t) +
 '" name="' +
 ((__t = ( name )) == null ? '' : __t) +
@@ -330,13 +337,20 @@ return __p
 
 this["Templates"]["radioButtonTemplate"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '    <label for="' +
 ((__t = ( name )) == null ? '' : __t) +
 '">\r\n        <input ' +
 ((__t = ( checked )) == null ? '' : __t) +
-' type="radio" data-field="' +
+' type="radio" data-';
+ if(isDocType) { ;
+__p += 'property';
+ } else { ;
+__p += 'field';
+ } ;
+__p += '="' +
 ((__t = ( dataField )) == null ? '' : __t) +
 '" name="' +
 ((__t = ( dataField )) == null ? '' : __t) +
@@ -374,9 +388,7 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '    <textarea class="form-control" name="' +
 ((__t = ( dataField )) == null ? '' : __t) +
-'" data-field="' +
-((__t = ( dataField )) == null ? '' : __t) +
-'" >\r\n        ' +
+'">\r\n        ' +
 ((__t = ( value )) == null ? '' : __t) +
 '\r\n    </textarea>';
 
@@ -388,9 +400,7 @@ this["Templates"]["wyswigTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '    <textarea class="editor" id="' +
-((__t = ( dataField )) == null ? '' : __t) +
-'" data-field="' +
+__p += '<textarea class="editor" id="' +
 ((__t = ( dataField )) == null ? '' : __t) +
 '" name="' +
 ((__t = ( dataField )) == null ? '' : __t) +
@@ -482,6 +492,7 @@ var FieldsMixin;
                 returnObj;
 
             options.isDocProp = _.isUndefined(isDocProp) ? false : isDocProp;
+            currentField.isDocProp = options.isDocProp;
 
             //validations
             currentField.validations = {};
@@ -554,7 +565,7 @@ var FieldsMixin;
                 if (_.isUndefined(options.template)) {
                     fieldWrapperTpl = _.template('<div class="form-group">' +
                         '<label class="col-sm-2 control-label"><%= label %></label>' +
-                        '<div <% if(isDocProp) { %> data-property <% } %> class="col-sm-10 <%= dataField %>">' +
+                        '<div class="col-sm-10 <%= dataField %>">' +
                         '<div class="<%= fieldRegion %>"></div>' +
                         '</div>' +
                         '<div class="col-sm-10 col-sm-offset-2 errors"></div>' +
@@ -566,8 +577,7 @@ var FieldsMixin;
                 var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
                     label: options.label.text,
                     dataField: dataField,
-                    fieldRegion: fieldRegion,
-                    isDocProp: isDocProp
+                    fieldRegion: fieldRegion
                 });
 
                 $el.append(fieldHtml);
@@ -576,67 +586,67 @@ var FieldsMixin;
 
             var datePicker = _.bind(function (dateFormat) {
                 addField();
-                this._datePickerForRegion(fieldRegion, dataField, dateFormat);
+                this._datePickerForRegion(fieldRegion, dataField, dateFormat, options.isDocProp);
             }, this);
 
             var timePicker = _.bind(function (dateFormat) {
                 addField();
-                this._timePickerForRegion(fieldRegion, dataField, dateFormat);
+                this._timePickerForRegion(fieldRegion, dataField, dateFormat, options.isDocProp);
             }, this);
 
             var dateTimePicker = _.bind(function (dateFormat) {
                 addField();
-                this._dateTimePickerForRegion(fieldRegion, dataField, dateFormat);
+                this._dateTimePickerForRegion(fieldRegion, dataField, dateFormat, options.isDocProp);
             }, this);
 
             var imagePicker = _.bind(function () {
                 addField();
-                this._imagePickerForRegion(fieldRegion, dataField);
+                this._imagePickerForRegion(fieldRegion, dataField, options.isDocProp);
             }, this);
 
             var checkbox = _.bind(function () {
                 addField();
-                this._checkboxForRegion(fieldRegion, dataField);
+                this._checkboxForRegion(fieldRegion, dataField, options.isDocProp);
             }, this);
 
             var textArea = _.bind(function () {
                 addField();
-                this._textAreaForRegion(fieldRegion, dataField);
+                this._textAreaForRegion(fieldRegion, dataField, options.isDocProp);
             }, this);
 
             var radioBtns = _.bind(function (collection) {
                 addField();
-                this._radioButtonListForRegion(collection, fieldRegion, dataField);
+                this._radioButtonListForRegion(collection, fieldRegion, dataField, options.isDocProp);
             }, this);
 
             var autocomplete = _.bind(function (collection) {
                 addField();
-                this._autoCompleteForRegion(collection, fieldRegion, dataField);
+                this._autoCompleteForRegion(collection, fieldRegion, dataField, options.isDocProp);
             }, this);
 
             var multiSelect = _.bind(function (collection, conditions, displayField) {
                 addField();
-                this._multiSelectForRegion(collection, fieldRegion, dataField, conditions, displayField);
+                this._multiSelectForRegion(collection, fieldRegion, dataField, conditions, displayField, options.isDocProp);
             }, this);
 
             var dropdown = _.bind(function (collection, conditions) {
                 addField();
-                this._dropDownForRegion(collection, fieldRegion, dataField, conditions);
+                this._dropDownForRegion(collection, fieldRegion, dataField, conditions, options.isDocProp);
             }, this);
 
             var wyswig = _.bind(function () {
                 addField();
-                this._wyswigForRegion(fieldRegion, dataField);
+                this._wyswigForRegion(fieldRegion, dataField, options.isDocProp);
             }, this);
 
             var singleLine = _.bind(function () {
                 addField();
-                this._singleLineForRegion(fieldRegion, dataField);
+                this._singleLineForRegion(fieldRegion, dataField, options.isDocProp);
             }, this);
 
             var checkboxes = _.bind(function (collection, conditions) {
                 addField();
-                this._checkboxesForRegion(collection, fieldRegion, dataField, conditions);
+                this._checkboxesForRegion(collection, fieldRegion, dataField, conditions, options.isDocProp);
             }, this);
 
             var document = _.bind(function (channel, type, id) {
@@ -662,12 +672,12 @@ var FieldsMixin;
                 $el.append(fieldHtml);
                 this.fields = _.extend(field, this.fields);
 
-                this.addRegion(fieldRegion, {
-                    el: '.' + fieldRegion,
-                    replaceElement: false
-                });
+                var $docEl = $el.find('.' + fieldRegion);
+                var docField = _.bind(function (name) {
+                    return this.field(name, true).el($docEl);
+                }, this);
 
-                channel.request('document:' + type + ':' + id, this);
+                channel.request('document:' + type + ':' + id, docField);
             }, this);
 
             var custom = _.bind(function (view) {
@@ -770,7 +780,8 @@ var FieldsMixin;
 
                 return _.extend({
                     fieldset: fieldset,
-                    template: template
+                    template: template,
+                    el: el
                 }, returnObj);
             };
 
@@ -794,10 +805,21 @@ var FieldsMixin;
                 }, returnObj);
             }, this);
 
+            var el = _.bind(function ($el) {
+                options.fieldset = {};
+                options.fieldset.$el = $el;
+
+                return _.extend({
+                    label: label,
+                    template: template
+                }, returnObj);
+            }, this);
+
             return _.extend({
                 label: label,
                 fieldset: fieldset,
-                template: template
+                template: template,
+                el: el
             }, returnObj);
         }
     };
@@ -2313,6 +2335,12 @@ var ReusableTypeLayoutView;
             // nesting elements during re-render.
             this.$el.unwrap();
             this.setElement(this.$el);
+
+            if (this.getOption('isDocProp')) {
+                this.$el.attr('data-property', this.getOption('dataField'));
+            } else {
+                this.$el.attr('data-field', this.getOption('dataField'));
+            }
         },
         templateContext: function () {
             var self = this;
@@ -2344,7 +2372,8 @@ var ReusableTypeListView;
             var self = this;
             return {
                 dataField: self.dataField,
-                selectedId: self.selectedId
+                selectedId: self.selectedId,
+                isDocProp: self.isDocProp
             };
         },
         getChannel: function () {
@@ -2365,6 +2394,14 @@ var ReusableTypeView;
 
             this.isSelected();
             this.on('destroy', this._destroyRadio);
+            this.on('render', this.runRenderers);
+        },
+        runRenderers: function () {
+            if (this.getOption('isDocProp')) {
+                this.$el.attr('data-property', this.getOption('dataField'));
+            } else {
+                this.$el.attr('data-field', this.getOption('dataField'));
+            }
         },
         isSelected: function () {
             this.checked = "";
@@ -2604,8 +2641,6 @@ var TextAreaView;
     TextAreaView = ReusableTypeLayoutView.extend({
         initialize: function(options){
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
-
-            this.model = new Backbone.Model({value: this.getOption('value')});
         },
         template: textAreaTemplate
     });
@@ -3437,7 +3472,8 @@ var EntityLayoutView;
         },
         deleteItemYes: function (view, e) {
             var data = view.modalData;
-            this._channel('delete', data.id);
+            this._channel.trigger('delete', data.id);
+            view.$el.modal('hide');
         },
         showMultiActions: function (e) {
             if (e) {
@@ -3453,7 +3489,6 @@ var EntityLayoutView;
             }
 
             var itemsSelected = this.$el.find('.multi-action:checked');
-
             if (itemsSelected.length > 0) {
                 this.ui.$multiActionRequests.show();
             } else {
@@ -3662,7 +3697,12 @@ var FormView;
             var self = this, mode = typeof val === 'undefined' ? 'get' : 'set';
 
             if (el.data('fieldtype') === 'object') {
-                if (mode === 'get') val = {};
+                if (mode === 'get') {
+                    val = {};
+                } else {
+                    val = JSON.parse(val);
+                }
+
                 el.find('[data-property]').each(function () {
                     var elem = $(this);
                     var prop = elem.attr('data-property');
@@ -3736,9 +3776,15 @@ var FormView;
             }
             else if (el.is('textarea')) {
                 if (mode === 'get') {
-                    var editor = CKEDITOR.instances[input];
+                    var editor;
+                    if (!_.isUndefined(input.jquery)) {
+                        editor = CKEDITOR.instances[input.attr('data-field')];
+                    } else {
+                        editor = CKEDITOR.instances[input];
+                    }
+
                     if (!_.isUndefined(editor)) {
-                        val = $.trim(CKEDITOR.instances[input].getData());
+                        val = $.trim(editor.getData());
                         var $hiddenDiv = $('<div></div>'),
                             html = $hiddenDiv.html(val),
                             imgs = $(html).find('img');
@@ -4415,7 +4461,7 @@ var MultiSelectLayoutView;
                 {
                     searchType: 'in',
                     field: 'id',
-                    value: this.selectedId.toString()
+                    value: _.isUndefined(this.selectedId) ? '' : this.selectedId.toString()
                 }
             ];
 
@@ -4454,7 +4500,7 @@ var MultiSelectLayoutView;
                 {
                     searchType: 'except',
                     field: 'id',
-                    value: this.selectedId.toString()
+                    value: _.isUndefined(this.selectedId) ? '' : this.selectedId.toString()
                 }
             ];
 
@@ -4693,7 +4739,7 @@ var EntityFormView;
         getSubServiceRoute: function (name) {
             return location.hash.substring(1, location.hash.length) + name;
         },
-        _wyswigForRegion: function (region, dataField) {
+        _wyswigForRegion: function (region, dataField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4701,10 +4747,11 @@ var EntityFormView;
 
             this.showChildView(region, new WyswigView({
                 value: this.model.get(dataField),
-                dataField: dataField
+                dataField: dataField,
+                isDocProp: isDocProp
             }));
         },
-        _singleLineForRegion: function (region, dataField) {
+        _singleLineForRegion: function (region, dataField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4712,10 +4759,11 @@ var EntityFormView;
 
             this.showChildView(region, new SingleLineTextView({
                 value: this.model.get(dataField),
-                dataField: dataField
+                dataField: dataField,
+                isDocProp: isDocProp
             }));
         },
-        _checkboxesForRegion: function (collection, region, dataField, conditions) {
+        _checkboxesForRegion: function (collection, region, dataField, conditions, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4734,11 +4782,12 @@ var EntityFormView;
                 this.showChildView(region, new CheckBoxListView({
                     collection: entities,
                     dataField: dataField,
-                    selectedId: selectedIds
+                    selectedId: selectedIds,
+                    isDocProp: isDocProp
                 }));
             }, this));
         },
-        _dropDownForRegion: function (collection, region, dataField, conditions) {
+        _dropDownForRegion: function (collection, region, dataField, conditions, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4763,11 +4812,12 @@ var EntityFormView;
                 this.showChildView(region, new DropDownListView({
                     collection: entities,
                     dataField: dataField,
-                    selectedId: currentlySetId
+                    selectedId: currentlySetId,
+                    isDocProp: isDocProp
                 }));
             }, this));
         },
-        _multiSelectForRegion: function (collection, region, dataField, conditions, displayField) {
+        _multiSelectForRegion: function (collection, region, dataField, conditions, displayField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4792,12 +4842,13 @@ var EntityFormView;
                     dataField: dataField,
                     selectedId: selectedIds,
                     conditions: conditions,
-                    displayField: displayField || 'name'
+                    displayField: displayField || 'name',
+                    isDocProp: isDocProp
                 });
 
             this.showChildView(region, multiSelect);
         },
-        _autoCompleteForRegion: function (collection, region, dataField) {
+        _autoCompleteForRegion: function (collection, region, dataField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4808,10 +4859,11 @@ var EntityFormView;
                 new AutoCompleteLayoutView({
                     collection: collection,
                     dataField: dataField,
-                    selectedId: selectedId
+                    selectedId: selectedId,
+                    isDocProp: isDocProp
                 }));
         },
-        _radioButtonListForRegion: function (collection, region, dataField) {
+        _radioButtonListForRegion: function (collection, region, dataField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4821,10 +4873,11 @@ var EntityFormView;
             this.showChildView(region, new RadioButtonListView({
                 collection: collection,
                 dataField: dataField,
-                selectedId: selectedId
+                selectedId: selectedId,
+                isDocProp: isDocProp
             }));
         },
-        _textAreaForRegion: function (region, dataField) {
+        _textAreaForRegion: function (region, dataField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4835,7 +4888,7 @@ var EntityFormView;
                 dataField: dataField
             }));
         },
-        _checkboxForRegion: function (region, dataField) {
+        _checkboxForRegion: function (region, dataField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4843,10 +4896,11 @@ var EntityFormView;
 
             this.showChildView(region, new CheckBoxView({
                 value: this.model.get(dataField),
-                dataField: dataField
+                dataField: dataField,
+                isDocProp: isDocProp
             }));
         },
-        _imagePickerForRegion: function (region, dataField) {
+        _imagePickerForRegion: function (region, dataField, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4854,10 +4908,11 @@ var EntityFormView;
 
             this.showChildView(region, new ImageFieldView({
                 value: this.model.get(dataField),
-                dataField: dataField
+                dataField: dataField,
+                isDocProp: isDocProp
             }));
         },
-        _dateTimePickerForRegion: function (region, dataField, dateFormat) {
+        _dateTimePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4866,10 +4921,11 @@ var EntityFormView;
             this.showChildView(region, new DateTimePickerView({
                 value: this.model.get(dataField),
                 dataField: dataField,
-                dateFormat: dateFormat
+                dateFormat: dateFormat,
+                isDocProp: isDocProp
             }));
         },
-        _timePickerForRegion: function (region, dataField, dateFormat) {
+        _timePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4878,10 +4934,11 @@ var EntityFormView;
             this.showChildView(region, new TimePickerView({
                 value: this.model.get(dataField),
                 dataField: dataField,
-                dateFormat: dateFormat
+                dateFormat: dateFormat,
+                isDocProp: isDocProp
             }));
         },
-        _datePickerForRegion: function (region, dataField, dateFormat) {
+        _datePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -4890,7 +4947,8 @@ var EntityFormView;
             this.showChildView(region, new DatePickerView({
                 value: this.model.get(dataField),
                 dataField: dataField,
-                dateFormat: dateFormat
+                dateFormat: dateFormat,
+                isDocProp: isDocProp
             }));
         }
     });

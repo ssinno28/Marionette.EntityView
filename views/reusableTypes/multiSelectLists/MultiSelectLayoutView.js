@@ -215,7 +215,7 @@ var MultiSelectLayoutView;
                 {
                     searchType: 'in',
                     field: 'id',
-                    value: this.selectedId.toString()
+                    value: _.isUndefined(this.selectedId) ? '' : this.selectedId.toString()
                 }
             ];
 
@@ -254,7 +254,7 @@ var MultiSelectLayoutView;
                 {
                     searchType: 'except',
                     field: 'id',
-                    value: this.selectedId.toString()
+                    value: _.isUndefined(this.selectedId) ? '' : this.selectedId.toString()
                 }
             ];
 

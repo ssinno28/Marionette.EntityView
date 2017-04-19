@@ -7,6 +7,14 @@ var ReusableTypeView;
 
             this.isSelected();
             this.on('destroy', this._destroyRadio);
+            this.on('render', this.runRenderers);
+        },
+        runRenderers: function () {
+            if (this.getOption('isDocProp')) {
+                this.$el.attr('data-property', this.getOption('dataField'));
+            } else {
+                this.$el.attr('data-field', this.getOption('dataField'));
+            }
         },
         isSelected: function () {
             this.checked = "";

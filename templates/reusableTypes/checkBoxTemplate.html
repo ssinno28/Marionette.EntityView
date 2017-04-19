@@ -1,4 +1,4 @@
     <label for="<%= name %>">
-        <input <%= checked %> type="checkbox" data-field="<%= dataField %>" name="<%= name %>" />
+        <input <%= checked %> type="checkbox" data-<% if(isDocType) { %>property<% } else { %>field<% } %>="<%= dataField %>" name="<%= name %>" />
         <span><%= name %></span>
     </label>

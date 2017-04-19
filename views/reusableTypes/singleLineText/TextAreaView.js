@@ -3,8 +3,6 @@ var TextAreaView;
     TextAreaView = ReusableTypeLayoutView.extend({
         initialize: function(options){
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
-
-            this.model = new Backbone.Model({value: this.getOption('value')});
         },
         template: textAreaTemplate
     });

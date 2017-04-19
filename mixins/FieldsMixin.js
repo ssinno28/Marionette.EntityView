@@ -15,6 +15,7 @@ var FieldsMixin;
                 returnObj;
 
             options.isDocProp = _.isUndefined(isDocProp) ? false : isDocProp;
+            currentField.isDocProp = options.isDocProp;
 
             //validations
             currentField.validations = {};
@@ -87,7 +88,7 @@ var FieldsMixin;
                 if (_.isUndefined(options.template)) {
                     fieldWrapperTpl = _.template('<div class="form-group">' +
                         '<label class="col-sm-2 control-label"><%= label %></label>' +
-                        '<div <% if(isDocProp) { %> data-property <% } %> class="col-sm-10 <%= dataField %>">' +
+                        '<div class="col-sm-10 <%= dataField %>">' +
                         '<div class="<%= fieldRegion %>"></div>' +
                         '</div>' +
                         '<div class="col-sm-10 col-sm-offset-2 errors"></div>' +
@@ -99,8 +100,7 @@ var FieldsMixin;
                 var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
                     label: options.label.text,
                     dataField: dataField,
-                    fieldRegion: fieldRegion,
-                    isDocProp: isDocProp
+                    fieldRegion: fieldRegion
                 });
 
                 $el.append(fieldHtml);
@@ -109,67 +109,67 @@ var FieldsMixin;
 
             var datePicker = _.bind(function (dateFormat) {
                 addField();
-                this._datePickerForRegion(fieldRegion, dataField, dateFormat);
+                this._datePickerForRegion(fieldRegion, dataField, dateFormat, options.isDocProp);
             }, this);
 
             var timePicker = _.bind(function (dateFormat) {
                 addField();
-                this._timePickerForRegion(fieldRegion, dataField, dateFormat);
+                this._timePickerForRegion(fieldRegion, dataField, dateFormat, options.isDocProp);
             }, this);
 
             var dateTimePicker = _.bind(function (dateFormat) {
                 addField();
-                this._dateTimePickerForRegion(fieldRegion, dataField, dateFormat);
+                this._dateTimePickerForRegion(fieldRegion, dataField, dateFormat, options.isDocProp);
             }, this);
 
             var imagePicker = _.bind(function () {
                 addField();
-                this._imagePickerForRegion(fieldRegion, dataField);
+                this._imagePickerForRegion(fieldRegion, dataField, options.isDocProp);
             }, this);
 
             var checkbox = _.bind(function () {
                 addField();
-                this._checkboxForRegion(fieldRegion, dataField);
+                this._checkboxForRegion(fieldRegion, dataField, options.isDocProp);
             }, this);
 
             var textArea = _.bind(function () {
                 addField();
-                this._textAreaForRegion(fieldRegion, dataField);
+                this._textAreaForRegion(fieldRegion, dataField, options.isDocProp);
             }, this);
 
             var radioBtns = _.bind(function (collection) {
                 addField();
-                this._radioButtonListForRegion(collection, fieldRegion, dataField);
+                this._radioButtonListForRegion(collection, fieldRegion, dataField, options.isDocProp);
             }, this);
 
             var autocomplete = _.bind(function (collection) {
                 addField();
-                this._autoCompleteForRegion(collection, fieldRegion, dataField);
+                this._autoCompleteForRegion(collection, fieldRegion, dataField, options.isDocProp);
             }, this);
 
             var multiSelect = _.bind(function (collection, conditions, displayField) {
                 addField();
-                this._multiSelectForRegion(collection, fieldRegion, dataField, conditions, displayField);
+                this._multiSelectForRegion(collection, fieldRegion, dataField, conditions, displayField, options.isDocProp);
             }, this);
 
             var dropdown = _.bind(function (collection, conditions) {
                 addField();
-                this._dropDownForRegion(collection, fieldRegion, dataField, conditions);
+                this._dropDownForRegion(collection, fieldRegion, dataField, conditions, options.isDocProp);
             }, this);
 
             var wyswig = _.bind(function () {
                 addField();
-                this._wyswigForRegion(fieldRegion, dataField);
+                this._wyswigForRegion(fieldRegion, dataField, options.isDocProp);
             }, this);
 
             var singleLine = _.bind(function () {
                 addField();
-                this._singleLineForRegion(fieldRegion, dataField);
+                this._singleLineForRegion(fieldRegion, dataField, options.isDocProp);
             }, this);
 
             var checkboxes = _.bind(function (collection, conditions) {
                 addField();
-                this._checkboxesForRegion(collection, fieldRegion, dataField, conditions);
+                this._checkboxesForRegion(collection, fieldRegion, dataField, conditions, options.isDocProp);
             }, this);
 
             var document = _.bind(function (channel, type, id) {
@@ -195,12 +195,12 @@ var FieldsMixin;
                 $el.append(fieldHtml);
                 this.fields = _.extend(field, this.fields);
 
-                this.addRegion(fieldRegion, {
-                    el: '.' + fieldRegion,
-                    replaceElement: false
-                });
+                var $docEl = $el.find('.' + fieldRegion);
+                var docField = _.bind(function (name) {
+                    return this.field(name, true).el($docEl);
+                }, this);
 
-                channel.request('document:' + type + ':' + id, this);
+                channel.request('document:' + type + ':' + id, docField);
             }, this);
 
             var custom = _.bind(function (view) {
@@ -303,7 +303,8 @@ var FieldsMixin;
 
                 return _.extend({
                     fieldset: fieldset,
-                    template: template
+                    template: template,
+                    el: el
                 }, returnObj);
             };
 
@@ -327,10 +328,21 @@ var FieldsMixin;
                 }, returnObj);
             }, this);
 
+            var el = _.bind(function ($el) {
+                options.fieldset = {};
+                options.fieldset.$el = $el;
+
+                return _.extend({
+                    label: label,
+                    template: template
+                }, returnObj);
+            }, this);
+
             return _.extend({
                 label: label,
                 fieldset: fieldset,
-                template: template
+                template: template,
+                el: el
             }, returnObj);
         }
     };
