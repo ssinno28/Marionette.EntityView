@@ -281,7 +281,8 @@ var FieldsMixin;
                 custom: custom,
                 checkboxes: checkboxes,
                 service: service,
-                document: document
+                document: document,
+                multiSelect: multiSelect
             };
 
             returnObj = _.extend(validations, editors);
@@ -326,11 +327,11 @@ var FieldsMixin;
                 }, returnObj);
             }, this);
 
-            return {
+            return _.extend({
                 label: label,
                 fieldset: fieldset,
                 template: template
-            };
+            }, returnObj);
         }
     };
 })(jQuery, _, Backbone, Marionette);

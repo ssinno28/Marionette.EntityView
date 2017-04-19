@@ -372,7 +372,7 @@ this["Templates"]["textAreaTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '    <textarea name="' +
+__p += '    <textarea class="form-control" name="' +
 ((__t = ( dataField )) == null ? '' : __t) +
 '" data-field="' +
 ((__t = ( dataField )) == null ? '' : __t) +
@@ -748,7 +748,8 @@ var FieldsMixin;
                 custom: custom,
                 checkboxes: checkboxes,
                 service: service,
-                document: document
+                document: document,
+                multiSelect: multiSelect
             };
 
             returnObj = _.extend(validations, editors);
@@ -793,11 +794,11 @@ var FieldsMixin;
                 }, returnObj);
             }, this);
 
-            return {
+            return _.extend({
                 label: label,
                 fieldset: fieldset,
                 template: template
-            };
+            }, returnObj);
         }
     };
 })(jQuery, _, Backbone, Marionette);
