@@ -1,7 +1,7 @@
 var FieldsMixin;
 (function ($, _, Backbone, Marionette) {
     FieldsMixin = {
-        field: function (name, isDocProp) {
+        field: function (name, isDocProp, parent) {
             var field = {},
                 options = {},
                 currentField = field[name] = {
@@ -104,7 +104,14 @@ var FieldsMixin;
                 });
 
                 $el.append(fieldHtml);
+                
+                if(!isDocProp) {
                 this.fields = _.extend(field, this.fields);
+                }
+                
+                if(!_.isUndefined(parent)){
+                 parent.properties = _.extend(parent.properties, field);   
+                }
             }, this);
 
             var datePicker = _.bind(function (dateFormat) {
@@ -197,7 +204,7 @@ var FieldsMixin;
 
                 var $docEl = $el.find('.' + fieldRegion);
                 var docField = _.bind(function (name) {
-                    return this.field(name, true).el($docEl);
+                    return this.field(name, true, field).el($docEl);
                 }, this);
 
                 channel.request('document:' + type + ':' + id, docField);
