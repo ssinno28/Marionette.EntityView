@@ -109,7 +109,11 @@ var FieldsMixin;
                 this.fields = _.extend(field, this.fields);
                 }
                 
-                if(!_.isUndefined(parent)){
+                if(!_.isUndefined(parent)){ 
+
+if (_.isUndefined(parent.properties)) {
+    parent.properties = {};
+}
                  parent.properties = _.extend(parent.properties, field);   
                 }
             }, this);
@@ -204,7 +208,7 @@ var FieldsMixin;
 
                 var $docEl = $el.find('.' + fieldRegion);
                 var docField = _.bind(function (name) {
-                    return this.field(name, true, field).el($docEl);
+                    return this.field(name, true, currentField).el($docEl);
                 }, this);
 
                 channel.request('document:' + type + ':' + id, docField);

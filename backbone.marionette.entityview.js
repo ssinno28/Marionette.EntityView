@@ -478,7 +478,7 @@ return __p
 var FieldsMixin;
 (function ($, _, Backbone, Marionette) {
     FieldsMixin = {
-        field: function (name, isDocProp) {
+        field: function (name, isDocProp, parent) {
             var field = {},
                 options = {},
                 currentField = field[name] = {
@@ -581,7 +581,18 @@ var FieldsMixin;
                 });
 
                 $el.append(fieldHtml);
+                
+                if(!isDocProp) {
                 this.fields = _.extend(field, this.fields);
+                }
+                
+                if(!_.isUndefined(parent)){ 
+
+if (_.isUndefined(parent.properties)) {
+    parent.properties = {};
+}
+                 parent.properties = _.extend(parent.properties, field);   
+                }
             }, this);
 
             var datePicker = _.bind(function (dateFormat) {
@@ -674,7 +685,7 @@ var FieldsMixin;
 
                 var $docEl = $el.find('.' + fieldRegion);
                 var docField = _.bind(function (name) {
-                    return this.field(name, true).el($docEl);
+                    return this.field(name, true, currentField).el($docEl);
                 }, this);
 
                 channel.request('document:' + type + ':' + id, docField);
@@ -3652,11 +3663,57 @@ var FormView;
             var errors = {},
                 fields = _(this.fields).keys();
 
-            _(fields).each(function (field) {
-                var fieldErrors = this.validateField(field);
+            _(fields).each(function (key) {
+                var field = this.fields[key],
+                    fieldErrors = null;
+                
+                if(_.isUndefined(field.properties)){
+                    fieldErrors = this.validateField(key);
+                } else {
+                 var $docEl = $('[data-field=' + key + ']');
+                 fieldErrors = this.validateProps(field.properties, $docEl);   
+                }                    
+                
                 if (!_.isEmpty(fieldErrors)) errors[field] = fieldErrors;
             }, this);
             return errors;
+        },
+        
+        validateProps: function (properties, $docEl) {
+            var fieldErrors = [],
+                keys = _(properties).keys();
+            
+            _.each(keys, _.bind(function(key) {
+                var fieldOptions = properties[key],
+                    validations = fieldOptions && fieldOptions.validations ? fieldOptions.validations : {},
+                    isValid = true;
+                
+                var val = this.inputVal($docEl.find('[data-property=' + key + ']'));
+
+                if (fieldOptions.required) {
+                    isValid = this.validateRule(val, 'required');
+                    var errorMessage = typeof fieldOptions.required === 'string' ? fieldOptions.required : 'This field is required';
+                    if (!isValid) fieldErrors.push(errorMessage);
+                }
+
+                // Don't bother with other validations if failed 'required' already
+                if (isValid && validations) {
+                    _.each(validations, function (errorMsg, validateWith) {
+                        isValid = this.validateRule(val, validateWith);
+                        if (!isValid) fieldErrors.push(errorMsg);
+                    }, this);
+                }
+            }, this));
+            
+            if (!_.isEmpty(fieldErrors)) {
+                var errorObject = {
+                    field: field,
+                    el: this.fields[field].el,
+                    error: fieldErrors
+                };
+                
+                return errorObject;
+           }
         },
 
         validateField: function (field) {
@@ -3870,6 +3927,7 @@ var FormView;
     });
 
 })(jQuery, _, Backbone, Marionette, FormValidator);
+
 var MultiSelectOptionView;
 (function ($, _, Backbone, Marionette, EntityListItemView, multiSelectLiTemplate) {
     MultiSelectOptionView = EntityListItemView.extend({

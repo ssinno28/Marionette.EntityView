@@ -97,7 +97,7 @@ var FormView;
                 var field = this.fields[key],
                     fieldErrors = null;
                 
-                if(_.isUndefined(field.properties) && !field.isDocType){
+                if(_.isUndefined(field.properties)){
                     fieldErrors = this.validateField(key);
                 } else {
                  var $docEl = $('[data-field=' + key + ']');
@@ -113,7 +113,7 @@ var FormView;
             var fieldErrors = [],
                 keys = _(properties).keys();
             
-            _.each(keys, function(key) {
+            _.each(keys, _.bind(function(key) {
                 var fieldOptions = properties[key],
                     validations = fieldOptions && fieldOptions.validations ? fieldOptions.validations : {},
                     isValid = true;
@@ -133,7 +133,7 @@ var FormView;
                         if (!isValid) fieldErrors.push(errorMsg);
                     }, this);
                 }
-            });
+            }, this));
             
             if (!_.isEmpty(fieldErrors)) {
                 var errorObject = {
