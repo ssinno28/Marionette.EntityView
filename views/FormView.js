@@ -101,7 +101,7 @@ var FormView;
                     fieldErrors = this.validateField(key);
                 } else {
                  var $docEl = $('[data-field=' + key + ']');
-                 fieldErrors = this.validateProps(field.properties, $docEl);   
+                 fieldErrors = this.validateProps(field.properties, $docEl, key);   
                 }                    
                 
                 if (!_.isEmpty(fieldErrors)) errors[field] = fieldErrors;
@@ -109,7 +109,7 @@ var FormView;
             return errors;
         },
         
-        validateProps: function (properties, $docEl) {
+        validateProps: function (properties, $docEl, field) {
             var fieldErrors = [],
                 keys = _(properties).keys();
             
@@ -265,7 +265,11 @@ var FormView;
                 if (mode === 'get') {
                     var editor;
                     if (!_.isUndefined(input.jquery)) {
-                        editor = CKEDITOR.instances[input.attr('data-field')];
+                        var dataField = input.attr('data-field'),
+                            dataProp = input.attr('data-property'), 
+                            key = _.isUndefined(dataField) ? dataProp : dataField;
+
+                        editor = CKEDITOR.instances[key];
                     } else {
                         editor = CKEDITOR.instances[input];
                     }
