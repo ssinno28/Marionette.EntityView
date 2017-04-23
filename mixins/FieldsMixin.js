@@ -104,17 +104,17 @@ var FieldsMixin;
                 });
 
                 $el.append(fieldHtml);
-                
-                if(!isDocProp) {
-                this.fields = _.extend(field, this.fields);
+                if (!isDocProp) {
+                    this.fields = _.extend(field, this.fields);
                 }
-                
-                if(!_.isUndefined(parent)){ 
 
-if (_.isUndefined(parent.properties)) {
-    parent.properties = {};
-}
-                 parent.properties = _.extend(parent.properties, field);   
+                if (!_.isUndefined(parent)) {
+
+                    if (_.isUndefined(parent.properties)) {
+                        parent.properties = {};
+                    }
+
+                    parent.properties = _.extend(parent.properties, field);
                 }
             }, this);
 
@@ -193,7 +193,8 @@ if (_.isUndefined(parent.properties)) {
 
                 var fieldWrapperTpl = null;
                 if (_.isUndefined(options.template)) {
-                    fieldWrapperTpl = _.template('<div class="<%= fieldRegion %>" data-fieldtype="object" data-field="<%= dataField %>"></div>');
+                    fieldWrapperTpl =
+                        _.template('<div class="<%= fieldRegion %>" data-fieldtype="object" data-field="<%= dataField %>"></div>');
                 } else {
                     fieldWrapperTpl = options.template;
                 }
@@ -263,7 +264,9 @@ if (_.isUndefined(parent.properties)) {
 
                 this['_' + name + 'Service'] = new serviceType(_.extend(serviceOptions, {
                     region: this.getRegion(fieldRegion),
-                    route: this.getSubServiceRoute(name)
+                    route: this.getSubServiceRoute(name),
+                    subRoute: location.hash.substring(1, location.hash.length),
+                    name: name
                 }));
 
                 this['_' + name + 'Channel'] = this['_' + name + 'Service'].getChannel();

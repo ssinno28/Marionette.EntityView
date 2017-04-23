@@ -96,30 +96,31 @@ var FormView;
             _(fields).each(function (key) {
                 var field = this.fields[key],
                     fieldErrors = null;
-                
-                if(_.isUndefined(field.properties)){
+
+                if (_.isUndefined(field.properties)) {
                     fieldErrors = this.validateField(key);
                 } else {
-                 var $docEl = $('[data-field=' + key + ']');
-                 fieldErrors = this.validateProps(field.properties, $docEl, key);   
-                }                    
-                
+                    var $docEl = $('[data-field=' + key + ']');
+                    fieldErrors = this.validateProps(field.properties, $docEl, key);
+                }
+
                 if (!_.isEmpty(fieldErrors)) errors[field] = fieldErrors;
             }, this);
+
             return errors;
         },
-        
+
         validateProps: function (properties, $docEl, field) {
             var fieldErrors = [],
-                keys = _(properties).keys();
-            
-            _.each(keys, _.bind(function(key) {
+                keys = _(properties).keys(),
+                errors = {};
+
+            _.each(keys, _.bind(function (key) {
                 var fieldOptions = properties[key],
                     validations = fieldOptions && fieldOptions.validations ? fieldOptions.validations : {},
                     isValid = true;
-                
-                var val = this.inputVal($docEl.find('[data-property=' + key + ']'));
 
+                var val = this.inputVal($docEl.find('[data-property=' + key + ']'));
                 if (fieldOptions.required) {
                     isValid = this.validateRule(val, 'required');
                     var errorMessage = typeof fieldOptions.required === 'string' ? fieldOptions.required : 'This field is required';
@@ -133,17 +134,17 @@ var FormView;
                         if (!isValid) fieldErrors.push(errorMsg);
                     }, this);
                 }
+
+                if (!_.isEmpty(fieldErrors)) {
+                    _.extend(errors, {
+                        field: field + '.' + key,
+                        el: this.fields[field].properties[key].el,
+                        error: fieldErrors
+                    });
+                }
             }, this));
-            
-            if (!_.isEmpty(fieldErrors)) {
-                var errorObject = {
-                    field: field,
-                    el: this.fields[field].el,
-                    error: fieldErrors
-                };
-                
-                return errorObject;
-           }
+
+            return errors;
         },
 
         validateField: function (field) {
@@ -266,7 +267,7 @@ var FormView;
                     var editor;
                     if (!_.isUndefined(input.jquery)) {
                         var dataField = input.attr('data-field'),
-                            dataProp = input.attr('data-property'), 
+                            dataProp = input.attr('data-property'),
                             key = _.isUndefined(dataField) ? dataProp : dataField;
 
                         editor = CKEDITOR.instances[key];

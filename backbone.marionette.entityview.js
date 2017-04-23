@@ -400,7 +400,7 @@ this["Templates"]["wyswigTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<textarea class="editor" id="' +
+__p += '<textarea class="editor form-control" id="' +
 ((__t = ( dataField )) == null ? '' : __t) +
 '" name="' +
 ((__t = ( dataField )) == null ? '' : __t) +
@@ -581,17 +581,17 @@ var FieldsMixin;
                 });
 
                 $el.append(fieldHtml);
-                
-                if(!isDocProp) {
-                this.fields = _.extend(field, this.fields);
+                if (!isDocProp) {
+                    this.fields = _.extend(field, this.fields);
                 }
-                
-                if(!_.isUndefined(parent)){ 
 
-if (_.isUndefined(parent.properties)) {
-    parent.properties = {};
-}
-                 parent.properties = _.extend(parent.properties, field);   
+                if (!_.isUndefined(parent)) {
+
+                    if (_.isUndefined(parent.properties)) {
+                        parent.properties = {};
+                    }
+
+                    parent.properties = _.extend(parent.properties, field);
                 }
             }, this);
 
@@ -670,7 +670,8 @@ if (_.isUndefined(parent.properties)) {
 
                 var fieldWrapperTpl = null;
                 if (_.isUndefined(options.template)) {
-                    fieldWrapperTpl = _.template('<div class="<%= fieldRegion %>" data-fieldtype="object" data-field="<%= dataField %>"></div>');
+                    fieldWrapperTpl =
+                        _.template('<div class="<%= fieldRegion %>" data-fieldtype="object" data-field="<%= dataField %>"></div>');
                 } else {
                     fieldWrapperTpl = options.template;
                 }
@@ -740,7 +741,9 @@ if (_.isUndefined(parent.properties)) {
 
                 this['_' + name + 'Service'] = new serviceType(_.extend(serviceOptions, {
                     region: this.getRegion(fieldRegion),
-                    route: this.getSubServiceRoute(name)
+                    route: this.getSubServiceRoute(name),
+                    subRoute: location.hash.substring(1, location.hash.length),
+                    name: name
                 }));
 
                 this['_' + name + 'Channel'] = this['_' + name + 'Service'].getChannel();
@@ -3666,30 +3669,31 @@ var FormView;
             _(fields).each(function (key) {
                 var field = this.fields[key],
                     fieldErrors = null;
-                
-                if(_.isUndefined(field.properties)){
+
+                if (_.isUndefined(field.properties)) {
                     fieldErrors = this.validateField(key);
                 } else {
-                 var $docEl = $('[data-field=' + key + ']');
-                 fieldErrors = this.validateProps(field.properties, $docEl, key);   
-                }                    
-                
+                    var $docEl = $('[data-field=' + key + ']');
+                    fieldErrors = this.validateProps(field.properties, $docEl, key);
+                }
+
                 if (!_.isEmpty(fieldErrors)) errors[field] = fieldErrors;
             }, this);
+
             return errors;
         },
-        
+
         validateProps: function (properties, $docEl, field) {
             var fieldErrors = [],
-                keys = _(properties).keys();
-            
-            _.each(keys, _.bind(function(key) {
+                keys = _(properties).keys(),
+                errors = {};
+
+            _.each(keys, _.bind(function (key) {
                 var fieldOptions = properties[key],
                     validations = fieldOptions && fieldOptions.validations ? fieldOptions.validations : {},
                     isValid = true;
-                
-                var val = this.inputVal($docEl.find('[data-property=' + key + ']'));
 
+                var val = this.inputVal($docEl.find('[data-property=' + key + ']'));
                 if (fieldOptions.required) {
                     isValid = this.validateRule(val, 'required');
                     var errorMessage = typeof fieldOptions.required === 'string' ? fieldOptions.required : 'This field is required';
@@ -3703,17 +3707,17 @@ var FormView;
                         if (!isValid) fieldErrors.push(errorMsg);
                     }, this);
                 }
+
+                if (!_.isEmpty(fieldErrors)) {
+                    _.extend(errors, {
+                        field: field + '.' + key,
+                        el: this.fields[field].properties[key].el,
+                        error: fieldErrors
+                    });
+                }
             }, this));
-            
-            if (!_.isEmpty(fieldErrors)) {
-                var errorObject = {
-                    field: field,
-                    el: this.fields[field].el,
-                    error: fieldErrors
-                };
-                
-                return errorObject;
-           }
+
+            return errors;
         },
 
         validateField: function (field) {
@@ -3836,7 +3840,7 @@ var FormView;
                     var editor;
                     if (!_.isUndefined(input.jquery)) {
                         var dataField = input.attr('data-field'),
-                            dataProp = input.attr('data-property'), 
+                            dataProp = input.attr('data-property'),
                             key = _.isUndefined(dataField) ? dataProp : dataField;
 
                         editor = CKEDITOR.instances[key];
@@ -4147,6 +4151,11 @@ var EntityService;
                 });
         },
         textSearch: function (startsWith, field) {
+            if (!_.isUndefined(this.subRoute) && this.region.isDestroyed()) {
+                location.hash = this.subRoute;
+                return;
+            }
+
             var data = {
                 conditions: [
                     {
@@ -4190,6 +4199,11 @@ var EntityService;
                 }, this));
         },
         getAll: function (page, force) {
+            if (!_.isUndefined(this.subRoute) && this.region.isDestroyed()) {
+                location.hash = this.subRoute;
+                return;
+            }
+
             if (this.region.currentView !== this._entityLayoutView) {
                 throw new Error('You need to call getType on this service before calling get all!!');
             }
@@ -4235,6 +4249,11 @@ var EntityService;
                 });
         },
         getType: function (page, force) {
+            if (!_.isUndefined(this.subRoute) && this.region.isDestroyed()) {
+                location.hash = this.subRoute;
+                return;
+            }
+
             var self = this;
 
             if (isNaN(page)) {

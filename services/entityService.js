@@ -181,6 +181,11 @@ var EntityService;
                 });
         },
         textSearch: function (startsWith, field) {
+            if (!_.isUndefined(this.subRoute) && this.region.isDestroyed()) {
+                location.hash = this.subRoute;
+                return;
+            }
+
             var data = {
                 conditions: [
                     {
@@ -224,6 +229,11 @@ var EntityService;
                 }, this));
         },
         getAll: function (page, force) {
+            if (!_.isUndefined(this.subRoute) && this.region.isDestroyed()) {
+                location.hash = this.subRoute;
+                return;
+            }
+
             if (this.region.currentView !== this._entityLayoutView) {
                 throw new Error('You need to call getType on this service before calling get all!!');
             }
@@ -269,6 +279,11 @@ var EntityService;
                 });
         },
         getType: function (page, force) {
+            if (!_.isUndefined(this.subRoute) && this.region.isDestroyed()) {
+                location.hash = this.subRoute;
+                return;
+            }
+
             var self = this;
 
             if (isNaN(page)) {
