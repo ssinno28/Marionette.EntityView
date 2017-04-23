@@ -4747,12 +4747,12 @@ var EntityFormView;
             evt.preventDefault();
 
             var $errors = $('.help-block');
-            $errors.remove();
-
             _.each($errors, function ($error) {
-                var $formGroup = $error.closest('.form-group');
+                var $formGroup = $($error).closest('.form-group');
                 $formGroup.removeClass('has-error');
             });
+
+            $errors.remove();
 
             this.setModelDefaults();
             this.saveModel();
