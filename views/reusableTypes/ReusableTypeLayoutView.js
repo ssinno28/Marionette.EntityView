@@ -2,12 +2,14 @@ var ReusableTypeLayoutView;
 (function ($, _, Backbone, Marionette) {
     ReusableTypeLayoutView = Marionette.ReusableTypeLayoutView = Marionette.View.extend({
         constructor: function (options) {
-            Marionette.View.prototype.constructor.call(this, options);
+            //make sure to do work first then call contrctor on class
             _.extend(this, options);
 
             this._channel = Backbone.Radio.channel(this.dataField);
             this.on('destroy', this._destroyRadio);
             this.on('render', this.runRenderers);
+
+            Marionette.View.prototype.constructor.call(this, options);
         },
         runRenderers: function () {
             // Get rid of that pesky wrapping-div.

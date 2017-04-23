@@ -187,7 +187,7 @@ var FormView;
             if (el.data('fieldtype') === 'object') {
                 if (mode === 'get') {
                     val = {};
-                } else {
+                } else if (val !== '') {
                     val = JSON.parse(val);
                 }
 

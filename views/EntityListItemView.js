@@ -10,9 +10,9 @@ var EntityListItemView;
         className: 'list-group-item',
         template: entityListItemTpl,
         constructor: function (options) {
+            _.extend(this, options);
             Marionette.View.prototype.constructor.apply(this, arguments);
 
-            _.extend(this, options);
             this._channel = Backbone.Radio.channel(this.route);
 
             this.on('render', this.runRenderers, this);

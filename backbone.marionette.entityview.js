@@ -2334,12 +2334,14 @@ var ReusableTypeLayoutView;
 (function ($, _, Backbone, Marionette) {
     ReusableTypeLayoutView = Marionette.ReusableTypeLayoutView = Marionette.View.extend({
         constructor: function (options) {
-            Marionette.View.prototype.constructor.call(this, options);
+            //make sure to do work first then call contrctor on class
             _.extend(this, options);
 
             this._channel = Backbone.Radio.channel(this.dataField);
             this.on('destroy', this._destroyRadio);
             this.on('render', this.runRenderers);
+
+            Marionette.View.prototype.constructor.call(this, options);
         },
         runRenderers: function () {
             // Get rid of that pesky wrapping-div.
@@ -3239,9 +3241,9 @@ var EntityListItemView;
         className: 'list-group-item',
         template: entityListItemTpl,
         constructor: function (options) {
+            _.extend(this, options);
             Marionette.View.prototype.constructor.apply(this, arguments);
 
-            _.extend(this, options);
             this._channel = Backbone.Radio.channel(this.route);
 
             this.on('render', this.runRenderers, this);
@@ -3335,8 +3337,9 @@ var EntityLayoutView;
             }
         },
         constructor: function (options) {
-            Marionette.View.prototype.constructor.apply(this, arguments);
             _.extend(this, options);
+
+            Marionette.View.prototype.constructor.apply(this, arguments);
 
             this.listView.allowableOperations = this.allowableOperations;
             this.listView.route = this.route;
@@ -3760,7 +3763,7 @@ var FormView;
             if (el.data('fieldtype') === 'object') {
                 if (mode === 'get') {
                     val = {};
-                } else {
+                } else if (val !== '') {
                     val = JSON.parse(val);
                 }
 
@@ -4330,8 +4333,8 @@ var MultiSelectLayoutView;
     MultiSelectLayoutView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             this.collection = options.collection;
-            this.excludedItemsRoute = this.dataField + '-excluded-items';
-            this.selectedItemsRoute = this.dataField + '-included-items';
+            this.excludedItemsRoute = options.dataField + '-excluded-items';
+            this.selectedItemsRoute = options.dataField + '-included-items';
 
             if (!options.selectedId) {
                 this.selectedId = [];
@@ -4341,9 +4344,6 @@ var MultiSelectLayoutView;
 
             this.selectedItems = new Backbone.Collection();
             this.actionableOptions = new Backbone.Collection();
-        },
-        onRender: function () {
-            this.$el.attr('data-field', this.dataField);
         },
         template: multiSelectLayoutTpl,
         regions: {
@@ -4635,9 +4635,9 @@ var EntityFormView;
             'messagesRegion': '.messages-region'
         },
         constructor: function (options) {
+            _.extend(this, options.formOptions);
             Marionette.FormView.prototype.constructor.apply(this, arguments);
 
-            _.extend(this, options.formOptions);
             if (!_.isUndefined(this.collection)) {
                 this.model.setUrl(this.collection.getUrl());
             }

@@ -18,8 +18,9 @@ var EntityLayoutView;
             }
         },
         constructor: function (options) {
-            Marionette.View.prototype.constructor.apply(this, arguments);
             _.extend(this, options);
+
+            Marionette.View.prototype.constructor.apply(this, arguments);
 
             this.listView.allowableOperations = this.allowableOperations;
             this.listView.route = this.route;

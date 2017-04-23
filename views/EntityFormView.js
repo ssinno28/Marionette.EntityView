@@ -7,9 +7,9 @@ var EntityFormView;
             'messagesRegion': '.messages-region'
         },
         constructor: function (options) {
+            _.extend(this, options.formOptions);
             Marionette.FormView.prototype.constructor.apply(this, arguments);
 
-            _.extend(this, options.formOptions);
             if (!_.isUndefined(this.collection)) {
                 this.model.setUrl(this.collection.getUrl());
             }

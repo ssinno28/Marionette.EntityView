@@ -3,8 +3,8 @@ var MultiSelectLayoutView;
     MultiSelectLayoutView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             this.collection = options.collection;
-            this.excludedItemsRoute = this.dataField + '-excluded-items';
-            this.selectedItemsRoute = this.dataField + '-included-items';
+            this.excludedItemsRoute = options.dataField + '-excluded-items';
+            this.selectedItemsRoute = options.dataField + '-included-items';
 
             if (!options.selectedId) {
                 this.selectedId = [];
@@ -14,9 +14,6 @@ var MultiSelectLayoutView;
 
             this.selectedItems = new Backbone.Collection();
             this.actionableOptions = new Backbone.Collection();
-        },
-        onRender: function () {
-            this.$el.attr('data-field', this.dataField);
         },
         template: multiSelectLayoutTpl,
         regions: {
