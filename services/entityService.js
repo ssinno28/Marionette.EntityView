@@ -214,7 +214,8 @@ var EntityService;
                             collection: models,
                             parentViewCid: this.entityLayoutView().cid,
                             baseClassIds: this.baseClassIds,
-                            route: this.route
+                            route: this.route,
+                            sortable: this.sortable
                         });
 
                     listView.route = this.route;
@@ -262,7 +263,8 @@ var EntityService;
                             collection: models,
                             parentViewCid: self.entityLayoutView().cid,
                             baseClassIds: self.baseClassIds,
-                            route: self.route
+                            route: self.route,
+                            sortable: self.sortable
                         });
 
                     listView.currentPage = page;
