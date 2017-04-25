@@ -39,7 +39,7 @@ var SortableItemBehavior;
 
             var $target = $(e.target),
                 currentModelId = $target.data('id'),
-                collection = this.model.collection,
+                collection = this.view.collection,
                 currentModel = collection.get(currentModelId);
 
             this.view.triggerMethod('item:dropped', this.draggedModel, currentModel);
