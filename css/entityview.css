@@ -57,14 +57,14 @@ legend {
     -webkit-user-select: none;
 }
 
-.sortable-view > li {
+.sortable-view > .sortable-item {
     float: left;
     position: relative;
     clear: both;
     padding: 20px 0px 20px 30px;
 }
 
-.sortable-view > li:after {
+.sortable-view > .sortable-item:after {
     content: '';
     position: absolute;
     box-sizing: border-box;
@@ -77,20 +77,20 @@ legend {
     cursor: move;
 }
 
-.sortable-view > li:hover:after {
+.sortable-view > .sortable-item:hover:after {
     border: 2px dotted rgba(0, 0, 0, 0.3);
 }
 
-.sortable-view > li.over {
+.sortable-view > .over {
     background-color: transparent;
     border: 3px dotted rgba(0, 0, 0, 0.3);
 }
 
-.sortable-view > li.over:after {
+.sortable-view > .over:after {
     display: none;
 }
 
-.sortable-view > li.over > * {
+.sortable-view > .over > * {
     visibility: hidden;
 }
 
