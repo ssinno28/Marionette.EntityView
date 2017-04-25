@@ -5,8 +5,8 @@ var SortableCollectionBehavior;
         onRender: function(){
             this.view.$el.addClass('sortable-view');
             this.setComparator();
-        },
-        setPlacement: function (draggedModel, overModel) {
+        }, 
+        onChildviewItemDropped: function (draggedModel, overModel) {
             var draggedModelPlacement = draggedModel.get('placement'),
                 overModelPlacement = overModel.get('placement');
 
