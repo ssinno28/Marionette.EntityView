@@ -17,6 +17,9 @@ var SortableListBehavior;
                     if (placement <= overModelPlacement) {
                         var newPlacement = placement - 1;
                         item.set({placement: newPlacement});
+                         item.save(['placement'], {
+                        type: 'PATCH'
+                        });
                     }
                 });
 
@@ -27,6 +30,9 @@ var SortableListBehavior;
                     if (placement >= overModelPlacement) {
                         var newPlacement = placement + 1;
                         item.set({placement: newPlacement});
+                        item.save(['placement'], {
+                        type: 'PATCH'
+                        });
                     }
                 });
 
