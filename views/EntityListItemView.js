@@ -32,11 +32,10 @@ var EntityListItemView;
             }
         },
         runRenderers: function () {
-            if (!_.isUndefined(this.fieldsTemplate)) {
                 var fieldsView =
                     Marionette.View.extend(
                         {
-                            template: this.fieldsTemplate,
+                            template: _.isUndefined(this.fieldsTemplate) ? _.template('<div class="col-sm-3"><span><%= name %></span></div>') : this.fieldsTemplate,
                             model: this.model,
                             templateContext: _.isFunction(this.templateContext) ? this.templateContext() : this.templateContext,
                             onRender: function () {
@@ -52,7 +51,6 @@ var EntityListItemView;
 
                 this.showChildView('fieldsRegion', new fieldsView());
                 this.bindUIElements();
-            }
 
             if (this.baseClassIds.indexOf(this.model.get('id')) === -1) {
                 this.$el.attr('data-index', this.collection.indexOf(this.model));

@@ -2566,51 +2566,38 @@ var SortableCollectionView;
             this.setComparator();
         },
         setPlacement: function (draggedModel, overModel) {
-            var placementOverModelIndex = _.indexOf(_.pluck(this.placement, 'id'), overModel.get('id')),
-                placementDraggedModelIndex = _.indexOf(_.pluck(this.placement, 'id'), draggedModel.get('id'));
-
-            var draggedModelPlacment = this.placement[placementDraggedModelIndex].placement,
-                overModelPlacement = this.placement[placementOverModelIndex].placement;
+            var draggedModelPlacement = draggedModel.get('placement'),
+                overModelPlacement = overModel.get('placement');
 
             var placement;
-            if (draggedModelPlacment < overModelPlacement) {
-                for (var j = 0; j < this.placement.length; j++) {
-                    placement = this.placement[j].placement;
+            if (draggedModelPlacement < overModelPlacement) {
+                this.collection.each(function (item) {
+                    var placement = item.get('placement');
                     if (placement <= overModelPlacement) {
-                        this.placement[j].placement--;
+                        var newPlacement = placement - 1;
+                        item.set({placement: newPlacement});
                     }
-                }
+                });
 
-                this.placement[placementDraggedModelIndex].placement = overModelPlacement;
-            } else if (draggedModelPlacment > overModelPlacement) {
-                for (var i = 0; i < this.placement.length; i++) {
-                    placement = this.placement[i].placement;
+                draggedModel.set({placement: overModelPlacement});
+            } else if (draggedModelPlacement > overModelPlacement) {
+                this.collection.each(function (item) {
+                    var placement = item.get('placement');
                     if (placement >= overModelPlacement) {
-                        this.placement[i].placement++;
+                        var newPlacement = placement + 1;
+                        item.set({placement: newPlacement});
                     }
-                }
+                });
 
-                this.placement[placementDraggedModelIndex].placement = overModelPlacement;
+                draggedModel.set({placement: overModelPlacement});
             }
-
 
             this.setComparator();
         },
         setComparator: function () {
-            var self = this;
-
             this.collection.comparator =
                 function (model) {
-                    var item =
-                        _.find(self.placement, function (index) {
-                            return index.id === model.get('id');
-                        });
-
-                    if (!_.isUndefined(item)) {
-                        return item.placement;
-                    }
-
-                    return 0;
+                    return model.get('placement');
                 };
 
             this.collection.sort();
@@ -3263,11 +3250,10 @@ var EntityListItemView;
             }
         },
         runRenderers: function () {
-            if (!_.isUndefined(this.fieldsTemplate)) {
                 var fieldsView =
                     Marionette.View.extend(
                         {
-                            template: this.fieldsTemplate,
+                            template: _.isUndefined(this.fieldsTemplate) ? _.template('<div class="col-sm-3"><span><%= name %></span></div>') : this.fieldsTemplate,
                             model: this.model,
                             templateContext: _.isFunction(this.templateContext) ? this.templateContext() : this.templateContext,
                             onRender: function () {
@@ -3283,7 +3269,6 @@ var EntityListItemView;
 
                 this.showChildView('fieldsRegion', new fieldsView());
                 this.bindUIElements();
-            }
 
             if (this.baseClassIds.indexOf(this.model.get('id')) === -1) {
                 this.$el.attr('data-index', this.collection.indexOf(this.model));

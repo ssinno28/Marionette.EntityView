@@ -249,10 +249,11 @@ var FieldsMixin;
                     fieldWrapperTpl = options.template;
                 }
 
-                var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
-                    dataField: dataField,
-                    fieldRegion: fieldRegion
-                });
+                var fieldHtml =
+                    Marionette.Renderer.render(fieldWrapperTpl, {
+                        dataField: dataField,
+                        fieldRegion: fieldRegion
+                    });
 
                 $el.append(fieldHtml);
                 this.fields = _.extend(field, this.fields);
