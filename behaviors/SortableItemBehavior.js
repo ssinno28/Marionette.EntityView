@@ -4,6 +4,7 @@ var SortableItemBehavior;
     SortableItemBehavior = Marionette.Behavior.extend({
         onRender: function(){
          this.view.$el.attr('draggable', true);   
+            this.view.$el.addClass('sortable-item');
          this.view.$el.data('id', this.model.get('id'));
         }
         events: {
