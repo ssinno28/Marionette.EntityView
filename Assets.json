@@ -53,6 +53,8 @@
       "behaviors/ModalBehavior.js",
       "behaviors/MessageBehavior.js",
       "behaviors/PagerBehavior.js",
+      "behaviors/SortableCollectionBehavior.js",
+      "behaviors/SortableItemBehavior.js",
       "views/EntityListView.js",
       "views/EntityListItemView.js",
       "views/EntityLayoutView.js",
