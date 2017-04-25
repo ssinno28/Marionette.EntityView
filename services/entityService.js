@@ -74,7 +74,8 @@ var EntityService;
                 ({
                     collection: _.isUndefined(entities) ? this.collection : entities,
                     baseClassIds: this.baseClassIds,
-                    route: this.route
+                    route: this.route,
+                    sortable: this.sortable
                 });
 
             listView.currentPage = _.isUndefined(entities) ? 1 : entities.currentPage;
