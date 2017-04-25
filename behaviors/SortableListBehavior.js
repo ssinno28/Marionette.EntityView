@@ -1,7 +1,7 @@
 
-var SortableCollectionBehavior;
+var SortableListBehavior;
 (function ($, _, Backbone, Marionette) {
-    SortableCollectionBehavior = Marionette.Behavior.extend({
+    SortableListBehavior = Marionette.Behavior.extend({
         onRender: function(){
             this.view.$el.addClass('sortable-view');
             this.setComparator();
