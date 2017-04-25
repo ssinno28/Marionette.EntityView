@@ -12,7 +12,7 @@ var SortableListBehavior;
 
             var placement;
             if (draggedModelPlacement < overModelPlacement) {
-                this.collection.each(function (item) {
+                this.view.collection.each(function (item) {
                     var placement = item.get('placement');
                     if (placement <= overModelPlacement) {
                         var newPlacement = placement - 1;
@@ -22,7 +22,7 @@ var SortableListBehavior;
 
                 draggedModel.set({placement: overModelPlacement});
             } else if (draggedModelPlacement > overModelPlacement) {
-                this.collection.each(function (item) {
+                this.view.collection.each(function (item) {
                     var placement = item.get('placement');
                     if (placement >= overModelPlacement) {
                         var newPlacement = placement + 1;
