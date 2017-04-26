@@ -70,8 +70,6 @@
         RadioButtonListView: RadioButtonListView,
         CheckBoxListView: CheckBoxListView,
         CheckBoxView: CheckBoxView,
-        SortableItemView: SortableItemView,
-        SortableCollectionView: SortableCollectionView,
         FormValidator: FormValidator,
         ReusableTypeLayoutView: ReusableTypeLayoutView,
         MessageBehavior: MessageBehavior,

@@ -18,15 +18,14 @@ var EntityListItemView;
             this.on('render', this.runRenderers, this);
             this.on('dom:refresh', this.runInitializers, this);
         },
-        behaviors: function(){
+        behaviors: function () {
             var behaviors = {};
-          if(this.getOption('sortable'))
-          {
-              behaviors.Sortable = {
-                  behaviorClass: SortableItemBehavior
-              };
-          }           
-            
+            if (this.getOption('sortable')) {
+                behaviors.Sortable = {
+                    behaviorClass: SortableItemBehavior
+                };
+            }
+
             return behaviors;
         },
         ui: {
@@ -43,25 +42,25 @@ var EntityListItemView;
             }
         },
         runRenderers: function () {
-                var fieldsView =
-                    Marionette.View.extend(
-                        {
-                            template: _.isUndefined(this.fieldsTemplate) ? _.template('<div class="col-sm-3"><span><%= name %></span></div>') : this.fieldsTemplate,
-                            model: this.model,
-                            templateContext: _.isFunction(this.templateContext) ? this.templateContext() : this.templateContext,
-                            onRender: function () {
-                                // Get rid of that pesky wrapping-div.
-                                // Assumes 1 child element present in template.
-                                this.$el = this.$el.children();
-                                // Unwrap the element to prevent infinitely
-                                // nesting elements during re-render.
-                                this.$el.unwrap();
-                                this.setElement(this.$el);
-                            }
-                        });
+            var fieldsView =
+                Marionette.View.extend(
+                    {
+                        template: _.isUndefined(this.fieldsTemplate) ? _.template('<div class="col-sm-3"><span><%= name %></span></div>') : this.fieldsTemplate,
+                        model: this.model,
+                        templateContext: _.isFunction(this.templateContext) ? this.templateContext() : this.templateContext,
+                        onRender: function () {
+                            // Get rid of that pesky wrapping-div.
+                            // Assumes 1 child element present in template.
+                            this.$el = this.$el.children();
+                            // Unwrap the element to prevent infinitely
+                            // nesting elements during re-render.
+                            this.$el.unwrap();
+                            this.setElement(this.$el);
+                        }
+                    });
 
-                this.showChildView('fieldsRegion', new fieldsView());
-                this.bindUIElements();
+            this.showChildView('fieldsRegion', new fieldsView());
+            this.bindUIElements();
 
             if (this.baseClassIds.indexOf(this.model.get('id')) === -1) {
                 this.$el.attr('data-index', this.collection.indexOf(this.model));

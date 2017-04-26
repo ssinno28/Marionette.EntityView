@@ -7,15 +7,14 @@ var EntityListView;
 
             this._channel = Backbone.Radio.channel(this.route);
         },
-        behaviors: function(){
+        behaviors: function () {
             var behaviors = {};
-          if(this.getOption('sortable'))
-          {
-              behaviors.Sortable = {
-                  behaviorClass: SortableListBehavior
-              };
-          }           
-            
+            if (this.getOption('sortable')) {
+                behaviors.Sortable = {
+                    behaviorClass: SortableListBehavior
+                };
+            }
+
             return behaviors;
         },
         onDomRefresh: function () {
@@ -36,7 +35,8 @@ var EntityListView;
                 allowableOperations: allowableOperations,
                 collection: collection,
                 baseClassIds: baseClassIds,
-                sortable: this.getOption('sortable')
+                sortable: this.getOption('sortable'),
+                parent: this
             };
         },
         onAddChild: function (childView) {

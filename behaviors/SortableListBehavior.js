@@ -1,42 +1,38 @@
-
 var SortableListBehavior;
 (function ($, _, Backbone, Marionette) {
     SortableListBehavior = Marionette.Behavior.extend({
-        onRender: function(){
+        onRender: function () {
             this.view.$el.addClass('sortable-view');
             this.setComparator();
-        }, 
+        },
         onChildviewItemDropped: function (draggedModel, overModel) {
             var draggedModelPlacement = draggedModel.get('placement'),
                 overModelPlacement = overModel.get('placement');
 
-            var placement;
             if (draggedModelPlacement < overModelPlacement) {
                 this.view.collection.each(function (item) {
                     var placement = item.get('placement');
                     if (placement <= overModelPlacement) {
                         var newPlacement = placement - 1;
                         item.set({placement: newPlacement});
-                         item.save(['placement'], {
-                        type: 'PATCH'
-                        });
+                        item.save();
                     }
                 });
 
                 draggedModel.set({placement: overModelPlacement});
+                draggedModel.save();
             } else if (draggedModelPlacement > overModelPlacement) {
                 this.view.collection.each(function (item) {
                     var placement = item.get('placement');
                     if (placement >= overModelPlacement) {
                         var newPlacement = placement + 1;
                         item.set({placement: newPlacement});
-                        item.save(['placement'], {
-                        type: 'PATCH'
-                        });
+                        item.save();
                     }
                 });
 
                 draggedModel.set({placement: overModelPlacement});
+                draggedModel.save();
             }
 
             this.setComparator();

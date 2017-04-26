@@ -328,7 +328,7 @@ var FormView;
             if (this.rules && this.rules[validationRule]) {
                 return _(this.rules[validationRule].evaluate).bind(this)(val);
             } else {
-                return _(this._validator.validate).bind(this)(validationRule, val, options);
+                return this._validator.validate(validationRule, val, options);
             }
             return true;
         },

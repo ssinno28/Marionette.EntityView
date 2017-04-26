@@ -57,24 +57,27 @@ legend {
     -webkit-user-select: none;
 }
 
-.sortable-view > .sortable-item {
+/*.sortable-view > .sortable-item {
     float: left;
     position: relative;
     clear: both;
     padding: 20px 0px 20px 30px;
-}
+}*/
 
 .sortable-view > .sortable-item:after {
     content: '';
     position: absolute;
     box-sizing: border-box;
-    left: 5px;
     top: 10%;
     height: 80%;
     width: 6px;
     border: 2px dotted rgba(0, 0, 0, 0.1);
     background: transparent;
     cursor: move;
+}
+
+.sortable-view .sortable-item .list-view-pf-checkbox {
+    border-right: 0 !important;
 }
 
 .sortable-view > .sortable-item:hover:after {

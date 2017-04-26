@@ -30,8 +30,6 @@
       "views/reusableTypes/ReusableTypeListView.js",
       "views/reusableTypes/ReusableTypeView.js",
       "views/reusableTypes/wyswig/WyswigView.js",
-      "views/reusableTypes/sortable/SortableItemView.js",
-      "views/reusableTypes/sortable/SortableCollectionView.js",
       "views/reusableTypes/singleLineText/SingleLineTextView.js",
       "views/reusableTypes/singleLineText/NumberView.js",
       "views/reusableTypes/singleLineText/TextAreaView.js",

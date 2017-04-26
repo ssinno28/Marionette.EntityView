@@ -726,10 +726,11 @@ var FieldsMixin;
                     fieldWrapperTpl = options.template;
                 }
 
-                var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
-                    dataField: dataField,
-                    fieldRegion: fieldRegion
-                });
+                var fieldHtml =
+                    Marionette.Renderer.render(fieldWrapperTpl, {
+                        dataField: dataField,
+                        fieldRegion: fieldRegion
+                    });
 
                 $el.append(fieldHtml);
                 this.fields = _.extend(field, this.fields);
@@ -850,7 +851,7 @@ var FormValidator;
         },
 
         validate: function (validator, val, options) {
-            if (_.isFunction(FormValidator[validator].evaluate)) return _(FormValidator[validator].evaluate).bind(this)(val, options);
+            if (_.isFunction(this[validator].evaluate)) return _(this[validator].evaluate).bind(this)(val, options);
             throw new Error('Validator does not exist : ' + validator);
         },
 
@@ -2496,137 +2497,6 @@ var WyswigView;
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['wyswigTemplate'], CKEDITOR);
 
-var SortableItemView;
-(function ($, _, Backbone, Marionette) {
-    SortableItemView = Marionette.SortableItemView = Marionette.View.extend({
-        tagName: "li",
-        attributes: {
-            "draggable": true
-        },
-        events: {
-            "dragstart": "start",
-            "dragenter": "enter",
-            "dragleave": "leave",
-            "dragend": "leave",
-            "dragover": "over",
-            "drop": "drop"
-        },
-        initialize: function (options) {
-            _.extend(this, options);
-        },
-        onRender: function () {
-            this.$el.data('id', this.model.get('id'));
-        },
-        start: function (e) {
-            this.parent.draggedModel = this.model;
-            if (e.originalEvent) e = e.originalEvent;
-            e.dataTransfer.effectAllowed = "move";
-            e.dataTransfer.dropEffect = "move";
-            e.dataTransfer.setData('text', "Drag");
-        },
-        enter: function (e) {
-            e.preventDefault();
-            this.$el.addClass(this.overClass);
-        },
-        leave: function (e) {
-            e.preventDefault();
-            this.$el.removeClass(this.overClass);
-        },
-        over: function (e) {
-            e.preventDefault();
-            return false;
-        },
-        drop: function (e) {
-            e.preventDefault();
-            this.leave(e);
-
-            var $target = $(e.target),
-                currentModelId = $target.data('id'),
-                collection = this.model.collection,
-                currentModel = collection.get(currentModelId);
-
-            this.getChannel().trigger('item:dropped', this.parent.draggedModel, currentModel);
-        },
-        getChannel: function () {
-            return Backbone.Radio.channel(this.route);
-        }
-    });
-})(jQuery, _, Backbone, Marionette);
-var SortableCollectionView;
-(function ($, _, Backbone, Marionette, SortableItemView) {
-    SortableCollectionView = Marionette.SortableCollectionView = Marionette.CollectionView.extend({
-        tagName: 'ul',
-        className: 'sortable-view',
-        childView: SortableItemView,
-        overClass: 'over',
-        initialize: function (options) {
-            _.extend(this, options);
-
-            this.getChannel().on('item:dropped', _.bind(this.setPlacement, this));
-            this.setComparator();
-        },
-        setPlacement: function (draggedModel, overModel) {
-            var draggedModelPlacement = draggedModel.get('placement'),
-                overModelPlacement = overModel.get('placement');
-
-            var placement;
-            if (draggedModelPlacement < overModelPlacement) {
-                this.collection.each(function (item) {
-                    var placement = item.get('placement');
-                    if (placement <= overModelPlacement) {
-                        var newPlacement = placement - 1;
-                        item.set({placement: newPlacement});
-                    }
-                });
-
-                draggedModel.set({placement: overModelPlacement});
-            } else if (draggedModelPlacement > overModelPlacement) {
-                this.collection.each(function (item) {
-                    var placement = item.get('placement');
-                    if (placement >= overModelPlacement) {
-                        var newPlacement = placement + 1;
-                        item.set({placement: newPlacement});
-                    }
-                });
-
-                draggedModel.set({placement: overModelPlacement});
-            }
-
-            this.setComparator();
-        },
-        setComparator: function () {
-            this.collection.comparator =
-                function (model) {
-                    return model.get('placement');
-                };
-
-            this.collection.sort();
-        },
-        buildChildView: function (item, ItemViewType, itemViewOptions) {
-            var options = _.extend({
-                    model: item,
-                    overClass: this.overClass,
-                    parent: this,
-                    route: this.route
-                },
-                itemViewOptions);
-
-            return new ItemViewType(options);
-        },
-        appendHtml: function (collectionView, itemView, index) {
-            var childrenContainer = collectionView.itemViewContainer ? collectionView.$(collectionView.itemViewContainer) : collectionView.$el;
-            var children = childrenContainer.children();
-            if (children.size() <= index) {
-                childrenContainer.append(itemView.el);
-            } else {
-                childrenContainer.children().eq(index).before(itemView.el);
-            }
-        },
-        getChannel: function () {
-            return Backbone.Radio.channel(this.route);
-        }
-    });
-})(jQuery, _, Backbone, Marionette, SortableItemView);
 var SingleLineTextView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, singleLineTextTpl) {
     SingleLineTextView = ReusableTypeLayoutView.extend({
@@ -3174,14 +3044,130 @@ var PagerBehavior;
         }
     });
 })(jQuery, _, Backbone, Marionette, App, PagerListView);
-var EntityListView;
+var SortableListBehavior;
 (function ($, _, Backbone, Marionette) {
+    SortableListBehavior = Marionette.Behavior.extend({
+        onRender: function () {
+            this.view.$el.addClass('sortable-view');
+            this.setComparator();
+        },
+        onChildviewItemDropped: function (draggedModel, overModel) {
+            var draggedModelPlacement = draggedModel.get('placement'),
+                overModelPlacement = overModel.get('placement');
+
+            if (draggedModelPlacement < overModelPlacement) {
+                this.view.collection.each(function (item) {
+                    var placement = item.get('placement');
+                    if (placement <= overModelPlacement) {
+                        var newPlacement = placement - 1;
+                        item.set({placement: newPlacement});
+                        item.save();
+                    }
+                });
+
+                draggedModel.set({placement: overModelPlacement});
+                draggedModel.save();
+            } else if (draggedModelPlacement > overModelPlacement) {
+                this.view.collection.each(function (item) {
+                    var placement = item.get('placement');
+                    if (placement >= overModelPlacement) {
+                        var newPlacement = placement + 1;
+                        item.set({placement: newPlacement});
+                        item.save();
+                    }
+                });
+
+                draggedModel.set({placement: overModelPlacement});
+                draggedModel.save();
+            }
+
+            this.setComparator();
+        },
+        setComparator: function () {
+            this.view.collection.comparator =
+                function (model) {
+                    return model.get('placement');
+                };
+
+            this.view.collection.sort();
+        }
+    });
+})(jQuery, _, Backbone, Marionette);
+
+var SortableItemBehavior;
+(function ($, _, Backbone, Marionette) {
+    SortableItemBehavior = Marionette.Behavior.extend({
+        onRender: function () {
+            this.view.$el.attr('draggable', true);
+            this.view.$el.addClass('sortable-item');
+            this.view.$el.data('id', this.view.model.get('id'));
+
+            var currentPlacement = this.view.model.get('placement'),
+                model = this.view.model;
+
+            if (currentPlacement === 0 || _.isUndefined(currentPlacement)) {
+                model.set({placement: this.view.collection.indexOf(model)});
+            }
+        },
+        events: {
+            "dragstart": "start",
+            "dragenter": "enter",
+            "dragleave": "leave",
+            "dragend": "leave",
+            "dragover": "over",
+            "drop": "drop"
+        },
+        start: function (e) {
+            this.view.parent.draggedModel = this.view.model;
+            if (e.originalEvent) e = e.originalEvent;
+            e.dataTransfer.effectAllowed = "move";
+            e.dataTransfer.dropEffect = "move";
+            e.dataTransfer.setData('text', "Drag");
+        },
+        enter: function (e) {
+            e.preventDefault();
+            this.view.$el.addClass('over');
+        },
+        leave: function (e) {
+            e.preventDefault();
+            this.view.$el.removeClass('over');
+        },
+        over: function (e) {
+            e.preventDefault();
+            return false;
+        },
+        drop: function (e) {
+            e.preventDefault();
+            this.leave(e);
+
+            var $target = $(e.target),
+                currentModelId = $target.data('id'),
+                collection = this.view.collection,
+                currentModel = collection.get(currentModelId);
+
+            this.view.triggerMethod('item:dropped', this.view.parent.draggedModel, currentModel);
+        }
+    });
+})(jQuery, _, Backbone, Marionette);
+
+var EntityListView;
+(function ($, _, Backbone, Marionette, SortableListBehavior) {
     EntityListView = Marionette.EntityListView = Backbone.Marionette.CollectionView.extend({
         className: 'col-sm-12',
         initialize: function (options) {
             _.extend(this, options);
 
             this._channel = Backbone.Radio.channel(this.route);
+        },
+        behaviors: function () {
+            var behaviors = {};
+            if (this.getOption('sortable')) {
+                behaviors.Sortable = {
+                    behaviorClass: SortableListBehavior
+                };
+            }
+
+            return behaviors;
         },
         onDomRefresh: function () {
             this._channel.trigger('view.list.activated');
@@ -3200,7 +3186,9 @@ var EntityListView;
                 route: route,
                 allowableOperations: allowableOperations,
                 collection: collection,
-                baseClassIds: baseClassIds
+                baseClassIds: baseClassIds,
+                sortable: this.getOption('sortable'),
+                parent: this
             };
         },
         onAddChild: function (childView) {
@@ -3214,10 +3202,10 @@ var EntityListView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette);
+})(jQuery, _, Backbone, Marionette, SortableListBehavior);
 
 var EntityListItemView;
-(function ($, _, Backbone, Marionette, entityListItemTpl) {
+(function ($, _, Backbone, Marionette, entityListItemTpl, SortableItemBehavior) {
     EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.View.extend({
         regions: {
             fieldsRegion: {
@@ -3236,6 +3224,16 @@ var EntityListItemView;
             this.on('render', this.runRenderers, this);
             this.on('dom:refresh', this.runInitializers, this);
         },
+        behaviors: function () {
+            var behaviors = {};
+            if (this.getOption('sortable')) {
+                behaviors.Sortable = {
+                    behaviorClass: SortableItemBehavior
+                };
+            }
+
+            return behaviors;
+        },
         ui: {
             $edit: '.edit',
             $multiAction: '.multi-action',
@@ -3250,25 +3248,25 @@ var EntityListItemView;
             }
         },
         runRenderers: function () {
-                var fieldsView =
-                    Marionette.View.extend(
-                        {
-                            template: _.isUndefined(this.fieldsTemplate) ? _.template('<div class="col-sm-3"><span><%= name %></span></div>') : this.fieldsTemplate,
-                            model: this.model,
-                            templateContext: _.isFunction(this.templateContext) ? this.templateContext() : this.templateContext,
-                            onRender: function () {
-                                // Get rid of that pesky wrapping-div.
-                                // Assumes 1 child element present in template.
-                                this.$el = this.$el.children();
-                                // Unwrap the element to prevent infinitely
-                                // nesting elements during re-render.
-                                this.$el.unwrap();
-                                this.setElement(this.$el);
-                            }
-                        });
+            var fieldsView =
+                Marionette.View.extend(
+                    {
+                        template: _.isUndefined(this.fieldsTemplate) ? _.template('<div class="col-sm-3"><span><%= name %></span></div>') : this.fieldsTemplate,
+                        model: this.model,
+                        templateContext: _.isFunction(this.templateContext) ? this.templateContext() : this.templateContext,
+                        onRender: function () {
+                            // Get rid of that pesky wrapping-div.
+                            // Assumes 1 child element present in template.
+                            this.$el = this.$el.children();
+                            // Unwrap the element to prevent infinitely
+                            // nesting elements during re-render.
+                            this.$el.unwrap();
+                            this.setElement(this.$el);
+                        }
+                    });
 
-                this.showChildView('fieldsRegion', new fieldsView());
-                this.bindUIElements();
+            this.showChildView('fieldsRegion', new fieldsView());
+            this.bindUIElements();
 
             if (this.baseClassIds.indexOf(this.model.get('id')) === -1) {
                 this.$el.attr('data-index', this.collection.indexOf(this.model));
@@ -3300,7 +3298,7 @@ var EntityListItemView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate']);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], SortableItemBehavior);
 
 var EntityLayoutView;
 (function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior) {
@@ -3889,7 +3887,7 @@ var FormView;
             if (this.rules && this.rules[validationRule]) {
                 return _(this.rules[validationRule].evaluate).bind(this)(val);
             } else {
-                return _(this._validator.validate).bind(this)(validationRule, val, options);
+                return this._validator.validate(validationRule, val, options);
             }
             return true;
         },
@@ -4032,7 +4030,8 @@ var EntityService;
                 ({
                     collection: _.isUndefined(entities) ? this.collection : entities,
                     baseClassIds: this.baseClassIds,
-                    route: this.route
+                    route: this.route,
+                    sortable: this.sortable
                 });
 
             listView.currentPage = _.isUndefined(entities) ? 1 : entities.currentPage;
@@ -4172,7 +4171,8 @@ var EntityService;
                             collection: models,
                             parentViewCid: this.entityLayoutView().cid,
                             baseClassIds: this.baseClassIds,
-                            route: this.route
+                            route: this.route,
+                            sortable: this.sortable
                         });
 
                     listView.route = this.route;
@@ -4220,7 +4220,8 @@ var EntityService;
                             collection: models,
                             parentViewCid: self.entityLayoutView().cid,
                             baseClassIds: self.baseClassIds,
-                            route: self.route
+                            route: self.route,
+                            sortable: self.sortable
                         });
 
                     listView.currentPage = page;
@@ -5316,8 +5317,6 @@ var EntityController;
         RadioButtonListView: RadioButtonListView,
         CheckBoxListView: CheckBoxListView,
         CheckBoxView: CheckBoxView,
-        SortableItemView: SortableItemView,
-        SortableCollectionView: SortableCollectionView,
         FormValidator: FormValidator,
         ReusableTypeLayoutView: ReusableTypeLayoutView,
         MessageBehavior: MessageBehavior,

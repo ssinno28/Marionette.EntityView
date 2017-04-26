@@ -1,12 +1,18 @@
-
 var SortableItemBehavior;
 (function ($, _, Backbone, Marionette) {
     SortableItemBehavior = Marionette.Behavior.extend({
-        onRender: function(){
-         this.view.$el.attr('draggable', true);   
+        onRender: function () {
+            this.view.$el.attr('draggable', true);
             this.view.$el.addClass('sortable-item');
-         this.view.$el.data('id', this.model.get('id'));
-        }
+            this.view.$el.data('id', this.view.model.get('id'));
+
+            var currentPlacement = this.view.model.get('placement'),
+                model = this.view.model;
+
+            if (currentPlacement === 0 || _.isUndefined(currentPlacement)) {
+                model.set({placement: this.view.collection.indexOf(model)});
+            }
+        },
         events: {
             "dragstart": "start",
             "dragenter": "enter",
@@ -16,7 +22,7 @@ var SortableItemBehavior;
             "drop": "drop"
         },
         start: function (e) {
-            this.draggedModel = this.model;
+            this.view.parent.draggedModel = this.view.model;
             if (e.originalEvent) e = e.originalEvent;
             e.dataTransfer.effectAllowed = "move";
             e.dataTransfer.dropEffect = "move";
@@ -43,7 +49,7 @@ var SortableItemBehavior;
                 collection = this.view.collection,
                 currentModel = collection.get(currentModelId);
 
-            this.view.triggerMethod('item:dropped', this.draggedModel, currentModel);
+            this.view.triggerMethod('item:dropped', this.view.parent.draggedModel, currentModel);
         }
     });
 })(jQuery, _, Backbone, Marionette);

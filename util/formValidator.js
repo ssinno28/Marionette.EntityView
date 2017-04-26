@@ -9,7 +9,7 @@ var FormValidator;
         },
 
         validate: function (validator, val, options) {
-            if (_.isFunction(FormValidator[validator].evaluate)) return _(FormValidator[validator].evaluate).bind(this)(val, options);
+            if (_.isFunction(this[validator].evaluate)) return _(this[validator].evaluate).bind(this)(val, options);
             throw new Error('Validator does not exist : ' + validator);
         },
 
