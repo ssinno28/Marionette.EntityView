@@ -241,7 +241,6 @@ var EntityService;
             }
 
             var self = this;
-
             if (isNaN(page)) {
                 page = 0;
             }
@@ -323,9 +322,13 @@ var EntityService;
                 });
         },
         getData: function (page) {
+            if (this.sortable) {
+                return {};
+            }
+
             return {
                 page: parseInt(page),
-                pageSize: parseInt(App.pageSize)
+                pageSize: _.isUndefined(this.pageSize) ? parseInt(App.pageSize) : this.pageSize
             };
         }
     });
