@@ -2930,38 +2930,6 @@ var AutoCompleteLayoutView;
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['autoCompleteTemplate'], TimeoutUtil, AutoCompleteListView);
 
-var ModalBehavior;
-(function ($, _, Backbone, Marionette, ModalView, ModalModel) {
-    ModalBehavior = Marionette.Behavior.extend({
-        defaults: function () {
-            return {
-                modals: []
-            };
-        },
-        onAddModal: function (modal) {
-            this.options.modals.push(modal);
-        },
-        onRender: function () {
-            _.each(this.options.modals, _.bind(function (modal) {
-                var model = new ModalModel({
-                        message: modal.message,
-                        title: modal.title
-                    }),
-                    className = this._formatRegionName(modal.name);
-
-                this.view.$el.append('<div class="' + className + '"></div>');
-                this.view.addRegion(modal.name, {
-                    el: '.' + className,
-                    replaceElement: true
-                });
-
-                var modalView = new ModalView({model: model, choices: modal.choices, safeName: className});
-                this.view.showChildView(modal.name, modalView);
-            }, this));
-        }
-    });
-})(jQuery, _, Backbone, Marionette, ModalView, ModalModel);
-
 var MessageBehavior;
 (function ($, _, Backbone, Marionette, SuccessView, ErrorView, InfoView) {
     MessageBehavior = Marionette.Behavior.extend({
@@ -4197,7 +4165,6 @@ var EntityService;
             }
 
             var self = this;
-
             if (isNaN(page)) {
                 page = 0;
             }
@@ -4279,9 +4246,13 @@ var EntityService;
                 });
         },
         getData: function (page) {
+            if (this.sortable) {
+                return {};
+            }
+
             return {
                 page: parseInt(page),
-                pageSize: parseInt(App.pageSize)
+                pageSize: _.isUndefined(this.pageSize) ? parseInt(App.pageSize) : this.pageSize
             };
         }
     });
@@ -5290,7 +5261,6 @@ var EntityController;
     _.extend(EntityLayoutView.prototype, UtilitiesMixin);
     _.extend(EntityListItemView.prototype, UtilitiesMixin);
     _.extend(EntityFormView.prototype, UtilitiesMixin);
-    _.extend(ModalBehavior.prototype, UtilitiesMixin);
 
     _.extend(EntityFormView.prototype, FieldsMixin);
 

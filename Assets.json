@@ -48,7 +48,6 @@
       "views/reusableTypes/autoComplete/AutoCompleteView.js",
       "views/reusableTypes/autoComplete/AutoCompleteListView.js",
       "views/reusableTypes/autoComplete/AutoCompleteLayoutView.js",
-      "behaviors/ModalBehavior.js",
       "behaviors/MessageBehavior.js",
       "behaviors/PagerBehavior.js",
       "behaviors/SortableListBehavior.js",
