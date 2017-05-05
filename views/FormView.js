@@ -198,6 +198,7 @@ var FormView;
                         val[prop] = self.inputVal(elem);
                     } else if (val) {
                         self.inputVal(elem, val[prop]);
+                        elem.trigger('change');
                     }
                 });
 

@@ -255,9 +255,7 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class="row">\r\n    <div class="col-sm-3">\r\n        <a style="display:none;" class="th radius" href="#">\r\n            <img id="uploadedImage' +
 ((__t = ( dataField )) == null ? '' : __t) +
-'" class="uploadedImage"/>\r\n        </a>\r\n        <input name="' +
-((__t = ( dataField )) == null ? '' : __t) +
-'" data-field="' +
+'" class="img-thumbnail uploadedImage"/>\r\n        </a>\r\n        <input class="imgUrl" name="' +
 ((__t = ( dataField )) == null ? '' : __t) +
 '" type="hidden" value="' +
 ((__t = ( value )) == null ? '' : __t) +
@@ -2353,10 +2351,11 @@ var ReusableTypeLayoutView;
             this.$el.unwrap();
             this.setElement(this.$el);
 
+            var $dataField = this.getDataField();
             if (this.getOption('isDocProp')) {
-                this.$el.attr('data-property', this.getOption('dataField'));
+                $dataField.attr('data-property', this.getOption('dataField'));
             } else {
-                this.$el.attr('data-field', this.getOption('dataField'));
+                $dataField.attr('data-field', this.getOption('dataField'));
             }
         },
         templateContext: function () {
@@ -2366,6 +2365,9 @@ var ReusableTypeLayoutView;
                 dataField: self.dataField,
                 value: self.value
             };
+        },
+        getDataField: function(){
+            return !_.isUndefined(this.dataFieldSelector) ? this.$el.find(this.dataFieldSelector) : this.$el;
         },
         getChannel: function () {
             return this._channel;
@@ -2596,25 +2598,23 @@ var PagerListView;
 var ImageFieldView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, imageFieldTemplate) {
     ImageFieldView = ReusableTypeLayoutView.extend({
-        initialize: function (options) {
-            ReusableTypeLayoutView.prototype.initialize.call(this, options);
-
-            $('[data-field="' + this.dataField + '"]').on('change', this.updateImageUrl);
+        initialize: function(){
+          this.dataFieldSelector = '.imgUrl';
         },
         template: imageFieldTemplate,
         ui: {
             '$image': '.uploadedImage'
         },
-        updateImageUrl: function (localUrl) {
-            var url = $('[data-field="' + this.dataField + '"]').val();
+        updateImageUrl: function () {
+            var url = this.getDataField().val();
 
             if (url !== '') {
-                this.ui.$image.attr('src', localUrl + url);
+                this.ui.$image.attr('src', url);
                 this.ui.$image.parent().show();
             }
         },
         onDomRefresh: function () {
-            this.updateImageUrl(App.API_URL + '/');
+            this.getDataField().change(_.bind(this.updateImageUrl, this));
         }
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['imageFieldTemplate']);
@@ -3725,6 +3725,7 @@ var FormView;
                         val[prop] = self.inputVal(elem);
                     } else if (val) {
                         self.inputVal(elem, val[prop]);
+                        elem.trigger('change');
                     }
                 });
 

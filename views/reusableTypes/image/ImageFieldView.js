@@ -1,25 +1,23 @@
 var ImageFieldView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, imageFieldTemplate) {
     ImageFieldView = ReusableTypeLayoutView.extend({
-        initialize: function (options) {
-            ReusableTypeLayoutView.prototype.initialize.call(this, options);
-
-            $('[data-field="' + this.dataField + '"]').on('change', this.updateImageUrl);
+        initialize: function(){
+          this.dataFieldSelector = '.imgUrl';
         },
         template: imageFieldTemplate,
         ui: {
             '$image': '.uploadedImage'
         },
-        updateImageUrl: function (localUrl) {
-            var url = $('[data-field="' + this.dataField + '"]').val();
+        updateImageUrl: function () {
+            var url = this.getDataField().val();
 
             if (url !== '') {
-                this.ui.$image.attr('src', localUrl + url);
+                this.ui.$image.attr('src', url);
                 this.ui.$image.parent().show();
             }
         },
         onDomRefresh: function () {
-            this.updateImageUrl(App.API_URL + '/');
+            this.getDataField().change(_.bind(this.updateImageUrl, this));
         }
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['imageFieldTemplate']);

@@ -20,10 +20,11 @@ var ReusableTypeLayoutView;
             this.$el.unwrap();
             this.setElement(this.$el);
 
+            var $dataField = this.getDataField();
             if (this.getOption('isDocProp')) {
-                this.$el.attr('data-property', this.getOption('dataField'));
+                $dataField.attr('data-property', this.getOption('dataField'));
             } else {
-                this.$el.attr('data-field', this.getOption('dataField'));
+                $dataField.attr('data-field', this.getOption('dataField'));
             }
         },
         templateContext: function () {
@@ -33,6 +34,9 @@ var ReusableTypeLayoutView;
                 dataField: self.dataField,
                 value: self.value
             };
+        },
+        getDataField: function(){
+            return !_.isUndefined(this.dataFieldSelector) ? this.$el.find(this.dataFieldSelector) : this.$el;
         },
         getChannel: function () {
             return this._channel;

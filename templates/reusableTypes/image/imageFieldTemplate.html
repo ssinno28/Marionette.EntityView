@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-sm-3">
         <a style="display:none;" class="th radius" href="#">
-            <img id="uploadedImage<%= dataField %>" class="uploadedImage"/>
+            <img id="uploadedImage<%= dataField %>" class="img-thumbnail uploadedImage"/>
         </a>
-        <input name="<%= dataField %>" data-field="<%= dataField %>" type="hidden" value="<%= value %>"/>
+        <input class="imgUrl" name="<%= dataField %>" type="hidden" value="<%= value %>"/>
     </div>
     <div class="col-sm-9">
         <button type="button" onclick="BrowseServer('<%= dataField %>');" class="pickImage btn btn-default">Pick Image</button>
