@@ -34,7 +34,7 @@ var EntityLayoutView;
         },
         className: function () {
             var entityLayoutClass = ' entity-layout';
-            if (!this.getOption('routing')) {
+            if (!this.getOption('routing') || this.getOption('embedded')) {
                 entityLayoutClass = ' entity-layout-nested';
             }
 
@@ -53,9 +53,17 @@ var EntityLayoutView;
             'click .sub-nav .create': 'createClick',
             'click .sub-nav .get-all': 'getAllClick'
         },
-        childViewEvents: {
-            'modal:delete-all-modal:yes': 'deleteAllYes',
-            'modal:delete-item-modal:yes': 'deleteItemYes'
+        childViewEvents: function () {
+            var events = {};
+            if (this.getOption('embedded')) {
+                events['modal:delete-all-modal-embedded:yes'] = 'deleteAllYes';
+                events['modal:delete-item-modal-embedded:yes'] = 'deleteItemYes';
+            } else {
+                events['modal:delete-all-modal:yes'] = 'deleteAllYes';
+                events['modal:delete-item-modal:yes'] = 'deleteItemYes';
+            }
+
+            return events;
         },
         ui: {
             '$subNav': '.sub-nav',
@@ -106,14 +114,16 @@ var EntityLayoutView;
             this.showMultiActions();
         },
         runRenderers: function () {
-            this.modal('deleteAllModal')
+            var embedded = this.getOption('embedded') ? 'Embedded' : '';
+
+            this.modal('deleteAllModal' + embedded)
                 .message('Are you sure you want to delete these items?')
                 .title('Delete All?')
                 .choice('Yes', 'yes')
                 .choice('No', 'no', true)
                 .add();
 
-            this.modal('deleteItemModal')
+            this.modal('deleteItemModal' + embedded)
                 .message('Are you sure you want to delete this item?')
                 .title('Delete Item?')
                 .choice('Yes', 'yes')
@@ -128,31 +138,6 @@ var EntityLayoutView;
             this.showMultiActions();
         },
         formViewActivated: function () {
-        },
-        addAll: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            var itemsSelected = this.$el.find('.multi-action:checked'),
-                deferreds = [],
-                fullCollection = this.listView.collection;
-
-            _.each(itemsSelected, function (item) {
-                var id = $(item).data('id');
-                deferreds.push(fullCollection.getById(id));
-            });
-
-            $.when.apply($, deferreds)
-                .then(_.bind(function () {
-                    var models = [];
-                    _.each(arguments, function (entity) {
-                        models.push(entity);
-                    });
-
-                    this._channel.trigger('addAll', models);
-                    itemsSelected.attr('checked', false);
-                    this.showMultiActions();
-                }, this));
         },
         deleteAllYes: function (view, e) {
             var itemsSelected = this.$el.find('.multi-action:checked'),
@@ -178,11 +163,8 @@ var EntityLayoutView;
                 e.stopPropagation();
             }
 
-            var allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1,
-                allowPublishAll = this.allowableOperations.indexOf('publish-all') > -1,
-                allowAddAll = this.allowableOperations.indexOf('add-all') > -1;
-
-            if (!allowPublishAll && !allowDeleteAll && !allowAddAll) {
+            var allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1;
+            if (!allowDeleteAll) {
                 return;
             }
 

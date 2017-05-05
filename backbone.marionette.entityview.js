@@ -79,27 +79,11 @@ __p += '<div class="row">\r\n    <div class="entity-header col-sm-12">\r\n    </
  if(showCreate){ ;
 __p += '\r\n                <button type="button" class="create btn btn-primary">\r\n                    Create\r\n                </button>\r\n                ';
  } ;
-__p += '\r\n                ';
- if(allowDeleteAll || allowPublishAll || allowAddAll) { ;
-__p += '\r\n                ';
+__p += '\r\n\r\n                ';
  if(allowDeleteAll){ ;
-__p += '\r\n                <button data-toggle="modal" data-target="#delete-all-modal" type="button" class="btn btn-danger multi-action-requests ' +
+__p += '\r\n                <button data-toggle="modal" data-target="#delete-all-modal" type="button"\r\n                        class="btn btn-danger multi-action-requests ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
 ' delete-all-modal-show">\r\n                    Delete All\r\n                </button>\r\n                ';
- } ;
-__p += '\r\n\r\n                ';
- if(allowPublishAll){ ;
-__p += '\r\n                <button type="button" class="btn btn-default multi-action-requests ' +
-((__t = ( btnClass )) == null ? '' : __t) +
-' publish-all">\r\n                    Publish All\r\n                </button>\r\n                ';
- } ;
-__p += '\r\n\r\n                ';
- if(allowAddAll){ ;
-__p += '\r\n                <button type="button" class="btn btn-default multi-action-requests ' +
-((__t = ( btnClass )) == null ? '' : __t) +
-' add-all">\r\n                    Add All\r\n                </button>\r\n                ';
- } ;
-__p += '\r\n                ';
  } ;
 __p += '\r\n            </div>\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n\r\n<div class="row">\r\n    <div class="col-sm-12">\r\n        <div class="list-group entityRegion">\r\n\r\n        </div>\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-sm-12">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n</div>';
 
@@ -140,7 +124,15 @@ __p += '\r\n                <li>\r\n                    <a class="edit" data-id=
  } ;
 __p += '\r\n\r\n                ';
  if(allowDelete){ ;
-__p += '\r\n                <li>\r\n                    <a data-toggle="modal" data-target="#delete-item-modal" class="delete-item-modal-show"\r\n                       data-id="' +
+__p += '\r\n                <li>\r\n                    <a data-toggle="modal" data-target="#delete-item-modal';
+if(embedded){;
+__p += '-embedded';
+ } ;
+__p += '" class="delete-item-modal-';
+if(embedded){;
+__p += 'embedded-';
+};
+__p += 'show"\r\n                       data-id="' +
 ((__t = ( id )) == null ? '' : __t) +
 '" href="#">\r\n                        Delete\r\n                    </a>\r\n                </li>\r\n                ';
  } ;
@@ -499,12 +491,12 @@ var FieldsMixin;
                 return returnObj;
             };
 
-            var min = function (message) {
+            var min = function (message, min) {
                 currentField.validations.min = message;
                 return returnObj;
             };
 
-            var max = function (message) {
+            var max = function (message, max) {
                 currentField.validations.max = message;
                 return returnObj;
             };
@@ -742,7 +734,8 @@ var FieldsMixin;
                     region: this.getRegion(fieldRegion),
                     route: this.getSubServiceRoute(name),
                     subRoute: location.hash.substring(1, location.hash.length),
-                    name: name
+                    name: name,
+                    embedded: true
                 }));
 
                 this['_' + name + 'Channel'] = this['_' + name + 'Service'].getChannel();
@@ -3156,7 +3149,8 @@ var EntityListView;
                 collection: collection,
                 baseClassIds: baseClassIds,
                 sortable: this.getOption('sortable'),
-                parent: this
+                parent: this,
+                embedded: this.getOption('embedded')
             };
         },
         onAddChild: function (childView) {
@@ -3246,19 +3240,14 @@ var EntityListItemView;
 
             var allowEdit = this.allowableOperations.indexOf('edit') > -1,
                 allowDelete = this.allowableOperations.indexOf('delete') > -1,
-                allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1,
-                allowPublishAll = this.allowableOperations.indexOf('clone-all') > -1,
-                allowAddAll = this.allowableOperations.indexOf('add-all') > -1,
-                allowViewLive = this.allowableOperations.indexOf('view-live') > -1;
+                allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1;
 
             return {
                 route: route,
                 allowEdit: allowEdit,
                 allowDelete: allowDelete,
                 allowDeleteAll: allowDeleteAll,
-                allowPublishAll: allowPublishAll,
-                allowAddAll: allowAddAll,
-                allowViewLive: allowViewLive
+                embedded: this.getOption('embedded')
             };
         },
         getChannel: function () {
@@ -3304,7 +3293,7 @@ var EntityLayoutView;
         },
         className: function () {
             var entityLayoutClass = ' entity-layout';
-            if (!this.getOption('routing')) {
+            if (!this.getOption('routing') || this.getOption('embedded')) {
                 entityLayoutClass = ' entity-layout-nested';
             }
 
@@ -3323,9 +3312,17 @@ var EntityLayoutView;
             'click .sub-nav .create': 'createClick',
             'click .sub-nav .get-all': 'getAllClick'
         },
-        childViewEvents: {
-            'modal:delete-all-modal:yes': 'deleteAllYes',
-            'modal:delete-item-modal:yes': 'deleteItemYes'
+        childViewEvents: function () {
+            var events = {};
+            if (this.getOption('embedded')) {
+                events['modal:delete-all-modal-embedded:yes'] = 'deleteAllYes';
+                events['modal:delete-item-modal-embedded:yes'] = 'deleteItemYes';
+            } else {
+                events['modal:delete-all-modal:yes'] = 'deleteAllYes';
+                events['modal:delete-item-modal:yes'] = 'deleteItemYes';
+            }
+
+            return events;
         },
         ui: {
             '$subNav': '.sub-nav',
@@ -3376,14 +3373,16 @@ var EntityLayoutView;
             this.showMultiActions();
         },
         runRenderers: function () {
-            this.modal('deleteAllModal')
+            var embedded = this.getOption('embedded') ? 'Embedded' : '';
+
+            this.modal('deleteAllModal' + embedded)
                 .message('Are you sure you want to delete these items?')
                 .title('Delete All?')
                 .choice('Yes', 'yes')
                 .choice('No', 'no', true)
                 .add();
 
-            this.modal('deleteItemModal')
+            this.modal('deleteItemModal' + embedded)
                 .message('Are you sure you want to delete this item?')
                 .title('Delete Item?')
                 .choice('Yes', 'yes')
@@ -3398,31 +3397,6 @@ var EntityLayoutView;
             this.showMultiActions();
         },
         formViewActivated: function () {
-        },
-        addAll: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            var itemsSelected = this.$el.find('.multi-action:checked'),
-                deferreds = [],
-                fullCollection = this.listView.collection;
-
-            _.each(itemsSelected, function (item) {
-                var id = $(item).data('id');
-                deferreds.push(fullCollection.getById(id));
-            });
-
-            $.when.apply($, deferreds)
-                .then(_.bind(function () {
-                    var models = [];
-                    _.each(arguments, function (entity) {
-                        models.push(entity);
-                    });
-
-                    this._channel.trigger('addAll', models);
-                    itemsSelected.attr('checked', false);
-                    this.showMultiActions();
-                }, this));
         },
         deleteAllYes: function (view, e) {
             var itemsSelected = this.$el.find('.multi-action:checked'),
@@ -3448,11 +3422,8 @@ var EntityLayoutView;
                 e.stopPropagation();
             }
 
-            var allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1,
-                allowPublishAll = this.allowableOperations.indexOf('publish-all') > -1,
-                allowAddAll = this.allowableOperations.indexOf('add-all') > -1;
-
-            if (!allowPublishAll && !allowDeleteAll && !allowAddAll) {
+            var allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1;
+            if (!allowDeleteAll) {
                 return;
             }
 
@@ -3968,6 +3939,10 @@ var EntityService;
                 this.filterField = 'name';
             }
 
+            if (_.isUndefined(this.embedded)) {
+                this.embedded = false;
+            }
+
             if (this.embedded && this.routing) {
                 var router = Marionette.EntityRouter.extend({
                     urlRoot: this.route
@@ -4000,7 +3975,8 @@ var EntityService;
                     collection: _.isUndefined(entities) ? this.collection : entities,
                     baseClassIds: this.baseClassIds,
                     route: this.route,
-                    sortable: this.sortable
+                    sortable: this.sortable,
+                    embedded: this.embedded
                 });
 
             listView.currentPage = _.isUndefined(entities) ? 1 : entities.currentPage;
@@ -4014,7 +3990,8 @@ var EntityService;
                 model: new Backbone.Model(),
                 btnClass: this.getBtnClass(),
                 routing: this.routing,
-                filterField: this.filterField
+                filterField: this.filterField,
+                embedded: this.embedded
             });
         },
         getHeader: function () {

@@ -27,7 +27,7 @@
 
                 <% if(allowDelete){ %>
                 <li>
-                    <a data-toggle="modal" data-target="#delete-item-modal" class="delete-item-modal-show"
+                    <a data-toggle="modal" data-target="#delete-item-modal<%if(embedded){%>-embedded<% } %>" class="delete-item-modal-<%if(embedded){%>embedded-<%}%>show"
                        data-id="<%= id %>" href="#">
                         Delete
                     </a>

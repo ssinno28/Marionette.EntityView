@@ -43,6 +43,10 @@ var EntityService;
                 this.filterField = 'name';
             }
 
+            if (_.isUndefined(this.embedded)) {
+                this.embedded = false;
+            }
+
             if (this.embedded && this.routing) {
                 var router = Marionette.EntityRouter.extend({
                     urlRoot: this.route
@@ -75,7 +79,8 @@ var EntityService;
                     collection: _.isUndefined(entities) ? this.collection : entities,
                     baseClassIds: this.baseClassIds,
                     route: this.route,
-                    sortable: this.sortable
+                    sortable: this.sortable,
+                    embedded: this.embedded
                 });
 
             listView.currentPage = _.isUndefined(entities) ? 1 : entities.currentPage;
@@ -89,7 +94,8 @@ var EntityService;
                 model: new Backbone.Model(),
                 btnClass: this.getBtnClass(),
                 routing: this.routing,
-                filterField: this.filterField
+                filterField: this.filterField,
+                embedded: this.embedded
             });
         },
         getHeader: function () {

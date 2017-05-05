@@ -19,24 +19,12 @@
                     Create
                 </button>
                 <% } %>
-                <% if(allowDeleteAll || allowPublishAll || allowAddAll) { %>
+
                 <% if(allowDeleteAll){ %>
-                <button data-toggle="modal" data-target="#delete-all-modal" type="button" class="btn btn-danger multi-action-requests <%= btnClass %> delete-all-modal-show">
+                <button data-toggle="modal" data-target="#delete-all-modal" type="button"
+                        class="btn btn-danger multi-action-requests <%= btnClass %> delete-all-modal-show">
                     Delete All
                 </button>
-                <% } %>
-
-                <% if(allowPublishAll){ %>
-                <button type="button" class="btn btn-default multi-action-requests <%= btnClass %> publish-all">
-                    Publish All
-                </button>
-                <% } %>
-
-                <% if(allowAddAll){ %>
-                <button type="button" class="btn btn-default multi-action-requests <%= btnClass %> add-all">
-                    Add All
-                </button>
-                <% } %>
                 <% } %>
             </div>
         </div>

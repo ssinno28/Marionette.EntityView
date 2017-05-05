@@ -72,19 +72,14 @@ var EntityListItemView;
 
             var allowEdit = this.allowableOperations.indexOf('edit') > -1,
                 allowDelete = this.allowableOperations.indexOf('delete') > -1,
-                allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1,
-                allowPublishAll = this.allowableOperations.indexOf('clone-all') > -1,
-                allowAddAll = this.allowableOperations.indexOf('add-all') > -1,
-                allowViewLive = this.allowableOperations.indexOf('view-live') > -1;
+                allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1;
 
             return {
                 route: route,
                 allowEdit: allowEdit,
                 allowDelete: allowDelete,
                 allowDeleteAll: allowDeleteAll,
-                allowPublishAll: allowPublishAll,
-                allowAddAll: allowAddAll,
-                allowViewLive: allowViewLive
+                embedded: this.getOption('embedded')
             };
         },
         getChannel: function () {

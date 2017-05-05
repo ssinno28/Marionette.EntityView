@@ -267,7 +267,8 @@ var FieldsMixin;
                     region: this.getRegion(fieldRegion),
                     route: this.getSubServiceRoute(name),
                     subRoute: location.hash.substring(1, location.hash.length),
-                    name: name
+                    name: name,
+                    embedded: true
                 }));
 
                 this['_' + name + 'Channel'] = this['_' + name + 'Service'].getChannel();
