@@ -97,7 +97,7 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div class="row">\r\n    ';
- if(allowPublishAll || allowDeleteAll || allowAddAll){ ;
+ if(allowDeleteAll){ ;
 __p += '\r\n    <div class="list-view-checkbox col-sm-1">\r\n        <input class="multi-action" data-id="' +
 ((__t = ( id )) == null ? '' : __t) +
 '" id="' +
@@ -679,6 +679,7 @@ var FieldsMixin;
                     return this.field(name, true, currentField).el($docEl);
                 }, this);
 
+                channel.request('document:' + type, docField);
                 channel.request('document:' + type + ':' + id, docField);
             }, this);
 

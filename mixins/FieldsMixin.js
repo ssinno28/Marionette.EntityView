@@ -212,6 +212,7 @@ var FieldsMixin;
                     return this.field(name, true, currentField).el($docEl);
                 }, this);
 
+                channel.request('document:' + type, docField);
                 channel.request('document:' + type + ':' + id, docField);
             }, this);
 
