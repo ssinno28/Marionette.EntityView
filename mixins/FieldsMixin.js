@@ -25,12 +25,12 @@ var FieldsMixin;
             };
 
             var min = function (message, min) {
-                currentField.validations.min = message;
+                currentField.validations['min:' + min] = message;
                 return returnObj;
             };
 
             var max = function (message, max) {
-                currentField.validations.max = message;
+                currentField.validations['max:' + max] = message;
                 return returnObj;
             };
 
