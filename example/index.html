@@ -15,16 +15,16 @@
     <link href="../example/css/styles.css" rel="stylesheet"/>
     <link href="../css/entityview.css" rel="stylesheet"/>
 
-    <script type="text/javascript">
-        var urlobj = null;
+  <script type="text/javascript">
+             var urlobj = null,
+            oWindow = null;
         function BrowseServer(obj) {
             urlobj = obj;
             OpenServerBrowser(
-                    '../node_modules/rich-filemanager/index.html',
-                    screen.width * 0.7,
-                    screen.height * 0.7);
+                '/wwwroot/lib/rich-filemanager/index.html',
+                screen.width * 0.7,
+                screen.height * 0.7);
         }
-
         function OpenServerBrowser(url, width, height) {
             var iLeft = (screen.width - width) / 2;
             var iTop = (screen.height - height) / 2;
@@ -33,9 +33,8 @@
             sOptions += ",height=" + height;
             sOptions += ",left=" + iLeft;
             sOptions += ",top=" + iTop;
-            var oWindow = window.open(url, "BrowseWindow", sOptions);
+            oWindow = window.open(url, "BrowseWindow", sOptions);
         }
-
         function FindByAttributeValue(attribute, value) {
             var All = document.getElementsByTagName('*');
             for (var i = 0; i < All.length; i++) {
@@ -44,13 +43,16 @@
                 }
             }
         }
-
         function SetUrl(url, width, height, alt) {
             var el = FindByAttributeValue('data-field', urlobj);
+            if (el === undefined) {
+                el = FindByAttributeValue('data-property', urlobj);
+            }
             var imgEl = document.getElementById('uploadedImage' + urlobj);
             if (url !== '' && url !== null && url !== undefined) {
                 imgEl.setAttribute('src', url);
                 imgEl.parentElement.setAttribute('style', '');
+                el.value = url;
             } else {
                 imgEl.parentElement.setAttribute('style', 'display:none;');
             }
