@@ -35,13 +35,28 @@ describe('Entity Forms Validation', function () {
         region: region
     };
 
-    options.collection.add(new Backbone.Model({id: 1, name: 'testing'}));
     var entityService = new Marionette.EntityService(options);
     entityService.create();
     
-    it('returns required validation', function () {
-        var errors = region.currentView.validate();
+    it('returns min requirement error', function () {
+        var currentView =  region.currentView;
         
-        expect(entityService.routing).toEqual(true);
+        currentView.$el.find('[data-field=age]').val(21);
+        currentView.$el.find('[data-field=name]').val('test');
+        currentView.$el.find('[data-field=email]').val('test@example.com');
+        
+        var errors = currentView.validate();        
+        expect(errors[0].error[0]).toEqual('There is a minimum age of 23 required!');
+    });
+    
+    it('returns email requirement error', function () {
+        var currentView =  region.currentView;
+        
+        currentView.$el.find('[data-field=age]').val(23);
+        currentView.$el.find('[data-field=name]').val('test');
+        currentView.$el.find('[data-field=email]').val('test');
+        
+        var errors = currentView.validate();        
+        expect(errors[0].error[0]).toEqual('The email address is not in the correct format!');
     });
 });
