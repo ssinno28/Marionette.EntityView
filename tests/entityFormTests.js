@@ -21,6 +21,9 @@ describe('Entity Forms Validation', function () {
             .required('Your Age is required!!')
             .numeric('This field should be a number!')
             .min('There is a minimum age of 23 required!', 23)
+            .rule('testRule', 'The age cannot be greater than 50!', function(val){
+            return val < 50;
+            })
             .singleLine();
         }
     });
@@ -47,6 +50,17 @@ describe('Entity Forms Validation', function () {
         
         var errors = currentView.validate();        
         expect(errors[0].error[0]).toEqual('There is a minimum age of 23 required!');
+    });
+    
+    it('returns custom rule requirement error', function () {
+        var currentView =  region.currentView;
+        
+        currentView.$el.find('[data-field=age]').val(51);
+        currentView.$el.find('[data-field=name]').val('test');
+        currentView.$el.find('[data-field=email]').val('test@example.com');
+        
+        var errors = currentView.validate();        
+        expect(errors[0].error[0]).toEqual('The age cannot be greater than 50!');
     });
     
     it('returns email requirement error', function () {
