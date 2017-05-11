@@ -50,7 +50,7 @@ var FieldsMixin;
             };
 
             var email = function (message) {
-                currentField.email = message;
+                currentField.validations.email = message;
                 return returnObj;
             };
 
@@ -58,14 +58,22 @@ var FieldsMixin;
                 currentField.validations.boolean = message;
                 return returnObj;
             };
+			
+			var matches = function(message, field) {
+				currentField.validations['matches:' + field] = message;
+				return returnObj;
+			};
 
             var rule = _.bind(function (name, message, func) {	
 				if(_.isUndefined(this.rules)) {
 					this.rules = {};
 				}
 				
-                this.rules[name]  = func;				
+                this.rules[name] = {};
+				this.rules[name].evaluate = func;
+				
                 currentField.validations[name] = message;
+				return returnObj;
             }, this);
 
             validations = {

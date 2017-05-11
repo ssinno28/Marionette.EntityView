@@ -517,7 +517,7 @@ var FieldsMixin;
             };
 
             var email = function (message) {
-                currentField.email = message;
+                currentField.validations.email = message;
                 return returnObj;
             };
 
@@ -525,14 +525,22 @@ var FieldsMixin;
                 currentField.validations.boolean = message;
                 return returnObj;
             };
+			
+			var matches = function(message, field) {
+				currentField.validations['matches:' + field] = message;
+				return returnObj;
+			};
 
             var rule = _.bind(function (name, message, func) {	
 				if(_.isUndefined(this.rules)) {
 					this.rules = {};
 				}
 				
-                this.rules[name]  = func;				
+                this.rules[name] = {};
+				this.rules[name].evaluate = func;
+				
                 currentField.validations[name] = message;
+				return returnObj;
             }, this);
 
             validations = {
@@ -851,14 +859,15 @@ var FormValidator;
             throw new Error('Validator does not exist : ' + validator);
         },
 
-        /*     matches: function (val, field) {
-         *//*jshint eqeqeq:false*//*
-         return val == this.inputVal(field);
-         },*/
+       /* matches: {
+			evaluate: function (val, field) {
+				 return val == this.inputVal(field);
+			}
+		 }, */
 
         min: {
             evaluate: function (val, options) {
-                if (val.length < options[0]) return false;
+                if (val < options[0]) return false;
                 return true;
             }
         },
@@ -866,7 +875,7 @@ var FormValidator;
 
         max: {
             evaluate: function (val, options) {
-                if (val.length > options[0]) return false;
+                if (val > options[0]) return false;
                 return true;
             }
         },
@@ -879,19 +888,19 @@ var FormValidator;
 
         alpha: {
             evaluate: function (val) {
-                return FormValidator.regex.alpha.test(val);
+                return this.regex.alpha.test(val);
             }
         },
 
         alphanum: {
             evaluate: function (val) {
-                return FormValidator.regex.alphanum.test(val);
+                return this.regex.alphanum.test(val);
             }
         },
 
         email: {
             evaluate: function (val) {
-                return val === '' || FormValidator.regex.email.test(val);
+                return val === '' || this.regex.email.test(val);
             }
         },
 
@@ -3592,7 +3601,6 @@ var FormView;
             var errors = {},
                 fields = _(this.fields).keys();
 
-				console.log(JSON.stringify(fields));
             _(fields).each(function (key) {
                 var field = this.fields[key],
                     fieldErrors = null;

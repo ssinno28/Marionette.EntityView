@@ -13,14 +13,15 @@ var FormValidator;
             throw new Error('Validator does not exist : ' + validator);
         },
 
-        /*     matches: function (val, field) {
-         *//*jshint eqeqeq:false*//*
-         return val == this.inputVal(field);
-         },*/
+       /* matches: {
+			evaluate: function (val, field) {
+				 return val == this.inputVal(field);
+			}
+		 }, */
 
         min: {
             evaluate: function (val, options) {
-                if (val.length < options[0]) return false;
+                if (val < options[0]) return false;
                 return true;
             }
         },
@@ -28,7 +29,7 @@ var FormValidator;
 
         max: {
             evaluate: function (val, options) {
-                if (val.length > options[0]) return false;
+                if (val > options[0]) return false;
                 return true;
             }
         },
@@ -41,19 +42,19 @@ var FormValidator;
 
         alpha: {
             evaluate: function (val) {
-                return FormValidator.regex.alpha.test(val);
+                return this.regex.alpha.test(val);
             }
         },
 
         alphanum: {
             evaluate: function (val) {
-                return FormValidator.regex.alphanum.test(val);
+                return this.regex.alphanum.test(val);
             }
         },
 
         email: {
             evaluate: function (val) {
-                return val === '' || FormValidator.regex.email.test(val);
+                return val === '' || this.regex.email.test(val);
             }
         },
 
