@@ -1,5 +1,5 @@
 var AutoCompleteLayoutView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, autoCompleteTemplate, TimeoutUtil, AutoCompleteListView) {
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, autoCompleteTemplate, AutoCompleteListView) {
     AutoCompleteLayoutView = ReusableTypeLayoutView.extend({
         tag: 'div',
         template: autoCompleteTemplate,
@@ -8,7 +8,6 @@ var AutoCompleteLayoutView;
 
             this.selectedId = options.selectedId;
             this.collection = options.collection;
-            this._timeoutUtil = new TimeoutUtil();
 
             var channel = this.getChannel(this.dataField);
             channel.on('auto-complete:list:complete', _.bind(this.listingRetrieved, this));
@@ -71,34 +70,33 @@ var AutoCompleteLayoutView;
             if (name.length < 2) {
                 return;
             }
+			
+			_.debounce(_.bind(function () {
+				var data = {
+					conditions: [
+						{
+							searchType: 'like',
+							field: 'name',
+							value: name
+						}
+					]
+				};
 
-            this._timeoutUtil.suspendOperation(400,
-                function () {
-                    var data = {
-                        conditions: [
-                            {
-                                searchType: 'like',
-                                field: 'name',
-                                value: name
-                            }
-                        ]
-                    };
+				self.collection.query(false, data)
+					.done(function (entities) {
+						if (entities.length > 0) {
+							var listView = new AutoCompleteListView({
+								collection: entities,
+								dataField: self.dataField,
+								selectedId: self.selectedId
+							});
 
-                    self.collection.query(false, data)
-                        .done(function (entities) {
-                            if (entities.length > 0) {
-                                var listView = new AutoCompleteListView({
-                                    collection: entities,
-                                    dataField: self.dataField,
-                                    selectedId: self.selectedId
-                                });
-
-                                self.showChildView('dropDownRegion', listView);
-                            } else {
-                                self.getRegion('dropDownRegion').reset();
-                            }
-                        });
-                });
+							self.showChildView('dropDownRegion', listView);
+						} else {
+							self.getRegion('dropDownRegion').reset();
+						}
+					});
+            }, this), 400)();
         },
         onDomRefresh: function () {
             var self = this;
@@ -112,4 +110,4 @@ var AutoCompleteLayoutView;
             }
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['autoCompleteTemplate'], TimeoutUtil, AutoCompleteListView);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['autoCompleteTemplate'], AutoCompleteListView);
