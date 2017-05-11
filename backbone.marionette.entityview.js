@@ -85,7 +85,7 @@ __p += '\r\n                <button data-toggle="modal" data-target="#delete-all
 ((__t = ( btnClass )) == null ? '' : __t) +
 ' delete-all-modal-show">\r\n                    Delete All\r\n                </button>\r\n                ';
  } ;
-__p += '\r\n            </div>\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n\r\n<div class="row">\r\n    <div class="col-sm-12">\r\n        <div class="list-group entityRegion">\r\n\r\n        </div>\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-sm-12">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n</div>';
+__p += '\r\n            </div>\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n\r\n<div class="row">\r\n        <div class="list-group entityRegion">\r\n\r\n        </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-sm-12">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -2675,6 +2675,7 @@ var DateTimePickerView;
             $datePicker: '.bootstrap-datepicker'
         },
         template: dateTimePickerTpl,
+		dataFieldSelector: '.bootstrap-datepicker',
         onDomRefresh: function () {
             this.ui.$datePicker.datetimepicker({
                     format: this.dateFormat
@@ -2709,6 +2710,7 @@ var TimePickerView;
             $datePicker: '.bootstrap-datepicker'
         },
         template: timePickerTpl,
+		dataFieldSelector: '.bootstrap-datepicker',
         onDomRefresh: function () {
             this.ui.$datePicker.datetimepicker({
                     format: this.dateFormat
@@ -2743,6 +2745,7 @@ var DatePickerView;
         ui: {
             $datePicker: '.bootstrap-datepicker'
         },
+		dataFieldSelector: '.bootstrap-datepicker',
         template: datePickerTemplate,
         onDomRefresh: function () {
             this.ui.$datePicker.datepicker({
@@ -3612,7 +3615,7 @@ var FormView;
                     fieldErrors = this.validateProps(field.properties, $docEl, key);
                 }
 
-                if (!_.isEmpty(fieldErrors)) errors[field] = fieldErrors;
+                if (!_.isEmpty(fieldErrors)) errors[key] = fieldErrors;
             }, this);
 
             return errors;

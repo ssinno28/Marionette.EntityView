@@ -12,6 +12,7 @@ var TimePickerView;
             $datePicker: '.bootstrap-datepicker'
         },
         template: timePickerTpl,
+		dataFieldSelector: '.bootstrap-datepicker',
         onDomRefresh: function () {
             this.ui.$datePicker.datetimepicker({
                     format: this.dateFormat

@@ -12,6 +12,7 @@ var DatePickerView;
         ui: {
             $datePicker: '.bootstrap-datepicker'
         },
+		dataFieldSelector: '.bootstrap-datepicker',
         template: datePickerTemplate,
         onDomRefresh: function () {
             this.ui.$datePicker.datepicker({
