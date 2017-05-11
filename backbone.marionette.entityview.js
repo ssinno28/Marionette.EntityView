@@ -492,12 +492,12 @@ var FieldsMixin;
             };
 
             var min = function (message, min) {
-                currentField.validations.min = message;
+                currentField.validations['min:' + min] = message;
                 return returnObj;
             };
 
             var max = function (message, max) {
-                currentField.validations.max = message;
+                currentField.validations['max:' + max] = message;
                 return returnObj;
             };
 
@@ -521,13 +521,17 @@ var FieldsMixin;
                 return returnObj;
             };
 
-            var boolean = function (message) {
+            var booleanFunc = function (message) {
                 currentField.validations.boolean = message;
                 return returnObj;
             };
 
-            var rule = _.bind(function (name, message, func) {
-                this.rules[name] = func;
+            var rule = _.bind(function (name, message, func) {	
+				if(_.isUndefined(this.rules)) {
+					this.rules = {};
+				}
+				
+                this.rules[name]  = func;				
                 currentField.validations[name] = message;
             }, this);
 
@@ -539,8 +543,8 @@ var FieldsMixin;
                 alpha: alpha,
                 alphanum: alphanum,
                 email: email,
-                boolean: boolean,
-                rule: rule
+                rule: rule,
+                boolean: booleanFunc
             };
 
             var addField = _.bind(function () {
@@ -3294,7 +3298,7 @@ var EntityLayoutView;
         },
         className: function () {
             var entityLayoutClass = ' entity-layout';
-            if (!this.getOption('routing') || this.getOption('embedded')) {
+            if (this.getOption('embedded')) {
                 entityLayoutClass = ' entity-layout-nested';
             }
 
@@ -3338,16 +3342,12 @@ var EntityLayoutView;
         templateContext: function () {
             var showCreate = this.allowableOperations.indexOf('create') > -1,
                 allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1,
-                allowPublishAll = this.allowableOperations.indexOf('publish-all') > -1,
-                allowAddAll = this.allowableOperations.indexOf('add-all') > -1,
                 route = this.route,
                 btnClass = this.btnClass;
 
             return {
                 showCreate: showCreate,
                 allowDeleteAll: allowDeleteAll,
-                allowPublishAll: allowPublishAll,
-                allowAddAll: allowAddAll,
                 route: route,
                 btnClass: btnClass
             };
@@ -3592,6 +3592,7 @@ var FormView;
             var errors = {},
                 fields = _(this.fields).keys();
 
+				console.log(JSON.stringify(fields));
             _(fields).each(function (key) {
                 var field = this.fields[key],
                     fieldErrors = null;

@@ -54,13 +54,17 @@ var FieldsMixin;
                 return returnObj;
             };
 
-            var boolean = function (message) {
+            var booleanFunc = function (message) {
                 currentField.validations.boolean = message;
                 return returnObj;
             };
 
-            var rule = _.bind(function (name, message, func) {
-                this.rules[name] = func;
+            var rule = _.bind(function (name, message, func) {	
+				if(_.isUndefined(this.rules)) {
+					this.rules = {};
+				}
+				
+                this.rules[name]  = func;				
                 currentField.validations[name] = message;
             }, this);
 
@@ -72,8 +76,8 @@ var FieldsMixin;
                 alpha: alpha,
                 alphanum: alphanum,
                 email: email,
-                boolean: boolean,
-                rule: rule
+                rule: rule,
+                boolean: booleanFunc
             };
 
             var addField = _.bind(function () {
