@@ -492,12 +492,12 @@ var FieldsMixin;
             };
 
             var min = function (message, min) {
-                currentField.validations.min = message;
+                currentField.validations['min:' + min] = message;
                 return returnObj;
             };
 
             var max = function (message, max) {
-                currentField.validations.max = message;
+                currentField.validations['max:' + max] = message;
                 return returnObj;
             };
 
@@ -3294,7 +3294,7 @@ var EntityLayoutView;
         },
         className: function () {
             var entityLayoutClass = ' entity-layout';
-            if (!this.getOption('routing') || this.getOption('embedded')) {
+            if (this.getOption('embedded')) {
                 entityLayoutClass = ' entity-layout-nested';
             }
 
@@ -3338,16 +3338,12 @@ var EntityLayoutView;
         templateContext: function () {
             var showCreate = this.allowableOperations.indexOf('create') > -1,
                 allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1,
-                allowPublishAll = this.allowableOperations.indexOf('publish-all') > -1,
-                allowAddAll = this.allowableOperations.indexOf('add-all') > -1,
                 route = this.route,
                 btnClass = this.btnClass;
 
             return {
                 showCreate: showCreate,
                 allowDeleteAll: allowDeleteAll,
-                allowPublishAll: allowPublishAll,
-                allowAddAll: allowAddAll,
                 route: route,
                 btnClass: btnClass
             };
