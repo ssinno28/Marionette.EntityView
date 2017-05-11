@@ -3515,7 +3515,7 @@ var FormView;
 
     FormView = Marionette.FormView = Marionette.View.extend({
 
-        className: "formView",
+        className: "formView col-sm-12",
 
         rules: {}, //Custom Field Validation Rules
 
