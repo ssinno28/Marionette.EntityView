@@ -99,11 +99,11 @@ var FieldsMixin;
                 var fieldWrapperTpl = null;
                 if (_.isUndefined(options.template)) {
                     fieldWrapperTpl = _.template('<div class="form-group">' +
-                        '<label class="col-sm-2 control-label"><%= label %></label>' +
-                        '<div class="col-sm-10 <%= dataField %>">' +
+                        '<label class="col-xs-12 col-sm-2 control-label"><%= label %></label>' +
+                        '<div class="col-xs-12 col-sm-10 <%= dataField %>">' +
                         '<div class="<%= fieldRegion %>"></div>' +
                         '</div>' +
-                        '<div class="col-sm-10 col-sm-offset-2 errors"></div>' +
+                        '<div class="col-xs-12 col-sm-10 col-sm-offset-2 errors"></div>' +
                         '</div>');
                 } else {
                     fieldWrapperTpl = options.template;

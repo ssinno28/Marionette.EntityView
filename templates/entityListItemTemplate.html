@@ -1,16 +1,16 @@
 <div class="row">
     <% if(allowDeleteAll){ %>
-    <div class="list-view-checkbox col-sm-1">
+    <div class="list-view-checkbox col-xs-1 col-sm-1">
         <input class="multi-action" data-id="<%= id %>" id="<%= route %><%=id%>" type="checkbox">
     </div>
     <% } %>
 
-    <div class="col-sm-10 list-view-additional-info">
+    <div class="col-xs-9 col-sm-10 list-view-additional-info">
         <div class="fieldsRegion"></div>
     </div>
 
     <% if(allowEdit || allowDelete){ %>
-    <div class="list-view-actions col-sm-1">
+    <div class="list-view-actions col-sm-1 col-xs-1">
         <div class="dropdown pull-right">
             <button class="btn btn-link dropdown-toggle" type="button" id="dropdown<%= route %><%=id%>"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

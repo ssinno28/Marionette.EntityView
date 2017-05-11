@@ -1,14 +1,5 @@
 var EntityCollection;
 (function (_, Backbone, $, App, lunr, Filters) {
-    var addIndexFields = function (indexFields) {
-        for (var j = 0; j < indexFields.length; j++) {
-            var indexField = indexFields[j];
-            this.field(indexField.name);
-        }
-
-        this.ref('id');
-    };
-
     var getOrCondition = function (model, leftConditions, rightConditions) {
         var left = this._predicate(model, leftConditions);
         var right = this._predicate(model, rightConditions);
@@ -74,9 +65,17 @@ var EntityCollection;
                 range.push(model);
 
                 if (!_.isUndefined(this.indexFields)) {
+					var indexFields = this.indexFields;
                     if (_.isUndefined(this.searchIndex)) {
                         this.searchIndex =
-                            lunr(addIndexFields(this.indexFields));
+                            lunr(function () {
+									for (var j = 0; j < indexFields.length; j++) {
+										var indexField = indexFields[j];
+										this.field(indexField.name);
+									}
+
+									this.ref('id');
+								});
                     }
 
                     var indexObject = {};

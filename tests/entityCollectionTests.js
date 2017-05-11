@@ -1,5 +1,5 @@
 describe('EntityCollection tests', function () {
-    var MockCollection = Backbone.EntityCollection.extend({url: '/api/test'}),
+    var MockCollection = MockEntityCollection.extend({url: '/api/test'}),
         entities = [
             {id: 1, name: 'test', locationId: 1},
             {id: 2, name: 'test 2', locationId: 1},
@@ -14,6 +14,40 @@ describe('EntityCollection tests', function () {
             {id: 9, name: 'test 9', locationId: 2},
             {id: 10, name: 'test 10', locationId: 2}
         ];
+		
+	it('gets correct lunr resuls', function(){
+		var Collection = Backbone.EntityCollection.extend({
+							indexFields: [
+								{name: 'name'}
+							],
+							//for demo purposes only, never override the query method!
+							query: function (track, data, force) {
+									return $.Deferred(_.bind(function (defer) {
+										var pageKey = this._getKeyWithOutPage(data),
+											result = this._getSubCollection(data, pageKey);
+
+										defer.resolve(result, pageKey);
+									}, this));
+							}
+						});
+			
+			var collection = new Collection(),
+				data = {
+					conditions: [
+						{
+							searchType: 'textSearch',
+							value: 'test 3',
+							field: 'name'
+						}
+					]
+				};
+				
+			collection.addRange(entities);
+			collection.query(true, data)
+				 .done(function(results){
+					expect(results.child.first().get('id')).toEqual(3);
+				 });
+	});
 
     it('calls setAttributes', function () {
         var collection = new MockCollection();

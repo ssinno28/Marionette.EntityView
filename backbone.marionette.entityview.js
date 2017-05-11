@@ -98,7 +98,7 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div class="row">\r\n    ';
  if(allowDeleteAll){ ;
-__p += '\r\n    <div class="list-view-checkbox col-sm-1">\r\n        <input class="multi-action" data-id="' +
+__p += '\r\n    <div class="list-view-checkbox col-xs-1 col-sm-1">\r\n        <input class="multi-action" data-id="' +
 ((__t = ( id )) == null ? '' : __t) +
 '" id="' +
 ((__t = ( route )) == null ? '' : __t) +
@@ -106,9 +106,9 @@ __p += '\r\n    <div class="list-view-checkbox col-sm-1">\r\n        <input clas
 ((__t = (id)) == null ? '' : __t) +
 '" type="checkbox">\r\n    </div>\r\n    ';
  } ;
-__p += '\r\n\r\n    <div class="col-sm-10 list-view-additional-info">\r\n        <div class="fieldsRegion"></div>\r\n    </div>\r\n\r\n    ';
+__p += '\r\n\r\n    <div class="col-xs-9 col-sm-10 list-view-additional-info">\r\n        <div class="fieldsRegion"></div>\r\n    </div>\r\n\r\n    ';
  if(allowEdit || allowDelete){ ;
-__p += '\r\n    <div class="list-view-actions col-sm-1">\r\n        <div class="dropdown pull-right">\r\n            <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
+__p += '\r\n    <div class="list-view-actions col-sm-1 col-xs-1">\r\n        <div class="dropdown pull-right">\r\n            <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
@@ -566,11 +566,11 @@ var FieldsMixin;
                 var fieldWrapperTpl = null;
                 if (_.isUndefined(options.template)) {
                     fieldWrapperTpl = _.template('<div class="form-group">' +
-                        '<label class="col-sm-2 control-label"><%= label %></label>' +
-                        '<div class="col-sm-10 <%= dataField %>">' +
+                        '<label class="col-xs-12 col-sm-2 control-label"><%= label %></label>' +
+                        '<div class="col-xs-12 col-sm-10 <%= dataField %>">' +
                         '<div class="<%= fieldRegion %>"></div>' +
                         '</div>' +
-                        '<div class="col-sm-10 col-sm-offset-2 errors"></div>' +
+                        '<div class="col-xs-12 col-sm-10 col-sm-offset-2 errors"></div>' +
                         '</div>');
                 } else {
                     fieldWrapperTpl = options.template;
@@ -1128,15 +1128,6 @@ var EntityFilters;
 })(Backbone, Marionette);
 var EntityCollection;
 (function (_, Backbone, $, App, lunr, Filters) {
-    var addIndexFields = function (indexFields) {
-        for (var j = 0; j < indexFields.length; j++) {
-            var indexField = indexFields[j];
-            this.field(indexField.name);
-        }
-
-        this.ref('id');
-    };
-
     var getOrCondition = function (model, leftConditions, rightConditions) {
         var left = this._predicate(model, leftConditions);
         var right = this._predicate(model, rightConditions);
@@ -1202,9 +1193,17 @@ var EntityCollection;
                 range.push(model);
 
                 if (!_.isUndefined(this.indexFields)) {
+					var indexFields = this.indexFields;
                     if (_.isUndefined(this.searchIndex)) {
                         this.searchIndex =
-                            lunr(addIndexFields(this.indexFields));
+                            lunr(function () {
+									for (var j = 0; j < indexFields.length; j++) {
+										var indexField = indexFields[j];
+										this.field(indexField.name);
+									}
+
+									this.ref('id');
+								});
                     }
 
                     var indexObject = {};
