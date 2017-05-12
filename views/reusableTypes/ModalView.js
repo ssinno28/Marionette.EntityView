@@ -4,21 +4,6 @@ var ModalView;
         model: ModalModel,
         template: modalTpl,
         initialize: function (options) {
-            if (_.isUndefined(this.triggers)) {
-                this.triggers = {};
-            }
-
-            _.each(options.choices,
-                _.bind(function (option) {
-                    this.triggers['click .' + option.type] = {
-                        event: 'modal:' + this.getOption('safeName') + ':' + option.type,
-                        preventDefault: true,
-                        stopPropagation: true
-                    };
-                }, this));
-
-            this.delegateEvents();
-
             this.$el.on('show.bs.modal', _.bind(function (e) {
                 this.modalData = $(e.relatedTarget).data();
             }, this));
@@ -27,6 +12,19 @@ var ModalView;
             $modalFooter: '.modal-footer'
         },
         className: 'modal fade',
+        triggers: function () {
+            var triggers = {};
+            _.each(this.options.choices,
+                _.bind(function (option) {
+                    triggers['click .' + option.type] = {
+                        event: 'modal:' + this.getOption('safeName') + ':' + option.type,
+                        preventDefault: true,
+                        stopPropagation: true
+                    };
+                }, this));
+
+            return triggers;
+        },
         onRender: function () {
             this.$el.attr('tabindex', -1);
             this.$el.attr('role', 'dialog');

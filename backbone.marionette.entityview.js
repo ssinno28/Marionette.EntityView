@@ -2142,21 +2142,6 @@ var ModalView;
         model: ModalModel,
         template: modalTpl,
         initialize: function (options) {
-            if (_.isUndefined(this.triggers)) {
-                this.triggers = {};
-            }
-
-            _.each(options.choices,
-                _.bind(function (option) {
-                    this.triggers['click .' + option.type] = {
-                        event: 'modal:' + this.getOption('safeName') + ':' + option.type,
-                        preventDefault: true,
-                        stopPropagation: true
-                    };
-                }, this));
-
-            this.delegateEvents();
-
             this.$el.on('show.bs.modal', _.bind(function (e) {
                 this.modalData = $(e.relatedTarget).data();
             }, this));
@@ -2165,6 +2150,19 @@ var ModalView;
             $modalFooter: '.modal-footer'
         },
         className: 'modal fade',
+        triggers: function () {
+            var triggers = {};
+            _.each(this.options.choices,
+                _.bind(function (option) {
+                    triggers['click .' + option.type] = {
+                        event: 'modal:' + this.getOption('safeName') + ':' + option.type,
+                        preventDefault: true,
+                        stopPropagation: true
+                    };
+                }, this));
+
+            return triggers;
+        },
         onRender: function () {
             this.$el.attr('tabindex', -1);
             this.$el.attr('role', 'dialog');
@@ -2198,7 +2196,7 @@ var ModalMixin;
         modal: function (name) {
             var modal = {name: name};
 
-            var addFunc = _.bind(function ($el, text) {
+            var addFunc = _.bind(function ($el, text, embedded) {
                 if (_.isUndefined(modal.message) || _.isUndefined(modal.title)) {
                     throw 'You need to specify both a message and a title!';
                 }
@@ -2207,7 +2205,8 @@ var ModalMixin;
                         message: modal.message,
                         title: modal.title
                     }),
-                    className = this._formatRegionName(modal.name);
+                    embeddedTxt = embedded ? '-embedded' : '',
+                    className = this._formatRegionName(modal.name) + embeddedTxt;
 
                 this.$el.append('<div class="' + className + '"></div>');
                 this.addRegion(modal.name, {
