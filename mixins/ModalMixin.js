@@ -4,7 +4,7 @@ var ModalMixin;
         modal: function (name) {
             var modal = {name: name};
 
-            var addFunc = _.bind(function ($el, text) {
+            var addFunc = _.bind(function ($el, text, embedded) {
                 if (_.isUndefined(modal.message) || _.isUndefined(modal.title)) {
                     throw 'You need to specify both a message and a title!';
                 }
@@ -13,7 +13,8 @@ var ModalMixin;
                         message: modal.message,
                         title: modal.title
                     }),
-                    className = this._formatRegionName(modal.name);
+                    embeddedTxt = embedded ? '-embedded' : '',
+                    className = this._formatRegionName(modal.name) + embeddedTxt;
 
                 this.$el.append('<div class="' + className + '"></div>');
                 this.addRegion(modal.name, {
