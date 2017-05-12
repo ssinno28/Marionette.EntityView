@@ -71,6 +71,7 @@ var formView = Marionette.EntityFormView.extend({
 
 App.Users = new MockEntityCollection();
 
+//For demo purposes only!!!!
 var data1 = [
     {id: 1, name: 'Bob'},
     {id: 2, name: 'Sherri'},
@@ -96,6 +97,7 @@ App.Users._addModelIndexes(pageKey, models1, firstData, 10);
 
 var models2 = App.Users.addRange(data2);
 App.Users._addModelIndexes(pageKey, models2, secondData, 10);
+//For demo purposes only!!!!
 
 var options = {
     collection: App.Users,
