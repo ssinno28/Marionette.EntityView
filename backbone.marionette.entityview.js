@@ -2520,9 +2520,6 @@ var NumberView;
 var TextAreaView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, textAreaTemplate) {
     TextAreaView = ReusableTypeLayoutView.extend({
-        initialize: function(options){
-            ReusableTypeLayoutView.prototype.initialize.call(this, options);
-        },
         template: textAreaTemplate
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['textAreaTemplate']);
@@ -2770,7 +2767,7 @@ var DatePickerView;
 var CheckBoxView;
 (function ($, _, Backbone, Marionette, checkBoxTemplate, ReusableTypeView) {
     CheckBoxView = ReusableTypeView.extend({
-        onShow: function () {
+        onRender: function () {
             if (!_.isUndefined(this.model.get('id'))) {
                 this.$el.find('input').val(this.model.get('id'));
             }
