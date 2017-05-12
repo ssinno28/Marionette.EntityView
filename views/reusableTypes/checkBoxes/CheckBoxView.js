@@ -1,7 +1,7 @@
 var CheckBoxView;
 (function ($, _, Backbone, Marionette, checkBoxTemplate, ReusableTypeView) {
     CheckBoxView = ReusableTypeView.extend({
-        onShow: function () {
+        onRender: function () {
             if (!_.isUndefined(this.model.get('id'))) {
                 this.$el.find('input').val(this.model.get('id'));
             }
