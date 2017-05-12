@@ -3318,7 +3318,6 @@ var EntityLayoutView;
             'click .edit': 'editClick',
             'keyup .nameFilter': 'filterByName',
             'click .multi-action': 'showMultiActions',
-            'click .add-all': 'addAll',
             'click .sub-nav .create': 'createClick',
             'click .sub-nav .get-all': 'getAllClick'
         },
