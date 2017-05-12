@@ -277,7 +277,7 @@ this["Templates"]["multSelectHeaderTpl"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '   <div class="col-sm-12 nopadding">\r\n       <h5>' +
+__p += '   <div class="col-xs-12 nopadding">\r\n       <h5>' +
 ((__t = ( title )) == null ? '' : __t) +
 '</h5>\r\n   </div>';
 
@@ -289,7 +289,7 @@ this["Templates"]["multiSelectLayoutTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="zselect">\r\n    <span data-toggle="tooltip" data-placement="left" aria-haspopup="true" title="" class="has-tip zmshead">\r\n        Selected\r\n    </span>\r\n    <div class="row optionsRegion">\r\n        <div class="col-sm-6">\r\n            <div class="col-sm-12 options"></div>\r\n            <div class="col-sm-12 text-center">\r\n                <button style="display:none;" class="btn btn-default add-items" href="#">Add</button>\r\n            </div>\r\n        </div>\r\n        <div class="col-sm-6">\r\n            <div class="col-sm-12 selectedOptions"></div>\r\n            <div class="col-sm-12 text-center">\r\n                <button style="display:none;" class="btn btn-default text-center remove-items">Remove</button>\r\n            </div>\r\n        </div>\r\n        <div class="clearfix"></div>\r\n    </div>\r\n</div>\r\n';
+__p += '<div class="zselect">\r\n    <span data-toggle="tooltip" data-placement="left" aria-haspopup="true" title="" class="has-tip zmshead">\r\n        Selected\r\n    </span>\r\n    <div class="row optionsRegion">\r\n        <div class="col-xs-12 col-sm-6">\r\n            <div class="col-xs-12 options"></div>\r\n            <div class="col-xs-12 text-center">\r\n                <button style="display:none;" class="btn btn-default add-items" href="#">Add</button>\r\n            </div>\r\n        </div>\r\n        <div class="col-xs-12 col-sm-6">\r\n            <div class="col-xs-12 selectedOptions"></div>\r\n            <div class="col-xs-12 text-center">\r\n                <button style="display:none;" class="btn btn-default text-center remove-items">Remove</button>\r\n            </div>\r\n        </div>\r\n        <div class="clearfix"></div>\r\n    </div>\r\n</div>\r\n';
 
 }
 return __p
@@ -2824,7 +2824,7 @@ var AutoCompleteListView;
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeListView, AutoCompleteView);
 var AutoCompleteLayoutView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, autoCompleteTemplate, TimeoutUtil, AutoCompleteListView) {
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, autoCompleteTemplate, AutoCompleteListView) {
     AutoCompleteLayoutView = ReusableTypeLayoutView.extend({
         tag: 'div',
         template: autoCompleteTemplate,
@@ -2833,7 +2833,6 @@ var AutoCompleteLayoutView;
 
             this.selectedId = options.selectedId;
             this.collection = options.collection;
-            this._timeoutUtil = new TimeoutUtil();
 
             var channel = this.getChannel(this.dataField);
             channel.on('auto-complete:list:complete', _.bind(this.listingRetrieved, this));
@@ -2896,34 +2895,33 @@ var AutoCompleteLayoutView;
             if (name.length < 2) {
                 return;
             }
+			
+			_.debounce(_.bind(function () {
+				var data = {
+					conditions: [
+						{
+							searchType: 'like',
+							field: 'name',
+							value: name
+						}
+					]
+				};
 
-            this._timeoutUtil.suspendOperation(400,
-                function () {
-                    var data = {
-                        conditions: [
-                            {
-                                searchType: 'like',
-                                field: 'name',
-                                value: name
-                            }
-                        ]
-                    };
+				self.collection.query(false, data)
+					.done(function (entities) {
+						if (entities.length > 0) {
+							var listView = new AutoCompleteListView({
+								collection: entities,
+								dataField: self.dataField,
+								selectedId: self.selectedId
+							});
 
-                    self.collection.query(false, data)
-                        .done(function (entities) {
-                            if (entities.length > 0) {
-                                var listView = new AutoCompleteListView({
-                                    collection: entities,
-                                    dataField: self.dataField,
-                                    selectedId: self.selectedId
-                                });
-
-                                self.showChildView('dropDownRegion', listView);
-                            } else {
-                                self.getRegion('dropDownRegion').reset();
-                            }
-                        });
-                });
+							self.showChildView('dropDownRegion', listView);
+						} else {
+							self.getRegion('dropDownRegion').reset();
+						}
+					});
+            }, this), 400)();
         },
         onDomRefresh: function () {
             var self = this;
@@ -2937,7 +2935,7 @@ var AutoCompleteLayoutView;
             }
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['autoCompleteTemplate'], TimeoutUtil, AutoCompleteListView);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['autoCompleteTemplate'], AutoCompleteListView);
 
 var MessageBehavior;
 (function ($, _, Backbone, Marionette, SuccessView, ErrorView, InfoView) {
@@ -3716,13 +3714,13 @@ var FormView;
             }
             else if (el.data('fieldtype') === 'array') {
                 if (mode === 'get') val = [];
-                /*    el.find('[data-index]').each(function () {
-                 var elem = $(this);
-                 var index = elem.data('index');
-                 if (mode === 'get') {
-                 val.push(elem.data('id'));
-                 }
-                 });*/
+                el.find('[data-index]').each(function () {
+					 var elem = $(this);
+					 var index = elem.data('index');
+					 if (mode === 'get') {
+						val.push(elem.data('id'));
+					 }
+                 });
             } else if (el.is('input')) {
                 var inputType = el.attr('type').toLowerCase();
                 switch (inputType) {

@@ -206,13 +206,13 @@ var FormView;
             }
             else if (el.data('fieldtype') === 'array') {
                 if (mode === 'get') val = [];
-                /*    el.find('[data-index]').each(function () {
-                 var elem = $(this);
-                 var index = elem.data('index');
-                 if (mode === 'get') {
-                 val.push(elem.data('id'));
-                 }
-                 });*/
+                el.find('[data-index]').each(function () {
+					 var elem = $(this);
+					 var index = elem.data('index');
+					 if (mode === 'get') {
+						val.push(elem.data('id'));
+					 }
+                 });
             } else if (el.is('input')) {
                 var inputType = el.attr('type').toLowerCase();
                 switch (inputType) {
