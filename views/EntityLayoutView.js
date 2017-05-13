@@ -138,6 +138,7 @@ var EntityLayoutView;
             this.showMultiActions();
         },
         formViewActivated: function () {
+            this.ui.$nameFilter.hide();
         },
         deleteAllYes: function (view, e) {
             var itemsSelected = this.$el.find('.multi-action:checked'),
