@@ -38,9 +38,9 @@ var EntityService;
                 this.channelName = this.route;
                 this._initRadio();
 
-                this._channel.reply('getPageSize', function () {
+                this._channel.reply('getPageSize', _.bind(function () {
                     return _.isUndefined(this.pageSize) ? parseInt(App.pageSize) : this.pageSize;
-                });
+                }, this));
             }
 
             if (_.isUndefined(this.filterField)) {

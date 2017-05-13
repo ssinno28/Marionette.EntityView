@@ -3439,14 +3439,15 @@ var EntityLayoutView;
             });
 
             this.showChildView('pageSizeRegion', new DropDownListView({
-                dataField: 'pageSize',
+                dataField: this.route + ':pageSize',
                 collection: collection
             }));
 
-            Backbone.Radio.channel('pageSize').on('change',
+            Backbone.Radio.channel(this.route + ':pageSize').on('change',
                 _.bind(function (pageSize) {
                     if (!_.isNull(pageSize)) {
                         this._channel.trigger('changePageSize', parseInt(pageSize));
+                        this.triggerMethod("ShowPager", this.listView.collection);
                     }
                 }, this));
         },
@@ -3967,9 +3968,9 @@ var EntityService;
                 this.channelName = this.route;
                 this._initRadio();
 
-                this._channel.reply('getPageSize', function () {
+                this._channel.reply('getPageSize', _.bind(function () {
                     return _.isUndefined(this.pageSize) ? parseInt(App.pageSize) : this.pageSize;
-                });
+                }, this));
             }
 
             if (_.isUndefined(this.filterField)) {
