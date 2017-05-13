@@ -50,7 +50,7 @@ module.exports = function (grunt) {
                     "./node_modules/moment/moment.js",
                     "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js",
                     "./node_modules/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
-                    "./node_modules/bootstrap-combobox/js/bootstrap-combobox.min.js",
+                    "./node_modules/@danielfarrell/bootstrap-combobox/js/bootstrap-combobox.js",
                     "./node_modules/underscore/underscore.js",
                     "./node_modules/backbone/backbone.js",
                     "./node_modules/backbone.collectionsubset/lib/backbone.collectionsubset.js",
