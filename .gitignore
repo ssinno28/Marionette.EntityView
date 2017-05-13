@@ -1,3 +1,4 @@
 node_modules
 generated
 .idea
+npm-debug.log
