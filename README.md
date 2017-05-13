@@ -4,6 +4,12 @@ Marionette.EntityView is a framework built to support building dashboards using 
 
 Check out the [wiki](https://github.com/ssinno28/Marionette.EntityView/wiki) to get started
 
+To install using npm:
+
+```
+npm install marionette-entityview
+```
+
 While these projects are not published to npm yet, you can take a look at them to give you an idea as how to get started:
 
 * [Marionette.EntityView.Patternfly](https://github.com/ssinno28/Marionette.EntityView.Patternfly)
