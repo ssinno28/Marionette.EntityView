@@ -10,6 +10,9 @@ var DropDownListView;
         },
         onDomRefresh: function () {
             this.$el.combobox();
+            this.$el.on('change', _.bind(function () {
+                this._channel.trigger('change', this.$el.val());
+            }, this));
         }
     });
 })($, _, Backbone, Marionette, OptionView, ReusableTypeListView);

@@ -40,7 +40,6 @@ var EntityCollection;
          * @return
          */
         addRange: function (models, data) {
-
             if (_.isNull(models)) {
                 return [];
             }
@@ -483,8 +482,8 @@ var EntityCollection;
 
                 var pagingFilter =
                     function (model) {
-                        var firstResult = (page - 1) * App.pageSize,
-                            maxResults = firstResult + App.pageSize;
+                        var firstResult = (page - 1) * data.pageSize,
+                            maxResults = firstResult + data.pageSize;
 
                         if (_.isUndefined(model.indexes)) {
                             model.indexes = {};

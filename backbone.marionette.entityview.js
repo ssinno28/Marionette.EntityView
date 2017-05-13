@@ -85,7 +85,7 @@ __p += '\r\n                <button data-toggle="modal" data-target="#delete-all
 ((__t = ( btnClass )) == null ? '' : __t) +
 ' delete-all-modal-show">\r\n                    Delete All\r\n                </button>\r\n                ';
  } ;
-__p += '\r\n            </div>\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n\r\n<div class="row">\r\n        <div class="list-group entityRegion">\r\n\r\n        </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-sm-12">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n</div>';
+__p += '\r\n            </div>\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n\r\n<div class="row">\r\n        <div class="list-group entityRegion">\r\n\r\n        </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-xs-10">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n    <div class="col-xs-2">\r\n        <div class="page-size-region"></div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -1168,7 +1168,6 @@ var EntityCollection;
          * @return
          */
         addRange: function (models, data) {
-
             if (_.isNull(models)) {
                 return [];
             }
@@ -1611,8 +1610,8 @@ var EntityCollection;
 
                 var pagingFilter =
                     function (model) {
-                        var firstResult = (page - 1) * App.pageSize,
-                            maxResults = firstResult + App.pageSize;
+                        var firstResult = (page - 1) * data.pageSize,
+                            maxResults = firstResult + data.pageSize;
 
                         if (_.isUndefined(model.indexes)) {
                             model.indexes = {};
@@ -2651,6 +2650,9 @@ var DropDownListView;
         },
         onDomRefresh: function () {
             this.$el.combobox();
+            this.$el.on('change', _.bind(function () {
+                this._channel.trigger('change', this.$el.val());
+            }, this));
         }
     });
 })($, _, Backbone, Marionette, OptionView, ReusableTypeListView);
@@ -2975,7 +2977,9 @@ var PagerBehavior;
 (function ($, _, Backbone, Marionette, App, PagerListView) {
     PagerBehavior = Marionette.Behavior.extend({
         onShowPager: function (entityCollection) {
-            var pagerRegion = this.view.getRegion('pagerRegion');
+            var pagerRegion = this.view.getRegion('pagerRegion'),
+                channel = this.view.getChannel();
+
             if (pagerRegion.currentView !== null) {
                 pagerRegion.reset();
             }
@@ -2984,10 +2988,11 @@ var PagerBehavior;
                 return;
             }
 
-            var count = App.indexes[this.view.key],
+            var pageSize = channel.request('getPageSize'),
+                count = App.indexes[this.view.key],
                 currentPage = this.view.listView.currentPage,
                 collection = new Backbone.Collection(),
-                noOfPages = Math.ceil(count / App.pageSize);
+                noOfPages = Math.ceil(count / pageSize);
 
             if (noOfPages === 1) {
                 pagerRegion.empty();
@@ -3268,7 +3273,7 @@ var EntityListItemView;
 })(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], SortableItemBehavior);
 
 var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior) {
+(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior, DropDownListView) {
     EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
         template: entityListLayoutTpl,
         regions: {
@@ -3278,6 +3283,10 @@ var EntityLayoutView;
             },
             'pagerRegion': {
                 el: '.pagerRegion',
+                replaceElement: true
+            },
+            'pageSizeRegion': {
+                el: '.page-size-region',
                 replaceElement: true
             }
         },
@@ -3368,16 +3377,17 @@ var EntityLayoutView;
             if (!this.routing) {
                 this._channel.trigger('create');
             } else {
-                var route = this.route + '/create/';
-                location.hash = route;
+                location.hash = this.route + '/create/';
             }
         },
         runInitializers: function () {
+        },
+        runRenderers: function () {
             this.showListView();
             this.renderHeader();
             this.showMultiActions();
-        },
-        runRenderers: function () {
+            this.showPageSizeDropDown();
+
             var embedded = this.getOption('embedded') ? 'Embedded' : '';
 
             this.modal('deleteAllModal' + embedded)
@@ -3421,6 +3431,24 @@ var EntityLayoutView;
             var data = view.modalData;
             this._channel.trigger('delete', data.id);
             view.$el.modal('hide');
+        },
+        showPageSizeDropDown: function () {
+            var collection = new Backbone.Collection();
+            _.each(this.getOption('pageSizes'), function (pageSize) {
+                collection.add(new Backbone.Model({id: pageSize, name: pageSize}));
+            });
+
+            this.showChildView('pageSizeRegion', new DropDownListView({
+                dataField: 'pageSize',
+                collection: collection
+            }));
+
+            Backbone.Radio.channel('pageSize').on('change',
+                _.bind(function (pageSize) {
+                    if (!_.isNull(pageSize)) {
+                        this._channel.trigger('changePageSize', parseInt(pageSize));
+                    }
+                }, this));
         },
         showMultiActions: function (e) {
             if (e) {
@@ -3499,7 +3527,7 @@ var EntityLayoutView;
             return this._channel;
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior, DropDownListView);
 
 var FormView;
 (function ($, _, Backbone, Marionette, FormValidator) {
@@ -3938,6 +3966,10 @@ var EntityService;
             if (_.isUndefined(this.channelName)) {
                 this.channelName = this.route;
                 this._initRadio();
+
+                this._channel.reply('getPageSize', function () {
+                    return _.isUndefined(this.pageSize) ? parseInt(App.pageSize) : this.pageSize;
+                });
             }
 
             if (_.isUndefined(this.filterField)) {
@@ -3946,6 +3978,10 @@ var EntityService;
 
             if (_.isUndefined(this.embedded)) {
                 this.embedded = false;
+            }
+
+            if (_.isUndefined(this.pageSizes)) {
+                this.pageSizes = [5, 10, 15, 20];
             }
 
             if (this.embedded && this.routing) {
@@ -3964,7 +4000,8 @@ var EntityService;
             'delete': 'delete',
             'getAll': 'getAll',
             'getType': 'getType',
-            'textSearch': 'textSearch'
+            'textSearch': 'textSearch',
+            'changePageSize': 'changePageSize'
         },
         entityLayoutView: function (entities) {
             if (_.isNull(this._entityLayoutView) || this._entityLayoutView.isDestroyed()) {
@@ -3996,7 +4033,8 @@ var EntityService;
                 btnClass: this.getBtnClass(),
                 routing: this.routing,
                 filterField: this.filterField,
-                embedded: this.embedded
+                embedded: this.embedded,
+                pageSizes: this.pageSizes
             });
         },
         getHeader: function () {
@@ -4010,6 +4048,10 @@ var EntityService;
         },
         getFormOptions: function () {
             return {};
+        },
+        changePageSize: function (pageSize) {
+            this.pageSize = pageSize;
+            this.getAll(1);
         },
         create: function () {
             var entity = this.getNewModel();

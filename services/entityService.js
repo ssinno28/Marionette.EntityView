@@ -37,6 +37,10 @@ var EntityService;
             if (_.isUndefined(this.channelName)) {
                 this.channelName = this.route;
                 this._initRadio();
+
+                this._channel.reply('getPageSize', function () {
+                    return _.isUndefined(this.pageSize) ? parseInt(App.pageSize) : this.pageSize;
+                });
             }
 
             if (_.isUndefined(this.filterField)) {
@@ -45,6 +49,10 @@ var EntityService;
 
             if (_.isUndefined(this.embedded)) {
                 this.embedded = false;
+            }
+
+            if (_.isUndefined(this.pageSizes)) {
+                this.pageSizes = [5, 10, 15, 20];
             }
 
             if (this.embedded && this.routing) {
@@ -63,7 +71,8 @@ var EntityService;
             'delete': 'delete',
             'getAll': 'getAll',
             'getType': 'getType',
-            'textSearch': 'textSearch'
+            'textSearch': 'textSearch',
+            'changePageSize': 'changePageSize'
         },
         entityLayoutView: function (entities) {
             if (_.isNull(this._entityLayoutView) || this._entityLayoutView.isDestroyed()) {
@@ -95,7 +104,8 @@ var EntityService;
                 btnClass: this.getBtnClass(),
                 routing: this.routing,
                 filterField: this.filterField,
-                embedded: this.embedded
+                embedded: this.embedded,
+                pageSizes: this.pageSizes
             });
         },
         getHeader: function () {
@@ -109,6 +119,10 @@ var EntityService;
         },
         getFormOptions: function () {
             return {};
+        },
+        changePageSize: function (pageSize) {
+            this.pageSize = pageSize;
+            this.getAll(1);
         },
         create: function () {
             var entity = this.getNewModel();

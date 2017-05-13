@@ -1,5 +1,5 @@
 var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior) {
+(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior, DropDownListView) {
     EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
         template: entityListLayoutTpl,
         regions: {
@@ -9,6 +9,10 @@ var EntityLayoutView;
             },
             'pagerRegion': {
                 el: '.pagerRegion',
+                replaceElement: true
+            },
+            'pageSizeRegion': {
+                el: '.page-size-region',
                 replaceElement: true
             }
         },
@@ -99,16 +103,17 @@ var EntityLayoutView;
             if (!this.routing) {
                 this._channel.trigger('create');
             } else {
-                var route = this.route + '/create/';
-                location.hash = route;
+                location.hash = this.route + '/create/';
             }
         },
         runInitializers: function () {
+        },
+        runRenderers: function () {
             this.showListView();
             this.renderHeader();
             this.showMultiActions();
-        },
-        runRenderers: function () {
+            this.showPageSizeDropDown();
+
             var embedded = this.getOption('embedded') ? 'Embedded' : '';
 
             this.modal('deleteAllModal' + embedded)
@@ -152,6 +157,24 @@ var EntityLayoutView;
             var data = view.modalData;
             this._channel.trigger('delete', data.id);
             view.$el.modal('hide');
+        },
+        showPageSizeDropDown: function () {
+            var collection = new Backbone.Collection();
+            _.each(this.getOption('pageSizes'), function (pageSize) {
+                collection.add(new Backbone.Model({id: pageSize, name: pageSize}));
+            });
+
+            this.showChildView('pageSizeRegion', new DropDownListView({
+                dataField: 'pageSize',
+                collection: collection
+            }));
+
+            Backbone.Radio.channel('pageSize').on('change',
+                _.bind(function (pageSize) {
+                    if (!_.isNull(pageSize)) {
+                        this._channel.trigger('changePageSize', parseInt(pageSize));
+                    }
+                }, this));
         },
         showMultiActions: function (e) {
             if (e) {
@@ -230,4 +253,4 @@ var EntityLayoutView;
             return this._channel;
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior, DropDownListView);

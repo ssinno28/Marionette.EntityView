@@ -2,7 +2,9 @@ var PagerBehavior;
 (function ($, _, Backbone, Marionette, App, PagerListView) {
     PagerBehavior = Marionette.Behavior.extend({
         onShowPager: function (entityCollection) {
-            var pagerRegion = this.view.getRegion('pagerRegion');
+            var pagerRegion = this.view.getRegion('pagerRegion'),
+                channel = this.view.getChannel();
+
             if (pagerRegion.currentView !== null) {
                 pagerRegion.reset();
             }
@@ -11,10 +13,11 @@ var PagerBehavior;
                 return;
             }
 
-            var count = App.indexes[this.view.key],
+            var pageSize = channel.request('getPageSize'),
+                count = App.indexes[this.view.key],
                 currentPage = this.view.listView.currentPage,
                 collection = new Backbone.Collection(),
-                noOfPages = Math.ceil(count / App.pageSize);
+                noOfPages = Math.ceil(count / pageSize);
 
             if (noOfPages === 1) {
                 pagerRegion.empty();

@@ -11,6 +11,10 @@
     margin-top: 0px;
 }
 
+.filterEntities .combobox-container {
+    margin: 20px 0;
+}
+
 /* Links
 ------------------------------------------------------------*/
 .not-active {
