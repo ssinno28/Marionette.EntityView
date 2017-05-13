@@ -17,3 +17,10 @@ While these projects are not published to npm yet, you can take a look at them t
 * [Marionette.EntityView.GeoManager](https://github.com/ssinno28/Marionette.EntityView.GeoManager)
   * While this project has other depedencies that are not listed, it would be good to take a look at to get an idea of how to get started.
 * Aside from those there is also the [example folder](https://github.com/ssinno28/Marionette.EntityView/tree/master/example) in the root of the project.
+
+## Release History
+* 1.0.4
+  * adding correct combobox npm package
+  * adding change event on dataField channel for DropDownListView
+  * adding page size region and populating with default set of page sizes
+  * making sure we don't use App.pageSize and instead reference the service for page sizes
