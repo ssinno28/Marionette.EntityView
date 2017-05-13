@@ -88,6 +88,7 @@ var data2 = [
     {id: 10, name: 'Matt'}
 ];
 
+//For demo purposes only
 var firstData = {page: 1, pageSize: App.pageSize},
     secondData = {page: 2, pageSize: App.pageSize},
     pageKey = App.Users._getKeyWithOutPage(firstData);
