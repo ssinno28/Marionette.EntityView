@@ -17,7 +17,6 @@
       "collections/HierarchicalEntityCollection.js",
       "collections/validation/MessagesCollection.js",
       "routers/entityRouter.js",
-      "views/reusableTypes/ActionView.js",
       "views/reusableTypes/ModalView.js",
       "mixins/ModalMixin.js",
       "views/validation/MessageView.js",

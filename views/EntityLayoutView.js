@@ -76,7 +76,8 @@ var EntityLayoutView;
             '$subNavElements': '.sub-nav > dd',
             '$multiActionRequests': '.multi-action-requests',
             '$treeBtn': '.get-tree',
-            '$header': '.entity-header'
+            '$header': '.entity-header',
+            '$multiActions': '.multi-actions'
         },
         templateContext: function () {
             var showCreate = this.allowableOperations.indexOf('create') > -1,
@@ -160,11 +161,6 @@ var EntityLayoutView;
                 e.stopPropagation();
             }
 
-            var allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1;
-            if (!allowDeleteAll) {
-                return;
-            }
-
             var itemsSelected = this.$el.find('.multi-action:checked');
             if (itemsSelected.length > 0) {
                 this.ui.$multiActionRequests.show();
@@ -198,6 +194,82 @@ var EntityLayoutView;
 
             var html = Marionette.Renderer.render(this.header.template, this.header.params);
             this.ui.$header.append(html);
+        },
+        action: function (name, isMultiAction) {
+            var options = {},
+                returnObj = {};
+
+            options.name = name;
+            options.isMultiAction = isMultiAction;
+            options.withModal = false;
+            options.safeName = this._formatRegionName(options.name);
+
+            var text = function (text) {
+                options.text = text;
+                return returnObj;
+            };
+
+            var className = function (className) {
+                options.className = className;
+                return returnObj;
+            };
+
+            var callBack = function (callBack) {
+                options.callBack = callBack;
+                return returnObj;
+            };
+
+            var template = function (template) {
+                options.template = template;
+            };
+
+            var withModal = _.bind(function (modalName) {
+                var modalSafeName = this._formatRegionName(modalName);
+                options.withModal = true;
+                options.template = '<button  data-toggle="modal" data-target="#' + modalSafeName + '" type="button" class="<%= safeName %> btn ' +
+                    '<% if(isMultiAction) { %> multi-action-requests <% } %>' +
+                    ' <%= className %>">' +
+                    '<%= text %>' +
+                    '</button>';
+            }, this);
+
+            var render = _.bind(function () {
+                if (this.allowableOperations.indexOf(options.safeName) === -1) {
+                    return;
+                }
+
+                var template = null;
+                if (!_.isUndefined(options.template)) {
+                    template = options.template;
+                } else {
+                    template = '<button type="button" class="<%= safeName %> btn <% if(isMultiAction) { %> multi-action-requests <% } %>' +
+                        ' <%= className %>">' +
+                        '<%= text %>' +
+                        '</button>';
+                }
+
+                var html = Marionette.Renderer.render(template, options);
+                this.ui.$multiActions.append(html);
+
+                if (!_.isUndefined(options.callBack) && !options.withModal) {
+                    var $el = this.$el.find('.' + options.safeName);
+                    $el.on('click', _.bind(options.callBack, this));
+                    this.on('destroy', function () {
+                        $el.off('click');
+                    });
+                }
+            }, this);
+
+            returnObj = _.extend(returnObj, {
+                text: text,
+                className: className,
+                callBack: callBack,
+                template: template,
+                withModal: withModal,
+                render: render
+            });
+
+            return returnObj;
         },
         getAllClick: function (e) {
             e.preventDefault();
