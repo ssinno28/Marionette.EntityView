@@ -3003,7 +3003,7 @@ var PagerBehavior;
 
             if (pagerRegion.currentView !== null) {
                 pagerRegion.reset();
-            } 
+            }
 
             if (_.isUndefined(App.indexes)) {
                 return;
