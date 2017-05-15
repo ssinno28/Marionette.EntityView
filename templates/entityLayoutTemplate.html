@@ -2,45 +2,41 @@
     <div class="entity-header col-sm-12">
     </div>
     <div class="col-sm-12">
-        <div>
-            <div class="form-group">
-                <label class="sr-only" for="filter">Name</label>
+        <div class="form-group">
+            <label class="sr-only" for="filter">Name</label>
 
-                <div class="input-group col-sm-12">
-                    <input type="text" class="form-control nameFilter" id="filter" placeholder="Filter By Name...">
-                </div><!-- /input-group -->
-            </div>
-            <div class="form-group sub-nav">
-                <button type="button" class="get-all btn btn-default">
-                    All
-                </button>
-                <% if(showCreate){ %>
-                <button type="button" class="create btn btn-primary">
-                    Create
-                </button>
-                <% } %>
+            <div class="input-group col-sm-12">
+                <input type="text" class="form-control nameFilter" id="filter" placeholder="Filter By Name...">
+            </div><!-- /input-group -->
+        </div>
+        <div class="form-group sub-nav">
+            <button type="button" class="get-all btn btn-default">
+                All
+            </button>
+            <% if(showCreate){ %>
+            <button type="button" class="create btn btn-primary">
+                Create
+            </button>
+            <% } %>
 
-                <% if(allowDeleteAll){ %>
-                <button data-toggle="modal" data-target="#delete-all-modal" type="button"
-                        class="btn btn-danger multi-action-requests <%= btnClass %> delete-all-modal-show">
-                    Delete All
-                </button>
-                <% } %>
-            </div>
+            <% if(allowDeleteAll){ %>
+            <button data-toggle="modal" data-target="#delete-all-modal" type="button"
+                    class="btn btn-danger multi-action-requests <%= btnClass %> delete-all-modal-show">
+                Delete All
+            </button>
+            <% } %>
         </div>
     </div><!-- /col -->
 </div><!-- /container -->
-
 <div class="row">
-        <div class="list-group entityRegion">
-
-        </div>
+    <div class="list-group entityRegion">
+    </div>
 </div>
 <div class="filterEntities row">
-    <div class="col-xs-10">
+    <div class="col-xs-7 col-sm-9 col-md-10">
         <div class="pagerRegion "></div>
     </div>
-    <div class="col-xs-2">
+    <div class="col-xs-5 col-sm-3 col-md-2">
         <div class="page-size-region"></div>
     </div>
 </div>

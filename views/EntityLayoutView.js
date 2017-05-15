@@ -1,5 +1,5 @@
 var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior, DropDownListView) {
+(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior) {
     EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
         template: entityListLayoutTpl,
         regions: {
@@ -70,7 +70,7 @@ var EntityLayoutView;
         },
         ui: {
             '$subNav': '.sub-nav',
-            '$nameFilter': '.filterEntities',
+            '$filters': '.filterEntities',
             '$createBtn': '.create',
             '$listBtn': '.get-all',
             '$subNavElements': '.sub-nav > dd',
@@ -98,8 +98,6 @@ var EntityLayoutView;
             this.ui.$subNavElements.removeClass('active');
             this.ui.$createBtn.parent().addClass('active');
 
-            this.ui.$nameFilter.hide();
-
             if (!this.routing) {
                 this._channel.trigger('create');
             } else {
@@ -112,10 +110,8 @@ var EntityLayoutView;
             this.showListView();
             this.renderHeader();
             this.showMultiActions();
-            this.showPageSizeDropDown();
 
             var embedded = this.getOption('embedded') ? 'Embedded' : '';
-
             this.modal('deleteAllModal' + embedded)
                 .message('Are you sure you want to delete these items?')
                 .title('Delete All?')
@@ -133,12 +129,12 @@ var EntityLayoutView;
         listViewActivated: function () {
             this.ui.$subNavElements.removeClass('active');
             this.ui.$listBtn.parent().addClass('active');
-            this.ui.$nameFilter.show();
+            this.ui.$filters.show();
             this.triggerMethod("ShowPager", this.listView.collection);
             this.showMultiActions();
         },
         formViewActivated: function () {
-            this.ui.$nameFilter.hide();
+            this.ui.$filters.hide();
         },
         deleteAllYes: function (view, e) {
             var itemsSelected = this.$el.find('.multi-action:checked'),
@@ -158,25 +154,6 @@ var EntityLayoutView;
             var data = view.modalData;
             this._channel.trigger('delete', data.id);
             view.$el.modal('hide');
-        },
-        showPageSizeDropDown: function () {
-            var collection = new Backbone.Collection();
-            _.each(this.getOption('pageSizes'), function (pageSize) {
-                collection.add(new Backbone.Model({id: pageSize, name: pageSize}));
-            });
-
-            this.showChildView('pageSizeRegion', new DropDownListView({
-                dataField: this.route + ':pageSize',
-                collection: collection
-            }));
-
-            Backbone.Radio.channel(this.route + ':pageSize').on('change',
-                _.bind(function (pageSize) {
-                    if (!_.isNull(pageSize)) {
-                        this._channel.trigger('changePageSize', parseInt(pageSize));
-                        this.triggerMethod("ShowPager", this.listView.collection);
-                    }
-                }, this));
         },
         showMultiActions: function (e) {
             if (e) {
@@ -255,4 +232,4 @@ var EntityLayoutView;
             return this._channel;
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior, DropDownListView);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior);

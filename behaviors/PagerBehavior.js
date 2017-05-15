@@ -1,13 +1,34 @@
 var PagerBehavior;
-(function ($, _, Backbone, Marionette, App, PagerListView) {
+(function ($, _, Backbone, Marionette, App, PagerListView, DropDownListView) {
     PagerBehavior = Marionette.Behavior.extend({
+        onRender: function () {
+            var collection = new Backbone.Collection(),
+                view = this.view;
+
+            _.each(view.getOption('pageSizes'), function (pageSize) {
+                collection.add(new Backbone.Model({id: pageSize, name: pageSize}));
+            });
+
+            view.showChildView('pageSizeRegion', new DropDownListView({
+                dataField: view.route + ':pageSize',
+                collection: collection
+            }));
+
+            Backbone.Radio.channel(view.route + ':pageSize').on('change',
+                _.bind(function (pageSize) {
+                    if (!_.isNull(pageSize)) {
+                        this._channel.trigger('changePageSize', parseInt(pageSize));
+                        this.triggerMethod("ShowPager", this.listView.collection);
+                    }
+                }, view));
+        },
         onShowPager: function (entityCollection) {
             var pagerRegion = this.view.getRegion('pagerRegion'),
                 channel = this.view.getChannel();
 
             if (pagerRegion.currentView !== null) {
                 pagerRegion.reset();
-            }
+            } 
 
             if (_.isUndefined(App.indexes)) {
                 return;
@@ -44,4 +65,4 @@ var PagerBehavior;
             }));
         }
     });
-})(jQuery, _, Backbone, Marionette, App, PagerListView);
+})(jQuery, _, Backbone, Marionette, App, PagerListView, DropDownListView);

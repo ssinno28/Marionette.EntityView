@@ -75,17 +75,17 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="row">\r\n    <div class="entity-header col-sm-12">\r\n    </div>\r\n    <div class="col-sm-12">\r\n        <div>\r\n            <div class="form-group">\r\n                <label class="sr-only" for="filter">Name</label>\r\n\r\n                <div class="input-group col-sm-12">\r\n                    <input type="text" class="form-control nameFilter" id="filter" placeholder="Filter By Name...">\r\n                </div><!-- /input-group -->\r\n            </div>\r\n            <div class="form-group sub-nav">\r\n                <button type="button" class="get-all btn btn-default">\r\n                    All\r\n                </button>\r\n                ';
+__p += '<div class="row">\r\n    <div class="entity-header col-sm-12">\r\n    </div>\r\n    <div class="col-sm-12">\r\n        <div class="form-group">\r\n            <label class="sr-only" for="filter">Name</label>\r\n\r\n            <div class="input-group col-sm-12">\r\n                <input type="text" class="form-control nameFilter" id="filter" placeholder="Filter By Name...">\r\n            </div><!-- /input-group -->\r\n        </div>\r\n        <div class="form-group sub-nav">\r\n            <button type="button" class="get-all btn btn-default">\r\n                All\r\n            </button>\r\n            ';
  if(showCreate){ ;
-__p += '\r\n                <button type="button" class="create btn btn-primary">\r\n                    Create\r\n                </button>\r\n                ';
+__p += '\r\n            <button type="button" class="create btn btn-primary">\r\n                Create\r\n            </button>\r\n            ';
  } ;
-__p += '\r\n\r\n                ';
+__p += '\r\n\r\n            ';
  if(allowDeleteAll){ ;
-__p += '\r\n                <button data-toggle="modal" data-target="#delete-all-modal" type="button"\r\n                        class="btn btn-danger multi-action-requests ' +
+__p += '\r\n            <button data-toggle="modal" data-target="#delete-all-modal" type="button"\r\n                    class="btn btn-danger multi-action-requests ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
-' delete-all-modal-show">\r\n                    Delete All\r\n                </button>\r\n                ';
+' delete-all-modal-show">\r\n                Delete All\r\n            </button>\r\n            ';
  } ;
-__p += '\r\n            </div>\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n\r\n<div class="row">\r\n        <div class="list-group entityRegion">\r\n\r\n        </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-xs-10">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n    <div class="col-xs-2">\r\n        <div class="page-size-region"></div>\r\n    </div>\r\n</div>';
+__p += '\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n<div class="row">\r\n    <div class="list-group entityRegion">\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-xs-7 col-sm-9 col-md-10">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n    <div class="col-xs-5 col-sm-3 col-md-2">\r\n        <div class="page-size-region"></div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -2974,15 +2974,36 @@ var MessageBehavior;
     });
 })(jQuery, _, Backbone, Marionette, SuccessView, ErrorView, InfoView);
 var PagerBehavior;
-(function ($, _, Backbone, Marionette, App, PagerListView) {
+(function ($, _, Backbone, Marionette, App, PagerListView, DropDownListView) {
     PagerBehavior = Marionette.Behavior.extend({
+        onRender: function () {
+            var collection = new Backbone.Collection(),
+                view = this.view;
+
+            _.each(view.getOption('pageSizes'), function (pageSize) {
+                collection.add(new Backbone.Model({id: pageSize, name: pageSize}));
+            });
+
+            view.showChildView('pageSizeRegion', new DropDownListView({
+                dataField: view.route + ':pageSize',
+                collection: collection
+            }));
+
+            Backbone.Radio.channel(view.route + ':pageSize').on('change',
+                _.bind(function (pageSize) {
+                    if (!_.isNull(pageSize)) {
+                        this._channel.trigger('changePageSize', parseInt(pageSize));
+                        this.triggerMethod("ShowPager", this.listView.collection);
+                    }
+                }, view));
+        },
         onShowPager: function (entityCollection) {
             var pagerRegion = this.view.getRegion('pagerRegion'),
                 channel = this.view.getChannel();
 
             if (pagerRegion.currentView !== null) {
                 pagerRegion.reset();
-            }
+            } 
 
             if (_.isUndefined(App.indexes)) {
                 return;
@@ -3019,7 +3040,7 @@ var PagerBehavior;
             }));
         }
     });
-})(jQuery, _, Backbone, Marionette, App, PagerListView);
+})(jQuery, _, Backbone, Marionette, App, PagerListView, DropDownListView);
 var SortableListBehavior;
 (function ($, _, Backbone, Marionette) {
     SortableListBehavior = Marionette.Behavior.extend({
@@ -3273,7 +3294,7 @@ var EntityListItemView;
 })(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], SortableItemBehavior);
 
 var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior, DropDownListView) {
+(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior) {
     EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
         template: entityListLayoutTpl,
         regions: {
@@ -3344,7 +3365,7 @@ var EntityLayoutView;
         },
         ui: {
             '$subNav': '.sub-nav',
-            '$nameFilter': '.filterEntities',
+            '$filters': '.filterEntities',
             '$createBtn': '.create',
             '$listBtn': '.get-all',
             '$subNavElements': '.sub-nav > dd',
@@ -3372,8 +3393,6 @@ var EntityLayoutView;
             this.ui.$subNavElements.removeClass('active');
             this.ui.$createBtn.parent().addClass('active');
 
-            this.ui.$nameFilter.hide();
-
             if (!this.routing) {
                 this._channel.trigger('create');
             } else {
@@ -3386,10 +3405,8 @@ var EntityLayoutView;
             this.showListView();
             this.renderHeader();
             this.showMultiActions();
-            this.showPageSizeDropDown();
 
             var embedded = this.getOption('embedded') ? 'Embedded' : '';
-
             this.modal('deleteAllModal' + embedded)
                 .message('Are you sure you want to delete these items?')
                 .title('Delete All?')
@@ -3407,12 +3424,12 @@ var EntityLayoutView;
         listViewActivated: function () {
             this.ui.$subNavElements.removeClass('active');
             this.ui.$listBtn.parent().addClass('active');
-            this.ui.$nameFilter.show();
+            this.ui.$filters.show();
             this.triggerMethod("ShowPager", this.listView.collection);
             this.showMultiActions();
         },
         formViewActivated: function () {
-            this.ui.$nameFilter.hide();
+            this.ui.$filters.hide();
         },
         deleteAllYes: function (view, e) {
             var itemsSelected = this.$el.find('.multi-action:checked'),
@@ -3432,25 +3449,6 @@ var EntityLayoutView;
             var data = view.modalData;
             this._channel.trigger('delete', data.id);
             view.$el.modal('hide');
-        },
-        showPageSizeDropDown: function () {
-            var collection = new Backbone.Collection();
-            _.each(this.getOption('pageSizes'), function (pageSize) {
-                collection.add(new Backbone.Model({id: pageSize, name: pageSize}));
-            });
-
-            this.showChildView('pageSizeRegion', new DropDownListView({
-                dataField: this.route + ':pageSize',
-                collection: collection
-            }));
-
-            Backbone.Radio.channel(this.route + ':pageSize').on('change',
-                _.bind(function (pageSize) {
-                    if (!_.isNull(pageSize)) {
-                        this._channel.trigger('changePageSize', parseInt(pageSize));
-                        this.triggerMethod("ShowPager", this.listView.collection);
-                    }
-                }, this));
         },
         showMultiActions: function (e) {
             if (e) {
@@ -3529,7 +3527,7 @@ var EntityLayoutView;
             return this._channel;
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior, DropDownListView);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior);
 
 var FormView;
 (function ($, _, Backbone, Marionette, FormValidator) {
