@@ -53,7 +53,6 @@ var EntityLayoutView;
             'click .edit': 'editClick',
             'keyup .nameFilter': 'filterByName',
             'click .multi-action': 'showMultiActions',
-            'click .sub-nav .create': 'createClick',
             'click .sub-nav .get-all': 'getAllClick'
         },
         childViewEvents: function () {
@@ -71,23 +70,16 @@ var EntityLayoutView;
         ui: {
             '$subNav': '.sub-nav',
             '$filters': '.filterEntities',
-            '$createBtn': '.create',
-            '$listBtn': '.get-all',
-            '$subNavElements': '.sub-nav > dd',
             '$multiActionRequests': '.multi-action-requests',
             '$treeBtn': '.get-tree',
             '$header': '.entity-header',
-            '$multiActions': '.multi-actions'
+            '$actions': '.actions'
         },
         templateContext: function () {
-            var showCreate = this.allowableOperations.indexOf('create') > -1,
-                allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1,
-                route = this.route,
+            var route = this.route,
                 btnClass = this.btnClass;
 
             return {
-                showCreate: showCreate,
-                allowDeleteAll: allowDeleteAll,
                 route: route,
                 btnClass: btnClass
             };
@@ -96,9 +88,6 @@ var EntityLayoutView;
             e.preventDefault();
             e.stopPropagation();
 
-            this.ui.$subNavElements.removeClass('active');
-            this.ui.$createBtn.parent().addClass('active');
-
             if (!this.routing) {
                 this._channel.trigger('create');
             } else {
@@ -106,12 +95,16 @@ var EntityLayoutView;
             }
         },
         runInitializers: function () {
+            this.showMultiActions();
         },
         runRenderers: function () {
-            this.showListView();
             this.renderHeader();
-            this.showMultiActions();
+            this.renderModals();
+            this.renderActions();
 
+            this.bindUIElements();
+        },
+        renderModals: function () {
             var embedded = this.getOption('embedded') ? 'Embedded' : '';
             this.modal('deleteAllModal' + embedded)
                 .message('Are you sure you want to delete these items?')
@@ -127,9 +120,26 @@ var EntityLayoutView;
                 .choice('No', 'no', true)
                 .add();
         },
+        renderActions: function () {
+            this.action('getAll')
+                .text('All')
+                .className('btn-default')
+                .callBack(this.getAllClick)
+                .add(true);
+
+            this.action('create', false)
+                .text('Create')
+                .className('btn-primary')
+                .callBack(this.createClick)
+                .add();
+
+            this.action('deleteAll', true)
+                .text('Delete All')
+                .className('btn-danger')
+                .withModal('deleteAllModal')
+                .add();
+        },
         listViewActivated: function () {
-            this.ui.$subNavElements.removeClass('active');
-            this.ui.$listBtn.parent().addClass('active');
             this.ui.$filters.show();
             this.triggerMethod("ShowPager", this.listView.collection);
             this.showMultiActions();
@@ -184,9 +194,6 @@ var EntityLayoutView;
                 this._channel.trigger('textSearch', name, filterField);
             }, this), 400)();
         },
-        showListView: function () {
-            this.showChildView('entityRegion', this.listView);
-        },
         renderHeader: function () {
             if (_.isUndefined(this.header)) {
                 return;
@@ -226,15 +233,17 @@ var EntityLayoutView;
             var withModal = _.bind(function (modalName) {
                 var modalSafeName = this._formatRegionName(modalName);
                 options.withModal = true;
-                options.template = '<button  data-toggle="modal" data-target="#' + modalSafeName + '" type="button" class="<%= safeName %> btn ' +
+                options.template = _.template('<button  data-toggle="modal" data-target="#' + modalSafeName + '" type="button" class="<%= safeName %> btn ' +
                     '<% if(isMultiAction) { %> multi-action-requests <% } %>' +
                     ' <%= className %>">' +
                     '<%= text %>' +
-                    '</button>';
+                    '</button>');
+
+                return returnObj;
             }, this);
 
-            var render = _.bind(function () {
-                if (this.allowableOperations.indexOf(options.safeName) === -1) {
+            var add = _.bind(function (forceShow) {
+                if (this.allowableOperations.indexOf(options.safeName) === -1 && !forceShow) {
                     return;
                 }
 
@@ -242,18 +251,20 @@ var EntityLayoutView;
                 if (!_.isUndefined(options.template)) {
                     template = options.template;
                 } else {
-                    template = '<button type="button" class="<%= safeName %> btn <% if(isMultiAction) { %> multi-action-requests <% } %>' +
+                    template = _.template('<button type="button" class="<%= safeName %> btn <% if(isMultiAction) { %> multi-action-requests <% } %>' +
                         ' <%= className %>">' +
                         '<%= text %>' +
-                        '</button>';
+                        '</button>');
                 }
 
                 var html = Marionette.Renderer.render(template, options);
-                this.ui.$multiActions.append(html);
+                this.ui.$actions.append(html);
 
                 if (!_.isUndefined(options.callBack) && !options.withModal) {
-                    var $el = this.$el.find('.' + options.safeName);
-                    $el.on('click', _.bind(options.callBack, this));
+                    var $el = this.ui.$actions.find('.' + options.safeName);
+                    $el.on('click', _.bind(function (e) {
+                        _.bind(options.callBack, this)(e)
+                    }, this));
                     this.on('destroy', function () {
                         $el.off('click');
                     });
@@ -266,7 +277,7 @@ var EntityLayoutView;
                 callBack: callBack,
                 template: template,
                 withModal: withModal,
-                render: render
+                add: add
             });
 
             return returnObj;

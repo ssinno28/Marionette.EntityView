@@ -339,6 +339,7 @@ var EntityService;
                     entityLayoutView.key = key;
 
                     self.region.show(entityLayoutView);
+                    self.entityLayoutView().showChildView('entityRegion', entityLayoutView.listView);
                 });
         },
         getData: function (page) {

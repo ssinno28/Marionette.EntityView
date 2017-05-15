@@ -9,22 +9,7 @@
                 <input type="text" class="form-control nameFilter" id="filter" placeholder="Filter By Name...">
             </div><!-- /input-group -->
         </div>
-        <div class="form-group sub-nav multi-actions">
-            <button type="button" class="get-all btn btn-default">
-                All
-            </button>
-            <% if(showCreate){ %>
-            <button type="button" class="create btn btn-primary">
-                Create
-            </button>
-            <% } %>
-
-            <% if(allowDeleteAll){ %>
-            <button data-toggle="modal" data-target="#delete-all-modal" type="button"
-                    class="btn btn-danger multi-action-requests <%= btnClass %> delete-all-modal-show">
-                Delete All
-            </button>
-            <% } %>
+        <div class="form-group sub-nav actions">
         </div>
     </div><!-- /col -->
 </div><!-- /container -->
