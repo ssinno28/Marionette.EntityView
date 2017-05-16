@@ -4,14 +4,14 @@ module.exports = function (grunt) {
         testFilesPath = './tests/**/*.js',
         testFiles = glob.sync(testFilesPath, {}),
         _ = require('lodash'),
-        fs = require('fs');
+        fs = require('fs'),
+        sourceFiles = ["./generated/js/templates.js"].concat(assetSource.js.files);
 
     if (_.isUndefined(fs.accessSync)) {
         fs.accessSync = fs.existsSync;
     }
 
     var filesToWatch = assetSource.js.files.concat([
-        './' + assetSource.js.template,
         './templates/**/*.html',
         './templates/*.html',
         './Assets.json'
@@ -22,11 +22,19 @@ module.exports = function (grunt) {
             dist: {
                 options: {
                     sourceMap: true,
-                    sourceMapName: 'generated/js/main.js.map'
+                    banner: fs.readFileSync('./header.js', 'utf8'),
+                    footer: fs.readFileSync('./footer.js', 'utf8')
                 },
-                src: assetSource.js.files,
-                dest: './generated/js/main.js'
+                src: sourceFiles,
+                dest: assetSource.js.generatedFile
             }
+        },
+        jshint: {
+            options: {
+                reporter: require('jshint-stylish'), // use jshint-stylish to make our errors look and read good
+                validthis: true
+            },
+            files: assetSource.js.files
         },
         jst: {
             dist: {
@@ -95,22 +103,14 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
 
     grunt.registerTask('default', function () {
-        grunt.task.run(['concat', 'jst'])
+        grunt.task.run(['jshint', 'jst'])
             .then(function () {
-                var content = fs.readFileSync('./generated/js/main.js', 'utf8'),
-                    templates = fs.readFileSync('./generated/js/templates.js', 'utf8'),
-                    template = fs.readFileSync(assetSource.js.template, 'utf8'),
-                    fileContent = grunt.template.process(template, {
-                        data: {
-                            content: content,
-                            templates: templates
-                        }
-                    });
-
-                grunt.file.write(assetSource.js.generatedFile, fileContent);
-                if (testFiles.length > 0) {
-                    grunt.task.run('jasmine');
-                }
+             grunt.task.run(['concat'])
+                 .then(function(){
+                     if (testFiles.length > 0) {
+                         grunt.task.run('jasmine');
+                     }
+                 });
             });
     });
 };

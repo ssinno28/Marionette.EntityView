@@ -42,10 +42,7 @@
         var exports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment);
         _.extend(root, exports);
     }
-}(this, function (Backbone, Marionette, jQuery, _, App, moment) {
-
-    /* jshint ignore:start */
-    this["Templates"] = this["Templates"] || {};
+}(this, function (Backbone, Marionette, jQuery, _, App, moment) {this["Templates"] = this["Templates"] || {};
 
 this["Templates"]["entityFormLayoutTemplate"] = function(obj) {
 obj || (obj = {});
@@ -414,9 +411,7 @@ __p += '<button type="button" class="close" data-dismiss="alert" aria-hidden="tr
 }
 return __p
 };
-        /* jshint ignore:end */
-
-    var UtilitiesMixin;
+var UtilitiesMixin;
 (function ($, _, Backbone, Marionette) {
     UtilitiesMixin = {
         _formatRegionName: function (name) {
@@ -3234,6 +3229,7 @@ var EntityListItemView;
             this.showChildView('fieldsRegion', new fieldsView());
         },
         renderActions: function () {
+            var embedded = this.getOption('embedded') ? 'Embedded' : '';
             this.action('edit')
                 .text('Edit')
                 .callBack(this.editClick)
@@ -3241,7 +3237,7 @@ var EntityListItemView;
 
             this.action('delete', true)
                 .text('Delete')
-                .withModal('deleteItemModal')
+                .withModal('deleteItemModal' + embedded)
                 .add();
         },
         templateContext: function () {
@@ -3253,9 +3249,6 @@ var EntityListItemView;
             };
         },
         editClick: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
             var id = this.model.get('id');
             if (this.getOption('routing')) {
                 location.hash = this.route + '/edit/' + id + '/';
@@ -3327,6 +3320,9 @@ var EntityListItemView;
                 if (!_.isUndefined(options.callBack) && !options.withModal) {
                     var $el = this.ui.$actions.find('.' + options.safeName);
                     $el.on('click', _.bind(function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
                         _.bind(options.callBack, this)(e)
                     }, this));
                     this.on('destroy', function () {
@@ -3476,6 +3472,7 @@ var EntityLayoutView;
                 .add();
         },
         renderActions: function () {
+            var embedded = this.getOption('embedded') ? 'Embedded' : '';
             this.action('getAll')
                 .text('All')
                 .className('btn-default')
@@ -3491,7 +3488,7 @@ var EntityLayoutView;
             this.action('deleteAll', true)
                 .text('Delete All')
                 .className('btn-danger')
-                .withModal('deleteAllModal')
+                .withModal('deleteAllModal' + embedded)
                 .add();
         },
         listViewActivated: function () {
@@ -3618,6 +3615,9 @@ var EntityLayoutView;
                 if (!_.isUndefined(options.callBack) && !options.withModal) {
                     var $el = this.ui.$actions.find('.' + options.safeName);
                     $el.on('click', _.bind(function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
                         _.bind(options.callBack, this)(e)
                     }, this));
                     this.on('destroy', function () {
@@ -3638,9 +3638,6 @@ var EntityLayoutView;
             return returnObj;
         },
         getAllClick: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
             var page = 1;
             if (!_.isUndefined(this.listView.currentPage) && this.listView.currentPage !== 0) {
                 page = this.listView.currentPage;
@@ -5424,36 +5421,35 @@ var EntityController;
     _.extend(EntityFormView.prototype, FieldsMixin);
 
 })(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin);
-//# sourceMappingURL=main.js.map
-
-    return {
-        BaseValidationView: BaseValidationView,
-        ErrorView: ErrorView,
-        InfoView: InfoView,
-        WarningView: WarningView,
-        SuccessView: SuccessView,
-        TimeoutUtil: TimeoutUtil,
-        UriUtil: UriUtil,
-        AutoCompleteLayoutView: AutoCompleteLayoutView,
-        MultiSelectLayoutView: MultiSelectLayoutView,
-        DateTimePickerView: DateTimePickerView,
-        DatePickerView: DatePickerView,
-        TimePickerView: TimePickerView,
-        SingleLineTextView: SingleLineTextView,
-        WyswigView: WyswigView,
-        ImageFieldView: ImageFieldView,
-        AutoCompleteListView: AutoCompleteListView,
-        RadioButtonListView: RadioButtonListView,
-        CheckBoxListView: CheckBoxListView,
-        CheckBoxView: CheckBoxView,
-        FormValidator: FormValidator,
-        ReusableTypeLayoutView: ReusableTypeLayoutView,
-        MessageBehavior: MessageBehavior,
-        DropDownListView: DropDownListView,
-        EntityListItemView: EntityListItemView,
-        EntityListView: EntityListView,
-        TreeCompositeView: TreeCompositeView,
-        ModalView: ModalView,
-        EntityLayoutView: EntityLayoutView
-    };
+return {
+    BaseValidationView: BaseValidationView,
+    ErrorView: ErrorView,
+    InfoView: InfoView,
+    WarningView: WarningView,
+    SuccessView: SuccessView,
+    TimeoutUtil: TimeoutUtil,
+    UriUtil: UriUtil,
+    AutoCompleteLayoutView: AutoCompleteLayoutView,
+    MultiSelectLayoutView: MultiSelectLayoutView,
+    DateTimePickerView: DateTimePickerView,
+    DatePickerView: DatePickerView,
+    TimePickerView: TimePickerView,
+    SingleLineTextView: SingleLineTextView,
+    WyswigView: WyswigView,
+    ImageFieldView: ImageFieldView,
+    AutoCompleteListView: AutoCompleteListView,
+    RadioButtonListView: RadioButtonListView,
+    CheckBoxListView: CheckBoxListView,
+    CheckBoxView: CheckBoxView,
+    FormValidator: FormValidator,
+    ReusableTypeLayoutView: ReusableTypeLayoutView,
+    MessageBehavior: MessageBehavior,
+    DropDownListView: DropDownListView,
+    EntityListItemView: EntityListItemView,
+    EntityListView: EntityListView,
+    TreeCompositeView: TreeCompositeView,
+    ModalView: ModalView,
+    EntityLayoutView: EntityLayoutView
+};
 }));
+//# sourceMappingURL=backbone.marionette.entityview.js.map

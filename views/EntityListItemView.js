@@ -69,6 +69,7 @@ var EntityListItemView;
             this.showChildView('fieldsRegion', new fieldsView());
         },
         renderActions: function () {
+            var embedded = this.getOption('embedded') ? 'Embedded' : '';
             this.action('edit')
                 .text('Edit')
                 .callBack(this.editClick)
@@ -76,7 +77,7 @@ var EntityListItemView;
 
             this.action('delete', true)
                 .text('Delete')
-                .withModal('deleteItemModal')
+                .withModal('deleteItemModal' + embedded)
                 .add();
         },
         templateContext: function () {
@@ -88,9 +89,6 @@ var EntityListItemView;
             };
         },
         editClick: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
             var id = this.model.get('id');
             if (this.getOption('routing')) {
                 location.hash = this.route + '/edit/' + id + '/';
@@ -162,6 +160,9 @@ var EntityListItemView;
                 if (!_.isUndefined(options.callBack) && !options.withModal) {
                     var $el = this.ui.$actions.find('.' + options.safeName);
                     $el.on('click', _.bind(function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
                         _.bind(options.callBack, this)(e)
                     }, this));
                     this.on('destroy', function () {

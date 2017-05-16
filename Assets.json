@@ -67,7 +67,6 @@
       "controllers/entityController.js",
       "app.js"
     ],
-    "template": "entityview.template.js",
     "generatedFile": "backbone.marionette.entityview.js"
   }
 }

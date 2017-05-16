@@ -121,6 +121,7 @@ var EntityLayoutView;
                 .add();
         },
         renderActions: function () {
+            var embedded = this.getOption('embedded') ? 'Embedded' : '';
             this.action('getAll')
                 .text('All')
                 .className('btn-default')
@@ -136,7 +137,7 @@ var EntityLayoutView;
             this.action('deleteAll', true)
                 .text('Delete All')
                 .className('btn-danger')
-                .withModal('deleteAllModal')
+                .withModal('deleteAllModal' + embedded)
                 .add();
         },
         listViewActivated: function () {
@@ -263,6 +264,9 @@ var EntityLayoutView;
                 if (!_.isUndefined(options.callBack) && !options.withModal) {
                     var $el = this.ui.$actions.find('.' + options.safeName);
                     $el.on('click', _.bind(function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
                         _.bind(options.callBack, this)(e)
                     }, this));
                     this.on('destroy', function () {
@@ -283,9 +287,6 @@ var EntityLayoutView;
             return returnObj;
         },
         getAllClick: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
             var page = 1;
             if (!_.isUndefined(this.listView.currentPage) && this.listView.currentPage !== 0) {
                 page = this.listView.currentPage;
