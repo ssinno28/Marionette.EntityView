@@ -29,19 +29,26 @@ var EntityListItemView;
             return behaviors;
         },
         ui: {
-            $edit: '.edit',
             $multiAction: '.multi-action',
             $actions: '.actions',
-            $delete: '.delete-item-modal-show'
+            $listViewActions: '.list-view-actions'
         },
         runInitializers: function () {
             if (this.options.baseClassIds.indexOf(this.model.get('id')) > -1) {
-                this.ui.$delete.addClass('not-active');
-                this.ui.$edit.addClass('not-active');
                 this.ui.$multiAction.addClass('not-active');
             }
         },
         runRenderers: function () {
+            this.renderFieldsView();
+            this.renderActions();
+
+            this.bindUIElements();
+            if (this.baseClassIds.indexOf(this.model.get('id')) === -1) {
+                this.$el.attr('data-index', this.collection.indexOf(this.model));
+                this.$el.attr('data-id', this.model.get('id'));
+            }
+        },
+        renderFieldsView: function () {
             var fieldsView =
                 Marionette.View.extend(
                     {
@@ -60,27 +67,119 @@ var EntityListItemView;
                     });
 
             this.showChildView('fieldsRegion', new fieldsView());
-            this.bindUIElements();
+        },
+        renderActions: function () {
+            this.action('edit')
+                .text('Edit')
+                .callBack(this.editClick)
+                .add();
 
-            if (this.baseClassIds.indexOf(this.model.get('id')) === -1) {
-                this.$el.attr('data-index', this.collection.indexOf(this.model));
-                this.$el.attr('data-id', this.model.get('id'));
-            }
+            this.action('delete', true)
+                .text('Delete')
+                .withModal('deleteItemModal')
+                .add();
         },
         templateContext: function () {
             var route = this.route;
 
-            var allowEdit = this.allowableOperations.indexOf('edit') > -1,
-                allowDelete = this.allowableOperations.indexOf('delete') > -1,
-                allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1;
-
             return {
                 route: route,
-                allowEdit: allowEdit,
-                allowDelete: allowDelete,
-                allowDeleteAll: allowDeleteAll,
                 embedded: this.getOption('embedded')
             };
+        },
+        editClick: function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var id = this.model.get('id');
+            if (this.getOption('routing')) {
+                location.hash = this.route + '/edit/' + id + '/';
+            } else {
+                this._channel.trigger('edit', id);
+            }
+        },
+        action: function (name) {
+            var options = {},
+                returnObj = {};
+
+            options.name = name;
+            options.withModal = false;
+            options.safeName = this._formatRegionName(options.name);
+            options.embedded = this.getOption('embedded');
+            options.id = this.model.get('id');
+
+            var text = function (text) {
+                options.text = text;
+                return returnObj;
+            };
+
+            var className = function (className) {
+                options.className = className;
+                return returnObj;
+            };
+
+            var callBack = function (callBack) {
+                options.callBack = callBack;
+                return returnObj;
+            };
+
+            var template = function (template) {
+                options.template = template;
+            };
+
+            var withModal = _.bind(function (modalName) {
+                options.modalSafeName = this._formatRegionName(modalName);
+                options.withModal = true;
+                options.template = _.template('<li>' +
+                    '<a data-toggle="modal" data-target="#<%= modalSafeName %>" class="<%= safeName %>"' +
+                    'data-id="<%= id %>" href="#">' +
+                    '<%= text %>' +
+                    '</a>' +
+                    '</li>');
+
+                return returnObj;
+            }, this);
+
+            var add = _.bind(function (forceShow) {
+                if (this.allowableOperations.indexOf(options.safeName) === -1 && !forceShow) {
+                    return;
+                }
+
+                var template = null;
+                if (!_.isUndefined(options.template)) {
+                    template = options.template;
+                } else {
+                    template = _.template('<li>' +
+                        '<a class="<%= safeName %>" data-id="<%= id %>" href="#">' +
+                        '<%= text %>' +
+                        '</a>' +
+                        '</li>');
+                }
+
+                var html = Marionette.Renderer.render(template, options);
+                this.ui.$actions.append(html);
+
+                if (!_.isUndefined(options.callBack) && !options.withModal) {
+                    var $el = this.ui.$actions.find('.' + options.safeName);
+                    $el.on('click', _.bind(function (e) {
+                        _.bind(options.callBack, this)(e)
+                    }, this));
+                    this.on('destroy', function () {
+                        $el.off('click');
+                    });
+                }
+            }, this);
+
+            returnObj = _.extend(returnObj, {
+                text: text,
+                className: className,
+                callBack: callBack,
+                template: template,
+                withModal: withModal,
+                add: add
+            });
+
+            return returnObj;
         },
         getChannel: function () {
             return this._channel;

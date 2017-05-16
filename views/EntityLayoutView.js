@@ -298,19 +298,6 @@ var EntityLayoutView;
                 location.hash = route;
             }
         },
-        editClick: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            var $target = $(e.target),
-                id = $target.data('id');
-
-            if (this.routing) {
-                location.hash = this.route + '/edit/' + id + '/';
-            } else {
-                this._channel.trigger('edit', id);
-            }
-        },
         getChannel: function () {
             return this._channel;
         }

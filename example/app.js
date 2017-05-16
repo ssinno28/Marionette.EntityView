@@ -19,7 +19,16 @@ var MockModel = Backbone.EntityModel.extend({
     }),
     region = new Backbone.Marionette.Region({el: '#mainRegion'}),
     MockListItemView = Marionette.EntityListItemView.extend({
-        fieldsTemplate: _.template('<div><%= name %></div>')
+        fieldsTemplate: _.template('<div><%= name %></div>'),
+        onRender: function () {
+            this.action('test')
+                .text('Testing add Action!')
+                .callBack(this.testAction)
+                .add();
+        },
+        testAction: function () {
+            alert('This is a test!');
+        }
     }),
     MockListView = Marionette.EntityListView.extend({
         childView: MockListItemView
@@ -111,7 +120,8 @@ var options = {
     header: {
         template: _.template('<h3><%= title %></h3> <hr />'),
         params: {title: 'Testing'}
-    }
+    },
+    allowableOperations: ['edit', 'delete', 'delete-all', 'create', 'test']
 };
 
 var router = Marionette.EntityRouter.extend({

@@ -89,7 +89,8 @@ var EntityService;
                     baseClassIds: this.baseClassIds,
                     route: this.route,
                     sortable: this.sortable,
-                    embedded: this.embedded
+                    embedded: this.embedded,
+                    routing: this.routing
                 });
 
             listView.currentPage = _.isUndefined(entities) ? 1 : entities.currentPage;
@@ -236,7 +237,8 @@ var EntityService;
                             parentViewCid: this.entityLayoutView().cid,
                             baseClassIds: this.baseClassIds,
                             route: this.route,
-                            sortable: this.sortable
+                            sortable: this.sortable,
+                            routing: this.routing
                         });
 
                     listView.route = this.route;
@@ -284,7 +286,8 @@ var EntityService;
                             parentViewCid: self.entityLayoutView().cid,
                             baseClassIds: self.baseClassIds,
                             route: self.route,
-                            sortable: self.sortable
+                            sortable: self.sortable,
+                            routing: self.routing
                         });
 
                     listView.currentPage = page;

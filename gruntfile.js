@@ -21,7 +21,8 @@ module.exports = function (grunt) {
         concat: {
             dist: {
                 options: {
-                    sourceMap: true
+                    sourceMap: true,
+                    sourceMapName: 'generated/js/main.js.map'
                 },
                 src: assetSource.js.files,
                 dest: './generated/js/main.js'
