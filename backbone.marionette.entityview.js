@@ -42,10 +42,7 @@
         var exports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment);
         _.extend(root, exports);
     }
-}(this, function (Backbone, Marionette, jQuery, _, App, moment) {
-
-    /* jshint ignore:start */
-    this["Templates"] = this["Templates"] || {};
+}(this, function (Backbone, Marionette, jQuery, _, App, moment) {this["Templates"] = this["Templates"] || {};
 
 this["Templates"]["entityFormLayoutTemplate"] = function(obj) {
 obj || (obj = {});
@@ -72,20 +69,9 @@ return __p
 
 this["Templates"]["entityLayoutTemplate"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
+var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="row">\r\n    <div class="entity-header col-sm-12">\r\n    </div>\r\n    <div class="col-sm-12">\r\n        <div class="form-group">\r\n            <label class="sr-only" for="filter">Name</label>\r\n\r\n            <div class="input-group col-sm-12">\r\n                <input type="text" class="form-control nameFilter" id="filter" placeholder="Filter By Name...">\r\n            </div><!-- /input-group -->\r\n        </div>\r\n        <div class="form-group sub-nav">\r\n            <button type="button" class="get-all btn btn-default">\r\n                All\r\n            </button>\r\n            ';
- if(showCreate){ ;
-__p += '\r\n            <button type="button" class="create btn btn-primary">\r\n                Create\r\n            </button>\r\n            ';
- } ;
-__p += '\r\n\r\n            ';
- if(allowDeleteAll){ ;
-__p += '\r\n            <button data-toggle="modal" data-target="#delete-all-modal" type="button"\r\n                    class="btn btn-danger multi-action-requests ' +
-((__t = ( btnClass )) == null ? '' : __t) +
-' delete-all-modal-show">\r\n                Delete All\r\n            </button>\r\n            ';
- } ;
-__p += '\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n<div class="row">\r\n    <div class="list-group entityRegion">\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-xs-7 col-sm-9 col-md-10">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n    <div class="col-xs-5 col-sm-3 col-md-2">\r\n        <div class="page-size-region"></div>\r\n    </div>\r\n</div>';
+__p += '<div class="row">\r\n    <div class="entity-header col-sm-12">\r\n    </div>\r\n    <div class="col-sm-12">\r\n        <div class="form-group">\r\n            <label class="sr-only" for="filter">Name</label>\r\n\r\n            <div class="input-group col-sm-12">\r\n                <input type="text" class="form-control nameFilter" id="filter" placeholder="Filter By Name...">\r\n            </div><!-- /input-group -->\r\n        </div>\r\n        <div class="form-group sub-nav actions">\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n<div class="row">\r\n    <div class="list-group entityRegion">\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-xs-7 col-sm-9 col-md-10">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n    <div class="col-xs-5 col-sm-3 col-md-2">\r\n        <div class="page-size-region"></div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -93,52 +79,23 @@ return __p
 
 this["Templates"]["entityListItemTemplate"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
+var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="row">\r\n    ';
- if(allowDeleteAll){ ;
-__p += '\r\n    <div class="list-view-checkbox col-xs-1 col-sm-1">\r\n        <input class="multi-action" data-id="' +
+__p += '<div class="row">\r\n    <div class="list-view-checkbox col-xs-1 col-sm-1">\r\n        <input class="multi-action" data-id="' +
 ((__t = ( id )) == null ? '' : __t) +
 '" id="' +
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
-'" type="checkbox">\r\n    </div>\r\n    ';
- } ;
-__p += '\r\n\r\n    <div class="col-xs-9 col-sm-10 list-view-additional-info">\r\n        <div class="fieldsRegion"></div>\r\n    </div>\r\n\r\n    ';
- if(allowEdit || allowDelete){ ;
-__p += '\r\n    <div class="list-view-actions col-sm-1 col-xs-1">\r\n        <div class="dropdown pull-right">\r\n            <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
+'" type="checkbox">\r\n    </div>\r\n\r\n    <div class="col-xs-9 col-sm-10 list-view-additional-info">\r\n        <div class="fieldsRegion"></div>\r\n    </div>\r\n\r\n    <div class="list-view-actions col-sm-1 col-xs-1">\r\n        <div class="dropdown pull-right">\r\n            <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
-'"\r\n                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">\r\n                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>\r\n            </button>\r\n            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown' +
+'"\r\n                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">\r\n                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>\r\n            </button>\r\n            <ul class="dropdown-menu dropdown-menu-right actions" aria-labelledby="dropdown' +
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
-'">\r\n                ';
- if(allowEdit){ ;
-__p += '\r\n                <li>\r\n                    <a class="edit" data-id="' +
-((__t = ( id )) == null ? '' : __t) +
-'" href="#">\r\n                        Edit\r\n                    </a>\r\n                </li>\r\n                ';
- } ;
-__p += '\r\n\r\n                ';
- if(allowDelete){ ;
-__p += '\r\n                <li>\r\n                    <a data-toggle="modal" data-target="#delete-item-modal';
-if(embedded){;
-__p += '-embedded';
- } ;
-__p += '" class="delete-item-modal-';
-if(embedded){;
-__p += 'embedded-';
-};
-__p += 'show"\r\n                       data-id="' +
-((__t = ( id )) == null ? '' : __t) +
-'" href="#">\r\n                        Delete\r\n                    </a>\r\n                </li>\r\n                ';
- } ;
-__p += '\r\n            </ul>\r\n        </div>\r\n    </div>\r\n    ';
- } ;
-__p += '\r\n</div>';
+'">\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -454,9 +411,7 @@ __p += '<button type="button" class="close" data-dismiss="alert" aria-hidden="tr
 }
 return __p
 };
-        /* jshint ignore:end */
-
-    var UtilitiesMixin;
+var UtilitiesMixin;
 (function ($, _, Backbone, Marionette) {
     UtilitiesMixin = {
         _formatRegionName: function (name) {
@@ -3003,7 +2958,7 @@ var PagerBehavior;
 
             if (pagerRegion.currentView !== null) {
                 pagerRegion.reset();
-            } 
+            }
 
             if (_.isUndefined(App.indexes)) {
                 return;
@@ -3186,7 +3141,8 @@ var EntityListView;
                 baseClassIds: baseClassIds,
                 sortable: this.getOption('sortable'),
                 parent: this,
-                embedded: this.getOption('embedded')
+                embedded: this.getOption('embedded'),
+                routing: this.getOption('routing')
             };
         },
         onAddChild: function (childView) {
@@ -3233,19 +3189,26 @@ var EntityListItemView;
             return behaviors;
         },
         ui: {
-            $edit: '.edit',
             $multiAction: '.multi-action',
             $actions: '.actions',
-            $delete: '.delete-item-modal-show'
+            $listViewActions: '.list-view-actions'
         },
         runInitializers: function () {
             if (this.options.baseClassIds.indexOf(this.model.get('id')) > -1) {
-                this.ui.$delete.addClass('not-active');
-                this.ui.$edit.addClass('not-active');
                 this.ui.$multiAction.addClass('not-active');
             }
         },
         runRenderers: function () {
+            this.renderFieldsView();
+            this.renderActions();
+
+            this.bindUIElements();
+            if (this.baseClassIds.indexOf(this.model.get('id')) === -1) {
+                this.$el.attr('data-index', this.collection.indexOf(this.model));
+                this.$el.attr('data-id', this.model.get('id'));
+            }
+        },
+        renderFieldsView: function () {
             var fieldsView =
                 Marionette.View.extend(
                     {
@@ -3264,27 +3227,120 @@ var EntityListItemView;
                     });
 
             this.showChildView('fieldsRegion', new fieldsView());
-            this.bindUIElements();
+        },
+        renderActions: function () {
+            var embedded = this.getOption('embedded') ? 'Embedded' : '';
+            this.action('edit')
+                .text('Edit')
+                .callBack(this.editClick)
+                .add();
 
-            if (this.baseClassIds.indexOf(this.model.get('id')) === -1) {
-                this.$el.attr('data-index', this.collection.indexOf(this.model));
-                this.$el.attr('data-id', this.model.get('id'));
-            }
+            this.action('delete', true)
+                .text('Delete')
+                .withModal('deleteItemModal' + embedded)
+                .add();
         },
         templateContext: function () {
             var route = this.route;
 
-            var allowEdit = this.allowableOperations.indexOf('edit') > -1,
-                allowDelete = this.allowableOperations.indexOf('delete') > -1,
-                allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1;
-
             return {
                 route: route,
-                allowEdit: allowEdit,
-                allowDelete: allowDelete,
-                allowDeleteAll: allowDeleteAll,
                 embedded: this.getOption('embedded')
             };
+        },
+        editClick: function (e) {
+            var id = this.model.get('id');
+            if (this.getOption('routing')) {
+                location.hash = this.route + '/edit/' + id + '/';
+            } else {
+                this._channel.trigger('edit', id);
+            }
+        },
+        action: function (name) {
+            var options = {},
+                returnObj = {};
+
+            options.name = name;
+            options.withModal = false;
+            options.safeName = this._formatRegionName(options.name);
+            options.embedded = this.getOption('embedded');
+            options.id = this.model.get('id');
+
+            var text = function (text) {
+                options.text = text;
+                return returnObj;
+            };
+
+            var className = function (className) {
+                options.className = className;
+                return returnObj;
+            };
+
+            var callBack = function (callBack) {
+                options.callBack = callBack;
+                return returnObj;
+            };
+
+            var template = function (template) {
+                options.template = template;
+            };
+
+            var withModal = _.bind(function (modalName) {
+                options.modalSafeName = this._formatRegionName(modalName);
+                options.withModal = true;
+                options.template = _.template('<li>' +
+                    '<a data-toggle="modal" data-target="#<%= modalSafeName %>" class="<%= safeName %>"' +
+                    'data-id="<%= id %>" href="#">' +
+                    '<%= text %>' +
+                    '</a>' +
+                    '</li>');
+
+                return returnObj;
+            }, this);
+
+            var add = _.bind(function (forceShow) {
+                if (this.allowableOperations.indexOf(options.safeName) === -1 && !forceShow) {
+                    return;
+                }
+
+                var template = null;
+                if (!_.isUndefined(options.template)) {
+                    template = options.template;
+                } else {
+                    template = _.template('<li>' +
+                        '<a class="<%= safeName %>" data-id="<%= id %>" href="#">' +
+                        '<%= text %>' +
+                        '</a>' +
+                        '</li>');
+                }
+
+                var html = Marionette.Renderer.render(template, options);
+                this.ui.$actions.append(html);
+
+                if (!_.isUndefined(options.callBack) && !options.withModal) {
+                    var $el = this.ui.$actions.find('.' + options.safeName);
+                    $el.on('click', _.bind(function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        _.bind(options.callBack, this)(e)
+                    }, this));
+                    this.on('destroy', function () {
+                        $el.off('click');
+                    });
+                }
+            }, this);
+
+            returnObj = _.extend(returnObj, {
+                text: text,
+                className: className,
+                callBack: callBack,
+                template: template,
+                withModal: withModal,
+                add: add
+            });
+
+            return returnObj;
         },
         getChannel: function () {
             return this._channel;
@@ -3348,7 +3404,6 @@ var EntityLayoutView;
             'click .edit': 'editClick',
             'keyup .nameFilter': 'filterByName',
             'click .multi-action': 'showMultiActions',
-            'click .sub-nav .create': 'createClick',
             'click .sub-nav .get-all': 'getAllClick'
         },
         childViewEvents: function () {
@@ -3366,22 +3421,16 @@ var EntityLayoutView;
         ui: {
             '$subNav': '.sub-nav',
             '$filters': '.filterEntities',
-            '$createBtn': '.create',
-            '$listBtn': '.get-all',
-            '$subNavElements': '.sub-nav > dd',
             '$multiActionRequests': '.multi-action-requests',
             '$treeBtn': '.get-tree',
-            '$header': '.entity-header'
+            '$header': '.entity-header',
+            '$actions': '.actions'
         },
         templateContext: function () {
-            var showCreate = this.allowableOperations.indexOf('create') > -1,
-                allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1,
-                route = this.route,
+            var route = this.route,
                 btnClass = this.btnClass;
 
             return {
-                showCreate: showCreate,
-                allowDeleteAll: allowDeleteAll,
                 route: route,
                 btnClass: btnClass
             };
@@ -3390,9 +3439,6 @@ var EntityLayoutView;
             e.preventDefault();
             e.stopPropagation();
 
-            this.ui.$subNavElements.removeClass('active');
-            this.ui.$createBtn.parent().addClass('active');
-
             if (!this.routing) {
                 this._channel.trigger('create');
             } else {
@@ -3400,12 +3446,16 @@ var EntityLayoutView;
             }
         },
         runInitializers: function () {
+            this.showMultiActions();
         },
         runRenderers: function () {
-            this.showListView();
             this.renderHeader();
-            this.showMultiActions();
+            this.renderModals();
+            this.renderActions();
 
+            this.bindUIElements();
+        },
+        renderModals: function () {
             var embedded = this.getOption('embedded') ? 'Embedded' : '';
             this.modal('deleteAllModal' + embedded)
                 .message('Are you sure you want to delete these items?')
@@ -3421,9 +3471,27 @@ var EntityLayoutView;
                 .choice('No', 'no', true)
                 .add();
         },
+        renderActions: function () {
+            var embedded = this.getOption('embedded') ? 'Embedded' : '';
+            this.action('getAll')
+                .text('All')
+                .className('btn-default')
+                .callBack(this.getAllClick)
+                .add(true);
+
+            this.action('create', false)
+                .text('Create')
+                .className('btn-primary')
+                .callBack(this.createClick)
+                .add();
+
+            this.action('deleteAll', true)
+                .text('Delete All')
+                .className('btn-danger')
+                .withModal('deleteAllModal' + embedded)
+                .add();
+        },
         listViewActivated: function () {
-            this.ui.$subNavElements.removeClass('active');
-            this.ui.$listBtn.parent().addClass('active');
             this.ui.$filters.show();
             this.triggerMethod("ShowPager", this.listView.collection);
             this.showMultiActions();
@@ -3455,11 +3523,6 @@ var EntityLayoutView;
                 e.stopPropagation();
             }
 
-            var allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1;
-            if (!allowDeleteAll) {
-                return;
-            }
-
             var itemsSelected = this.$el.find('.multi-action:checked');
             if (itemsSelected.length > 0) {
                 this.ui.$multiActionRequests.show();
@@ -3483,9 +3546,6 @@ var EntityLayoutView;
                 this._channel.trigger('textSearch', name, filterField);
             }, this), 400)();
         },
-        showListView: function () {
-            this.showChildView('entityRegion', this.listView);
-        },
         renderHeader: function () {
             if (_.isUndefined(this.header)) {
                 return;
@@ -3494,10 +3554,90 @@ var EntityLayoutView;
             var html = Marionette.Renderer.render(this.header.template, this.header.params);
             this.ui.$header.append(html);
         },
-        getAllClick: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
+        action: function (name, isMultiAction) {
+            var options = {},
+                returnObj = {};
 
+            options.name = name;
+            options.isMultiAction = isMultiAction;
+            options.withModal = false;
+            options.safeName = this._formatRegionName(options.name);
+
+            var text = function (text) {
+                options.text = text;
+                return returnObj;
+            };
+
+            var className = function (className) {
+                options.className = className;
+                return returnObj;
+            };
+
+            var callBack = function (callBack) {
+                options.callBack = callBack;
+                return returnObj;
+            };
+
+            var template = function (template) {
+                options.template = template;
+            };
+
+            var withModal = _.bind(function (modalName) {
+                var modalSafeName = this._formatRegionName(modalName);
+                options.withModal = true;
+                options.template = _.template('<button  data-toggle="modal" data-target="#' + modalSafeName + '" type="button" class="<%= safeName %> btn ' +
+                    '<% if(isMultiAction) { %> multi-action-requests <% } %>' +
+                    ' <%= className %>">' +
+                    '<%= text %>' +
+                    '</button>');
+
+                return returnObj;
+            }, this);
+
+            var add = _.bind(function (forceShow) {
+                if (this.allowableOperations.indexOf(options.safeName) === -1 && !forceShow) {
+                    return;
+                }
+
+                var template = null;
+                if (!_.isUndefined(options.template)) {
+                    template = options.template;
+                } else {
+                    template = _.template('<button type="button" class="<%= safeName %> btn <% if(isMultiAction) { %> multi-action-requests <% } %>' +
+                        ' <%= className %>">' +
+                        '<%= text %>' +
+                        '</button>');
+                }
+
+                var html = Marionette.Renderer.render(template, options);
+                this.ui.$actions.append(html);
+
+                if (!_.isUndefined(options.callBack) && !options.withModal) {
+                    var $el = this.ui.$actions.find('.' + options.safeName);
+                    $el.on('click', _.bind(function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        _.bind(options.callBack, this)(e)
+                    }, this));
+                    this.on('destroy', function () {
+                        $el.off('click');
+                    });
+                }
+            }, this);
+
+            returnObj = _.extend(returnObj, {
+                text: text,
+                className: className,
+                callBack: callBack,
+                template: template,
+                withModal: withModal,
+                add: add
+            });
+
+            return returnObj;
+        },
+        getAllClick: function (e) {
             var page = 1;
             if (!_.isUndefined(this.listView.currentPage) && this.listView.currentPage !== 0) {
                 page = this.listView.currentPage;
@@ -3508,19 +3648,6 @@ var EntityLayoutView;
                 this._channel.trigger('getAll', page);
             } else {
                 location.hash = route;
-            }
-        },
-        editClick: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            var $target = $(e.target),
-                id = $target.data('id');
-
-            if (this.routing) {
-                location.hash = this.route + '/edit/' + id + '/';
-            } else {
-                this._channel.trigger('edit', id);
             }
         },
         getChannel: function () {
@@ -4018,7 +4145,8 @@ var EntityService;
                     baseClassIds: this.baseClassIds,
                     route: this.route,
                     sortable: this.sortable,
-                    embedded: this.embedded
+                    embedded: this.embedded,
+                    routing: this.routing
                 });
 
             listView.currentPage = _.isUndefined(entities) ? 1 : entities.currentPage;
@@ -4165,7 +4293,8 @@ var EntityService;
                             parentViewCid: this.entityLayoutView().cid,
                             baseClassIds: this.baseClassIds,
                             route: this.route,
-                            sortable: this.sortable
+                            sortable: this.sortable,
+                            routing: this.routing
                         });
 
                     listView.route = this.route;
@@ -4213,7 +4342,8 @@ var EntityService;
                             parentViewCid: self.entityLayoutView().cid,
                             baseClassIds: self.baseClassIds,
                             route: self.route,
-                            sortable: self.sortable
+                            sortable: self.sortable,
+                            routing: self.routing
                         });
 
                     listView.currentPage = page;
@@ -4268,6 +4398,7 @@ var EntityService;
                     entityLayoutView.key = key;
 
                     self.region.show(entityLayoutView);
+                    self.entityLayoutView().showChildView('entityRegion', entityLayoutView.listView);
                 });
         },
         getData: function (page) {
@@ -5290,36 +5421,35 @@ var EntityController;
     _.extend(EntityFormView.prototype, FieldsMixin);
 
 })(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin);
-//# sourceMappingURL=main.js.map
-
-    return {
-        BaseValidationView: BaseValidationView,
-        ErrorView: ErrorView,
-        InfoView: InfoView,
-        WarningView: WarningView,
-        SuccessView: SuccessView,
-        TimeoutUtil: TimeoutUtil,
-        UriUtil: UriUtil,
-        AutoCompleteLayoutView: AutoCompleteLayoutView,
-        MultiSelectLayoutView: MultiSelectLayoutView,
-        DateTimePickerView: DateTimePickerView,
-        DatePickerView: DatePickerView,
-        TimePickerView: TimePickerView,
-        SingleLineTextView: SingleLineTextView,
-        WyswigView: WyswigView,
-        ImageFieldView: ImageFieldView,
-        AutoCompleteListView: AutoCompleteListView,
-        RadioButtonListView: RadioButtonListView,
-        CheckBoxListView: CheckBoxListView,
-        CheckBoxView: CheckBoxView,
-        FormValidator: FormValidator,
-        ReusableTypeLayoutView: ReusableTypeLayoutView,
-        MessageBehavior: MessageBehavior,
-        DropDownListView: DropDownListView,
-        EntityListItemView: EntityListItemView,
-        EntityListView: EntityListView,
-        TreeCompositeView: TreeCompositeView,
-        ModalView: ModalView,
-        EntityLayoutView: EntityLayoutView
-    };
+return {
+    BaseValidationView: BaseValidationView,
+    ErrorView: ErrorView,
+    InfoView: InfoView,
+    WarningView: WarningView,
+    SuccessView: SuccessView,
+    TimeoutUtil: TimeoutUtil,
+    UriUtil: UriUtil,
+    AutoCompleteLayoutView: AutoCompleteLayoutView,
+    MultiSelectLayoutView: MultiSelectLayoutView,
+    DateTimePickerView: DateTimePickerView,
+    DatePickerView: DatePickerView,
+    TimePickerView: TimePickerView,
+    SingleLineTextView: SingleLineTextView,
+    WyswigView: WyswigView,
+    ImageFieldView: ImageFieldView,
+    AutoCompleteListView: AutoCompleteListView,
+    RadioButtonListView: RadioButtonListView,
+    CheckBoxListView: CheckBoxListView,
+    CheckBoxView: CheckBoxView,
+    FormValidator: FormValidator,
+    ReusableTypeLayoutView: ReusableTypeLayoutView,
+    MessageBehavior: MessageBehavior,
+    DropDownListView: DropDownListView,
+    EntityListItemView: EntityListItemView,
+    EntityListView: EntityListView,
+    TreeCompositeView: TreeCompositeView,
+    ModalView: ModalView,
+    EntityLayoutView: EntityLayoutView
+};
 }));
+//# sourceMappingURL=backbone.marionette.entityview.js.map

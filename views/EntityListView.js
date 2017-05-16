@@ -37,7 +37,8 @@ var EntityListView;
                 baseClassIds: baseClassIds,
                 sortable: this.getOption('sortable'),
                 parent: this,
-                embedded: this.getOption('embedded')
+                embedded: this.getOption('embedded'),
+                routing: this.getOption('routing')
             };
         },
         onAddChild: function (childView) {

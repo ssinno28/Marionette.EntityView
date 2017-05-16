@@ -53,7 +53,6 @@ var EntityLayoutView;
             'click .edit': 'editClick',
             'keyup .nameFilter': 'filterByName',
             'click .multi-action': 'showMultiActions',
-            'click .sub-nav .create': 'createClick',
             'click .sub-nav .get-all': 'getAllClick'
         },
         childViewEvents: function () {
@@ -71,22 +70,16 @@ var EntityLayoutView;
         ui: {
             '$subNav': '.sub-nav',
             '$filters': '.filterEntities',
-            '$createBtn': '.create',
-            '$listBtn': '.get-all',
-            '$subNavElements': '.sub-nav > dd',
             '$multiActionRequests': '.multi-action-requests',
             '$treeBtn': '.get-tree',
-            '$header': '.entity-header'
+            '$header': '.entity-header',
+            '$actions': '.actions'
         },
         templateContext: function () {
-            var showCreate = this.allowableOperations.indexOf('create') > -1,
-                allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1,
-                route = this.route,
+            var route = this.route,
                 btnClass = this.btnClass;
 
             return {
-                showCreate: showCreate,
-                allowDeleteAll: allowDeleteAll,
                 route: route,
                 btnClass: btnClass
             };
@@ -95,9 +88,6 @@ var EntityLayoutView;
             e.preventDefault();
             e.stopPropagation();
 
-            this.ui.$subNavElements.removeClass('active');
-            this.ui.$createBtn.parent().addClass('active');
-
             if (!this.routing) {
                 this._channel.trigger('create');
             } else {
@@ -105,12 +95,16 @@ var EntityLayoutView;
             }
         },
         runInitializers: function () {
+            this.showMultiActions();
         },
         runRenderers: function () {
-            this.showListView();
             this.renderHeader();
-            this.showMultiActions();
+            this.renderModals();
+            this.renderActions();
 
+            this.bindUIElements();
+        },
+        renderModals: function () {
             var embedded = this.getOption('embedded') ? 'Embedded' : '';
             this.modal('deleteAllModal' + embedded)
                 .message('Are you sure you want to delete these items?')
@@ -126,9 +120,27 @@ var EntityLayoutView;
                 .choice('No', 'no', true)
                 .add();
         },
+        renderActions: function () {
+            var embedded = this.getOption('embedded') ? 'Embedded' : '';
+            this.action('getAll')
+                .text('All')
+                .className('btn-default')
+                .callBack(this.getAllClick)
+                .add(true);
+
+            this.action('create', false)
+                .text('Create')
+                .className('btn-primary')
+                .callBack(this.createClick)
+                .add();
+
+            this.action('deleteAll', true)
+                .text('Delete All')
+                .className('btn-danger')
+                .withModal('deleteAllModal' + embedded)
+                .add();
+        },
         listViewActivated: function () {
-            this.ui.$subNavElements.removeClass('active');
-            this.ui.$listBtn.parent().addClass('active');
             this.ui.$filters.show();
             this.triggerMethod("ShowPager", this.listView.collection);
             this.showMultiActions();
@@ -160,11 +172,6 @@ var EntityLayoutView;
                 e.stopPropagation();
             }
 
-            var allowDeleteAll = this.allowableOperations.indexOf('delete-all') > -1;
-            if (!allowDeleteAll) {
-                return;
-            }
-
             var itemsSelected = this.$el.find('.multi-action:checked');
             if (itemsSelected.length > 0) {
                 this.ui.$multiActionRequests.show();
@@ -188,9 +195,6 @@ var EntityLayoutView;
                 this._channel.trigger('textSearch', name, filterField);
             }, this), 400)();
         },
-        showListView: function () {
-            this.showChildView('entityRegion', this.listView);
-        },
         renderHeader: function () {
             if (_.isUndefined(this.header)) {
                 return;
@@ -199,10 +203,90 @@ var EntityLayoutView;
             var html = Marionette.Renderer.render(this.header.template, this.header.params);
             this.ui.$header.append(html);
         },
-        getAllClick: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
+        action: function (name, isMultiAction) {
+            var options = {},
+                returnObj = {};
 
+            options.name = name;
+            options.isMultiAction = isMultiAction;
+            options.withModal = false;
+            options.safeName = this._formatRegionName(options.name);
+
+            var text = function (text) {
+                options.text = text;
+                return returnObj;
+            };
+
+            var className = function (className) {
+                options.className = className;
+                return returnObj;
+            };
+
+            var callBack = function (callBack) {
+                options.callBack = callBack;
+                return returnObj;
+            };
+
+            var template = function (template) {
+                options.template = template;
+            };
+
+            var withModal = _.bind(function (modalName) {
+                var modalSafeName = this._formatRegionName(modalName);
+                options.withModal = true;
+                options.template = _.template('<button  data-toggle="modal" data-target="#' + modalSafeName + '" type="button" class="<%= safeName %> btn ' +
+                    '<% if(isMultiAction) { %> multi-action-requests <% } %>' +
+                    ' <%= className %>">' +
+                    '<%= text %>' +
+                    '</button>');
+
+                return returnObj;
+            }, this);
+
+            var add = _.bind(function (forceShow) {
+                if (this.allowableOperations.indexOf(options.safeName) === -1 && !forceShow) {
+                    return;
+                }
+
+                var template = null;
+                if (!_.isUndefined(options.template)) {
+                    template = options.template;
+                } else {
+                    template = _.template('<button type="button" class="<%= safeName %> btn <% if(isMultiAction) { %> multi-action-requests <% } %>' +
+                        ' <%= className %>">' +
+                        '<%= text %>' +
+                        '</button>');
+                }
+
+                var html = Marionette.Renderer.render(template, options);
+                this.ui.$actions.append(html);
+
+                if (!_.isUndefined(options.callBack) && !options.withModal) {
+                    var $el = this.ui.$actions.find('.' + options.safeName);
+                    $el.on('click', _.bind(function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        _.bind(options.callBack, this)(e)
+                    }, this));
+                    this.on('destroy', function () {
+                        $el.off('click');
+                    });
+                }
+            }, this);
+
+            returnObj = _.extend(returnObj, {
+                text: text,
+                className: className,
+                callBack: callBack,
+                template: template,
+                withModal: withModal,
+                add: add
+            });
+
+            return returnObj;
+        },
+        getAllClick: function (e) {
             var page = 1;
             if (!_.isUndefined(this.listView.currentPage) && this.listView.currentPage !== 0) {
                 page = this.listView.currentPage;
@@ -213,19 +297,6 @@ var EntityLayoutView;
                 this._channel.trigger('getAll', page);
             } else {
                 location.hash = route;
-            }
-        },
-        editClick: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            var $target = $(e.target),
-                id = $target.data('id');
-
-            if (this.routing) {
-                location.hash = this.route + '/edit/' + id + '/';
-            } else {
-                this._channel.trigger('edit', id);
             }
         },
         getChannel: function () {

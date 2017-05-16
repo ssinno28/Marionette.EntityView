@@ -1,0 +1,32 @@
+
+return {
+    BaseValidationView: BaseValidationView,
+    ErrorView: ErrorView,
+    InfoView: InfoView,
+    WarningView: WarningView,
+    SuccessView: SuccessView,
+    TimeoutUtil: TimeoutUtil,
+    UriUtil: UriUtil,
+    AutoCompleteLayoutView: AutoCompleteLayoutView,
+    MultiSelectLayoutView: MultiSelectLayoutView,
+    DateTimePickerView: DateTimePickerView,
+    DatePickerView: DatePickerView,
+    TimePickerView: TimePickerView,
+    SingleLineTextView: SingleLineTextView,
+    WyswigView: WyswigView,
+    ImageFieldView: ImageFieldView,
+    AutoCompleteListView: AutoCompleteListView,
+    RadioButtonListView: RadioButtonListView,
+    CheckBoxListView: CheckBoxListView,
+    CheckBoxView: CheckBoxView,
+    FormValidator: FormValidator,
+    ReusableTypeLayoutView: ReusableTypeLayoutView,
+    MessageBehavior: MessageBehavior,
+    DropDownListView: DropDownListView,
+    EntityListItemView: EntityListItemView,
+    EntityListView: EntityListView,
+    TreeCompositeView: TreeCompositeView,
+    ModalView: ModalView,
+    EntityLayoutView: EntityLayoutView
+};
+}));

@@ -243,6 +243,10 @@ legend {
     padding: 0;
 }
 
+.actions button {
+    margin-right: 5px;
+}
+
 /* Icons
 ------------------------------------------------------------*/
 .size-12 {
