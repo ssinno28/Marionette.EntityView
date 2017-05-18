@@ -1,5 +1,5 @@
 var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior) {
+(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior, FilterFormView) {
     EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
         template: entityListLayoutTpl,
         regions: {
@@ -13,6 +13,10 @@ var EntityLayoutView;
             },
             'pageSizeRegion': {
                 el: '.page-size-region',
+                replaceElement: true
+            },
+            'filterRegion': {
+                el: '.filter-region',
                 replaceElement: true
             }
         },
@@ -51,7 +55,7 @@ var EntityLayoutView;
         },
         events: {
             'click .edit': 'editClick',
-            'keyup .nameFilter': 'filterByName',
+            'keyup .name': 'filterByName',
             'click .multi-action': 'showMultiActions',
             'click .sub-nav .get-all': 'getAllClick'
         },
@@ -99,6 +103,7 @@ var EntityLayoutView;
         },
         runRenderers: function () {
             this.renderHeader();
+            this.renderFilters();
             this.renderModals();
             this.renderActions();
 
@@ -140,9 +145,21 @@ var EntityLayoutView;
                 .withModal('deleteAllModal' + embedded)
                 .add();
         },
+        renderFilters: function () {
+            var FiltersView = FilterFormView.extend({
+                template: false,
+                onRender: function () {
+                    this.field('name')
+                        .label('Filter By Name', true)
+                        .el(this.$el)
+                        .singleLine('Filter By Name');
+                }
+            });
+
+            this.showChildView('filterRegion', new FiltersView());
+        },
         listViewActivated: function () {
             this.ui.$filters.show();
-            this.triggerMethod("ShowPager", this.listView.collection);
             this.showMultiActions();
         },
         formViewActivated: function () {
@@ -303,4 +320,4 @@ var EntityLayoutView;
             return this._channel;
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior, FilterFormView);

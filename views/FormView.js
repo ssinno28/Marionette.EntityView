@@ -331,7 +331,6 @@ var FormView;
             } else {
                 return this._validator.validate(validationRule, val, options);
             }
-            return true;
         },
 
         submit: function () {

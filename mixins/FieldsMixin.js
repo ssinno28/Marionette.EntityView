@@ -58,22 +58,22 @@ var FieldsMixin;
                 currentField.validations.boolean = message;
                 return returnObj;
             };
-			
-			var matches = function(message, field) {
-				currentField.validations['matches:' + field] = message;
-				return returnObj;
-			};
 
-            var rule = _.bind(function (name, message, func) {	
-				if(_.isUndefined(this.rules)) {
-					this.rules = {};
-				}
-				
+            var matches = function (message, field) {
+                currentField.validations['matches:' + field] = message;
+                return returnObj;
+            };
+
+            var rule = _.bind(function (name, message, func) {
+                if (_.isUndefined(this.rules)) {
+                    this.rules = {};
+                }
+
                 this.rules[name] = {};
-				this.rules[name].evaluate = func;
-				
+                this.rules[name].evaluate = func;
+
                 currentField.validations[name] = message;
-				return returnObj;
+                return returnObj;
             }, this);
 
             validations = {
@@ -96,23 +96,31 @@ var FieldsMixin;
                     $el = $fields;
                 }
 
+                if ($el.length === 0) {
+                    $el = this.$el;
+                }
+
                 var fieldWrapperTpl = null;
-                if (_.isUndefined(options.template)) {
+                if (!_.isUndefined(options.template)) {
+                    fieldWrapperTpl = options.template;
+                } else if (!_.isUndefined(this.fieldWrapperTpl)) {
+                    fieldWrapperTpl = this.fieldWrapperTpl;
+                }
+                else {
                     fieldWrapperTpl = _.template('<div class="form-group">' +
-                        '<label class="col-xs-12 col-sm-2 control-label"><%= label %></label>' +
+                        '<label class="<% if(srOnly){ %> sr-only <% } %>col-xs-12 col-sm-2 control-label"><%= label %></label>' +
                         '<div class="col-xs-12 col-sm-10 <%= dataField %>">' +
                         '<div class="<%= fieldRegion %>"></div>' +
                         '</div>' +
                         '<div class="col-xs-12 col-sm-10 col-sm-offset-2 errors"></div>' +
                         '</div>');
-                } else {
-                    fieldWrapperTpl = options.template;
                 }
 
                 var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
                     label: options.label.text,
                     dataField: dataField,
-                    fieldRegion: fieldRegion
+                    fieldRegion: fieldRegion,
+                    srOnly: options.label.srOnly
                 });
 
                 $el.append(fieldHtml);
@@ -185,9 +193,9 @@ var FieldsMixin;
                 this._wyswigForRegion(fieldRegion, dataField, options.isDocProp);
             }, this);
 
-            var singleLine = _.bind(function () {
+            var singleLine = _.bind(function (placeholderTxt) {
                 addField();
-                this._singleLineForRegion(fieldRegion, dataField, options.isDocProp);
+                this._singleLineForRegion(fieldRegion, dataField, options.isDocProp, placeholderTxt);
             }, this);
 
             var checkboxes = _.bind(function (collection, conditions) {
@@ -201,6 +209,10 @@ var FieldsMixin;
                     $el = options.fieldset.$el;
                 } else {
                     $el = $fields;
+                }
+
+                if ($el.length === 0) {
+                    $el = this.$el;
                 }
 
                 var fieldWrapperTpl = null;
@@ -248,6 +260,10 @@ var FieldsMixin;
                     $el = options.fieldset.$el;
                 } else {
                     $el = $fields;
+                }
+
+                if ($el.length === 0) {
+                    $el = this.$el;
                 }
 
                 var fieldWrapperTpl = null;
@@ -326,9 +342,10 @@ var FieldsMixin;
             };
 
             //options
-            var label = function (text) {
+            var label = function (text, srOnly) {
                 options.label = {};
                 options.label.text = text;
+                options.label.srOnly = srOnly;
 
                 return _.extend({
                     fieldset: fieldset,
@@ -373,6 +390,219 @@ var FieldsMixin;
                 template: template,
                 el: el
             }, returnObj);
+        },
+        _wyswigForRegion: function (region, dataField, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new WyswigView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                isDocProp: isDocProp
+            }));
+        },
+        _singleLineForRegion: function (region, dataField, isDocProp, placeholderTxt) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new SingleLineTextView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                isDocProp: isDocProp,
+                placeholderTxt: placeholderTxt
+            }));
+        },
+        _checkboxesForRegion: function (collection, region, dataField, conditions, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            var selectedIds = this.model.get(dataField);
+            if (!conditions) {
+                conditions = [];
+            }
+
+            var data = {
+                conditions: conditions
+            };
+
+            collection.query(false, data).done(_.bind(function (entities) {
+                this.showChildView(region, new CheckBoxListView({
+                    collection: entities,
+                    dataField: dataField,
+                    selectedId: selectedIds,
+                    isDocProp: isDocProp
+                }));
+            }, this));
+        },
+        _dropDownForRegion: function (collection, region, dataField, conditions, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            if (!conditions) {
+                conditions = [];
+            }
+
+            var data = {
+                conditions: conditions
+            };
+
+            collection.query(false, data).done(_.bind(function (entities) {
+                var currentlySetId = this.model.get(dataField);
+
+                if (_.isUndefined(currentlySetId) || _.isNull(currentlySetId) || currentlySetId === '' || currentlySetId === 0) {
+                    entities.add(new Backbone.Model({name: 'Select', id: ''}), {at: 0});
+                    currentlySetId = '';
+                }
+
+                this.showChildView(region, new DropDownListView({
+                    collection: entities,
+                    dataField: dataField,
+                    selectedId: currentlySetId,
+                    isDocProp: isDocProp
+                }));
+            }, this));
+        },
+        _multiSelectForRegion: function (collection, region, dataField, conditions, displayField, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            var selectedIds = this.model.get(dataField);
+            if (_.isUndefined(conditions)) {
+                conditions = [];
+            }
+
+            if (!this.model.isNew() && dataField === 'parentIds') {
+                conditions.push({
+                    searchType: 'notEquals',
+                    value: this.model.get('id') === null ? 0 : this.model.get('id'),
+                    field: 'id'
+                });
+            }
+
+            var multiSelect =
+                new MultiSelectLayoutView({
+                    collection: collection,
+                    dataField: dataField,
+                    selectedId: selectedIds,
+                    conditions: conditions,
+                    displayField: displayField || 'name',
+                    isDocProp: isDocProp
+                });
+
+            this.showChildView(region, multiSelect);
+        },
+        _autoCompleteForRegion: function (collection, region, dataField, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            var selectedId = this.model.get(dataField);
+            this.showChildView(region,
+                new AutoCompleteLayoutView({
+                    collection: collection,
+                    dataField: dataField,
+                    selectedId: selectedId,
+                    isDocProp: isDocProp
+                }));
+        },
+        _radioButtonListForRegion: function (collection, region, dataField, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            var selectedId = this.model.get(dataField);
+            this.showChildView(region, new RadioButtonListView({
+                collection: collection,
+                dataField: dataField,
+                selectedId: selectedId,
+                isDocProp: isDocProp
+            }));
+        },
+        _textAreaForRegion: function (region, dataField, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new TextAreaView({
+                value: this.model.get(dataField),
+                dataField: dataField
+            }));
+        },
+        _checkboxForRegion: function (region, dataField, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new CheckBoxView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                isDocProp: isDocProp
+            }));
+        },
+        _imagePickerForRegion: function (region, dataField, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new ImageFieldView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                isDocProp: isDocProp
+            }));
+        },
+        _dateTimePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new DateTimePickerView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                dateFormat: dateFormat,
+                isDocProp: isDocProp
+            }));
+        },
+        _timePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new TimePickerView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                dateFormat: dateFormat,
+                isDocProp: isDocProp
+            }));
+        },
+        _datePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new DatePickerView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                dateFormat: dateFormat,
+                isDocProp: isDocProp
+            }));
         }
     };
 })(jQuery, _, Backbone, Marionette);

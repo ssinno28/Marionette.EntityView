@@ -71,7 +71,7 @@ this["Templates"]["entityLayoutTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="row">\r\n    <div class="entity-header col-sm-12">\r\n    </div>\r\n    <div class="col-sm-12">\r\n        <div class="form-group">\r\n            <label class="sr-only" for="filter">Name</label>\r\n\r\n            <div class="input-group col-sm-12">\r\n                <input type="text" class="form-control nameFilter" id="filter" placeholder="Filter By Name...">\r\n            </div><!-- /input-group -->\r\n        </div>\r\n        <div class="form-group sub-nav actions">\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n<div class="row">\r\n    <div class="list-group entityRegion">\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-xs-7 col-sm-9 col-md-10">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n    <div class="col-xs-5 col-sm-3 col-md-2">\r\n        <div class="page-size-region"></div>\r\n    </div>\r\n</div>';
+__p += '<div class="row">\r\n    <div class="entity-header col-sm-12">\r\n    </div>\r\n    <div class="col-sm-12 ">\r\n        <div class="filter-region">\r\n        </div>\r\n        <div class="form-group sub-nav actions">\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n<div class="row">\r\n    <div class="list-group entityRegion">\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-xs-7 col-sm-9 col-md-10">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n    <div class="col-xs-5 col-sm-3 col-md-2">\r\n        <div class="page-size-region"></div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -96,6 +96,27 @@ __p += '<div class="row">\r\n    <div class="list-view-checkbox col-xs-1 col-sm-
 '' +
 ((__t = (id)) == null ? '' : __t) +
 '">\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</div>';
+
+}
+return __p
+};
+
+this["Templates"]["filterFieldTpl"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="form-group">\r\n    <label class="';
+ if(srOnly){ ;
+__p += ' sr-only ';
+ } ;
+__p += 'col-xs-12 col-sm-2 control-label">' +
+((__t = ( label )) == null ? '' : __t) +
+'</label>\r\n    <div class="input-group col-xs-12 ' +
+((__t = ( dataField )) == null ? '' : __t) +
+'">\r\n        <div class="' +
+((__t = ( fieldRegion )) == null ? '' : __t) +
+'"></div>\r\n    </div>\r\n    <div class="col-xs-12 errors"></div>\r\n</div>';
 
 }
 return __p
@@ -317,7 +338,9 @@ this["Templates"]["singleLineTextTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<input class="form-control" name="' +
+__p += '<input class="form-control" placeholder="' +
+((__t = ( placeholderTxt )) == null ? '' : __t) +
+'" name="' +
 ((__t = ( dataField )) == null ? '' : __t) +
 '" data-field="' +
 ((__t = ( dataField )) == null ? '' : __t) +
@@ -480,22 +503,22 @@ var FieldsMixin;
                 currentField.validations.boolean = message;
                 return returnObj;
             };
-			
-			var matches = function(message, field) {
-				currentField.validations['matches:' + field] = message;
-				return returnObj;
-			};
 
-            var rule = _.bind(function (name, message, func) {	
-				if(_.isUndefined(this.rules)) {
-					this.rules = {};
-				}
-				
+            var matches = function (message, field) {
+                currentField.validations['matches:' + field] = message;
+                return returnObj;
+            };
+
+            var rule = _.bind(function (name, message, func) {
+                if (_.isUndefined(this.rules)) {
+                    this.rules = {};
+                }
+
                 this.rules[name] = {};
-				this.rules[name].evaluate = func;
-				
+                this.rules[name].evaluate = func;
+
                 currentField.validations[name] = message;
-				return returnObj;
+                return returnObj;
             }, this);
 
             validations = {
@@ -518,23 +541,31 @@ var FieldsMixin;
                     $el = $fields;
                 }
 
+                if ($el.length === 0) {
+                    $el = this.$el;
+                }
+
                 var fieldWrapperTpl = null;
-                if (_.isUndefined(options.template)) {
+                if (!_.isUndefined(options.template)) {
+                    fieldWrapperTpl = options.template;
+                } else if (!_.isUndefined(this.fieldWrapperTpl)) {
+                    fieldWrapperTpl = this.fieldWrapperTpl;
+                }
+                else {
                     fieldWrapperTpl = _.template('<div class="form-group">' +
-                        '<label class="col-xs-12 col-sm-2 control-label"><%= label %></label>' +
+                        '<label class="<% if(srOnly){ %> sr-only <% } %>col-xs-12 col-sm-2 control-label"><%= label %></label>' +
                         '<div class="col-xs-12 col-sm-10 <%= dataField %>">' +
                         '<div class="<%= fieldRegion %>"></div>' +
                         '</div>' +
                         '<div class="col-xs-12 col-sm-10 col-sm-offset-2 errors"></div>' +
                         '</div>');
-                } else {
-                    fieldWrapperTpl = options.template;
                 }
 
                 var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
                     label: options.label.text,
                     dataField: dataField,
-                    fieldRegion: fieldRegion
+                    fieldRegion: fieldRegion,
+                    srOnly: options.label.srOnly
                 });
 
                 $el.append(fieldHtml);
@@ -607,9 +638,9 @@ var FieldsMixin;
                 this._wyswigForRegion(fieldRegion, dataField, options.isDocProp);
             }, this);
 
-            var singleLine = _.bind(function () {
+            var singleLine = _.bind(function (placeholderTxt) {
                 addField();
-                this._singleLineForRegion(fieldRegion, dataField, options.isDocProp);
+                this._singleLineForRegion(fieldRegion, dataField, options.isDocProp, placeholderTxt);
             }, this);
 
             var checkboxes = _.bind(function (collection, conditions) {
@@ -623,6 +654,10 @@ var FieldsMixin;
                     $el = options.fieldset.$el;
                 } else {
                     $el = $fields;
+                }
+
+                if ($el.length === 0) {
+                    $el = this.$el;
                 }
 
                 var fieldWrapperTpl = null;
@@ -670,6 +705,10 @@ var FieldsMixin;
                     $el = options.fieldset.$el;
                 } else {
                     $el = $fields;
+                }
+
+                if ($el.length === 0) {
+                    $el = this.$el;
                 }
 
                 var fieldWrapperTpl = null;
@@ -748,9 +787,10 @@ var FieldsMixin;
             };
 
             //options
-            var label = function (text) {
+            var label = function (text, srOnly) {
                 options.label = {};
                 options.label.text = text;
+                options.label.srOnly = srOnly;
 
                 return _.extend({
                     fieldset: fieldset,
@@ -795,6 +835,219 @@ var FieldsMixin;
                 template: template,
                 el: el
             }, returnObj);
+        },
+        _wyswigForRegion: function (region, dataField, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new WyswigView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                isDocProp: isDocProp
+            }));
+        },
+        _singleLineForRegion: function (region, dataField, isDocProp, placeholderTxt) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new SingleLineTextView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                isDocProp: isDocProp,
+                placeholderTxt: placeholderTxt
+            }));
+        },
+        _checkboxesForRegion: function (collection, region, dataField, conditions, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            var selectedIds = this.model.get(dataField);
+            if (!conditions) {
+                conditions = [];
+            }
+
+            var data = {
+                conditions: conditions
+            };
+
+            collection.query(false, data).done(_.bind(function (entities) {
+                this.showChildView(region, new CheckBoxListView({
+                    collection: entities,
+                    dataField: dataField,
+                    selectedId: selectedIds,
+                    isDocProp: isDocProp
+                }));
+            }, this));
+        },
+        _dropDownForRegion: function (collection, region, dataField, conditions, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            if (!conditions) {
+                conditions = [];
+            }
+
+            var data = {
+                conditions: conditions
+            };
+
+            collection.query(false, data).done(_.bind(function (entities) {
+                var currentlySetId = this.model.get(dataField);
+
+                if (_.isUndefined(currentlySetId) || _.isNull(currentlySetId) || currentlySetId === '' || currentlySetId === 0) {
+                    entities.add(new Backbone.Model({name: 'Select', id: ''}), {at: 0});
+                    currentlySetId = '';
+                }
+
+                this.showChildView(region, new DropDownListView({
+                    collection: entities,
+                    dataField: dataField,
+                    selectedId: currentlySetId,
+                    isDocProp: isDocProp
+                }));
+            }, this));
+        },
+        _multiSelectForRegion: function (collection, region, dataField, conditions, displayField, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            var selectedIds = this.model.get(dataField);
+            if (_.isUndefined(conditions)) {
+                conditions = [];
+            }
+
+            if (!this.model.isNew() && dataField === 'parentIds') {
+                conditions.push({
+                    searchType: 'notEquals',
+                    value: this.model.get('id') === null ? 0 : this.model.get('id'),
+                    field: 'id'
+                });
+            }
+
+            var multiSelect =
+                new MultiSelectLayoutView({
+                    collection: collection,
+                    dataField: dataField,
+                    selectedId: selectedIds,
+                    conditions: conditions,
+                    displayField: displayField || 'name',
+                    isDocProp: isDocProp
+                });
+
+            this.showChildView(region, multiSelect);
+        },
+        _autoCompleteForRegion: function (collection, region, dataField, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            var selectedId = this.model.get(dataField);
+            this.showChildView(region,
+                new AutoCompleteLayoutView({
+                    collection: collection,
+                    dataField: dataField,
+                    selectedId: selectedId,
+                    isDocProp: isDocProp
+                }));
+        },
+        _radioButtonListForRegion: function (collection, region, dataField, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            var selectedId = this.model.get(dataField);
+            this.showChildView(region, new RadioButtonListView({
+                collection: collection,
+                dataField: dataField,
+                selectedId: selectedId,
+                isDocProp: isDocProp
+            }));
+        },
+        _textAreaForRegion: function (region, dataField, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new TextAreaView({
+                value: this.model.get(dataField),
+                dataField: dataField
+            }));
+        },
+        _checkboxForRegion: function (region, dataField, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new CheckBoxView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                isDocProp: isDocProp
+            }));
+        },
+        _imagePickerForRegion: function (region, dataField, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new ImageFieldView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                isDocProp: isDocProp
+            }));
+        },
+        _dateTimePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new DateTimePickerView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                dateFormat: dateFormat,
+                isDocProp: isDocProp
+            }));
+        },
+        _timePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new TimePickerView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                dateFormat: dateFormat,
+                isDocProp: isDocProp
+            }));
+        },
+        _datePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            this.showChildView(region, new DatePickerView({
+                value: this.model.get(dataField),
+                dataField: dataField,
+                dateFormat: dateFormat,
+                isDocProp: isDocProp
+            }));
         }
     };
 })(jQuery, _, Backbone, Marionette);
@@ -2461,8 +2714,16 @@ var WyswigView;
 var SingleLineTextView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, singleLineTextTpl) {
     SingleLineTextView = ReusableTypeLayoutView.extend({
-        tag: 'input',
-        template: singleLineTextTpl
+        template: singleLineTextTpl,
+        templateContext: function () {
+            var self = this;
+
+            return {
+                dataField: self.dataField,
+                value: self.value,
+                placeholderTxt: self.placeholderTxt
+            };
+        }
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['singleLineTextTemplate']);
 
@@ -2944,15 +3205,16 @@ var PagerBehavior;
                 collection: collection
             }));
 
+            view.triggerMethod("ShowPager");
             Backbone.Radio.channel(view.route + ':pageSize').on('change',
                 _.bind(function (pageSize) {
                     if (!_.isNull(pageSize)) {
                         this._channel.trigger('changePageSize', parseInt(pageSize));
-                        this.triggerMethod("ShowPager", this.listView.collection);
+                        this.triggerMethod("ShowPager");
                     }
                 }, view));
         },
-        onShowPager: function (entityCollection) {
+        onShowPager: function () {
             var pagerRegion = this.view.getRegion('pagerRegion'),
                 channel = this.view.getChannel();
 
@@ -3101,560 +3363,6 @@ var SortableItemBehavior;
         }
     });
 })(jQuery, _, Backbone, Marionette);
-
-var EntityListView;
-(function ($, _, Backbone, Marionette, SortableListBehavior) {
-    EntityListView = Marionette.EntityListView = Backbone.Marionette.CollectionView.extend({
-        className: 'col-sm-12',
-        initialize: function (options) {
-            _.extend(this, options);
-
-            this._channel = Backbone.Radio.channel(this.route);
-        },
-        behaviors: function () {
-            var behaviors = {};
-            if (this.getOption('sortable')) {
-                behaviors.Sortable = {
-                    behaviorClass: SortableListBehavior
-                };
-            }
-
-            return behaviors;
-        },
-        onDomRefresh: function () {
-            this._channel.trigger('view.list.activated');
-        },
-        childViewOptions: function () {
-            var route = this.route,
-                allowableOperations = this.allowableOperations,
-                collection = this.collection,
-                baseClassIds = [];
-
-            if (!_.isUndefined(this.options.baseClassIds)) {
-                baseClassIds = this.options.baseClassIds;
-            }
-
-            return {
-                route: route,
-                allowableOperations: allowableOperations,
-                collection: collection,
-                baseClassIds: baseClassIds,
-                sortable: this.getOption('sortable'),
-                parent: this,
-                embedded: this.getOption('embedded'),
-                routing: this.getOption('routing')
-            };
-        },
-        onAddChild: function (childView) {
-            var indexOf = this.collection.indexOf(childView.model);
-            if (indexOf === 0 && !_.isUndefined(this.getTableHeader)) {
-                childView.$el.before(this.getTableHeader());
-            }
-        },
-        getChannel: function () {
-            return this._channel;
-        }
-    });
-
-})(jQuery, _, Backbone, Marionette, SortableListBehavior);
-
-var EntityListItemView;
-(function ($, _, Backbone, Marionette, entityListItemTpl, SortableItemBehavior) {
-    EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.View.extend({
-        regions: {
-            fieldsRegion: {
-                el: '.fieldsRegion',
-                replaceElement: true
-            }
-        },
-        className: 'list-group-item',
-        template: entityListItemTpl,
-        constructor: function (options) {
-            _.extend(this, options);
-            Marionette.View.prototype.constructor.apply(this, arguments);
-
-            this._channel = Backbone.Radio.channel(this.route);
-
-            this.on('render', this.runRenderers, this);
-            this.on('dom:refresh', this.runInitializers, this);
-        },
-        behaviors: function () {
-            var behaviors = {};
-            if (this.getOption('sortable')) {
-                behaviors.Sortable = {
-                    behaviorClass: SortableItemBehavior
-                };
-            }
-
-            return behaviors;
-        },
-        ui: {
-            $multiAction: '.multi-action',
-            $actions: '.actions',
-            $listViewActions: '.list-view-actions'
-        },
-        runInitializers: function () {
-            if (this.options.baseClassIds.indexOf(this.model.get('id')) > -1) {
-                this.ui.$multiAction.addClass('not-active');
-            }
-        },
-        runRenderers: function () {
-            this.renderFieldsView();
-            this.renderActions();
-
-            this.bindUIElements();
-            if (this.baseClassIds.indexOf(this.model.get('id')) === -1) {
-                this.$el.attr('data-index', this.collection.indexOf(this.model));
-                this.$el.attr('data-id', this.model.get('id'));
-            }
-        },
-        renderFieldsView: function () {
-            var fieldsView =
-                Marionette.View.extend(
-                    {
-                        template: _.isUndefined(this.fieldsTemplate) ? _.template('<div class="col-sm-3"><span><%= name %></span></div>') : this.fieldsTemplate,
-                        model: this.model,
-                        templateContext: _.isFunction(this.templateContext) ? this.templateContext() : this.templateContext,
-                        onRender: function () {
-                            // Get rid of that pesky wrapping-div.
-                            // Assumes 1 child element present in template.
-                            this.$el = this.$el.children();
-                            // Unwrap the element to prevent infinitely
-                            // nesting elements during re-render.
-                            this.$el.unwrap();
-                            this.setElement(this.$el);
-                        }
-                    });
-
-            this.showChildView('fieldsRegion', new fieldsView());
-        },
-        renderActions: function () {
-            var embedded = this.getOption('embedded') ? 'Embedded' : '';
-            this.action('edit')
-                .text('Edit')
-                .callBack(this.editClick)
-                .add();
-
-            this.action('delete', true)
-                .text('Delete')
-                .withModal('deleteItemModal' + embedded)
-                .add();
-        },
-        templateContext: function () {
-            var route = this.route;
-
-            return {
-                route: route,
-                embedded: this.getOption('embedded')
-            };
-        },
-        editClick: function (e) {
-            var id = this.model.get('id');
-            if (this.getOption('routing')) {
-                location.hash = this.route + '/edit/' + id + '/';
-            } else {
-                this._channel.trigger('edit', id);
-            }
-        },
-        action: function (name) {
-            var options = {},
-                returnObj = {};
-
-            options.name = name;
-            options.withModal = false;
-            options.safeName = this._formatRegionName(options.name);
-            options.embedded = this.getOption('embedded');
-            options.id = this.model.get('id');
-
-            var text = function (text) {
-                options.text = text;
-                return returnObj;
-            };
-
-            var className = function (className) {
-                options.className = className;
-                return returnObj;
-            };
-
-            var callBack = function (callBack) {
-                options.callBack = callBack;
-                return returnObj;
-            };
-
-            var template = function (template) {
-                options.template = template;
-            };
-
-            var withModal = _.bind(function (modalName) {
-                options.modalSafeName = this._formatRegionName(modalName);
-                options.withModal = true;
-                options.template = _.template('<li>' +
-                    '<a data-toggle="modal" data-target="#<%= modalSafeName %>" class="<%= safeName %>"' +
-                    'data-id="<%= id %>" href="#">' +
-                    '<%= text %>' +
-                    '</a>' +
-                    '</li>');
-
-                return returnObj;
-            }, this);
-
-            var add = _.bind(function (forceShow) {
-                if (this.allowableOperations.indexOf(options.safeName) === -1 && !forceShow) {
-                    return;
-                }
-
-                var template = null;
-                if (!_.isUndefined(options.template)) {
-                    template = options.template;
-                } else {
-                    template = _.template('<li>' +
-                        '<a class="<%= safeName %>" data-id="<%= id %>" href="#">' +
-                        '<%= text %>' +
-                        '</a>' +
-                        '</li>');
-                }
-
-                var html = Marionette.Renderer.render(template, options);
-                this.ui.$actions.append(html);
-
-                if (!_.isUndefined(options.callBack) && !options.withModal) {
-                    var $el = this.ui.$actions.find('.' + options.safeName);
-                    $el.on('click', _.bind(function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        _.bind(options.callBack, this)(e)
-                    }, this));
-                    this.on('destroy', function () {
-                        $el.off('click');
-                    });
-                }
-            }, this);
-
-            returnObj = _.extend(returnObj, {
-                text: text,
-                className: className,
-                callBack: callBack,
-                template: template,
-                withModal: withModal,
-                add: add
-            });
-
-            return returnObj;
-        },
-        getChannel: function () {
-            return this._channel;
-        }
-    });
-
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], SortableItemBehavior);
-
-var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior) {
-    EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
-        template: entityListLayoutTpl,
-        regions: {
-            'entityRegion': {
-                el: '.entityRegion',
-                replaceElement: true
-            },
-            'pagerRegion': {
-                el: '.pagerRegion',
-                replaceElement: true
-            },
-            'pageSizeRegion': {
-                el: '.page-size-region',
-                replaceElement: true
-            }
-        },
-        behaviors: {
-            Pager: {
-                behaviorClass: PagerBehavior
-            }
-        },
-        constructor: function (options) {
-            _.extend(this, options);
-
-            Marionette.View.prototype.constructor.apply(this, arguments);
-
-            this.listView.allowableOperations = this.allowableOperations;
-            this.listView.route = this.route;
-            this.listView.parentViewCid = this.cid;
-
-            this._channel = Backbone.Radio.channel(this.route);
-            Marionette.bindEvents(this, this._channel, this.radioEvents);
-
-            this.on('render', this.runRenderers, this);
-            this.on('dom:refresh', this.runInitializers, this);
-        },
-        className: function () {
-            var entityLayoutClass = ' entity-layout';
-            if (this.getOption('embedded')) {
-                entityLayoutClass = ' entity-layout-nested';
-            }
-
-            return 'entity-layout-view-' + this.cid + entityLayoutClass;
-        },
-        model: EntityLayoutModel,
-        radioEvents: {
-            'view.list.activated': 'listViewActivated',
-            'view.form.activated': 'formViewActivated'
-        },
-        events: {
-            'click .edit': 'editClick',
-            'keyup .nameFilter': 'filterByName',
-            'click .multi-action': 'showMultiActions',
-            'click .sub-nav .get-all': 'getAllClick'
-        },
-        childViewEvents: function () {
-            var events = {};
-            if (this.getOption('embedded')) {
-                events['modal:delete-all-modal-embedded:yes'] = 'deleteAllYes';
-                events['modal:delete-item-modal-embedded:yes'] = 'deleteItemYes';
-            } else {
-                events['modal:delete-all-modal:yes'] = 'deleteAllYes';
-                events['modal:delete-item-modal:yes'] = 'deleteItemYes';
-            }
-
-            return events;
-        },
-        ui: {
-            '$subNav': '.sub-nav',
-            '$filters': '.filterEntities',
-            '$multiActionRequests': '.multi-action-requests',
-            '$treeBtn': '.get-tree',
-            '$header': '.entity-header',
-            '$actions': '.actions'
-        },
-        templateContext: function () {
-            var route = this.route,
-                btnClass = this.btnClass;
-
-            return {
-                route: route,
-                btnClass: btnClass
-            };
-        },
-        createClick: function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            if (!this.routing) {
-                this._channel.trigger('create');
-            } else {
-                location.hash = this.route + '/create/';
-            }
-        },
-        runInitializers: function () {
-            this.showMultiActions();
-        },
-        runRenderers: function () {
-            this.renderHeader();
-            this.renderModals();
-            this.renderActions();
-
-            this.bindUIElements();
-        },
-        renderModals: function () {
-            var embedded = this.getOption('embedded') ? 'Embedded' : '';
-            this.modal('deleteAllModal' + embedded)
-                .message('Are you sure you want to delete these items?')
-                .title('Delete All?')
-                .choice('Yes', 'yes')
-                .choice('No', 'no', true)
-                .add();
-
-            this.modal('deleteItemModal' + embedded)
-                .message('Are you sure you want to delete this item?')
-                .title('Delete Item?')
-                .choice('Yes', 'yes')
-                .choice('No', 'no', true)
-                .add();
-        },
-        renderActions: function () {
-            var embedded = this.getOption('embedded') ? 'Embedded' : '';
-            this.action('getAll')
-                .text('All')
-                .className('btn-default')
-                .callBack(this.getAllClick)
-                .add(true);
-
-            this.action('create', false)
-                .text('Create')
-                .className('btn-primary')
-                .callBack(this.createClick)
-                .add();
-
-            this.action('deleteAll', true)
-                .text('Delete All')
-                .className('btn-danger')
-                .withModal('deleteAllModal' + embedded)
-                .add();
-        },
-        listViewActivated: function () {
-            this.ui.$filters.show();
-            this.triggerMethod("ShowPager", this.listView.collection);
-            this.showMultiActions();
-        },
-        formViewActivated: function () {
-            this.ui.$filters.hide();
-        },
-        deleteAllYes: function (view, e) {
-            var itemsSelected = this.$el.find('.multi-action:checked'),
-                ids = [],
-                fullCollection = this.listView.collection;
-
-            _.each(itemsSelected, function (item) {
-                ids.push($(item).data('id'));
-            });
-
-            fullCollection.deleteByIds(ids)
-                .done(function () {
-                    view.$el.modal('hide');
-                });
-        },
-        deleteItemYes: function (view, e) {
-            var data = view.modalData;
-            this._channel.trigger('delete', data.id);
-            view.$el.modal('hide');
-        },
-        showMultiActions: function (e) {
-            if (e) {
-                e.stopPropagation();
-            }
-
-            var itemsSelected = this.$el.find('.multi-action:checked');
-            if (itemsSelected.length > 0) {
-                this.ui.$multiActionRequests.show();
-            } else {
-                this.ui.$multiActionRequests.hide();
-            }
-        },
-        filterByName: function (e) {
-            e.stopPropagation();
-
-            var $target = $(e.target),
-                name = $target.val(),
-                filterField = _.isUndefined(this.filterField) ? 'name' : this.filterField;
-
-            _.debounce(_.bind(function () {
-                if (name.length === 0) {
-                    this._channel.trigger('getAll', 1);
-                    return;
-                }
-
-                this._channel.trigger('textSearch', name, filterField);
-            }, this), 400)();
-        },
-        renderHeader: function () {
-            if (_.isUndefined(this.header)) {
-                return;
-            }
-
-            var html = Marionette.Renderer.render(this.header.template, this.header.params);
-            this.ui.$header.append(html);
-        },
-        action: function (name, isMultiAction) {
-            var options = {},
-                returnObj = {};
-
-            options.name = name;
-            options.isMultiAction = isMultiAction;
-            options.withModal = false;
-            options.safeName = this._formatRegionName(options.name);
-
-            var text = function (text) {
-                options.text = text;
-                return returnObj;
-            };
-
-            var className = function (className) {
-                options.className = className;
-                return returnObj;
-            };
-
-            var callBack = function (callBack) {
-                options.callBack = callBack;
-                return returnObj;
-            };
-
-            var template = function (template) {
-                options.template = template;
-            };
-
-            var withModal = _.bind(function (modalName) {
-                var modalSafeName = this._formatRegionName(modalName);
-                options.withModal = true;
-                options.template = _.template('<button  data-toggle="modal" data-target="#' + modalSafeName + '" type="button" class="<%= safeName %> btn ' +
-                    '<% if(isMultiAction) { %> multi-action-requests <% } %>' +
-                    ' <%= className %>">' +
-                    '<%= text %>' +
-                    '</button>');
-
-                return returnObj;
-            }, this);
-
-            var add = _.bind(function (forceShow) {
-                if (this.allowableOperations.indexOf(options.safeName) === -1 && !forceShow) {
-                    return;
-                }
-
-                var template = null;
-                if (!_.isUndefined(options.template)) {
-                    template = options.template;
-                } else {
-                    template = _.template('<button type="button" class="<%= safeName %> btn <% if(isMultiAction) { %> multi-action-requests <% } %>' +
-                        ' <%= className %>">' +
-                        '<%= text %>' +
-                        '</button>');
-                }
-
-                var html = Marionette.Renderer.render(template, options);
-                this.ui.$actions.append(html);
-
-                if (!_.isUndefined(options.callBack) && !options.withModal) {
-                    var $el = this.ui.$actions.find('.' + options.safeName);
-                    $el.on('click', _.bind(function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        _.bind(options.callBack, this)(e)
-                    }, this));
-                    this.on('destroy', function () {
-                        $el.off('click');
-                    });
-                }
-            }, this);
-
-            returnObj = _.extend(returnObj, {
-                text: text,
-                className: className,
-                callBack: callBack,
-                template: template,
-                withModal: withModal,
-                add: add
-            });
-
-            return returnObj;
-        },
-        getAllClick: function (e) {
-            var page = 1;
-            if (!_.isUndefined(this.listView.currentPage) && this.listView.currentPage !== 0) {
-                page = this.listView.currentPage;
-            }
-
-            var route = this.route + '/' + page + '/';
-            if (!this.routing) {
-                this._channel.trigger('getAll', page);
-            } else {
-                location.hash = route;
-            }
-        },
-        getChannel: function () {
-            return this._channel;
-        }
-    });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior);
 
 var FormView;
 (function ($, _, Backbone, Marionette, FormValidator) {
@@ -3989,7 +3697,6 @@ var FormView;
             } else {
                 return this._validator.validate(validationRule, val, options);
             }
-            return true;
         },
 
         submit: function () {
@@ -4021,6 +3728,597 @@ var FormView;
     });
 
 })(jQuery, _, Backbone, Marionette, FormValidator);
+
+var FilterFormView;
+(function ($, _, Backbone, Marionette) {
+    FilterFormView = Marionette.FormView.extend({
+        fieldWrapperTpl: this["Templates"]["filterFieldTpl"],
+        constructor: function () {
+            Marionette.FormView.prototype.constructor.apply(this, arguments);
+            this.on('render', this.runRenderers, this);
+        },
+        className: '',
+        runRenderers: function () {
+            // Get rid of that pesky wrapping-div.
+            // Assumes 1 child element present in template.
+            this.$el = this.$el.children();
+            // Unwrap the element to prevent infinitely
+            // nesting elements during re-render.
+            this.$el.unwrap();
+            this.setElement(this.$el);
+        }
+    });
+})(jQuery, _, Backbone, Marionette);
+var EntityListView;
+(function ($, _, Backbone, Marionette, SortableListBehavior) {
+    EntityListView = Marionette.EntityListView = Backbone.Marionette.CollectionView.extend({
+        className: 'col-sm-12',
+        initialize: function (options) {
+            _.extend(this, options);
+
+            this._channel = Backbone.Radio.channel(this.route);
+        },
+        behaviors: function () {
+            var behaviors = {};
+            if (this.getOption('sortable')) {
+                behaviors.Sortable = {
+                    behaviorClass: SortableListBehavior
+                };
+            }
+
+            return behaviors;
+        },
+        onDomRefresh: function () {
+            this._channel.trigger('view.list.activated');
+        },
+        childViewOptions: function () {
+            var route = this.route,
+                allowableOperations = this.allowableOperations,
+                collection = this.collection,
+                baseClassIds = [];
+
+            if (!_.isUndefined(this.options.baseClassIds)) {
+                baseClassIds = this.options.baseClassIds;
+            }
+
+            return {
+                route: route,
+                allowableOperations: allowableOperations,
+                collection: collection,
+                baseClassIds: baseClassIds,
+                sortable: this.getOption('sortable'),
+                parent: this,
+                embedded: this.getOption('embedded'),
+                routing: this.getOption('routing')
+            };
+        },
+        onAddChild: function (childView) {
+            var indexOf = this.collection.indexOf(childView.model);
+            if (indexOf === 0 && !_.isUndefined(this.getTableHeader)) {
+                childView.$el.before(this.getTableHeader());
+            }
+        },
+        getChannel: function () {
+            return this._channel;
+        }
+    });
+
+})(jQuery, _, Backbone, Marionette, SortableListBehavior);
+
+var EntityListItemView;
+(function ($, _, Backbone, Marionette, entityListItemTpl, SortableItemBehavior) {
+    EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.View.extend({
+        regions: {
+            fieldsRegion: {
+                el: '.fieldsRegion',
+                replaceElement: true
+            }
+        },
+        className: 'list-group-item',
+        template: entityListItemTpl,
+        constructor: function (options) {
+            _.extend(this, options);
+            Marionette.View.prototype.constructor.apply(this, arguments);
+
+            this._channel = Backbone.Radio.channel(this.route);
+
+            this.on('render', this.runRenderers, this);
+            this.on('dom:refresh', this.runInitializers, this);
+        },
+        behaviors: function () {
+            var behaviors = {};
+            if (this.getOption('sortable')) {
+                behaviors.Sortable = {
+                    behaviorClass: SortableItemBehavior
+                };
+            }
+
+            return behaviors;
+        },
+        ui: {
+            $multiAction: '.multi-action',
+            $actions: '.actions',
+            $listViewActions: '.list-view-actions'
+        },
+        runInitializers: function () {
+            if (this.options.baseClassIds.indexOf(this.model.get('id')) > -1) {
+                this.ui.$multiAction.addClass('not-active');
+            }
+        },
+        runRenderers: function () {
+            this.renderFieldsView();
+            this.renderActions();
+
+            this.bindUIElements();
+            if (this.baseClassIds.indexOf(this.model.get('id')) === -1) {
+                this.$el.attr('data-index', this.collection.indexOf(this.model));
+                this.$el.attr('data-id', this.model.get('id'));
+            }
+        },
+        renderFieldsView: function () {
+            var fieldsView =
+                Marionette.View.extend(
+                    {
+                        template: _.isUndefined(this.fieldsTemplate) ? _.template('<div class="col-sm-3"><span><%= name %></span></div>') : this.fieldsTemplate,
+                        model: this.model,
+                        templateContext: _.isFunction(this.templateContext) ? this.templateContext() : this.templateContext,
+                        onRender: function () {
+                            // Get rid of that pesky wrapping-div.
+                            // Assumes 1 child element present in template.
+                            this.$el = this.$el.children();
+                            // Unwrap the element to prevent infinitely
+                            // nesting elements during re-render.
+                            this.$el.unwrap();
+                            this.setElement(this.$el);
+                        }
+                    });
+
+            this.showChildView('fieldsRegion', new fieldsView());
+        },
+        renderActions: function () {
+            var embedded = this.getOption('embedded') ? 'Embedded' : '';
+            this.action('edit')
+                .text('Edit')
+                .callBack(this.editClick)
+                .add();
+
+            this.action('delete', true)
+                .text('Delete')
+                .withModal('deleteItemModal' + embedded)
+                .add();
+        },
+        templateContext: function () {
+            var route = this.route;
+
+            return {
+                route: route,
+                embedded: this.getOption('embedded')
+            };
+        },
+        editClick: function (e) {
+            var id = this.model.get('id');
+            if (this.getOption('routing')) {
+                location.hash = this.route + '/edit/' + id + '/';
+            } else {
+                this._channel.trigger('edit', id);
+            }
+        },
+        action: function (name) {
+            var options = {},
+                returnObj = {};
+
+            options.name = name;
+            options.withModal = false;
+            options.safeName = this._formatRegionName(options.name);
+            options.embedded = this.getOption('embedded');
+            options.id = this.model.get('id');
+
+            var text = function (text) {
+                options.text = text;
+                return returnObj;
+            };
+
+            var className = function (className) {
+                options.className = className;
+                return returnObj;
+            };
+
+            var callBack = function (callBack) {
+                options.callBack = callBack;
+                return returnObj;
+            };
+
+            var template = function (template) {
+                options.template = template;
+            };
+
+            var withModal = _.bind(function (modalName) {
+                options.modalSafeName = this._formatRegionName(modalName);
+                options.withModal = true;
+                options.template = _.template('<li>' +
+                    '<a data-toggle="modal" data-target="#<%= modalSafeName %>" class="<%= safeName %>"' +
+                    'data-id="<%= id %>" href="#">' +
+                    '<%= text %>' +
+                    '</a>' +
+                    '</li>');
+
+                return returnObj;
+            }, this);
+
+            var add = _.bind(function (forceShow) {
+                if (this.allowableOperations.indexOf(options.safeName) === -1 && !forceShow) {
+                    return;
+                }
+
+                var template = null;
+                if (!_.isUndefined(options.template)) {
+                    template = options.template;
+                } else {
+                    template = _.template('<li>' +
+                        '<a class="<%= safeName %>" data-id="<%= id %>" href="#">' +
+                        '<%= text %>' +
+                        '</a>' +
+                        '</li>');
+                }
+
+                var html = Marionette.Renderer.render(template, options);
+                this.ui.$actions.append(html);
+
+                if (!_.isUndefined(options.callBack) && !options.withModal) {
+                    var $el = this.ui.$actions.find('.' + options.safeName);
+                    $el.on('click', _.bind(function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        _.bind(options.callBack, this)(e)
+                    }, this));
+                    this.on('destroy', function () {
+                        $el.off('click');
+                    });
+                }
+            }, this);
+
+            returnObj = _.extend(returnObj, {
+                text: text,
+                className: className,
+                callBack: callBack,
+                template: template,
+                withModal: withModal,
+                add: add
+            });
+
+            return returnObj;
+        },
+        getChannel: function () {
+            return this._channel;
+        }
+    });
+
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], SortableItemBehavior);
+
+var EntityLayoutView;
+(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior, FilterFormView) {
+    EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
+        template: entityListLayoutTpl,
+        regions: {
+            'entityRegion': {
+                el: '.entityRegion',
+                replaceElement: true
+            },
+            'pagerRegion': {
+                el: '.pagerRegion',
+                replaceElement: true
+            },
+            'pageSizeRegion': {
+                el: '.page-size-region',
+                replaceElement: true
+            },
+            'filterRegion': {
+                el: '.filter-region',
+                replaceElement: true
+            }
+        },
+        behaviors: {
+            Pager: {
+                behaviorClass: PagerBehavior
+            }
+        },
+        constructor: function (options) {
+            _.extend(this, options);
+
+            Marionette.View.prototype.constructor.apply(this, arguments);
+
+            this.listView.allowableOperations = this.allowableOperations;
+            this.listView.route = this.route;
+            this.listView.parentViewCid = this.cid;
+
+            this._channel = Backbone.Radio.channel(this.route);
+            Marionette.bindEvents(this, this._channel, this.radioEvents);
+
+            this.on('render', this.runRenderers, this);
+            this.on('dom:refresh', this.runInitializers, this);
+        },
+        className: function () {
+            var entityLayoutClass = ' entity-layout';
+            if (this.getOption('embedded')) {
+                entityLayoutClass = ' entity-layout-nested';
+            }
+
+            return 'entity-layout-view-' + this.cid + entityLayoutClass;
+        },
+        model: EntityLayoutModel,
+        radioEvents: {
+            'view.list.activated': 'listViewActivated',
+            'view.form.activated': 'formViewActivated'
+        },
+        events: {
+            'click .edit': 'editClick',
+            'keyup .name': 'filterByName',
+            'click .multi-action': 'showMultiActions',
+            'click .sub-nav .get-all': 'getAllClick'
+        },
+        childViewEvents: function () {
+            var events = {};
+            if (this.getOption('embedded')) {
+                events['modal:delete-all-modal-embedded:yes'] = 'deleteAllYes';
+                events['modal:delete-item-modal-embedded:yes'] = 'deleteItemYes';
+            } else {
+                events['modal:delete-all-modal:yes'] = 'deleteAllYes';
+                events['modal:delete-item-modal:yes'] = 'deleteItemYes';
+            }
+
+            return events;
+        },
+        ui: {
+            '$subNav': '.sub-nav',
+            '$filters': '.filterEntities',
+            '$multiActionRequests': '.multi-action-requests',
+            '$treeBtn': '.get-tree',
+            '$header': '.entity-header',
+            '$actions': '.actions'
+        },
+        templateContext: function () {
+            var route = this.route,
+                btnClass = this.btnClass;
+
+            return {
+                route: route,
+                btnClass: btnClass
+            };
+        },
+        createClick: function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (!this.routing) {
+                this._channel.trigger('create');
+            } else {
+                location.hash = this.route + '/create/';
+            }
+        },
+        runInitializers: function () {
+            this.showMultiActions();
+        },
+        runRenderers: function () {
+            this.renderHeader();
+            this.renderFilters();
+            this.renderModals();
+            this.renderActions();
+
+            this.bindUIElements();
+        },
+        renderModals: function () {
+            var embedded = this.getOption('embedded') ? 'Embedded' : '';
+            this.modal('deleteAllModal' + embedded)
+                .message('Are you sure you want to delete these items?')
+                .title('Delete All?')
+                .choice('Yes', 'yes')
+                .choice('No', 'no', true)
+                .add();
+
+            this.modal('deleteItemModal' + embedded)
+                .message('Are you sure you want to delete this item?')
+                .title('Delete Item?')
+                .choice('Yes', 'yes')
+                .choice('No', 'no', true)
+                .add();
+        },
+        renderActions: function () {
+            var embedded = this.getOption('embedded') ? 'Embedded' : '';
+            this.action('getAll')
+                .text('All')
+                .className('btn-default')
+                .callBack(this.getAllClick)
+                .add(true);
+
+            this.action('create', false)
+                .text('Create')
+                .className('btn-primary')
+                .callBack(this.createClick)
+                .add();
+
+            this.action('deleteAll', true)
+                .text('Delete All')
+                .className('btn-danger')
+                .withModal('deleteAllModal' + embedded)
+                .add();
+        },
+        renderFilters: function () {
+            var FiltersView = FilterFormView.extend({
+                template: false,
+                onRender: function () {
+                    this.field('name')
+                        .label('Filter By Name', true)
+                        .el(this.$el)
+                        .singleLine('Filter By Name');
+                }
+            });
+
+            this.showChildView('filterRegion', new FiltersView());
+        },
+        listViewActivated: function () {
+            this.ui.$filters.show();
+            this.showMultiActions();
+        },
+        formViewActivated: function () {
+            this.ui.$filters.hide();
+        },
+        deleteAllYes: function (view, e) {
+            var itemsSelected = this.$el.find('.multi-action:checked'),
+                ids = [],
+                fullCollection = this.listView.collection;
+
+            _.each(itemsSelected, function (item) {
+                ids.push($(item).data('id'));
+            });
+
+            fullCollection.deleteByIds(ids)
+                .done(function () {
+                    view.$el.modal('hide');
+                });
+        },
+        deleteItemYes: function (view, e) {
+            var data = view.modalData;
+            this._channel.trigger('delete', data.id);
+            view.$el.modal('hide');
+        },
+        showMultiActions: function (e) {
+            if (e) {
+                e.stopPropagation();
+            }
+
+            var itemsSelected = this.$el.find('.multi-action:checked');
+            if (itemsSelected.length > 0) {
+                this.ui.$multiActionRequests.show();
+            } else {
+                this.ui.$multiActionRequests.hide();
+            }
+        },
+        filterByName: function (e) {
+            e.stopPropagation();
+
+            var $target = $(e.target),
+                name = $target.val(),
+                filterField = _.isUndefined(this.filterField) ? 'name' : this.filterField;
+
+            _.debounce(_.bind(function () {
+                if (name.length === 0) {
+                    this._channel.trigger('getAll', 1);
+                    return;
+                }
+
+                this._channel.trigger('textSearch', name, filterField);
+            }, this), 400)();
+        },
+        renderHeader: function () {
+            if (_.isUndefined(this.header)) {
+                return;
+            }
+
+            var html = Marionette.Renderer.render(this.header.template, this.header.params);
+            this.ui.$header.append(html);
+        },
+        action: function (name, isMultiAction) {
+            var options = {},
+                returnObj = {};
+
+            options.name = name;
+            options.isMultiAction = isMultiAction;
+            options.withModal = false;
+            options.safeName = this._formatRegionName(options.name);
+
+            var text = function (text) {
+                options.text = text;
+                return returnObj;
+            };
+
+            var className = function (className) {
+                options.className = className;
+                return returnObj;
+            };
+
+            var callBack = function (callBack) {
+                options.callBack = callBack;
+                return returnObj;
+            };
+
+            var template = function (template) {
+                options.template = template;
+            };
+
+            var withModal = _.bind(function (modalName) {
+                var modalSafeName = this._formatRegionName(modalName);
+                options.withModal = true;
+                options.template = _.template('<button  data-toggle="modal" data-target="#' + modalSafeName + '" type="button" class="<%= safeName %> btn ' +
+                    '<% if(isMultiAction) { %> multi-action-requests <% } %>' +
+                    ' <%= className %>">' +
+                    '<%= text %>' +
+                    '</button>');
+
+                return returnObj;
+            }, this);
+
+            var add = _.bind(function (forceShow) {
+                if (this.allowableOperations.indexOf(options.safeName) === -1 && !forceShow) {
+                    return;
+                }
+
+                var template = null;
+                if (!_.isUndefined(options.template)) {
+                    template = options.template;
+                } else {
+                    template = _.template('<button type="button" class="<%= safeName %> btn <% if(isMultiAction) { %> multi-action-requests <% } %>' +
+                        ' <%= className %>">' +
+                        '<%= text %>' +
+                        '</button>');
+                }
+
+                var html = Marionette.Renderer.render(template, options);
+                this.ui.$actions.append(html);
+
+                if (!_.isUndefined(options.callBack) && !options.withModal) {
+                    var $el = this.ui.$actions.find('.' + options.safeName);
+                    $el.on('click', _.bind(function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        _.bind(options.callBack, this)(e)
+                    }, this));
+                    this.on('destroy', function () {
+                        $el.off('click');
+                    });
+                }
+            }, this);
+
+            returnObj = _.extend(returnObj, {
+                text: text,
+                className: className,
+                callBack: callBack,
+                template: template,
+                withModal: withModal,
+                add: add
+            });
+
+            return returnObj;
+        },
+        getAllClick: function (e) {
+            var page = 1;
+            if (!_.isUndefined(this.listView.currentPage) && this.listView.currentPage !== 0) {
+                page = this.listView.currentPage;
+            }
+
+            var route = this.route + '/' + page + '/';
+            if (!this.routing) {
+                this._channel.trigger('getAll', page);
+            } else {
+                location.hash = route;
+            }
+        },
+        getChannel: function () {
+            return this._channel;
+        }
+    });
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior, FilterFormView);
 
 var MultiSelectOptionView;
 (function ($, _, Backbone, Marionette, EntityListItemView, multiSelectLiTemplate) {
@@ -4755,19 +5053,6 @@ var EntityFormView;
                 this.model.setUrl(this.collection.getUrl());
             }
 
-            this.getDropDownForRegion = _.bind(this._dropDownForRegion, this);
-            this.getRadioBtnsForRegion = _.bind(this._radioButtonListForRegion, this);
-            this.getAutoCompleteForRegion = _.bind(this._autoCompleteForRegion, this);
-            this.getMultiSelectForRegion = _.bind(this._multiSelectForRegion, this);
-            this.getTextAreaForRegion = _.bind(this._textAreaForRegion, this);
-            this.getCheckboxForRegion = _.bind(this._checkboxForRegion, this);
-            this.getWyswigForRegion = _.bind(this._wyswigForRegion, this);
-            this.getImagePickerForRegion = _.bind(this._imagePickerForRegion, this);
-            this.getDateTimePickerForRegion = _.bind(this._dateTimePickerForRegion, this);
-            this.getTimePickerForRegion = _.bind(this._timePickerForRegion, this);
-            this.getDatePickerForRegion = _.bind(this._datePickerForRegion, this);
-            this.getCheckboxsForRegion = _.bind(this._checkboxesForRegion, this);
-
             if (!this.model.isNew()) {
                 this.original = this.model.toJSON();
             }
@@ -4932,218 +5217,6 @@ var EntityFormView;
         },
         getSubServiceRoute: function (name) {
             return location.hash.substring(1, location.hash.length) + name;
-        },
-        _wyswigForRegion: function (region, dataField, isDocProp) {
-            this.addRegion(region, {
-                el: '.' + this._formatRegionName(region),
-                replaceElement: true
-            });
-
-            this.showChildView(region, new WyswigView({
-                value: this.model.get(dataField),
-                dataField: dataField,
-                isDocProp: isDocProp
-            }));
-        },
-        _singleLineForRegion: function (region, dataField, isDocProp) {
-            this.addRegion(region, {
-                el: '.' + this._formatRegionName(region),
-                replaceElement: true
-            });
-
-            this.showChildView(region, new SingleLineTextView({
-                value: this.model.get(dataField),
-                dataField: dataField,
-                isDocProp: isDocProp
-            }));
-        },
-        _checkboxesForRegion: function (collection, region, dataField, conditions, isDocProp) {
-            this.addRegion(region, {
-                el: '.' + this._formatRegionName(region),
-                replaceElement: true
-            });
-
-            var selectedIds = this.model.get(dataField);
-            if (!conditions) {
-                conditions = [];
-            }
-
-            var data = {
-                conditions: conditions
-            };
-
-            collection.query(false, data).done(_.bind(function (entities) {
-                this.showChildView(region, new CheckBoxListView({
-                    collection: entities,
-                    dataField: dataField,
-                    selectedId: selectedIds,
-                    isDocProp: isDocProp
-                }));
-            }, this));
-        },
-        _dropDownForRegion: function (collection, region, dataField, conditions, isDocProp) {
-            this.addRegion(region, {
-                el: '.' + this._formatRegionName(region),
-                replaceElement: true
-            });
-
-            if (!conditions) {
-                conditions = [];
-            }
-
-            var data = {
-                conditions: conditions
-            };
-
-            collection.query(false, data).done(_.bind(function (entities) {
-                var currentlySetId = this.model.get(dataField);
-
-                if (_.isUndefined(currentlySetId) || _.isNull(currentlySetId) || currentlySetId === '' || currentlySetId === 0) {
-                    entities.add(new Backbone.Model({name: 'Select', id: ''}), {at: 0});
-                    currentlySetId = '';
-                }
-
-                this.showChildView(region, new DropDownListView({
-                    collection: entities,
-                    dataField: dataField,
-                    selectedId: currentlySetId,
-                    isDocProp: isDocProp
-                }));
-            }, this));
-        },
-        _multiSelectForRegion: function (collection, region, dataField, conditions, displayField, isDocProp) {
-            this.addRegion(region, {
-                el: '.' + this._formatRegionName(region),
-                replaceElement: true
-            });
-
-            var selectedIds = this.model.get(dataField);
-            if (_.isUndefined(conditions)) {
-                conditions = [];
-            }
-
-            if (!this.model.isNew() && dataField === 'parentIds') {
-                conditions.push({
-                    searchType: 'notEquals',
-                    value: this.model.get('id') === null ? 0 : this.model.get('id'),
-                    field: 'id'
-                });
-            }
-
-            var multiSelect =
-                new MultiSelectLayoutView({
-                    collection: collection,
-                    dataField: dataField,
-                    selectedId: selectedIds,
-                    conditions: conditions,
-                    displayField: displayField || 'name',
-                    isDocProp: isDocProp
-                });
-
-            this.showChildView(region, multiSelect);
-        },
-        _autoCompleteForRegion: function (collection, region, dataField, isDocProp) {
-            this.addRegion(region, {
-                el: '.' + this._formatRegionName(region),
-                replaceElement: true
-            });
-
-            var selectedId = this.model.get(dataField);
-            this.showChildView(region,
-                new AutoCompleteLayoutView({
-                    collection: collection,
-                    dataField: dataField,
-                    selectedId: selectedId,
-                    isDocProp: isDocProp
-                }));
-        },
-        _radioButtonListForRegion: function (collection, region, dataField, isDocProp) {
-            this.addRegion(region, {
-                el: '.' + this._formatRegionName(region),
-                replaceElement: true
-            });
-
-            var selectedId = this.model.get(dataField);
-            this.showChildView(region, new RadioButtonListView({
-                collection: collection,
-                dataField: dataField,
-                selectedId: selectedId,
-                isDocProp: isDocProp
-            }));
-        },
-        _textAreaForRegion: function (region, dataField, isDocProp) {
-            this.addRegion(region, {
-                el: '.' + this._formatRegionName(region),
-                replaceElement: true
-            });
-
-            this.showChildView(region, new TextAreaView({
-                value: this.model.get(dataField),
-                dataField: dataField
-            }));
-        },
-        _checkboxForRegion: function (region, dataField, isDocProp) {
-            this.addRegion(region, {
-                el: '.' + this._formatRegionName(region),
-                replaceElement: true
-            });
-
-            this.showChildView(region, new CheckBoxView({
-                value: this.model.get(dataField),
-                dataField: dataField,
-                isDocProp: isDocProp
-            }));
-        },
-        _imagePickerForRegion: function (region, dataField, isDocProp) {
-            this.addRegion(region, {
-                el: '.' + this._formatRegionName(region),
-                replaceElement: true
-            });
-
-            this.showChildView(region, new ImageFieldView({
-                value: this.model.get(dataField),
-                dataField: dataField,
-                isDocProp: isDocProp
-            }));
-        },
-        _dateTimePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
-            this.addRegion(region, {
-                el: '.' + this._formatRegionName(region),
-                replaceElement: true
-            });
-
-            this.showChildView(region, new DateTimePickerView({
-                value: this.model.get(dataField),
-                dataField: dataField,
-                dateFormat: dateFormat,
-                isDocProp: isDocProp
-            }));
-        },
-        _timePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
-            this.addRegion(region, {
-                el: '.' + this._formatRegionName(region),
-                replaceElement: true
-            });
-
-            this.showChildView(region, new TimePickerView({
-                value: this.model.get(dataField),
-                dataField: dataField,
-                dateFormat: dateFormat,
-                isDocProp: isDocProp
-            }));
-        },
-        _datePickerForRegion: function (region, dataField, dateFormat, isDocProp) {
-            this.addRegion(region, {
-                el: '.' + this._formatRegionName(region),
-                replaceElement: true
-            });
-
-            this.showChildView(region, new DatePickerView({
-                value: this.model.get(dataField),
-                dataField: dataField,
-                dateFormat: dateFormat,
-                isDocProp: isDocProp
-            }));
         }
     });
 })(jQuery,
@@ -5417,8 +5490,9 @@ var EntityController;
     _.extend(EntityLayoutView.prototype, UtilitiesMixin);
     _.extend(EntityListItemView.prototype, UtilitiesMixin);
     _.extend(EntityFormView.prototype, UtilitiesMixin);
+    _.extend(FilterFormView.prototype, UtilitiesMixin);
 
-    _.extend(EntityFormView.prototype, FieldsMixin);
+    _.extend(Marionette.FormView.prototype, FieldsMixin);
 
 })(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin);
 return {

@@ -14,15 +14,16 @@ var PagerBehavior;
                 collection: collection
             }));
 
+            view.triggerMethod("ShowPager");
             Backbone.Radio.channel(view.route + ':pageSize').on('change',
                 _.bind(function (pageSize) {
                     if (!_.isNull(pageSize)) {
                         this._channel.trigger('changePageSize', parseInt(pageSize));
-                        this.triggerMethod("ShowPager", this.listView.collection);
+                        this.triggerMethod("ShowPager");
                     }
                 }, view));
         },
-        onShowPager: function (entityCollection) {
+        onShowPager: function () {
             var pagerRegion = this.view.getRegion('pagerRegion'),
                 channel = this.view.getChannel();
 
