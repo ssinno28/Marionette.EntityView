@@ -334,6 +334,20 @@ __p += '="' +
 return __p
 };
 
+this["Templates"]["singleCheckBoxTpl"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<input ' +
+((__t = ( checked )) == null ? '' : __t) +
+' type="checkbox" name="' +
+((__t = ( dataField )) == null ? '' : __t) +
+'" />\r\n';
+
+}
+return __p
+};
+
 this["Templates"]["singleLineTextTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
@@ -992,7 +1006,7 @@ var FieldsMixin;
                 replaceElement: true
             });
 
-            this.showChildView(region, new CheckBoxView({
+            this.showChildView(region, new SingleCheckBoxView({
                 value: this.model.get(dataField),
                 dataField: dataField,
                 isDocProp: isDocProp
@@ -2981,6 +2995,28 @@ var DatePickerView;
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['dateTimePickerTpl'], moment);
 
+var SingleCheckBoxView;
+(function ($, _, Backbone, Marionette, singleCheckBoxTpl, ReusableTypeLayoutView) {
+    SingleCheckBoxView = ReusableTypeLayoutView.extend({
+        template: singleCheckBoxTpl,
+        events: {
+            'click input[type=checkbox]': 'itemChecked'
+        },
+        itemChecked: function (e) {
+            this.getChannel().trigger(this.dataField + ':checked', this.model);
+        },
+        templateContext: function () {
+            var self = this;
+
+            return {
+                dataField: self.dataField,
+                value: self.value,
+                checked: this.getOption('value') ? 'checked' : ''
+            };
+        },
+    });
+})(jQuery, _, Backbone, Marionette, this['Templates']['singleCheckBoxTpl'], ReusableTypeLayoutView);
+
 var CheckBoxView;
 (function ($, _, Backbone, Marionette, checkBoxTemplate, ReusableTypeView) {
     CheckBoxView = ReusableTypeView.extend({
@@ -3739,13 +3775,6 @@ var FilterFormView;
         },
         className: '',
         runRenderers: function () {
-            // Get rid of that pesky wrapping-div.
-            // Assumes 1 child element present in template.
-            this.$el = this.$el.children();
-            // Unwrap the element to prevent infinitely
-            // nesting elements during re-render.
-            this.$el.unwrap();
-            this.setElement(this.$el);
         }
     });
 })(jQuery, _, Backbone, Marionette);
@@ -4149,7 +4178,6 @@ var EntityLayoutView;
                 onRender: function () {
                     this.field('name')
                         .label('Filter By Name', true)
-                        .el(this.$el)
                         .singleLine('Filter By Name');
                 }
             });

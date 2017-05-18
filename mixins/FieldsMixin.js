@@ -547,7 +547,7 @@ var FieldsMixin;
                 replaceElement: true
             });
 
-            this.showChildView(region, new CheckBoxView({
+            this.showChildView(region, new SingleCheckBoxView({
                 value: this.model.get(dataField),
                 dataField: dataField,
                 isDocProp: isDocProp

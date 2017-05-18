@@ -151,7 +151,6 @@ var EntityLayoutView;
                 onRender: function () {
                     this.field('name')
                         .label('Filter By Name', true)
-                        .el(this.$el)
                         .singleLine('Filter By Name');
                 }
             });
