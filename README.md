@@ -19,6 +19,8 @@ While these projects are not published to npm yet, you can take a look at them t
 * Aside from those there is also the [example folder](https://github.com/ssinno28/Marionette.EntityView/tree/master/example) in the root of the project.
 
 ## Release History
+* 1.1.0 
+  * adding actions feature  
 * 1.0.4
   * adding correct combobox npm package
   * adding change event on dataField channel for DropDownListView
