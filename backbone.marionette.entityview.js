@@ -3769,6 +3769,7 @@ var FilterFormView;
 (function ($, _, Backbone, Marionette) {
     FilterFormView = Marionette.FormView.extend({
         fieldWrapperTpl: this["Templates"]["filterFieldTpl"],
+        template: false,
         constructor: function () {
             Marionette.FormView.prototype.constructor.apply(this, arguments);
             this.on('render', this.runRenderers, this);
@@ -4082,7 +4083,6 @@ var EntityLayoutView;
         },
         events: {
             'click .edit': 'editClick',
-            'keyup .name': 'filterByName',
             'click .multi-action': 'showMultiActions',
             'click .sub-nav .get-all': 'getAllClick'
         },
@@ -4174,15 +4174,31 @@ var EntityLayoutView;
         },
         renderFilters: function () {
             var FiltersView = FilterFormView.extend({
-                template: false,
+                events: {
+                    'keyup .name': 'filterByName'
+                },
                 onRender: function () {
                     this.field('name')
                         .label('Filter By Name', true)
                         .singleLine('Filter By Name');
+                },
+                filterByName: function (e) {
+                    var $target = $(e.target),
+                        name = $target.val(),
+                        channel = this.getOption('channel');
+
+                    _.debounce(_.bind(function () {
+                        if (name.length === 0) {
+                            channel.trigger('getAll', 1);
+                            return;
+                        }
+
+                        channel.trigger('textSearch', name, 'name');
+                    }, this), 400)();
                 }
             });
 
-            this.showChildView('filterRegion', new FiltersView());
+            this.showChildView('filterRegion', new FiltersView({channel: this._channel}));
         },
         listViewActivated: function () {
             this.ui.$filters.show();
@@ -4221,22 +4237,6 @@ var EntityLayoutView;
             } else {
                 this.ui.$multiActionRequests.hide();
             }
-        },
-        filterByName: function (e) {
-            e.stopPropagation();
-
-            var $target = $(e.target),
-                name = $target.val(),
-                filterField = _.isUndefined(this.filterField) ? 'name' : this.filterField;
-
-            _.debounce(_.bind(function () {
-                if (name.length === 0) {
-                    this._channel.trigger('getAll', 1);
-                    return;
-                }
-
-                this._channel.trigger('textSearch', name, filterField);
-            }, this), 400)();
         },
         renderHeader: function () {
             if (_.isUndefined(this.header)) {
