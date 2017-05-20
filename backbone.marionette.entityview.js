@@ -79,15 +79,22 @@ return __p
 
 this["Templates"]["entityListItemTemplate"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="row">\r\n    <div class="list-view-checkbox col-xs-1 col-sm-1">\r\n        <input class="multi-action" data-id="' +
+__p += '<div class="row">\r\n    ';
+ if(showOperations) { ;
+__p += '\r\n    <div class="list-view-checkbox col-xs-1 col-sm-1">\r\n        <input class="multi-action" data-id="' +
 ((__t = ( id )) == null ? '' : __t) +
 '" id="' +
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
-'" type="checkbox">\r\n    </div>\r\n\r\n    <div class="col-xs-9 col-sm-10 list-view-additional-info">\r\n        <div class="fieldsRegion"></div>\r\n    </div>\r\n\r\n    <div class="list-view-actions col-sm-1 col-xs-1">\r\n        <div class="dropdown pull-right">\r\n            <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
+'" type="checkbox">\r\n    </div>\r\n    ';
+ } ;
+__p += '\r\n    \r\n\r\n    <div class="col-xs-9 col-sm-10 list-view-additional-info">\r\n        <div class="fieldsRegion"></div>\r\n    </div>\r\n\r\n    ';
+ if(showOperations) { ;
+__p += '\r\n    <div class="list-view-actions col-sm-1 col-xs-1">\r\n        <div class="dropdown pull-right">\r\n            <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
@@ -95,7 +102,9 @@ __p += '<div class="row">\r\n    <div class="list-view-checkbox col-xs-1 col-sm-
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
-'">\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</div>';
+'">\r\n            </ul>\r\n        </div>\r\n    </div>\r\n    ';
+ } ;
+__p += '\r\n</div>';
 
 }
 return __p
@@ -3922,7 +3931,8 @@ var EntityListItemView;
 
             return {
                 route: route,
-                embedded: this.getOption('embedded')
+                embedded: this.getOption('embedded'),
+                showOperations: this.getOption('allowableOperations').length > 0
             };
         },
         editClick: function (e) {
@@ -4734,8 +4744,11 @@ var EntityService;
 
             return {
                 page: parseInt(page),
-                pageSize: _.isUndefined(this.pageSize) ? parseInt(App.pageSize) : this.pageSize
+                pageSize: this.getPageSize()
             };
+        },
+        getPageSize: function () {
+            return _.isUndefined(this.pageSize) ? parseInt(App.pageSize) : this.pageSize;
         }
     });
 })(jQuery, _, Backbone, Marionette, App, EntityLayoutView, this['Templates']['headerTemplate']);
@@ -4760,6 +4773,7 @@ var MultiSelectService;
             });
 
             this.formView = null;
+            options.allowableOperations = [];
             Marionette.EntityService.prototype.initialize.call(this, options);
         },
         getBtnClass: function () {
@@ -5551,7 +5565,8 @@ return {
     EntityListView: EntityListView,
     TreeCompositeView: TreeCompositeView,
     ModalView: ModalView,
-    EntityLayoutView: EntityLayoutView
+    EntityLayoutView: EntityLayoutView,
+    FilterFormView: FilterFormView
 };
 }));
 //# sourceMappingURL=backbone.marionette.entityview.js.map

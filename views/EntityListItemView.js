@@ -85,7 +85,8 @@ var EntityListItemView;
 
             return {
                 route: route,
-                embedded: this.getOption('embedded')
+                embedded: this.getOption('embedded'),
+                showOperations: this.getOption('allowableOperations').length > 0
             };
         },
         editClick: function (e) {

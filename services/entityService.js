@@ -352,8 +352,11 @@ var EntityService;
 
             return {
                 page: parseInt(page),
-                pageSize: _.isUndefined(this.pageSize) ? parseInt(App.pageSize) : this.pageSize
+                pageSize: this.getPageSize()
             };
+        },
+        getPageSize: function () {
+            return _.isUndefined(this.pageSize) ? parseInt(App.pageSize) : this.pageSize;
         }
     });
 })(jQuery, _, Backbone, Marionette, App, EntityLayoutView, this['Templates']['headerTemplate']);

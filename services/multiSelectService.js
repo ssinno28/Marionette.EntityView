@@ -18,6 +18,7 @@ var MultiSelectService;
             });
 
             this.formView = null;
+            options.allowableOperations = [];
             Marionette.EntityService.prototype.initialize.call(this, options);
         },
         getBtnClass: function () {
