@@ -19,8 +19,8 @@ var PagerListView;
             var $target = $(e.target),
                 channel = this.getChannel();
 
-            this.$el.find('li').removeClass('current');
-            $target.parent().addClass('current');
+            this.$el.find('li').removeClass('active');
+            $target.parent().addClass('active');
 
             channel.trigger('page:changed:' + this.parentViewCid, e);
 

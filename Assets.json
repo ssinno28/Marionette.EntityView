@@ -62,6 +62,7 @@
       "views/reusableTypes/multiSelectLists/MultiSelectOptionView.js",
       "views/reusableTypes/multiSelectLists/MultiSelectListView.js",
       "services/entityService.js",
+      "views/reusableTypes/multiSelectLists/MultiSelectEntityView.js",
       "services/multiSelectService.js",
       "views/reusableTypes/multiSelectLists/MultiSelectLayoutView.js",
       "views/EntityFormView.js",

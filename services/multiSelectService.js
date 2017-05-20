@@ -1,5 +1,5 @@
 var MultiSelectService;
-(function ($, _, Backbone, Marionette, EntityService, App, MultiSelectListView) {
+(function ($, _, Backbone, Marionette, EntityService, App, MultiSelectListView, MultiSelectEntityView) {
     MultiSelectService = Marionette.EntityService.extend({
         getData: function (page) {
             var data = {
@@ -18,6 +18,7 @@ var MultiSelectService;
             });
 
             this.formView = null;
+            this.entityLayoutViewType = MultiSelectEntityView;
             options.allowableOperations = [];
             Marionette.EntityService.prototype.initialize.call(this, options);
         },
@@ -25,4 +26,4 @@ var MultiSelectService;
             return 'tiny round';
         }
     });
-})(jQuery, _, Backbone, Marionette, EntityService, App, MultiSelectListView);
+})(jQuery, _, Backbone, Marionette, EntityService, App, MultiSelectListView, MultiSelectEntityView);

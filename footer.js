@@ -28,6 +28,7 @@ return {
     TreeCompositeView: TreeCompositeView,
     ModalView: ModalView,
     EntityLayoutView: EntityLayoutView,
-    FilterFormView: FilterFormView
+    FilterFormView: FilterFormView,
+    MultiSelectEntityView: MultiSelectEntityView
 };
 }));

@@ -2,8 +2,20 @@ var PagerBehavior;
 (function ($, _, Backbone, Marionette, App, PagerListView, DropDownListView) {
     PagerBehavior = Marionette.Behavior.extend({
         onRender: function () {
+            if (_.isUndefined(App.indexes)) {
+                return;
+            }
+
             var collection = new Backbone.Collection(),
-                view = this.view;
+                view = this.view,
+                channel = this.view.getChannel(),
+                pageSize = channel.request('getPageSize'),
+                count = App.indexes[this.view.key],
+                noOfPages = Math.ceil(count / pageSize);
+
+            if (noOfPages <= 1) {
+                return;
+            }
 
             _.each(view.getOption('pageSizes'), function (pageSize) {
                 collection.add(new Backbone.Model({id: pageSize, name: pageSize}));

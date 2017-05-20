@@ -76,7 +76,8 @@ var EntityLayoutView;
             '$multiActionRequests': '.multi-action-requests',
             '$treeBtn': '.get-tree',
             '$header': '.entity-header',
-            '$actions': '.actions'
+            '$actions': '.actions',
+            '$filterForm': '.filter-form'
         },
         templateContext: function () {
             var route = this.route,
@@ -105,6 +106,10 @@ var EntityLayoutView;
             this.renderFilters();
             this.renderModals();
             this.renderActions();
+
+            if (this.getOption('embedded')) {
+                this.ui.$filterForm.addClass('form-inline');
+            }
 
             this.bindUIElements();
         },

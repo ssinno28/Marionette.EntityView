@@ -71,7 +71,7 @@ this["Templates"]["entityLayoutTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="row">\r\n    <div class="entity-header col-sm-12">\r\n    </div>\r\n    <div class="col-sm-12 ">\r\n        <div class="filter-region">\r\n        </div>\r\n        <div class="form-group sub-nav actions">\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n<div class="row">\r\n    <div class="list-group entityRegion">\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-xs-7 col-sm-9 col-md-10">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n    <div class="col-xs-5 col-sm-3 col-md-2">\r\n        <div class="page-size-region"></div>\r\n    </div>\r\n</div>';
+__p += '<div class="row">\r\n    <div class="entity-header col-sm-12">\r\n    </div>\r\n    <div class="col-sm-12 .filter-form">\r\n        <div class="filter-region">\r\n        </div>\r\n        <div class="form-group sub-nav actions">\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n<div class="row">\r\n    <div class="list-group entityRegion">\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-xs-7 col-sm-9 col-md-10">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n    <div class="col-xs-5 col-sm-3 col-md-2">\r\n        <div class="page-size-region"></div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -92,7 +92,7 @@ __p += '\r\n    <div class="list-view-checkbox col-xs-1 col-sm-1">\r\n        <i
 ((__t = (id)) == null ? '' : __t) +
 '" type="checkbox">\r\n    </div>\r\n    ';
  } ;
-__p += '\r\n    \r\n\r\n    <div class="col-xs-9 col-sm-10 list-view-additional-info">\r\n        <div class="fieldsRegion"></div>\r\n    </div>\r\n\r\n    ';
+__p += '\r\n\r\n\r\n    <div class="col-xs-9 col-sm-10 list-view-additional-info">\r\n        <div class="fieldsRegion"></div>\r\n    </div>\r\n\r\n    ';
  if(showOperations) { ;
 __p += '\r\n    <div class="list-view-actions col-sm-1 col-xs-1">\r\n        <div class="dropdown pull-right">\r\n            <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
 ((__t = ( route )) == null ? '' : __t) +
@@ -135,9 +135,9 @@ this["Templates"]["headerTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<h1>' +
+__p += '<div class="col-xs-12">\r\n    <h1>' +
 ((__t = ( title )) == null ? '' : __t) +
-'</h1>';
+'</h1>\r\n</div>\r\n';
 
 }
 return __p
@@ -255,6 +255,16 @@ __p += '<div class="modal-dialog">\r\n    <div class="modal-content">\r\n       
 '</h4>\r\n        </div>\r\n        <div class="modal-body message">\r\n            ' +
 ((__t = ( message )) == null ? '' : __t) +
 '\r\n        </div>\r\n        <div class="modal-footer">\r\n        </div>\r\n    </div>\r\n</div>';
+
+}
+return __p
+};
+
+this["Templates"]["msEntityLayoutTpl"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div class="row">\r\n    <div class="entity-header col-sm-12">\r\n    </div>\r\n    <div class="col-sm-12">\r\n        <div class="filter-region">\r\n        </div>\r\n        <div class="form-group sub-nav actions">\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n<div class="row">\r\n    <div class="list-group entityRegion">\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-xs-7">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n    <div class="col-xs-5">\r\n        <div class="page-size-region"></div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -2789,7 +2799,7 @@ var PagerItemView;
                 current = '';
 
             if (isCurrent) {
-                current = 'current';
+                current = 'active';
             }
 
             return current;
@@ -2819,8 +2829,8 @@ var PagerListView;
             var $target = $(e.target),
                 channel = this.getChannel();
 
-            this.$el.find('li').removeClass('current');
-            $target.parent().addClass('current');
+            this.$el.find('li').removeClass('active');
+            $target.parent().addClass('active');
 
             channel.trigger('page:changed:' + this.parentViewCid, e);
 
@@ -3238,8 +3248,20 @@ var PagerBehavior;
 (function ($, _, Backbone, Marionette, App, PagerListView, DropDownListView) {
     PagerBehavior = Marionette.Behavior.extend({
         onRender: function () {
+            if (_.isUndefined(App.indexes)) {
+                return;
+            }
+
             var collection = new Backbone.Collection(),
-                view = this.view;
+                view = this.view,
+                channel = this.view.getChannel(),
+                pageSize = channel.request('getPageSize'),
+                count = App.indexes[this.view.key],
+                noOfPages = Math.ceil(count / pageSize);
+
+            if (noOfPages <= 1) {
+                return;
+            }
 
             _.each(view.getOption('pageSizes'), function (pageSize) {
                 collection.add(new Backbone.Model({id: pageSize, name: pageSize}));
@@ -4114,7 +4136,8 @@ var EntityLayoutView;
             '$multiActionRequests': '.multi-action-requests',
             '$treeBtn': '.get-tree',
             '$header': '.entity-header',
-            '$actions': '.actions'
+            '$actions': '.actions',
+            '$filterForm': '.filter-form'
         },
         templateContext: function () {
             var route = this.route,
@@ -4143,6 +4166,10 @@ var EntityLayoutView;
             this.renderFilters();
             this.renderModals();
             this.renderActions();
+
+            if (this.getOption('embedded')) {
+                this.ui.$filterForm.addClass('form-inline');
+            }
 
             this.bindUIElements();
         },
@@ -4753,8 +4780,14 @@ var EntityService;
     });
 })(jQuery, _, Backbone, Marionette, App, EntityLayoutView, this['Templates']['headerTemplate']);
 
+var MultiSelectEntityView;
+(function ($, _, Backbone, Marionette, EntityLayoutView) {
+    MultiSelectEntityView = EntityLayoutView.extend({
+        template: this["Templates"]["msEntityLayoutTpl"]
+    });
+})(jQuery, _, Backbone, Marionette, EntityLayoutView);
 var MultiSelectService;
-(function ($, _, Backbone, Marionette, EntityService, App, MultiSelectListView) {
+(function ($, _, Backbone, Marionette, EntityService, App, MultiSelectListView, MultiSelectEntityView) {
     MultiSelectService = Marionette.EntityService.extend({
         getData: function (page) {
             var data = {
@@ -4773,6 +4806,7 @@ var MultiSelectService;
             });
 
             this.formView = null;
+            this.entityLayoutViewType = MultiSelectEntityView;
             options.allowableOperations = [];
             Marionette.EntityService.prototype.initialize.call(this, options);
         },
@@ -4780,7 +4814,7 @@ var MultiSelectService;
             return 'tiny round';
         }
     });
-})(jQuery, _, Backbone, Marionette, EntityService, App, MultiSelectListView);
+})(jQuery, _, Backbone, Marionette, EntityService, App, MultiSelectListView, MultiSelectEntityView);
 var MultiSelectLayoutView;
 (function (Marionette, $, _, multiSelectLayoutTpl, ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel) {
     MultiSelectLayoutView = ReusableTypeLayoutView.extend({
@@ -5566,7 +5600,8 @@ return {
     TreeCompositeView: TreeCompositeView,
     ModalView: ModalView,
     EntityLayoutView: EntityLayoutView,
-    FilterFormView: FilterFormView
+    FilterFormView: FilterFormView,
+    MultiSelectEntityView: MultiSelectEntityView
 };
 }));
 //# sourceMappingURL=backbone.marionette.entityview.js.map

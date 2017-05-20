@@ -9,7 +9,7 @@ var PagerItemView;
                 current = '';
 
             if (isCurrent) {
-                current = 'current';
+                current = 'active';
             }
 
             return current;

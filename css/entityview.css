@@ -15,6 +15,11 @@
     margin: 20px 0;
 }
 
+.form-inline .form-group{
+    margin-left: 0;
+    margin-right: 0;
+}
+
 /* Links
 ------------------------------------------------------------*/
 .not-active {
