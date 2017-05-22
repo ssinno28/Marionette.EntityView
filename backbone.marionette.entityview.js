@@ -472,6 +472,24 @@ var UtilitiesMixin;
     UtilitiesMixin = {
         _formatRegionName: function (name) {
             return name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+        },
+        _getUrlFriendlyString: function (s) {
+            // make the url lowercase
+            var encodedUrl = s.toString().toLowerCase();
+
+            // replace & with and
+            encodedUrl = encodedUrl.split(/\&+/).join("-and-")
+
+            // remove invalid characters
+            encodedUrl = encodedUrl.split(/[^a-z0-9]/).join("-");
+
+            // remove duplicates
+            encodedUrl = encodedUrl.split(/-+/).join("-");
+
+            // trim leading & trailing characters
+            encodedUrl = encodedUrl.trim('-');
+
+            return encodedUrl;
         }
     };
 })(jQuery, _, Backbone, Marionette);
@@ -1224,9 +1242,6 @@ var UriUtil;
         },
         getRoute: function () {
             return location.hash.slice(0, location.hash.indexOf('q/'));
-        },
-        getUrlFriendlyString: function (s) {
-            return s.replace(/ /g, "-").toLowerCase();
         }
     };
 })(jQuery, _, Backbone);
@@ -3277,6 +3292,8 @@ var PagerBehavior;
                 _.bind(function (pageSize) {
                     if (!_.isNull(pageSize)) {
                         this._channel.trigger('changePageSize', parseInt(pageSize));
+                        this.listView.currentPage = 1;
+                        
                         this.triggerMethod("ShowPager");
                     }
                 }, view));
@@ -3532,50 +3549,51 @@ var FormView;
 
                 if (_.isUndefined(field.properties)) {
                     fieldErrors = this.validateField(key);
+                    if (!_.isEmpty(fieldErrors)) errors[key] = fieldErrors;
                 } else {
-                    var $docEl = $('[data-field=' + key + ']');
-                    fieldErrors = this.validateProps(field.properties, $docEl, key);
-                }
+                    var $docEl = $('[data-field=' + key + ']'),
+                        propKeys = _(field.properties).keys();
 
-                if (!_.isEmpty(fieldErrors)) errors[key] = fieldErrors;
+                    _.each(propKeys, _.bind(function (propKey) {
+                        fieldErrors = this.validateProps(field.properties, $docEl, key, propKey);
+                        if (!_.isEmpty(fieldErrors)) errors[propKey] = fieldErrors;
+                    }, this));
+                }
             }, this);
 
             return errors;
         },
 
-        validateProps: function (properties, $docEl, field) {
+        validateProps: function (properties, $docEl, field, propKey) {
             var fieldErrors = [],
-                keys = _(properties).keys(),
                 errors = {};
 
-            _.each(keys, _.bind(function (key) {
-                var fieldOptions = properties[key],
-                    validations = fieldOptions && fieldOptions.validations ? fieldOptions.validations : {},
-                    isValid = true;
+            var fieldOptions = properties[propKey],
+                validations = fieldOptions && fieldOptions.validations ? fieldOptions.validations : {},
+                isValid = true;
 
-                var val = this.inputVal($docEl.find('[data-property=' + key + ']'));
-                if (fieldOptions.required) {
-                    isValid = this.validateRule(val, 'required');
-                    var errorMessage = typeof fieldOptions.required === 'string' ? fieldOptions.required : 'This field is required';
-                    if (!isValid) fieldErrors.push(errorMessage);
-                }
+            var val = this.inputVal($docEl.find('[data-property=' + propKey + ']'));
+            if (fieldOptions.required) {
+                isValid = this.validateRule(val, 'required');
+                var errorMessage = typeof fieldOptions.required === 'string' ? fieldOptions.required : 'This field is required';
+                if (!isValid) fieldErrors.push(errorMessage);
+            }
 
-                // Don't bother with other validations if failed 'required' already
-                if (isValid && validations) {
-                    _.each(validations, function (errorMsg, validateWith) {
-                        isValid = this.validateRule(val, validateWith);
-                        if (!isValid) fieldErrors.push(errorMsg);
-                    }, this);
-                }
+            // Don't bother with other validations if failed 'required' already
+            if (isValid && validations) {
+                _.each(validations, function (errorMsg, validateWith) {
+                    isValid = this.validateRule(val, validateWith);
+                    if (!isValid) fieldErrors.push(errorMsg);
+                }, this);
+            }
 
-                if (!_.isEmpty(fieldErrors)) {
-                    _.extend(errors, {
-                        field: field + '.' + key,
-                        el: this.fields[field].properties[key].el,
-                        error: fieldErrors
-                    });
-                }
-            }, this));
+            if (!_.isEmpty(fieldErrors)) {
+                _.extend(errors, {
+                    field: field + '.' + propKey,
+                    el: this.fields[field].properties[propKey].el,
+                    error: fieldErrors
+                });
+            }
 
             return errors;
         },
@@ -3640,12 +3658,12 @@ var FormView;
             else if (el.data('fieldtype') === 'array') {
                 if (mode === 'get') val = [];
                 el.find('[data-index]').each(function () {
-					 var elem = $(this);
-					 var index = elem.data('index');
-					 if (mode === 'get') {
-						val.push(elem.data('id'));
-					 }
-                 });
+                    var elem = $(this);
+                    var index = elem.data('index');
+                    if (mode === 'get') {
+                        val.push(elem.data('id'));
+                    }
+                });
             } else if (el.is('input')) {
                 var inputType = el.attr('type').toLowerCase();
                 switch (inputType) {

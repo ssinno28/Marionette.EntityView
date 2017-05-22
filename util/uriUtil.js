@@ -18,9 +18,6 @@ var UriUtil;
         },
         getRoute: function () {
             return location.hash.slice(0, location.hash.indexOf('q/'));
-        },
-        getUrlFriendlyString: function (s) {
-            return s.replace(/ /g, "-").toLowerCase();
         }
     };
 })(jQuery, _, Backbone);

@@ -31,6 +31,8 @@ var PagerBehavior;
                 _.bind(function (pageSize) {
                     if (!_.isNull(pageSize)) {
                         this._channel.trigger('changePageSize', parseInt(pageSize));
+                        this.listView.currentPage = 1;
+                        
                         this.triggerMethod("ShowPager");
                     }
                 }, view));
