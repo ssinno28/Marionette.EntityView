@@ -19,6 +19,10 @@ While these projects are not published to npm yet, you can take a look at them t
 * Aside from those there is also the [example folder](https://github.com/ssinno28/Marionette.EntityView/tree/master/example) in the root of the project.
 
 ## Release History
+* 1.2.2
+  * making it so you don't have to scaffold EntityListView and EntityListItemView
+  * making sure document property errors are showing inline to property field
+  * setting current page to 1 when the page size is set
 * 1.2.1
   * hiding page size drop down if there is only one page
   * adding template for multi select entity views

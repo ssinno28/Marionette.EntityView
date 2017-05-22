@@ -2,8 +2,7 @@
   "moduleName": "Marionette Entity View",
   "js": {
     "files": [
-	  "generated/js/templates.js",
-      "mixins/UtilitiesMixin.js",
+	  "mixins/UtilitiesMixin.js",
       "mixins/FieldsMixin.js",
       "util/formValidator.js",
       "util/timeoutUtil.js",
