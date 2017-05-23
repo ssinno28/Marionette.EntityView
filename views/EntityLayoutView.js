@@ -55,8 +55,7 @@ var EntityLayoutView;
         },
         events: {
             'click .edit': 'editClick',
-            'click .multi-action': 'showMultiActions',
-            'click .sub-nav .get-all': 'getAllClick'
+            'click .multi-action': 'showMultiActions'
         },
         childViewEvents: function () {
             var events = {};
