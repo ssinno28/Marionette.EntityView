@@ -26,6 +26,10 @@ var ReusableTypeLayoutView;
             } else {
                 $dataField.attr('data-field', this.getOption('dataField'));
             }
+
+    /*        if (!_.isUndefined(this.setValue)) {
+                this.setValue(this.getOption('value'));
+            }*/
         },
         templateContext: function () {
             var self = this;
@@ -35,7 +39,7 @@ var ReusableTypeLayoutView;
                 value: self.value
             };
         },
-        getDataField: function(){
+        getDataField: function () {
             return !_.isUndefined(this.dataFieldSelector) ? this.$el.find(this.dataFieldSelector) : this.$el;
         },
         getChannel: function () {

@@ -292,6 +292,16 @@ var MultiSelectLayoutView;
         onDestroy: function () {
             this._excludedItemsChannel.reset();
             this._selectedItemsChannel.reset();
+        },
+        getValue: function () {
+            var checkedOptions = this.$el.find('.selectedOptions ul li');
+            var value = [];
+            _.each(checkedOptions, function (checkedOption) {
+                var $checkedOption = $(checkedOption);
+                value.push($checkedOption.data('id'));
+            });
+
+            return value;
         }
     });
 })(Marionette, jQuery, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel);

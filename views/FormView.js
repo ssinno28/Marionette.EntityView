@@ -18,7 +18,6 @@ var FormView;
 
             if (!this.model) this.model = new Backbone.Model();
 
-            this.listenTo(this.model, 'change', this.changeFieldVal, this);
             if (this.data) this.model.set(this.data);
 
             //Attach Events to preexisting elements if we don't have a template
@@ -28,34 +27,11 @@ var FormView;
             this._validator = new FormValidator();
         },
 
-        changeFieldVal: function (model, fields) {
-            if (!_.isEmpty(fields) && fields.changes) {
-                var modelProperty = Object.keys(fields.changes);
-                this.inputVal(modelProperty, this.model.get(modelProperty));
-            } else if (fields.unset) {
-                _(this.fields).each(function (options, field) {
-                    var elem = this.$('[data-field="' + field + '"]');
-                    this.inputVal(elem, this.model.get(field));
-                }, this);
-            }
-        },
-
-        populateFields: function () {
-            _(this.fields).each(function (options, field) {
-                var elem = this.$('[data-field="' + field + '"]');
-                this.inputVal(elem, this.model.get(field));
-                if (options.autoFocus) elem.focus();
-                if (options.disabled) {
-                    elem.attr('disabled', 'disabled');
-                }
-            }, this);
-        },
-
         serializeFormData: function () {
             var data = {}, self = this;
 
             _(this.fields).each(function (options, field) {
-                data[field] = self.inputVal(field);
+                data[field] = self.fields[field].view.getValue();
             });
 
             return data;
@@ -122,7 +98,7 @@ var FormView;
                 validations = fieldOptions && fieldOptions.validations ? fieldOptions.validations : {},
                 isValid = true;
 
-            var val = this.inputVal($docEl.find('[data-property=' + propKey + ']'));
+            var val = fieldOptions.view.getValue();
             if (fieldOptions.required) {
                 isValid = this.validateRule(val, 'required');
                 var errorMessage = typeof fieldOptions.required === 'string' ? fieldOptions.required : 'This field is required';
@@ -154,7 +130,7 @@ var FormView;
                 fieldErrors = [],
                 isValid = true;
 
-            var val = this.inputVal(field);
+            var val = fieldOptions.view.getValue();
 
             if (fieldOptions.required) {
                 isValid = this.validateRule(val, 'required');
@@ -178,140 +154,6 @@ var FormView;
                 };
                 return errorObject;
             }
-        },
-
-        inputVal: function (input, val) {
-            //takes field name or jQuery object
-            var el = input.jquery ? input : this.$('[data-field="' + input + '"]');
-            var self = this, mode = typeof val === 'undefined' ? 'get' : 'set';
-
-            if (el.data('fieldtype') === 'object') {
-                if (mode === 'get') {
-                    val = {};
-                } else if (val !== '') {
-                    val = JSON.parse(val);
-                }
-
-                el.find('[data-property]').each(function () {
-                    var elem = $(this);
-                    var prop = elem.attr('data-property');
-                    if (mode === 'get') {
-                        val[prop] = self.inputVal(elem);
-                    } else if (val) {
-                        self.inputVal(elem, val[prop]);
-                        elem.trigger('change');
-                    }
-                });
-
-                val = JSON.stringify(val);
-            }
-            else if (el.data('fieldtype') === 'array') {
-                if (mode === 'get') val = [];
-                el.find('[data-index]').each(function () {
-                    var elem = $(this);
-                    var index = elem.data('index');
-                    if (mode === 'get') {
-                        val.push(elem.data('id'));
-                    }
-                });
-            } else if (el.is('input')) {
-                var inputType = el.attr('type').toLowerCase();
-                switch (inputType) {
-                    case "radio":
-                        el.each(function () {
-                            var radio = $(this);
-                            if (mode === 'get') {
-                                if (radio.is(':checked')) {
-                                    val = radio.val();
-                                    return false;
-                                }
-                            } else {
-                                if (radio.val() === val) {
-                                    radio.prop('checked', true);
-                                    return false;
-                                }
-                            }
-                        });
-                        break;
-                    case "checkbox":
-                        if (mode === 'get') {
-                            val = el.is(':checked');
-                        } else {
-                            el.prop('checked', !!val);
-                        }
-                        break;
-                    default:
-                        if (mode === 'get') {
-                            val = $.trim(el.val());
-                        } else {
-                            el.val(val);
-                        }
-                        break;
-                }
-            }
-            else if (el.is('div') && el.hasClass('zselect')) {
-                var checkedOptions = el.find('.selectedOptions ul li');
-                var value = [];
-                _.each(checkedOptions, function (checkedOption) {
-                    var $checkedOption = $(checkedOption);
-                    value.push($checkedOption.data('id'));
-                });
-
-                val = value;
-            }
-            else if (el.is('select') && el.is(":visible")) {
-                if (mode === 'get') {
-                    val = el.val();
-                }
-            }
-            else if (el.is('textarea')) {
-                if (mode === 'get') {
-                    var editor;
-                    if (!_.isUndefined(input.jquery)) {
-                        var dataField = input.attr('data-field'),
-                            dataProp = input.attr('data-property'),
-                            key = _.isUndefined(dataField) ? dataProp : dataField;
-
-                        editor = CKEDITOR.instances[key];
-                    } else {
-                        editor = CKEDITOR.instances[input];
-                    }
-
-                    if (!_.isUndefined(editor)) {
-                        val = $.trim(editor.getData());
-                        var $hiddenDiv = $('<div></div>'),
-                            html = $hiddenDiv.html(val),
-                            imgs = $(html).find('img');
-
-                        _.each(imgs, function (img) {
-                            var $img = $(img),
-                                src = $img.attr('src');
-
-                            if (src.indexOf(App.API_URL) > -1) {
-                                src = src.replace(App.API_URL, '');
-                                $img.attr('src', src);
-                            }
-                        });
-
-                        val = $hiddenDiv.html();
-                    } else {
-                        val = el.val();
-                    }
-                } else {
-                    el.val(val);
-                }
-            }
-            else {
-                if (mode === 'get') {
-                    val = $.trim(el.val());
-                } else {
-                    el.val(val);
-                }
-                //Handle Select / MultiSelect Etc
-                //@todo
-            }
-
-            return val;
         },
 
         validateRule: function (val, validationRule) {
@@ -356,7 +198,6 @@ var FormView;
         },
 
         runInitializers: function () {
-            this.populateFields();
             this.bindFormEvents();
             if (_.isFunction(this.onReady)) this.onReady();
         }

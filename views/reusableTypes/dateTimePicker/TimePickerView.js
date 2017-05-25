@@ -29,6 +29,12 @@ var TimePickerView;
         },
         update: function (value) {
             this.$el.datepicker('update', value);
+        },
+        getValue: function () {
+            return this.getDataField().val();
+        },
+        setValue: function (val) {
+            this.getDataField().val(val);
         }
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['dateTimePickerTpl'], moment);

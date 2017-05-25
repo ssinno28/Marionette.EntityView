@@ -10,12 +10,6 @@ var AutoCompleteListView;
         onDomRefresh: function () {
             this.getChannel().trigger('auto-complete:list:complete:' + this.dataField);
             this.$el.dropdown('toggle');
-        },
-        events: {
-            'click .autocomplete-item': 'autoCompleteSelected'
-        },
-        autoCompleteSelected: function (e) {
-            this.getChannel().trigger('auto-complete:selected:' + this.dataField, e);
         }
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeListView, AutoCompleteView);

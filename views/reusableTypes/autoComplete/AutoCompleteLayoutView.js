@@ -3,6 +3,16 @@ var AutoCompleteLayoutView;
     AutoCompleteLayoutView = ReusableTypeLayoutView.extend({
         tag: 'div',
         template: autoCompleteTemplate,
+        dataFieldSelector: '.selectedId',
+        childViewEvents: {
+            'autoCompleteSelected': function (view, e) {
+                this.ui.$selectedId.val(view.model.get('id'));
+                this.ui.$valueText.val(view.model.get('name'));
+
+                this.getRegion('dropDownRegion').reset();
+                $('html').off('click');
+            }
+        },
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
 
@@ -11,7 +21,6 @@ var AutoCompleteLayoutView;
 
             var channel = this.getChannel(this.dataField);
             channel.on('auto-complete:list:complete', _.bind(this.listingRetrieved, this));
-            channel.on('auto-complete:selected', _.bind(this.entitySelected, this));
         },
         className: 'dropdown col-sm-12 nopadding',
         listingRetrieved: function () {
@@ -22,18 +31,6 @@ var AutoCompleteLayoutView;
                 $(this).off('click');
                 setSelectedEntity();
             });
-        },
-        entitySelected: function (e) {
-            e.stopPropagation();
-            e.preventDefault();
-
-            var $target = $(e.target);
-            this.ui.$selectedId.val($target.data('id'));
-            this.ui.$valueText.val($target.html());
-
-            this.getRegion('dropDownRegion').reset();
-
-            $('html').off('click');
         },
         setSelectedEntity: function () {
             var $valueText = this.ui.$valueText,
@@ -70,32 +67,32 @@ var AutoCompleteLayoutView;
             if (name.length < 2) {
                 return;
             }
-			
-			_.debounce(_.bind(function () {
-				var data = {
-					conditions: [
-						{
-							searchType: 'like',
-							field: 'name',
-							value: name
-						}
-					]
-				};
 
-				self.collection.query(false, data)
-					.done(function (entities) {
-						if (entities.length > 0) {
-							var listView = new AutoCompleteListView({
-								collection: entities,
-								dataField: self.dataField,
-								selectedId: self.selectedId
-							});
+            _.debounce(_.bind(function () {
+                var data = {
+                    conditions: [
+                        {
+                            searchType: 'like',
+                            field: 'name',
+                            value: name
+                        }
+                    ]
+                };
 
-							self.showChildView('dropDownRegion', listView);
-						} else {
-							self.getRegion('dropDownRegion').reset();
-						}
-					});
+                self.collection.query(false, data)
+                    .done(function (entities) {
+                        if (entities.length > 0) {
+                            var listView = new AutoCompleteListView({
+                                collection: entities,
+                                dataField: self.dataField,
+                                selectedId: self.selectedId
+                            });
+
+                            self.showChildView('dropDownRegion', listView);
+                        } else {
+                            self.getRegion('dropDownRegion').reset();
+                        }
+                    });
             }, this), 400)();
         },
         onDomRefresh: function () {
@@ -108,6 +105,9 @@ var AutoCompleteLayoutView;
                         self.ui.$selectedId.val(entity.get('id'));
                     });
             }
+        },
+        getValue: function () {
+            return this.getDataField().val();
         }
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['autoCompleteTemplate'], AutoCompleteListView);

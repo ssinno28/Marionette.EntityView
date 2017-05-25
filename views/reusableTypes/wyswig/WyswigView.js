@@ -35,6 +35,30 @@ var WyswigView;
         template: wyswigTextTemplate,
         isPathAbsolute: function (path) {
             return /^https?:\/\//i.test(path);
+        },
+        getValue: function () {
+            var dataField = this.$el.attr('data-field'),
+                dataProp = this.$el.attr('data-property'),
+                key = _.isUndefined(dataField) ? dataProp : dataField;
+
+            var editor = CKEDITOR.instances[key];
+
+            var val = $.trim(editor.getData());
+            var $hiddenDiv = $('<div></div>'),
+                html = $hiddenDiv.html(val),
+                imgs = $(html).find('img');
+
+            _.each(imgs, function (img) {
+                var $img = $(img),
+                    src = $img.attr('src');
+
+                if (src.indexOf(App.API_URL) > -1) {
+                    src = src.replace(App.API_URL, '');
+                    $img.attr('src', src);
+                }
+            });
+
+            return $hiddenDiv.html();
         }
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['wyswigTemplate'], CKEDITOR);

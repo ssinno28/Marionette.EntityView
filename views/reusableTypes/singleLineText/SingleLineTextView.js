@@ -10,6 +10,12 @@ var SingleLineTextView;
                 value: self.value,
                 placeholderTxt: self.placeholderTxt
             };
+        },
+        getValue: function () {
+            return this.$el.val();
+        },
+        setValue: function (val) {
+            this.$el.val(val);
         }
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['singleLineTextTemplate']);
