@@ -2850,19 +2850,22 @@ var WyswigView;
 var DocumentView;
 (function ($, _, Backbone, Marionette) {
     DocumentView = Marionette.View.extend({
-        onRender: function () {
+        onDomRefresh: function () {
             var formView = this.getOption('formView'),
                 id = this.getOption('id'),
                 type = this.getOption('type'),
                 channel = this.getOption('channel'),
-                currentField = this.getOption('currentField');
+                currentField = this.getOption('currentField'),
+                self = this;
 
             var docField = _.bind(function (name) {
-                return this.field(name, true, currentField);
+                return this.field(name, true, currentField).el(self.$el);
             }, formView);
 
             channel.request('document:' + type, docField);
             channel.request('document:' + type + ':' + id, docField);
+
+            this.setValue(this.getOption('value'));
         },
         template: false,
         getValue: function () {
@@ -3054,6 +3057,10 @@ var ImageFieldView;
         },
         getValue: function () {
             return this.getDataField().val();
+        },
+        setValue: function (val) {
+            this.getDataField().val(val);
+            this.updateImageUrl();
         }
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['imageFieldTemplate']);

@@ -22,6 +22,10 @@ var ImageFieldView;
         },
         getValue: function () {
             return this.getDataField().val();
+        },
+        setValue: function (val) {
+            this.getDataField().val(val);
+            this.updateImageUrl();
         }
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['imageFieldTemplate']);
