@@ -69,6 +69,7 @@ module.exports = function (grunt) {
                     "./node_modules/pluralize/pluralize.js",
                     "./node_modules/ckeditor/ckeditor.js",
                     "./node_modules/ckeditor/adapters/jquery.js",
+                    "./node_modules/simplemde/dist/simplemde.min.js",
                     assetSource.js.generatedFile,
                     './tests/testSetup.js'
                 ]

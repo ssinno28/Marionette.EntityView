@@ -30,6 +30,7 @@
       "views/reusableTypes/ReusableTypeListView.js",
       "views/reusableTypes/ReusableTypeView.js",
       "views/reusableTypes/wyswig/WyswigView.js",
+      "views/reusableTypes/document/DocumentView.js",
       "views/reusableTypes/simpleMde/MarkdownEditorView.js",
       "views/reusableTypes/singleLineText/SingleLineTextView.js",
       "views/reusableTypes/singleLineText/NumberView.js",

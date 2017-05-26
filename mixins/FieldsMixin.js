@@ -236,12 +236,7 @@ var FieldsMixin;
                 $el.append(fieldHtml);
                 this.fields = _.extend(field, this.fields);
 
-                var $docEl = $el.find('.' + fieldRegion);
-                var docField = _.bind(function (name) {
-                    return this.field(name, true, currentField).el($docEl);
-                }, this);
-
-                this._documentForRegion(fieldRegion, dataField, currentField, docField, type, channel);
+                this._documentForRegion(fieldRegion, dataField, currentField, type, channel, this, currentField);
             }, this);
 
             var custom = _.bind(function (view) {
@@ -443,7 +438,7 @@ var FieldsMixin;
 
             this.showChildView(region, field.view);
         },
-        _documentForRegion: function (region, dataField, field, docField, type, channel) {
+        _documentForRegion: function (region, dataField, field, type, channel, view, currentField) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
@@ -453,10 +448,11 @@ var FieldsMixin;
                 value: this.model.get(dataField),
                 dataField: dataField,
                 field: field,
-                docField: docField,
+                formView: view,
                 id: this.model.get('id'),
                 type: type,
-                channel: channel
+                channel: channel,
+                currentField: currentField
             });
 
             this.showChildView(region, field.view);

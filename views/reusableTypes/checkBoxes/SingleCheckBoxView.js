@@ -24,6 +24,15 @@ var SingleCheckBoxView;
         getValue: function () {
             var $el = this.getDataField();
             return $el.is(':checked');
+        },
+        setValue: function (val) {
+            var $el = this.getDataField();
+
+            if (val) {
+                $el.attr('checked', '');
+            } else {
+                $el.removeAttr('checked');
+            }
         }
     });
 })(jQuery, _, Backbone, Marionette, this['Templates']['singleCheckBoxTpl'], ReusableTypeLayoutView);
