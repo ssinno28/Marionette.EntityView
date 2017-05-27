@@ -2856,6 +2856,7 @@ var DocumentView;
                 type = this.getOption('type'),
                 channel = this.getOption('channel'),
                 currentField = this.getOption('currentField'),
+                val = this.getOption('value'),
                 self = this;
 
             var docField = _.bind(function (name) {
@@ -2865,7 +2866,9 @@ var DocumentView;
             channel.request('document:' + type, docField);
             channel.request('document:' + type + ':' + id, docField);
 
-            this.setValue(this.getOption('value'));
+            if (!_.isUndefined(val) && val !== '' && !_.isNull(val)) {
+                this.setValue(val);
+            }
         },
         template: false,
         getValue: function () {

@@ -61,14 +61,14 @@ describe('Entity Forms Validation', function () {
     });
 
     it('returns min requirement error', function () {
-        region.show(new FormView({channelName: 'test', model: new Backbone.EntityModel()}));
-        var currentView = region.currentView;
+        var view = new FormView({channelName: 'test', model: new Backbone.EntityModel()});
+        region.show(view);
 
-        currentView.$el.find('[data-field=age]').val(21);
-        currentView.$el.find('[data-field=name]').val('test');
-        currentView.$el.find('[data-field=email]').val('test@example.com');
+        view.fields['age'].view.setValue(21);
+        view.fields['name'].view.setValue('test');
+        view.fields['email'].view.setValue('test@example.com');
 
-        var errors = currentView.validate();
+        var errors = view.validate();
         for (var errorObject in errors) {
             var field = errors[errorObject];
             expect(field.error[0]).toEqual('There is a minimum age of 23 required!');
@@ -76,14 +76,14 @@ describe('Entity Forms Validation', function () {
     });
 
     it('returns custom rule requirement error', function () {
-        region.show(new FormView({channelName: 'test', model: new Backbone.EntityModel()}));
-        var currentView = region.currentView;
+        var view = new FormView({channelName: 'test', model: new Backbone.EntityModel()});
+        region.show(view);
 
-        currentView.$el.find('[data-field=age]').val(51);
-        currentView.$el.find('[data-field=name]').val('test');
-        currentView.$el.find('[data-field=email]').val('test@example.com');
+        view.fields['age'].view.setValue(51);
+        view.fields['name'].view.setValue('test');
+        view.fields['email'].view.setValue('test@example.com');
 
-        var errors = currentView.validate();
+        var errors = view.validate();
         for (var errorObject in errors) {
             var field = errors[errorObject];
             expect(field.error[0]).toEqual('The age cannot be greater than 50!');
@@ -91,14 +91,14 @@ describe('Entity Forms Validation', function () {
     });
 
     it('returns email requirement error', function () {
-        region.show(new FormView({channelName: 'test', model: new Backbone.EntityModel()}));
-        var currentView = region.currentView;
+        var view = new FormView({channelName: 'test', model: new Backbone.EntityModel()});
+        region.show(view);
 
-        currentView.$el.find('[data-field=age]').val(23);
-        currentView.$el.find('[data-field=name]').val('test');
-        currentView.$el.find('[data-field=email]').val('test');
+        view.fields['age'].view.setValue(23);
+        view.fields['name'].view.setValue('test');
+        view.fields['email'].view.setValue('test');
 
-        var errors = currentView.validate();
+        var errors = view.validate();
         for (var errorObject in errors) {
             var field = errors[errorObject];
             expect(field.error[0]).toEqual('The email address is not in the correct format!');
