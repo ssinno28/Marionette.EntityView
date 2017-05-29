@@ -9,11 +9,12 @@ var CheckBoxView;
         tagName: 'div',
         className: 'col-sm-6',
         template: checkBoxTemplate,
-        events: {
-            'click input[type=checkbox]': 'itemChecked'
-        },
-        itemChecked: function (e) {
-            this.getChannel().trigger(this.dataField + ':checked', this.model);
+        triggers: {
+            'click input[type=checkbox]': {
+                event: 'itemChecked',
+                preventDefault: false,
+                stopPropagation: true
+            }
         }
     });
 })(jQuery, _, Backbone, Marionette, this['Templates']['checkBoxTemplate'], ReusableTypeView);

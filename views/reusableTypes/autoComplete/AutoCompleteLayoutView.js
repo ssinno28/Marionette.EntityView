@@ -96,18 +96,21 @@ var AutoCompleteLayoutView;
             }, this), 400)();
         },
         onDomRefresh: function () {
+            this.setValue(this.selectedId);
+        },
+        getValue: function () {
+            return this.getDataField().val();
+        },
+        setValue: function (val) {
             var self = this;
 
-            if (!_.isNull(this.selectedId) && !_.isUndefined(this.selectedId)) {
-                this.collection.getById(this.selectedId)
+            if (!_.isNull(val) && !_.isUndefined(val)) {
+                this.collection.getById(val)
                     .done(function (entity) {
                         self.ui.$valueText.val(entity.get('name'));
                         self.ui.$selectedId.val(entity.get('id'));
                     });
             }
-        },
-        getValue: function () {
-            return this.getDataField().val();
         }
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['autoCompleteTemplate'], AutoCompleteListView);

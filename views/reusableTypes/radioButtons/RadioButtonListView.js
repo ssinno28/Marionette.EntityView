@@ -1,6 +1,23 @@
 var RadioButtonListView;
 (function ($, _, Backbone, Marionette, RadioButtonView, ReusableTypeListView) {
     RadioButtonListView = ReusableTypeListView.extend({
-        childView: RadioButtonView
+        childView: RadioButtonView,
+        getValue: function () {
+            return this.$el.find('input[type=radio]:checked').val();
+        },
+        setValue: function (val) {
+            var $checked = this.$el.find('input[type=radio]');
+
+            $checked.removeAttr('checked');
+            _.each($checked, function ($item) {
+                var currentId = _.find(val, function (value) {
+                    return $item.val() === value;
+                });
+
+                if (!_.isUndefined(currentId)) {
+                    $item.attr('checked', '');
+                }
+            });
+        }
     });
 })(jQuery, _, Backbone, Marionette, RadioButtonView, ReusableTypeListView);

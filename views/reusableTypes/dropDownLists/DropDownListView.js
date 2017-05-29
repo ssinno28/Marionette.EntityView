@@ -13,6 +13,13 @@ var DropDownListView;
             this.$el.on('change', _.bind(function () {
                 this._channel.trigger('change', this.$el.val());
             }, this));
+        },
+        getValue: function () {
+            return this.$el.val();
+        },
+        setValue: function (val) {
+            this.$el.val(val);
+            this.$el.data('combobox').refresh();
         }
     });
 })($, _, Backbone, Marionette, OptionView, ReusableTypeListView);
