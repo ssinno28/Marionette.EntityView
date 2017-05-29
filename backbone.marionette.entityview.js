@@ -180,7 +180,9 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '    <label for="' +
 ((__t = ( name )) == null ? '' : __t) +
-'">\r\n        <input ' +
+'">\r\n        <input data-id="' +
+((__t = ( id )) == null ? '' : __t) +
+'" ' +
 ((__t = ( checked )) == null ? '' : __t) +
 ' type="checkbox" data-';
  if(isDocType) { ;
@@ -2975,7 +2977,24 @@ var RadioButtonView;
 var RadioButtonListView;
 (function ($, _, Backbone, Marionette, RadioButtonView, ReusableTypeListView) {
     RadioButtonListView = ReusableTypeListView.extend({
-        childView: RadioButtonView
+        childView: RadioButtonView,
+        getValue: function () {
+            return this.$el.find('input[type=radio]:checked').val();
+        },
+        setValue: function (val) {
+            var $checked = this.$el.find('input[type=radio]');
+
+            $checked.removeAttr('checked');
+            _.each($checked, function ($item) {
+                var currentId = _.find(val, function (value) {
+                    return $item.val() === value;
+                });
+
+                if (!_.isUndefined(currentId)) {
+                    $item.attr('checked', '');
+                }
+            });
+        }
     });
 })(jQuery, _, Backbone, Marionette, RadioButtonView, ReusableTypeListView);
 
@@ -3101,6 +3120,13 @@ var DropDownListView;
             this.$el.on('change', _.bind(function () {
                 this._channel.trigger('change', this.$el.val());
             }, this));
+        },
+        getValue: function () {
+            return this.$el.val();
+        },
+        setValue: function (val) {
+            this.$el.val(val);
+            this.$el.data('combobox').refresh();
         }
     });
 })($, _, Backbone, Marionette, OptionView, ReusableTypeListView);
@@ -3278,11 +3304,12 @@ var CheckBoxView;
         tagName: 'div',
         className: 'col-sm-6',
         template: checkBoxTemplate,
-        events: {
-            'click input[type=checkbox]': 'itemChecked'
-        },
-        itemChecked: function (e) {
-            this.getChannel().trigger(this.dataField + ':checked', this.model);
+        triggers: {
+            'click input[type=checkbox]': {
+                event: 'itemChecked',
+                preventDefault: false,
+                stopPropagation: true
+            }
         }
     });
 })(jQuery, _, Backbone, Marionette, this['Templates']['checkBoxTemplate'], ReusableTypeView);
@@ -3290,7 +3317,31 @@ var CheckBoxView;
 var CheckBoxListView;
 (function ($, _, Backbone, Marionette, CheckBoxView, ReusableTypeListView) {
     CheckBoxListView = ReusableTypeListView.extend({
-        childView: CheckBoxView
+        childView: CheckBoxView,
+        getValue: function () {
+            var $checked = this.$el.find(':checked'),
+                values = [];
+
+            _.each($checked, function ($item) {
+                values.push($item.data('id'));
+            });
+
+            return values;
+        },
+        setValue: function (val) {
+            var $checked = this.$el.find('input[type=checkbox]');
+
+            $checked.removeAttr('checked');
+            _.each($checked, function ($item) {
+                var currentId = _.find(val, function (value) {
+                    return $item.data('id') === value;
+                });
+
+                if (!_.isUndefined(currentId)) {
+                    $item.attr('checked', '');
+                }
+            });
+        }
     });
 })(jQuery, _, Backbone, Marionette, CheckBoxView, ReusableTypeListView);
 
@@ -3422,18 +3473,21 @@ var AutoCompleteLayoutView;
             }, this), 400)();
         },
         onDomRefresh: function () {
+            this.setValue(this.selectedId);
+        },
+        getValue: function () {
+            return this.getDataField().val();
+        },
+        setValue: function (val) {
             var self = this;
 
-            if (!_.isNull(this.selectedId) && !_.isUndefined(this.selectedId)) {
-                this.collection.getById(this.selectedId)
+            if (!_.isNull(val) && !_.isUndefined(val)) {
+                this.collection.getById(val)
                     .done(function (entity) {
                         self.ui.$valueText.val(entity.get('name'));
                         self.ui.$selectedId.val(entity.get('id'));
                     });
             }
-        },
-        getValue: function () {
-            return this.getDataField().val();
         }
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['autoCompleteTemplate'], AutoCompleteListView);

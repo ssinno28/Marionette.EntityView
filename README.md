@@ -19,6 +19,8 @@ While these projects are not published to npm yet, you can take a look at them t
 * Aside from those there is also the [example folder](https://github.com/ssinno28/Marionette.EntityView/tree/master/example) in the root of the project.
 
 ## Release History
+* 1.2.4
+  * adding getters and setters for remaining components
 * 1.2.3
   * making sure all errors show inline for document fields
   * moving getters and setters for fields to individual component views

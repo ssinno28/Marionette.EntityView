@@ -29,6 +29,11 @@ describe('Entity Forms Validation', function () {
                     })
                 .singleLine();
 
+            this.field('single')
+                .label('Are you single?')
+                .fieldset('user-settings')
+                .checkbox();
+
             this.field('miscData')
                 .label('Misc Data')
                 .fieldset('user-settings')
@@ -56,8 +61,11 @@ describe('Entity Forms Validation', function () {
         properties['married'].view.setValue(true);
         properties['title'].view.setValue('Mr.');
 
+        view.fields['single'].view.setValue(true);
+
         expect(properties['married'].view.getValue()).toEqual(true);
         expect(properties['title'].view.getValue()).toEqual('Mr.');
+        expect(view.fields['single'].view.getValue()).toEqual(true);
     });
 
     it('returns min requirement error', function () {
