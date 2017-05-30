@@ -1,8 +1,11 @@
 var MockEntityCollection = Backbone.EntityCollection.extend({
         query: function (track, data, force) {
-            return $.Deferred(function (defer) {
-                defer.resolve(new Backbone.Collection());
-            });
+            return $.Deferred(_.bind(function (defer) {
+                var pageKey = this._getKeyWithOutPage(data),
+                    result = this._getSubCollection(data, pageKey);
+
+                defer.resolve(result, pageKey);
+            }, this));
         }
     }),
     html = '<html><body><div id="test-region"></div></body></html>',

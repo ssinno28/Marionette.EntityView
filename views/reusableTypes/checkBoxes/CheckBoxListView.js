@@ -6,20 +6,23 @@ var CheckBoxListView;
             var $checked = this.$el.find(':checked'),
                 values = [];
 
-            _.each($checked, function ($item) {
+            _.each($checked, function (item) {
+                var $item = $(item);
                 values.push($item.data('id'));
             });
 
             return values;
         },
         setValue: function (val) {
-            var $checked = this.$el.find('input[type=checkbox]');
+            var $checkboxes = this.$el.find('input[type=checkbox]');
 
-            $checked.removeAttr('checked');
-            _.each($checked, function ($item) {
-                var currentId = _.find(val, function (value) {
-                    return $item.data('id') === value;
-                });
+            $checkboxes.removeAttr('checked');
+            _.each($checkboxes, function (item) {
+                var $item = $(item),
+                    currentId =
+                        _.find(val, function (value) {
+                            return $item.data('id') === value;
+                        });
 
                 if (!_.isUndefined(currentId)) {
                     $item.attr('checked', '');

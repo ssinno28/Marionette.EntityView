@@ -34,10 +34,50 @@ describe('Entity Forms Validation', function () {
                 .fieldset('user-settings')
                 .checkbox();
 
+            this.field('dob')
+                .label('Date of Birth')
+                .fieldset('user-settings')
+                .datePicker();
+
             this.field('miscData')
                 .label('Misc Data')
                 .fieldset('user-settings')
                 .document(channel, 'misc-data');
+
+            var genders = new Backbone.Collection([
+                {
+                    id: 'm',
+                    name: 'male'
+                }, {
+                    id: 'f',
+                    name: 'female'
+                }
+            ]);
+
+            this.field('gender')
+                .label('Gender')
+                .fieldset('user-settings')
+                .radioBtns(genders);
+
+            var categories = new Backbone.EntityCollection([
+                {
+                    id: 'one',
+                    name: 'one'
+                }, {
+                    id: 'two',
+                    name: 'two'
+                }
+            ]);
+
+            this.field('categories')
+                .label('Categories')
+                .fieldset('user-settings')
+                .checkboxes(categories);
+
+            this.field('gendersDD')
+                .label('Genders')
+                .fieldset('user-settings')
+                .dropdown(genders);
         }
     });
 
@@ -62,10 +102,18 @@ describe('Entity Forms Validation', function () {
         properties['title'].view.setValue('Mr.');
 
         view.fields['single'].view.setValue(true);
+        view.fields['dob'].view.setValue('12/01/1985');
+        view.fields['gender'].view.setValue('m');
+        view.fields['gendersDD'].view.setValue('m');
+        view.fields['categories'].view.setValue(['one', 'two']);
 
         expect(properties['married'].view.getValue()).toEqual(true);
         expect(properties['title'].view.getValue()).toEqual('Mr.');
         expect(view.fields['single'].view.getValue()).toEqual(true);
+        expect(view.fields['dob'].view.getValue()).toEqual('12/01/1985');
+        expect(view.fields['gender'].view.getValue()).toEqual('m');
+        expect(view.fields['gendersDD'].view.getValue()).toEqual('m');
+        expect(view.fields['categories'].view.getValue()).toEqual(['one', 'two']);
     });
 
     it('returns min requirement error', function () {

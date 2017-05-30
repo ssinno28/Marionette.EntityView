@@ -7,14 +7,10 @@ var RadioButtonListView;
         },
         setValue: function (val) {
             var $checked = this.$el.find('input[type=radio]');
-
             $checked.removeAttr('checked');
-            _.each($checked, function ($item) {
-                var currentId = _.find(val, function (value) {
-                    return $item.val() === value;
-                });
-
-                if (!_.isUndefined(currentId)) {
+            _.each($checked, function (item) {
+                var $item = $(item);
+                if ($item.val() === val) {
                     $item.attr('checked', '');
                 }
             });

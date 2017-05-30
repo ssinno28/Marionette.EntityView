@@ -175,8 +175,7 @@ return __p
 
 this["Templates"]["checkBoxTemplate"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
+var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '    <label for="' +
 ((__t = ( name )) == null ? '' : __t) +
@@ -184,15 +183,7 @@ __p += '    <label for="' +
 ((__t = ( id )) == null ? '' : __t) +
 '" ' +
 ((__t = ( checked )) == null ? '' : __t) +
-' type="checkbox" data-';
- if(isDocType) { ;
-__p += 'property';
- } else { ;
-__p += 'field';
- } ;
-__p += '="' +
-((__t = ( dataField )) == null ? '' : __t) +
-'" name="' +
+' type="checkbox" name="' +
 ((__t = ( name )) == null ? '' : __t) +
 '" />\r\n        <span>' +
 ((__t = ( name )) == null ? '' : __t) +
@@ -326,22 +317,13 @@ return __p
 
 this["Templates"]["radioButtonTemplate"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
+var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '    <label for="' +
 ((__t = ( name )) == null ? '' : __t) +
 '">\r\n        <input ' +
 ((__t = ( checked )) == null ? '' : __t) +
-' type="radio" data-';
- if(isDocType) { ;
-__p += 'property';
- } else { ;
-__p += 'field';
- } ;
-__p += '="' +
-((__t = ( dataField )) == null ? '' : __t) +
-'" name="' +
+' type="radio" name="' +
 ((__t = ( dataField )) == null ? '' : __t) +
 '" value="' +
 ((__t = ( id )) == null ? '' : __t) +
@@ -681,9 +663,9 @@ var FieldsMixin;
                 this._multiSelectForRegion(collection, fieldRegion, dataField, conditions, displayField, options.isDocProp, currentField);
             }, this);
 
-            var dropdown = _.bind(function (collection, conditions) {
+            var dropdown = _.bind(function (collection) {
                 addField();
-                this._dropDownForRegion(collection, fieldRegion, dataField, conditions, options.isDocProp, currentField);
+                this._dropDownForRegion(collection, fieldRegion, dataField, options.isDocProp, currentField);
             }, this);
 
             var wyswig = _.bind(function () {
@@ -701,9 +683,9 @@ var FieldsMixin;
                 this._singleLineForRegion(fieldRegion, dataField, options.isDocProp, placeholderTxt, currentField);
             }, this);
 
-            var checkboxes = _.bind(function (collection, conditions) {
+            var checkboxes = _.bind(function (collection) {
                 addField();
-                this._checkboxesForRegion(collection, fieldRegion, dataField, conditions, options.isDocProp, currentField);
+                this._checkboxesForRegion(collection, fieldRegion, dataField, options.isDocProp, currentField);
             }, this);
 
             var document = _.bind(function (channel, type) {
@@ -955,63 +937,43 @@ var FieldsMixin;
 
             this.showChildView(region, field.view);
         },
-        _checkboxesForRegion: function (collection, region, dataField, conditions, isDocProp, field) {
+        _checkboxesForRegion: function (collection, region, dataField, isDocProp, field) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
             });
 
             var selectedIds = this.model.get(dataField);
-            if (!conditions) {
-                conditions = [];
-            }
 
-            var data = {
-                conditions: conditions
-            };
+            field.view = new CheckBoxListView({
+                collection: collection,
+                dataField: dataField,
+                selectedId: selectedIds,
+                isDocProp: isDocProp
+            });
 
-            collection.query(false, data).done(_.bind(function (entities) {
-                field.view = new CheckBoxListView({
-                    collection: entities,
-                    dataField: dataField,
-                    selectedId: selectedIds,
-                    isDocProp: isDocProp
-                });
-
-                this.showChildView(region, field.view);
-            }, this));
+            this.showChildView(region, field.view);
         },
-        _dropDownForRegion: function (collection, region, dataField, conditions, isDocProp, field) {
+        _dropDownForRegion: function (collection, region, dataField, isDocProp, field) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
             });
 
-            if (!conditions) {
-                conditions = [];
+            var currentlySetId = this.model.get(dataField);
+            if (_.isUndefined(currentlySetId) || _.isNull(currentlySetId) || currentlySetId === '' || currentlySetId === 0) {
+                collection.add(new Backbone.Model({name: 'Select', id: ''}), {at: 0});
+                currentlySetId = '';
             }
 
-            var data = {
-                conditions: conditions
-            };
+            field.view = new DropDownListView({
+                collection: collection,
+                dataField: dataField,
+                selectedId: currentlySetId,
+                isDocProp: isDocProp
+            });
 
-            collection.query(false, data).done(_.bind(function (entities) {
-                var currentlySetId = this.model.get(dataField);
-
-                if (_.isUndefined(currentlySetId) || _.isNull(currentlySetId) || currentlySetId === '' || currentlySetId === 0) {
-                    entities.add(new Backbone.Model({name: 'Select', id: ''}), {at: 0});
-                    currentlySetId = '';
-                }
-
-                field.view = new DropDownListView({
-                    collection: entities,
-                    dataField: dataField,
-                    selectedId: currentlySetId,
-                    isDocProp: isDocProp
-                });
-
-                this.showChildView(region, field.view);
-            }, this));
+            this.showChildView(region, field.view);
         },
         _multiSelectForRegion: function (collection, region, dataField, conditions, displayField, isDocProp, field) {
             this.addRegion(region, {
@@ -2767,11 +2729,9 @@ var ReusableTypeView;
             return _.template('<script id="empty-template" type="text/template"></script>');
         },
         templateContext: function () {
-            var self = this;
-
             return {
-                dataField: self.dataField,
-                checked: self.checked
+                dataField: this.dataField,
+                checked: this.checked
             };
         },
         getChannel: function () {
@@ -2983,14 +2943,10 @@ var RadioButtonListView;
         },
         setValue: function (val) {
             var $checked = this.$el.find('input[type=radio]');
-
             $checked.removeAttr('checked');
-            _.each($checked, function ($item) {
-                var currentId = _.find(val, function (value) {
-                    return $item.val() === value;
-                });
-
-                if (!_.isUndefined(currentId)) {
+            _.each($checked, function (item) {
+                var $item = $(item);
+                if ($item.val() === val) {
                     $item.attr('checked', '');
                 }
             });
@@ -3322,20 +3278,23 @@ var CheckBoxListView;
             var $checked = this.$el.find(':checked'),
                 values = [];
 
-            _.each($checked, function ($item) {
+            _.each($checked, function (item) {
+                var $item = $(item);
                 values.push($item.data('id'));
             });
 
             return values;
         },
         setValue: function (val) {
-            var $checked = this.$el.find('input[type=checkbox]');
+            var $checkboxes = this.$el.find('input[type=checkbox]');
 
-            $checked.removeAttr('checked');
-            _.each($checked, function ($item) {
-                var currentId = _.find(val, function (value) {
-                    return $item.data('id') === value;
-                });
+            $checkboxes.removeAttr('checked');
+            _.each($checkboxes, function (item) {
+                var $item = $(item),
+                    currentId =
+                        _.find(val, function (value) {
+                            return $item.data('id') === value;
+                        });
 
                 if (!_.isUndefined(currentId)) {
                     $item.attr('checked', '');
