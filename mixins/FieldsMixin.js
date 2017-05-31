@@ -208,6 +208,11 @@ var FieldsMixin;
                 this._checkboxesForRegion(collection, fieldRegion, dataField, options.isDocProp, currentField);
             }, this);
 
+            var tagsinput = _.bind(function (collection) {
+                addField();
+                this._tagsinputForRegion(collection, fieldRegion, dataField, options.isDocProp, currentField);
+            }, this);
+
             var document = _.bind(function (channel, type) {
                 var $el = null;
                 if (!_.isUndefined(options.fieldset) && !_.isUndefined(options.fieldset.$el)) {
@@ -328,7 +333,8 @@ var FieldsMixin;
                 service: service,
                 document: document,
                 multiSelect: multiSelect,
-                markdown: markdown
+                markdown: markdown,
+                tagsinput: tagsinput
             };
 
             returnObj = _.extend(validations, editors);
@@ -466,6 +472,22 @@ var FieldsMixin;
             var selectedIds = this.model.get(dataField);
 
             field.view = new CheckBoxListView({
+                collection: collection,
+                dataField: dataField,
+                selectedId: selectedIds,
+                isDocProp: isDocProp
+            });
+
+            this.showChildView(region, field.view);
+        },
+        _tagsinputForRegion: function (collection, region, dataField, isDocProp, field) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            var selectedIds = this.model.get(dataField);
+            field.view = new TagsInputView({
                 collection: collection,
                 dataField: dataField,
                 selectedId: selectedIds,

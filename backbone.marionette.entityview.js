@@ -688,6 +688,11 @@ var FieldsMixin;
                 this._checkboxesForRegion(collection, fieldRegion, dataField, options.isDocProp, currentField);
             }, this);
 
+            var tagsinput = _.bind(function (collection) {
+                addField();
+                this._tagsinputForRegion(collection, fieldRegion, dataField, options.isDocProp, currentField);
+            }, this);
+
             var document = _.bind(function (channel, type) {
                 var $el = null;
                 if (!_.isUndefined(options.fieldset) && !_.isUndefined(options.fieldset.$el)) {
@@ -808,7 +813,8 @@ var FieldsMixin;
                 service: service,
                 document: document,
                 multiSelect: multiSelect,
-                markdown: markdown
+                markdown: markdown,
+                tagsinput: tagsinput
             };
 
             returnObj = _.extend(validations, editors);
@@ -946,6 +952,22 @@ var FieldsMixin;
             var selectedIds = this.model.get(dataField);
 
             field.view = new CheckBoxListView({
+                collection: collection,
+                dataField: dataField,
+                selectedId: selectedIds,
+                isDocProp: isDocProp
+            });
+
+            this.showChildView(region, field.view);
+        },
+        _tagsinputForRegion: function (collection, region, dataField, isDocProp, field) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            var selectedIds = this.model.get(dataField);
+            field.view = new TagsInputView({
                 collection: collection,
                 dataField: dataField,
                 selectedId: selectedIds,
@@ -1472,17 +1494,17 @@ var EntityCollection;
                 range.push(model);
 
                 if (!_.isUndefined(this.indexFields)) {
-					var indexFields = this.indexFields;
+                    var indexFields = this.indexFields;
                     if (_.isUndefined(this.searchIndex)) {
                         this.searchIndex =
                             lunr(function () {
-									for (var j = 0; j < indexFields.length; j++) {
-										var indexField = indexFields[j];
-										this.field(indexField.name);
-									}
+                                for (var j = 0; j < indexFields.length; j++) {
+                                    var indexField = indexFields[j];
+                                    this.field(indexField.name);
+                                }
 
-									this.ref('id');
-								});
+                                this.ref('id');
+                            });
                     }
 
                     var indexObject = {};
@@ -1677,7 +1699,7 @@ var EntityCollection;
          * @method fetch
          * @return CallExpression
          */
-        query: function (track, data, force) {
+        query: function (track, data, force, plainObj) {
             if (_.isUndefined(data)) {
                 data = {};
             }
@@ -1767,6 +1789,8 @@ var EntityCollection;
                                 });
 
                                 defer.resolve(result, pageKey);
+                            } else if (plainObj) {
+                                defer.resolve(entities, pageKey);
                             } else {
                                 result = new Backbone.Collection(models);
 
@@ -2072,10 +2096,10 @@ var EntityCollection;
                         entity.setUrl(self.getUrl());
 
                         entity.fetch({
-                                url: entity.url + '/' + id,
-                                async: async,
-                                headers: self.getHeaders()
-                            })
+                            url: entity.url + '/' + id,
+                            async: async,
+                            headers: self.getHeaders()
+                        })
                             .done(function () {
                                 self.add(entity);
                                 defer.resolve(entity);
@@ -2884,6 +2908,72 @@ var MarkdownEditorView;
         }
     });
 })(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, SimpleMDE);
+
+var TagsInputView;
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView) {
+    TagsInputView = ReusableTypeLayoutView.extend({
+        template: _.template('<select multiple ></select>'),
+        onDomRefresh: function () {
+            var tagsInputOptions = this.getOption('tagsInputOptions'),
+                defaultOptions = {
+                    itemValue: 'id',
+                    itemText: 'name',
+                    typeahead: this.getTypeAhead()
+                };
+
+            if (!_.isUndefined(tagsInputOptions)) {
+                defaultOptions = _.extend(defaultOptions, tagsInputOptions);
+            }
+
+            this.$el.tagsinput(defaultOptions);
+            this.setValue(this.getOption('value'));
+        },
+        getTypeAhead: function () {
+            var self = this;
+
+            return {
+                source: function (query) {
+                    if (query.length < 2) {
+                        return;
+                    }
+
+                    var data = {
+                        conditions: [
+                            {
+                                searchType: 'like',
+                                field: 'name',
+                                value: query
+                            }
+                        ]
+                    };
+
+                    return self.collection.query(false, data, false, true);
+                }
+            };
+        },
+        getValue: function () {
+            return this.$el.val();
+        },
+        setValue: function (val) {
+            var data = {
+                conditions: [
+                    {
+                        searchType: 'in',
+                        field: 'id',
+                        value: val
+                    }
+                ]
+            };
+
+            this.collection.query(false, data, false, true)
+                .done(_.bind(function (items) {
+                    _.each(items, _.bind(function (item) {
+                        this.$el.tagsinput('add', item);
+                    }, this));
+                }, this));
+        }
+    });
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView);
 
 var SingleLineTextView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, singleLineTextTpl) {
