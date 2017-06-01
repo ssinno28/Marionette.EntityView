@@ -50,21 +50,6 @@ var FormView;
             }
         },
 
-        onFieldEvent: function (evt) {
-            this.handleFieldEvent(evt, evt.type);
-        },
-
-        handleFieldEvent: function (evt, eventName) {
-            var el = evt.target || evt.srcElement,
-                field = $(el).attr('data-field'),
-                fieldOptions = this.fields[field];
-
-            if (fieldOptions && fieldOptions.validateOn === eventName) {
-                var errors = this.validateField(field);
-                if (!_.isEmpty(errors) && _.isFunction(this.onValidationFail)) this.onValidationFail(errors);
-            }
-        },
-
         validate: function () {
             var errors = {},
                 fields = _(this.fields).keys();
@@ -183,12 +168,6 @@ var FormView;
         bindFormEvents: function () {
             var form = (this.$el.hasClass('form')) ? this.$el : this.$('.form').first();
             this.form = form;
-
-            this.$('input')
-                .blur(_(this.onFieldEvent).bind(this))
-                .keyup(_(this.onFieldEvent).bind(this))
-                .keydown(_(this.onFieldEvent).bind(this))
-                .change(_(this.onFieldEvent).bind(this));
 
             var submitBtn = form.find('input[type=submit]');
             submitBtn.on('click', _.bind(function (e) {
