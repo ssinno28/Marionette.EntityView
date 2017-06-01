@@ -64,17 +64,17 @@ var EntityCollection;
                 range.push(model);
 
                 if (!_.isUndefined(this.indexFields)) {
-					var indexFields = this.indexFields;
+                    var indexFields = this.indexFields;
                     if (_.isUndefined(this.searchIndex)) {
                         this.searchIndex =
                             lunr(function () {
-									for (var j = 0; j < indexFields.length; j++) {
-										var indexField = indexFields[j];
-										this.field(indexField.name);
-									}
+                                for (var j = 0; j < indexFields.length; j++) {
+                                    var indexField = indexFields[j];
+                                    this.field(indexField.name);
+                                }
 
-									this.ref('id');
-								});
+                                this.ref('id');
+                            });
                     }
 
                     var indexObject = {};
@@ -269,7 +269,7 @@ var EntityCollection;
          * @method fetch
          * @return CallExpression
          */
-        query: function (track, data, force) {
+        query: function (track, data, force, plainObj) {
             if (_.isUndefined(data)) {
                 data = {};
             }
@@ -359,6 +359,8 @@ var EntityCollection;
                                 });
 
                                 defer.resolve(result, pageKey);
+                            } else if (plainObj) {
+                                defer.resolve(entities, pageKey);
                             } else {
                                 result = new Backbone.Collection(models);
 
@@ -664,10 +666,10 @@ var EntityCollection;
                         entity.setUrl(self.getUrl());
 
                         entity.fetch({
-                                url: entity.url + '/' + id,
-                                async: async,
-                                headers: self.getHeaders()
-                            })
+                            url: entity.url + '/' + id,
+                            async: async,
+                            headers: self.getHeaders()
+                        })
                             .done(function () {
                                 self.add(entity);
                                 defer.resolve(entity);

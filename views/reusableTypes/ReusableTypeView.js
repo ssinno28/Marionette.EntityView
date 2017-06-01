@@ -35,11 +35,9 @@ var ReusableTypeView;
             return _.template('<script id="empty-template" type="text/template"></script>');
         },
         templateContext: function () {
-            var self = this;
-
             return {
-                dataField: self.dataField,
-                checked: self.checked
+                dataField: this.dataField,
+                checked: this.checked
             };
         },
         getChannel: function () {
