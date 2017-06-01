@@ -1297,6 +1297,13 @@ var EntityModel;
         setUrl: function (base) {
             this.url = base;
             /*this.url = base + (base.charAt(base.length - 1) == '/' ? '' : '/') + this.id;*/
+        },
+        save: function (key, val, options) {
+            this.beforeSave(key, val, options);
+            return Backbone.Model.prototype.save.call(this, key, val, options);
+        },
+        beforeSave: function (key, val, options) {
+
         }
     });
 })(jQuery, _, Backbone);
@@ -2913,12 +2920,42 @@ var TagsInputView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView) {
     TagsInputView = ReusableTypeLayoutView.extend({
         template: _.template('<select multiple ></select>'),
+        ui: {
+            '$tagsInput': '.bootstrap-tagsinput > input'
+        },
         onDomRefresh: function () {
             var tagsInputOptions = this.getOption('tagsInputOptions'),
+                self = this,
                 defaultOptions = {
-                    itemValue: 'id',
-                    itemText: 'name',
-                    typeahead: this.getTypeAhead()
+                    typeahead: {
+                        afterSelect: function (item) {
+                            this.$element.val('');
+                        },
+                        source: function (query) {
+                            return new $.Deferred(function (defer) {
+                                if (query.length < 2) {
+                                    defer.resolve([])
+                                }
+
+                                var data = {
+                                    conditions: [
+                                        {
+                                            searchType: 'like',
+                                            field: 'name',
+                                            value: query
+                                        }
+                                    ]
+                                };
+
+                                self.collection.query(false, data, true, true)
+                                    .done(function (entities) {
+                                        defer.resolve(_.pluck(entities, 'name'));
+                                    });
+                            });
+                        },
+                        delay: 400
+                    },
+                    freeInput: true
                 };
 
             if (!_.isUndefined(tagsInputOptions)) {
@@ -2926,35 +2963,48 @@ var TagsInputView;
             }
 
             this.$el.tagsinput(defaultOptions);
-            this.setValue(this.getOption('value'));
+            this.setValue(this.getOption('selectedIds'));
+
+            this.$el.on('beforeItemAdd', _.bind(this.beforeItemAdd, this));
         },
-        getTypeAhead: function () {
-            var self = this;
+        beforeItemAdd: function (e) {
+            var tag = e.item;
 
-            return {
-                source: function (query) {
-                    if (query.length < 2) {
-                        return;
+            var modelType = this.collection.model,
+                model = new modelType({name: tag}),
+                collection = this.collection,
+                $el = this.$el,
+                checkExists = collection.find(function (item) {
+                    return item.get('name') === tag;
+                });
+
+            if (!e.preventPost && _.isUndefined(checkExists)) {
+                model.setUrl(collection.getUrl());
+                model.save(null, {
+                    success: function (model, response) {
+                        model.set({id: response});
+                        collection.add(model);
+                    },
+                    error: function (model, response) {
+                        collection.remove(model.cid);
+                        e.cancel = true;
                     }
-
-                    var data = {
-                        conditions: [
-                            {
-                                searchType: 'like',
-                                field: 'name',
-                                value: query
-                            }
-                        ]
-                    };
-
-                    return self.collection.query(false, data, false, true);
-                }
-            };
+                });
+            }
         },
         getValue: function () {
-            return this.$el.val();
+            var val = this.$el.tagsinput('items'),
+                items = this.collection.filter(function (item) {
+                    return val.indexOf(item.get('name')) > -1;
+                });
+
+            return _.pluck(items, 'id');
         },
         setValue: function (val) {
+            if (_.isUndefined(val) || _.isNull(val)) {
+                return;
+            }
+
             var data = {
                 conditions: [
                     {
@@ -2967,9 +3017,12 @@ var TagsInputView;
 
             this.collection.query(false, data, false, true)
                 .done(_.bind(function (items) {
-                    _.each(items, _.bind(function (item) {
-                        this.$el.tagsinput('add', item);
+                    var names = _.pluck(items, 'name');
+
+                    _.each(names, _.bind(function (name) {
+                        this.$el.tagsinput('add', name, {preventPost: true});
                     }, this));
+
                 }, this));
         }
     });
@@ -3820,21 +3873,6 @@ var FormView;
             }
         },
 
-        onFieldEvent: function (evt) {
-            this.handleFieldEvent(evt, evt.type);
-        },
-
-        handleFieldEvent: function (evt, eventName) {
-            var el = evt.target || evt.srcElement,
-                field = $(el).attr('data-field'),
-                fieldOptions = this.fields[field];
-
-            if (fieldOptions && fieldOptions.validateOn === eventName) {
-                var errors = this.validateField(field);
-                if (!_.isEmpty(errors) && _.isFunction(this.onValidationFail)) this.onValidationFail(errors);
-            }
-        },
-
         validate: function () {
             var errors = {},
                 fields = _(this.fields).keys();
@@ -3953,12 +3991,6 @@ var FormView;
         bindFormEvents: function () {
             var form = (this.$el.hasClass('form')) ? this.$el : this.$('.form').first();
             this.form = form;
-
-            this.$('input')
-                .blur(_(this.onFieldEvent).bind(this))
-                .keyup(_(this.onFieldEvent).bind(this))
-                .keydown(_(this.onFieldEvent).bind(this))
-                .change(_(this.onFieldEvent).bind(this));
 
             var submitBtn = form.find('input[type=submit]');
             submitBtn.on('click', _.bind(function (e) {
@@ -5764,6 +5796,7 @@ var EntityController;
     _.extend(EntityLayoutView.prototype, UtilitiesMixin);
     _.extend(EntityListItemView.prototype, UtilitiesMixin);
     _.extend(EntityFormView.prototype, UtilitiesMixin);
+    _.extend(EntityModel.prototype, UtilitiesMixin);
     _.extend(FilterFormView.prototype, UtilitiesMixin);
 
     _.extend(Marionette.FormView.prototype, FieldsMixin);
