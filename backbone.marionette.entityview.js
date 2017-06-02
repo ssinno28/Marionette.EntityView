@@ -2963,7 +2963,8 @@ var TagsInputView;
             }
 
             this.$el.tagsinput(defaultOptions);
-            this.setValue(this.getOption('selectedIds'));
+            this.setValue(this.getOption('selectedId'));
+
 
             this.$el.on('beforeItemAdd', _.bind(this.beforeItemAdd, this));
         },
@@ -3015,7 +3016,7 @@ var TagsInputView;
                 ]
             };
 
-            this.collection.query(false, data, false, true)
+            this.collection.query(false, data, true, true)
                 .done(_.bind(function (items) {
                     var names = _.pluck(items, 'name');
 
