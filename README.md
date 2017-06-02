@@ -19,6 +19,8 @@ While these projects are not published to npm yet, you can take a look at them t
 * Aside from those there is also the [example folder](https://github.com/ssinno28/Marionette.EntityView/tree/master/example) in the root of the project.
 
 ## Release History
+* 1.2.6
+  * adding tags reusable type field based on the bootstrap tags input plugin
 * 1.2.5
   * updating getters and setters for CheckBoxListView and RadioButtonListView
   * making it so you cannot pass in conditionals to FieldsMixin methods, instead will need to pass in filtered entities

@@ -58,7 +58,7 @@ module.exports = function (grunt) {
                     "./node_modules/bootstrap/dist/js/bootstrap.js",
                     "./node_modules/moment/moment.js",
                     "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js",
-                    "./node_modules/typeahead.js/dist/typeahead.bundle.js",
+                    "./node_modules/bootstrap-3-typeahead/bootstrap3-typeahead.js",
                     "./node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.js",
                     "./node_modules/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
                     "./node_modules/@danielfarrell/bootstrap-combobox/js/bootstrap-combobox.js",

@@ -111,7 +111,6 @@ describe('Entity Forms Validation', function () {
         view.fields['gender'].view.setValue('m');
         view.fields['gendersDD'].view.setValue('m');
         view.fields['categories'].view.setValue(['one', 'two']);
-        view.fields['tags'].view.setValue(['one', 'two']);
 
         expect(properties['married'].view.getValue()).toEqual(true);
         expect(properties['title'].view.getValue()).toEqual('Mr.');
@@ -120,7 +119,6 @@ describe('Entity Forms Validation', function () {
         expect(view.fields['gender'].view.getValue()).toEqual('m');
         expect(view.fields['gendersDD'].view.getValue()).toEqual('m');
         expect(view.fields['categories'].view.getValue()).toEqual(['one', 'two']);
-        expect(view.fields['tags'].view.getValue()).toEqual(['one', 'two']);
     });
 
     it('returns min requirement error', function () {
