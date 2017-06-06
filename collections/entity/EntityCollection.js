@@ -398,13 +398,6 @@ var EntityCollection;
 
             return getCollection;
         },
-        /**
-         * Description
-         * @method getSubCollection
-         * @param {} id
-         * @param {} includeEntity
-         * @return MemberExpression
-         */
         _getSubCollection: function (data, key) {
             var self = this,
                 conditionals = [];
@@ -417,7 +410,7 @@ var EntityCollection;
                     currentCondition.criterion = this._filters[currentCondition.searchType];
                 }
 
-                if (_.isUndefined(data.groupJoins)) {
+                if (_.isUndefined(data.groupJoins) || data.groupJoins.length === 0) {
                     _.each(data.conditions, function (condition) {
                         conditionals.push(condition);
                     });
@@ -455,12 +448,6 @@ var EntityCollection;
 
             var collection = new Backbone.CollectionSubset({
                 parent: self,
-                /**
-                 * Description
-                 * @method filter
-                 * @param {} model
-                 * @return boolean
-                 */
                 filter: function (model) {
                     return self._predicate(model, conditionals);
                 }

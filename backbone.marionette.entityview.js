@@ -1149,6 +1149,56 @@ var FieldsMixin;
     };
 })(jQuery, _, Backbone, Marionette);
 
+var DataMixin;
+(function ($, _, Backbone) {
+    DataMixin = {
+        data: function (page, pageSize) {
+            var data = {};
+            data.conditions = [];
+            data.groupJoins = [];
+
+            if (!_.isUndefined(page) && !_.isUndefined(pageSize)) {
+                data.page = page;
+                data.pageSize = pageSize;
+            }
+
+            var returnObj = {
+                result: data
+            };
+
+            var condition =
+                function (field, searchType, value, options) {
+                    var condition = {
+                        field: field,
+                        searchType: searchType,
+                        value: value
+                    };
+
+                    if (!_.isUndefined(options)) {
+                        data.conditions.push(_.extend(condition, options));
+                    } else {
+                        data.conditions.push(condition);
+                    }
+
+                    return returnObj;
+                };
+
+            var conjunction =
+                function (group1, conj, group2) {
+                    data.groupJoins.push(group1);
+                    data.groupJoins.push(conj);
+                    data.groupJoins.push(group2);
+
+                    return returnObj;
+                };
+
+            returnObj.condition = condition;
+            returnObj.conjunction = conjunction;
+
+            return returnObj;
+        }
+    };
+})(jQuery, _, Backbone);
 var FormValidator;
 (function ($, _, Backbone, Marionette) {
     FormValidator = Marionette.Object.extend({
@@ -1835,13 +1885,6 @@ var EntityCollection;
 
             return getCollection;
         },
-        /**
-         * Description
-         * @method getSubCollection
-         * @param {} id
-         * @param {} includeEntity
-         * @return MemberExpression
-         */
         _getSubCollection: function (data, key) {
             var self = this,
                 conditionals = [];
@@ -1854,7 +1897,7 @@ var EntityCollection;
                     currentCondition.criterion = this._filters[currentCondition.searchType];
                 }
 
-                if (_.isUndefined(data.groupJoins)) {
+                if (_.isUndefined(data.groupJoins) || data.groupJoins.length === 0) {
                     _.each(data.conditions, function (condition) {
                         conditionals.push(condition);
                     });
@@ -1892,12 +1935,6 @@ var EntityCollection;
 
             var collection = new Backbone.CollectionSubset({
                 parent: self,
-                /**
-                 * Description
-                 * @method filter
-                 * @param {} model
-                 * @return boolean
-                 */
                 filter: function (model) {
                     return self._predicate(model, conditionals);
                 }
@@ -4848,19 +4885,11 @@ var EntityService;
                 return;
             }
 
-            var data = {
-                conditions: [
-                    {
-                        searchType: 'like',
-                        field: field,
-                        value: startsWith
-                    }
-                ],
-                page: 1,
-                pageSize: App.pageSize
-            };
+            var data =
+                this.data(1, this.getPageSize())
+                    .condition(field, 'like', startsWith);
 
-            this.collection.query(this.track, data)
+            this.collection.query(this.track, data.result)
                 .done(_.bind(function (entities, key) {
                     var models = null;
 
@@ -5799,6 +5828,12 @@ var EntityController;
     _.extend(EntityFormView.prototype, UtilitiesMixin);
     _.extend(EntityModel.prototype, UtilitiesMixin);
     _.extend(FilterFormView.prototype, UtilitiesMixin);
+
+    _.extend(EntityLayoutView.prototype, DataMixin);
+    _.extend(EntityListItemView.prototype, DataMixin);
+    _.extend(EntityFormView.prototype, DataMixin);
+    _.extend(FilterFormView.prototype, DataMixin);
+    _.extend(EntityService.prototype, DataMixin);
 
     _.extend(Marionette.FormView.prototype, FieldsMixin);
 

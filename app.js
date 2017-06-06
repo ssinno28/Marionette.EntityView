@@ -83,6 +83,12 @@
     _.extend(EntityModel.prototype, UtilitiesMixin);
     _.extend(FilterFormView.prototype, UtilitiesMixin);
 
+    _.extend(EntityLayoutView.prototype, DataMixin);
+    _.extend(EntityListItemView.prototype, DataMixin);
+    _.extend(EntityFormView.prototype, DataMixin);
+    _.extend(FilterFormView.prototype, DataMixin);
+    _.extend(EntityService.prototype, DataMixin);
+
     _.extend(Marionette.FormView.prototype, FieldsMixin);
 
 })(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin);

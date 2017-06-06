@@ -218,19 +218,11 @@ var EntityService;
                 return;
             }
 
-            var data = {
-                conditions: [
-                    {
-                        searchType: 'like',
-                        field: field,
-                        value: startsWith
-                    }
-                ],
-                page: 1,
-                pageSize: App.pageSize
-            };
+            var data =
+                this.data(1, this.getPageSize())
+                    .condition(field, 'like', startsWith);
 
-            this.collection.query(this.track, data)
+            this.collection.query(this.track, data.result)
                 .done(_.bind(function (entities, key) {
                     var models = null;
 
