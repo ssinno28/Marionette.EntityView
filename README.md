@@ -24,7 +24,6 @@ While these projects are not published to npm yet, you can take a look at them t
   * adding a captcha field 
   * adding ability to override the form header in the service
   * allowing overriding of default form messages
-  * 
 * 1.2.6
   * adding tags reusable type field based on the bootstrap tags input plugin
 * 1.2.5
