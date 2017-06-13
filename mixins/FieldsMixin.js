@@ -213,6 +213,11 @@ var FieldsMixin;
                 this._tagsinputForRegion(collection, fieldRegion, dataField, options.isDocProp, currentField);
             }, this);
 
+            var captcha = _.bind(function (siteKey) {
+                addField();
+                this._captchaForRegion(fieldRegion, dataField, options.isDocProp, currentField, siteKey);
+            }, this);
+
             var document = _.bind(function (channel, type) {
                 var $el = null;
                 if (!_.isUndefined(options.fieldset) && !_.isUndefined(options.fieldset.$el)) {
@@ -334,7 +339,8 @@ var FieldsMixin;
                 document: document,
                 multiSelect: multiSelect,
                 markdown: markdown,
-                tagsinput: tagsinput
+                tagsinput: tagsinput,
+                captcha: captcha
             };
 
             returnObj = _.extend(validations, editors);
@@ -408,6 +414,22 @@ var FieldsMixin;
                 value: this.model.get(dataField),
                 dataField: dataField,
                 isDocProp: isDocProp
+            });
+
+            field.view = view;
+            this.showChildView(region, view);
+        },
+        _captchaForRegion: function (region, dataField, isDocProp, field, sitekey) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            var view = new CaptchaView({
+                value: null,
+                dataField: dataField,
+                isDocProp: isDocProp,
+                sitekey: sitekey
             });
 
             field.view = view;

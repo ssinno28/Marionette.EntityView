@@ -33,7 +33,8 @@ var EntityFormView;
         },
         ui: {
             '$actions': '.actions',
-            '$spinner': '.spinner'
+            '$spinner': '.spinner',
+            '$header': 'entity-form-header'
         },
         templateContext: function () {
             return {
@@ -70,7 +71,16 @@ var EntityFormView;
             });
 
             this.showChildView('entityFormRegion', new formView());
+            this.renderHeader();
             this.bindUIElements();
+        },
+        renderHeader: function () {
+            if (_.isUndefined(this.header)) {
+                return;
+            }
+
+            var html = Marionette.Renderer.render(this.header.template, this.header.params);
+            this.ui.$header.append(html);
         },
         getChannel: function () {
             return this._channel;
@@ -133,8 +143,18 @@ var EntityFormView;
         getHeaders: function () {
             return {};
         },
+        getMessages: function () {
+            return {
+                created: 'Item successfully created!',
+                createdError: 'Could not create item!',
+                updated: 'Item successfully saved!',
+                updatedError: 'Could not save item!'
+            };
+        },
         saveModel: function () {
             var self = this;
+            var messages = this.getMessages();
+
             this.model.save(null, {
                 headers: this.getHeaders(),
                 success: function (model, response) {
@@ -145,7 +165,7 @@ var EntityFormView;
                                 self.collection.remove(model);
                             }
 
-                            self.triggerMethod("ShowMessages", 'error', ['Could not create item!']);
+                            self.triggerMethod("ShowMessages", 'error', [messages.createdError]);
                             return;
                         }
 
@@ -154,10 +174,10 @@ var EntityFormView;
                             self.collection.add(model);
                         }
 
-                        self.triggerMethod("ShowMessages", 'success', ['Item successfully created!']);
+                        self.triggerMethod("ShowMessages", 'success', [messages.created]);
                         self.getChannel().trigger("Entity.Created");
                     } else {
-                        self.triggerMethod("ShowMessages", 'success', ['Item successfully saved!']);
+                        self.triggerMethod("ShowMessages", 'success', [messages.updated]);
                         self.getChannel().trigger("Entity.Updated." + model.get('id'));
                     }
                 },
@@ -167,9 +187,9 @@ var EntityFormView;
                             self.collection.remove(self.model.cid);
                         }
 
-                        self.triggerMethod("ShowMessages", 'error', ['Could not create item!']);
+                        self.triggerMethod("ShowMessages", 'error', [messages.createdError]);
                     } else {
-                        self.triggerMethod("ShowMessages", 'error', ['Could not save item!']);
+                        self.triggerMethod("ShowMessages", 'error', [messages.updatedError]);
                     }
 
                     console.log(response.responseText);

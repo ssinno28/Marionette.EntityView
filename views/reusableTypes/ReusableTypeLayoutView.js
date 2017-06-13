@@ -26,10 +26,6 @@ var ReusableTypeLayoutView;
             } else {
                 $dataField.attr('data-field', this.getOption('dataField'));
             }
-
-    /*        if (!_.isUndefined(this.setValue)) {
-                this.setValue(this.getOption('value'));
-            }*/
         },
         templateContext: function () {
             var self = this;

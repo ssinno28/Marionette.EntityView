@@ -122,6 +122,13 @@ var EntityService;
         getHeader: function () {
             return {params: {title: this.title}, template: headerTemplate};
         },
+        getFormHeader: function (name) {
+            if (_.isUndefined(name)) {
+                return {params: {title: 'Create'}, template: _.template('<h2><%= title %></h2>')};
+            }
+
+            return {params: {title: 'Edit ' + name}, template: _.template('<h2><%= title %></h2>')};
+        },
         getBtnClass: function () {
             return '';
         },
@@ -149,7 +156,8 @@ var EntityService;
                 parentViewCid: this.entityLayoutView().cid,
                 btnClass: this.getBtnClass(),
                 formOptions: this.getFormOptions(),
-                channelName: this.route
+                channelName: this.route,
+                header: this.getFormHeader()
             });
 
             if (_.isUndefined(this.formRegion)) {
@@ -172,7 +180,8 @@ var EntityService;
                         parentViewCid: this.entityLayoutView().cid,
                         btnClass: this.getBtnClass(),
                         formOptions: this.getFormOptions(),
-                        channelName: this.channelName
+                        channelName: this.channelName,
+                        header: this.getFormHeader(entity.get('name'))
                     });
 
                     if (_.isUndefined(this.formRegion)) {

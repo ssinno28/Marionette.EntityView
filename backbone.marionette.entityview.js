@@ -46,18 +46,9 @@
 
 this["Templates"]["entityFormLayoutTemplate"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
+var __t, __p = '', __e = _.escape;
 with (obj) {
-
- if(isNew) { ;
-__p += '\r\n<h2>Create</h2>\r\n';
- } else { ;
-__p += '\r\n<h2>Edit ' +
-((__t = ( name )) == null ? '' : __t) +
-'</h2>\r\n';
- } ;
-__p += '\r\n\r\n<div class="entity-form-layout form form-horizontal">\r\n    <div class="entity-form-region">\r\n\r\n    </div>\r\n    <div class="form-group">\r\n        <div class="messages-region col-sm-12">\r\n\r\n        </div>\r\n        <div class="col-sm-12 actions">\r\n            <input type="submit" value="Submit" name="submit" class="btn btn-primary ' +
+__p += '<div class="entity-form-header">\r\n</div>\r\n\r\n<div class="entity-form-layout form form-horizontal">\r\n    <div class="entity-form-region">\r\n\r\n    </div>\r\n    <div class="form-group">\r\n        <div class="messages-region col-sm-12">\r\n\r\n        </div>\r\n        <div class="col-sm-12 actions">\r\n            <input type="submit" value="Submit" name="submit" class="btn btn-primary ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
 '"/>\r\n            <button type="button" class="btn btn-default ' +
 ((__t = ( btnClass )) == null ? '' : __t) +
@@ -693,6 +684,11 @@ var FieldsMixin;
                 this._tagsinputForRegion(collection, fieldRegion, dataField, options.isDocProp, currentField);
             }, this);
 
+            var captcha = _.bind(function (siteKey) {
+                addField();
+                this._captchaForRegion(fieldRegion, dataField, options.isDocProp, currentField, siteKey);
+            }, this);
+
             var document = _.bind(function (channel, type) {
                 var $el = null;
                 if (!_.isUndefined(options.fieldset) && !_.isUndefined(options.fieldset.$el)) {
@@ -814,7 +810,8 @@ var FieldsMixin;
                 document: document,
                 multiSelect: multiSelect,
                 markdown: markdown,
-                tagsinput: tagsinput
+                tagsinput: tagsinput,
+                captcha: captcha
             };
 
             returnObj = _.extend(validations, editors);
@@ -888,6 +885,22 @@ var FieldsMixin;
                 value: this.model.get(dataField),
                 dataField: dataField,
                 isDocProp: isDocProp
+            });
+
+            field.view = view;
+            this.showChildView(region, view);
+        },
+        _captchaForRegion: function (region, dataField, isDocProp, field, sitekey) {
+            this.addRegion(region, {
+                el: '.' + this._formatRegionName(region),
+                replaceElement: true
+            });
+
+            var view = new CaptchaView({
+                value: null,
+                dataField: dataField,
+                isDocProp: isDocProp,
+                sitekey: sitekey
             });
 
             field.view = view;
@@ -1486,7 +1499,7 @@ var EntityFilters;
     });
 })(Backbone, Marionette);
 var EntityCollection;
-(function (_, Backbone, $, App, lunr, Filters) {
+(function (_, Backbone, $, App, Filters) {
     var getOrCondition = function (model, leftConditions, rightConditions) {
         var left = this._predicate(model, leftConditions);
         var right = this._predicate(model, rightConditions);
@@ -2156,7 +2169,7 @@ var EntityCollection;
             return deferred;
         }
     });
-})(_, Backbone, jQuery, App, lunr, EntityFilters);
+})(_, Backbone, jQuery, App, EntityFilters);
 
 var HierarchicalEntityCollection;
 (function (_, Backbone, $, App, UriUtil, EntityCollection) {
@@ -2709,10 +2722,6 @@ var ReusableTypeLayoutView;
             } else {
                 $dataField.attr('data-field', this.getOption('dataField'));
             }
-
-    /*        if (!_.isUndefined(this.setValue)) {
-                this.setValue(this.getOption('value'));
-            }*/
         },
         templateContext: function () {
             var self = this;
@@ -2813,7 +2822,7 @@ var ReusableTypeView;
 })(jQuery, _, Backbone, Marionette);
 
 var WyswigView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, wyswigTextTemplate, CKEDITOR) {
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, wyswigTextTemplate) {
     WyswigView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
@@ -2875,7 +2884,7 @@ var WyswigView;
             return $hiddenDiv.html();
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['wyswigTemplate'], CKEDITOR);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['wyswigTemplate']);
 
 var DocumentView;
 (function ($, _, Backbone, Marionette) {
@@ -2928,7 +2937,7 @@ var DocumentView;
 })(jQuery, _, Backbone, Marionette);
 
 var MarkdownEditorView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, SimpleMDE) {
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView) {
     MarkdownEditorView = ReusableTypeLayoutView.extend({
         template: _.template('<textarea></textarea>'),
         onDomRefresh: function () {
@@ -2951,8 +2960,30 @@ var MarkdownEditorView;
             this.simplemde.value(val);
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, SimpleMDE);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView);
 
+var CaptchaView;
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView) {
+    CaptchaView = ReusableTypeLayoutView.extend({
+        template: _.template('<div id="recaptcha"></div>'),
+        onDomRefresh: function () {
+            grecaptcha.render("recaptcha", {
+                sitekey: this.getOption('sitekey')
+            });
+        },
+        getValue: function () {
+            return grecaptcha.getResponse();
+        },
+        setValue: function () {
+        },
+        templateContext: function () {
+            return {
+                sitekey: this.getOption('sitekey'),
+                dataField: this.getOption('dataField')
+            };
+        }
+    });
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView);
 var TagsInputView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView) {
     TagsInputView = ReusableTypeLayoutView.extend({
@@ -4257,6 +4288,10 @@ var EntityListItemView;
             }, this);
 
             var add = _.bind(function (forceShow) {
+                if (this.ui.$actions.length === 0) {
+                    return;
+                }
+
                 if (this.allowableOperations.indexOf(options.safeName) === -1 && !forceShow) {
                     return;
                 }
@@ -4789,6 +4824,13 @@ var EntityService;
         getHeader: function () {
             return {params: {title: this.title}, template: headerTemplate};
         },
+        getFormHeader: function (name) {
+            if (_.isUndefined(name)) {
+                return {params: {title: 'Create'}, template: _.template('<h2><%= title %></h2>')};
+            }
+
+            return {params: {title: 'Edit ' + name}, template: _.template('<h2><%= title %></h2>')};
+        },
         getBtnClass: function () {
             return '';
         },
@@ -4816,7 +4858,8 @@ var EntityService;
                 parentViewCid: this.entityLayoutView().cid,
                 btnClass: this.getBtnClass(),
                 formOptions: this.getFormOptions(),
-                channelName: this.route
+                channelName: this.route,
+                header: this.getFormHeader()
             });
 
             if (_.isUndefined(this.formRegion)) {
@@ -4839,7 +4882,8 @@ var EntityService;
                         parentViewCid: this.entityLayoutView().cid,
                         btnClass: this.getBtnClass(),
                         formOptions: this.getFormOptions(),
-                        channelName: this.channelName
+                        channelName: this.channelName,
+                        header: this.getFormHeader(entity.get('name'))
                     });
 
                     if (_.isUndefined(this.formRegion)) {
@@ -5408,7 +5452,8 @@ var EntityFormView;
         },
         ui: {
             '$actions': '.actions',
-            '$spinner': '.spinner'
+            '$spinner': '.spinner',
+            '$header': 'entity-form-header'
         },
         templateContext: function () {
             return {
@@ -5445,7 +5490,16 @@ var EntityFormView;
             });
 
             this.showChildView('entityFormRegion', new formView());
+            this.renderHeader();
             this.bindUIElements();
+        },
+        renderHeader: function () {
+            if (_.isUndefined(this.header)) {
+                return;
+            }
+
+            var html = Marionette.Renderer.render(this.header.template, this.header.params);
+            this.ui.$header.append(html);
         },
         getChannel: function () {
             return this._channel;
@@ -5508,8 +5562,18 @@ var EntityFormView;
         getHeaders: function () {
             return {};
         },
+        getMessages: function () {
+            return {
+                created: 'Item successfully created!',
+                createdError: 'Could not create item!',
+                updated: 'Item successfully saved!',
+                updatedError: 'Could not save item!'
+            };
+        },
         saveModel: function () {
             var self = this;
+            var messages = this.getMessages();
+
             this.model.save(null, {
                 headers: this.getHeaders(),
                 success: function (model, response) {
@@ -5520,7 +5584,7 @@ var EntityFormView;
                                 self.collection.remove(model);
                             }
 
-                            self.triggerMethod("ShowMessages", 'error', ['Could not create item!']);
+                            self.triggerMethod("ShowMessages", 'error', [messages.createdError]);
                             return;
                         }
 
@@ -5529,10 +5593,10 @@ var EntityFormView;
                             self.collection.add(model);
                         }
 
-                        self.triggerMethod("ShowMessages", 'success', ['Item successfully created!']);
+                        self.triggerMethod("ShowMessages", 'success', [messages.created]);
                         self.getChannel().trigger("Entity.Created");
                     } else {
-                        self.triggerMethod("ShowMessages", 'success', ['Item successfully saved!']);
+                        self.triggerMethod("ShowMessages", 'success', [messages.updated]);
                         self.getChannel().trigger("Entity.Updated." + model.get('id'));
                     }
                 },
@@ -5542,9 +5606,9 @@ var EntityFormView;
                             self.collection.remove(self.model.cid);
                         }
 
-                        self.triggerMethod("ShowMessages", 'error', ['Could not create item!']);
+                        self.triggerMethod("ShowMessages", 'error', [messages.createdError]);
                     } else {
-                        self.triggerMethod("ShowMessages", 'error', ['Could not save item!']);
+                        self.triggerMethod("ShowMessages", 'error', [messages.updatedError]);
                     }
 
                     console.log(response.responseText);

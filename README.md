@@ -19,6 +19,12 @@ While these projects are not published to npm yet, you can take a look at them t
 * Aside from those there is also the [example folder](https://github.com/ssinno28/Marionette.EntityView/tree/master/example) in the root of the project.
 
 ## Release History
+* 1.2.9
+  * removing dependencies on external libraries to limit size of javascript if they are not in use
+  * adding a captcha field 
+  * adding ability to override the form header in the service
+  * allowing overriding of default form messages
+  * 
 * 1.2.6
   * adding tags reusable type field based on the bootstrap tags input plugin
 * 1.2.5

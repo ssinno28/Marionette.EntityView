@@ -1,5 +1,5 @@
 var MarkdownEditorView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, SimpleMDE) {
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView) {
     MarkdownEditorView = ReusableTypeLayoutView.extend({
         template: _.template('<textarea></textarea>'),
         onDomRefresh: function () {
@@ -22,4 +22,4 @@ var MarkdownEditorView;
             this.simplemde.value(val);
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, SimpleMDE);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView);

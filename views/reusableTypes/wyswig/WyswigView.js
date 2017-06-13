@@ -1,5 +1,5 @@
 var WyswigView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, wyswigTextTemplate, CKEDITOR) {
+(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, wyswigTextTemplate) {
     WyswigView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
@@ -61,4 +61,4 @@ var WyswigView;
             return $hiddenDiv.html();
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['wyswigTemplate'], CKEDITOR);
+})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['wyswigTemplate']);

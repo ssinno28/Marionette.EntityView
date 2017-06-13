@@ -140,6 +140,10 @@ var EntityListItemView;
             }, this);
 
             var add = _.bind(function (forceShow) {
+                if (this.ui.$actions.length === 0) {
+                    return;
+                }
+
                 if (this.allowableOperations.indexOf(options.safeName) === -1 && !forceShow) {
                     return;
                 }

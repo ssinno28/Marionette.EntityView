@@ -33,6 +33,7 @@
       "views/reusableTypes/wyswig/WyswigView.js",
       "views/reusableTypes/document/DocumentView.js",
       "views/reusableTypes/simpleMde/MarkdownEditorView.js",
+      "views/reusableTypes/captcha/CaptchaView.js",
       "views/reusableTypes/tagsinput/TagsInputView.js",
       "views/reusableTypes/singleLineText/SingleLineTextView.js",
       "views/reusableTypes/singleLineText/NumberView.js",
