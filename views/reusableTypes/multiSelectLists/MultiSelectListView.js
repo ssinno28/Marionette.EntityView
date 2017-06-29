@@ -1,5 +1,5 @@
 var MultiSelectListView;
-(function ($, _, Backbone, Marionette, EntityListView, MultiSelectOptionView) {
+(function (_, Backbone, Marionette, EntityListView, MultiSelectOptionView) {
     MultiSelectListView = EntityListView.extend({
         tagName: 'ul',
         childView: MultiSelectOptionView,
@@ -9,4 +9,4 @@ var MultiSelectListView;
             return _.extend(options, {displayField: this.displayField});
         }
     });
-})(jQuery, _, Backbone, Marionette, EntityListView, MultiSelectOptionView);
+})(_, Backbone, Marionette, EntityListView, MultiSelectOptionView);

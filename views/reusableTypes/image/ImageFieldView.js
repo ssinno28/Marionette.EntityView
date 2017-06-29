@@ -1,5 +1,5 @@
 var ImageFieldView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, imageFieldTemplate) {
+(function (_, Backbone, Marionette, ReusableTypeLayoutView, imageFieldTemplate) {
     ImageFieldView = ReusableTypeLayoutView.extend({
         initialize: function () {
             this.dataFieldSelector = '.imgUrl';
@@ -28,4 +28,4 @@ var ImageFieldView;
             this.updateImageUrl();
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['imageFieldTemplate']);
+})(_, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['imageFieldTemplate']);

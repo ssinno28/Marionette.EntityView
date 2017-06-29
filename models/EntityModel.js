@@ -1,5 +1,5 @@
 var EntityModel;
-(function ($, _, Backbone) {
+(function (_, Backbone) {
     EntityModel = Backbone.EntityModel = Backbone.Model.extend({
         setUrl: function (base) {
             this.url = base;
@@ -13,4 +13,4 @@ var EntityModel;
 
         }
     });
-})(jQuery, _, Backbone);
+})(_, Backbone);

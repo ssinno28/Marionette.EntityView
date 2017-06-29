@@ -1,6 +1,6 @@
 var InfoView;
-(function ($, _, Backbone, Marionette) {
+(function (_, Backbone, Marionette) {
     InfoView = Marionette.BaseValidationView.extend({
         className: 'alert alert-info alert-dismissable'
     });
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);

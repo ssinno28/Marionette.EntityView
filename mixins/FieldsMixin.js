@@ -1,5 +1,5 @@
 var FieldsMixin;
-(function ($, _, Backbone, Marionette) {
+(function (_, Backbone, Marionette) {
     FieldsMixin = {
         field: function (name, isDocProp, parent) {
             var field = {},
@@ -689,4 +689,4 @@ var FieldsMixin;
             this.showChildView(region, field.view);
         }
     };
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);

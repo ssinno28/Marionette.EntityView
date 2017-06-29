@@ -1,5 +1,5 @@
 var DateTimePickerView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, dateTimePickerTpl, moment) {
+(function (_, Backbone, Marionette, ReusableTypeLayoutView, dateTimePickerTpl, moment) {
     DateTimePickerView = ReusableTypeLayoutView.extend({
         initialize: function () {
             if (_.isUndefined(this.dateFormat)) {
@@ -35,4 +35,4 @@ var DateTimePickerView;
             this.getDataField().val(val);
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['dateTimePickerTpl'], moment);
+})(_, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['dateTimePickerTpl'], moment);

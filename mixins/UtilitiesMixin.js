@@ -1,5 +1,5 @@
 var UtilitiesMixin;
-(function ($, _, Backbone, Marionette) {
+(function (_, Backbone, Marionette) {
     UtilitiesMixin = {
         _formatRegionName: function (name) {
             return name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
@@ -23,4 +23,4 @@ var UtilitiesMixin;
             return encodedUrl;
         }
     };
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);

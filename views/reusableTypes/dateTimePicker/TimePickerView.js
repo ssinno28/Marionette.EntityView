@@ -1,5 +1,5 @@
 var TimePickerView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, timePickerTpl, moment) {
+(function (_, Backbone, Marionette, ReusableTypeLayoutView, timePickerTpl, moment) {
     TimePickerView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             ReusableTypeLayoutView.prototype.initialize.call(this, options);
@@ -37,4 +37,4 @@ var TimePickerView;
             this.getDataField().val(val);
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['dateTimePickerTpl'], moment);
+})(_, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['dateTimePickerTpl'], moment);

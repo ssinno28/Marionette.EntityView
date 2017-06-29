@@ -1,5 +1,5 @@
 var CheckBoxListView;
-(function ($, _, Backbone, Marionette, CheckBoxView, ReusableTypeListView) {
+(function (_, Backbone, Marionette, CheckBoxView, ReusableTypeListView) {
     CheckBoxListView = ReusableTypeListView.extend({
         childView: CheckBoxView,
         getValue: function () {
@@ -30,4 +30,4 @@ var CheckBoxListView;
             });
         }
     });
-})(jQuery, _, Backbone, Marionette, CheckBoxView, ReusableTypeListView);
+})(_, Backbone, Marionette, CheckBoxView, ReusableTypeListView);

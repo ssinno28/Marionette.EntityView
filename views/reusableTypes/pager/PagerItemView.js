@@ -1,7 +1,7 @@
 
 var PagerItemView;
-(function ($, _, Backbone, Marionette, pagerItemTemplate) {
-    PagerItemView = Marionette.View.extend({
+(function (_, Backbone, Marionette, pagerItemTemplate) {
+    PagerItemView = Marionette.NativeView.extend({
         template: pagerItemTemplate,
         tagName: 'li',
         className: function () {
@@ -16,4 +16,4 @@ var PagerItemView;
         }
     });
 
-})($, _, Backbone, Marionette, this['Templates']['pagerItemTemplate']);
+})(_, Backbone, Marionette, this['Templates']['pagerItemTemplate']);

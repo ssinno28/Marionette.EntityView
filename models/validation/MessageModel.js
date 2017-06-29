@@ -1,5 +1,5 @@
 var MessageModel;
-(function ($, _, Backbone, Marionette, App) {
+(function (_, Backbone, Marionette, App) {
     MessageModel = Backbone.Model.extend({
         defaults: {
             message: '',
@@ -7,4 +7,4 @@ var MessageModel;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, App);
+})(_, Backbone, Marionette, App);

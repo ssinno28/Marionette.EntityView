@@ -1,6 +1,6 @@
 var PagerListView;
-(function ($, _, Backbone, Marionette, PagerItemView) {
-    PagerListView = Marionette.CollectionView.extend({
+(function (_, Backbone, Marionette, PagerItemView) {
+    PagerListView = Marionette.NativeCollectionView.extend({
         tagName: 'ul',
         className: 'pagination',
         initialize: function (options) {
@@ -34,4 +34,4 @@ var PagerListView;
             return Backbone.Radio.channel(this.route);
         }
     });
-})(jQuery, _, Backbone, Marionette, PagerItemView);
+})(_, Backbone, Marionette, PagerItemView);

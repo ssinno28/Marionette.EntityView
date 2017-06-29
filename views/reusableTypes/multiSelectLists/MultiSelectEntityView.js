@@ -1,6 +1,6 @@
 var MultiSelectEntityView;
-(function ($, _, Backbone, Marionette, EntityLayoutView) {
+(function (_, Backbone, Marionette, EntityLayoutView) {
     MultiSelectEntityView = EntityLayoutView.extend({
         template: this["Templates"]["msEntityLayoutTpl"]
     });
-})(jQuery, _, Backbone, Marionette, EntityLayoutView);
+})(_, Backbone, Marionette, EntityLayoutView);

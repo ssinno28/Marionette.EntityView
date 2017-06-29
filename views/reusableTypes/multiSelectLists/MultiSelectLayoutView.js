@@ -1,5 +1,5 @@
 var MultiSelectLayoutView;
-(function (Marionette, $, _, multiSelectLayoutTpl, ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel) {
+(function (Marionette, _, multiSelectLayoutTpl, ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel) {
     MultiSelectLayoutView = ReusableTypeLayoutView.extend({
         initialize: function (options) {
             this.collection = options.collection;
@@ -304,4 +304,4 @@ var MultiSelectLayoutView;
             return value;
         }
     });
-})(Marionette, jQuery, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel);
+})(Marionette, _, this['Templates']['multiSelectLayoutTemplate'], ReusableTypeLayoutView, MultiSelectService, EntityLayoutModel);

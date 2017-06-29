@@ -1,5 +1,5 @@
 var MessageBehavior;
-(function ($, _, Backbone, Marionette, SuccessView, ErrorView, InfoView) {
+(function (_, Backbone, Marionette, SuccessView, ErrorView, InfoView) {
     MessageBehavior = Marionette.Behavior.extend({
         defaults: {
             duration: 3000
@@ -35,4 +35,4 @@ var MessageBehavior;
             }, this.options.duration);
         }
     });
-})(jQuery, _, Backbone, Marionette, SuccessView, ErrorView, InfoView);
+})(_, Backbone, Marionette, SuccessView, ErrorView, InfoView);

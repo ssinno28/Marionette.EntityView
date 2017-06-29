@@ -1,5 +1,5 @@
 var SortableListBehavior;
-(function ($, _, Backbone, Marionette) {
+(function (_, Backbone, Marionette) {
     SortableListBehavior = Marionette.Behavior.extend({
         onRender: function () {
             this.view.$el.addClass('sortable-view');
@@ -46,4 +46,4 @@ var SortableListBehavior;
             this.view.collection.sort();
         }
     });
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);

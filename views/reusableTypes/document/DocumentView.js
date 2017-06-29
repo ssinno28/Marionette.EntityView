@@ -1,6 +1,6 @@
 var DocumentView;
-(function ($, _, Backbone, Marionette) {
-    DocumentView = Marionette.View.extend({
+(function (_, Backbone, Marionette) {
+    DocumentView = Marionette.NativeView.extend({
         onDomRefresh: function () {
             var formView = this.getOption('formView'),
                 id = this.getOption('id'),
@@ -46,4 +46,4 @@ var DocumentView;
             });
         }
     });
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);

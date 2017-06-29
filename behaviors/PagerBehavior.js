@@ -1,5 +1,5 @@
 var PagerBehavior;
-(function ($, _, Backbone, Marionette, App, PagerListView, DropDownListView) {
+(function (_, Backbone, Marionette, App, PagerListView, DropDownListView) {
     PagerBehavior = Marionette.Behavior.extend({
         onRender: function () {
             if (_.isUndefined(App.indexes)) {
@@ -80,4 +80,4 @@ var PagerBehavior;
             }));
         }
     });
-})(jQuery, _, Backbone, Marionette, App, PagerListView, DropDownListView);
+})(_, Backbone, Marionette, App, PagerListView, DropDownListView);

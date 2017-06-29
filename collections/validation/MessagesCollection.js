@@ -1,5 +1,5 @@
 var MessagesCollection;
-(function ($, _, Backbone, Marionette, App, MessageModel) {
+(function (_, Backbone, Marionette, App, MessageModel) {
     MessagesCollection = Backbone.Collection.extend({
         model: MessageModel,
         setMessages: function (messages) {
@@ -10,5 +10,5 @@ var MessagesCollection;
             }, this));
         }
     });
-})(jQuery, _, Backbone, Marionette, App, MessageModel);
+})(_, Backbone, Marionette, App, MessageModel);
 

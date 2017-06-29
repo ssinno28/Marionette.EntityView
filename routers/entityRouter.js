@@ -1,5 +1,5 @@
 var EntityRouter;
-(function ($, _, Backbone, Marionette) {
+(function (_, Backbone, Marionette) {
     EntityRouter = Marionette.EntityRouter = Backbone.Marionette.AppRouter.extend({
         onRoute: function (name, path) {
             if (_.isFunction(this.options.controller.onActionExecuting)) {
@@ -29,4 +29,4 @@ var EntityRouter;
             'startsWith/:startsWith/field/:field/*actions': 'textSearch'
         }
     });
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);

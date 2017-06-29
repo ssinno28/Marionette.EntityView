@@ -1,6 +1,6 @@
 var SortableItemView;
-(function ($, _, Backbone, Marionette) {
-    SortableItemView = Marionette.SortableItemView = Marionette.View.extend({
+(function (_, Backbone, Marionette) {
+    SortableItemView = Marionette.SortableItemView = Marionette.NativeView.extend({
         tagName: "li",
         attributes: {
             "draggable": true
@@ -53,4 +53,4 @@ var SortableItemView;
             return Backbone.Radio.channel(this.route);
         }
     });
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);

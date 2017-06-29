@@ -1,7 +1,7 @@
 
 var TreeCompositeView;
-(function ($, _, Backbone, Marionette, treeCompositeTpl) {
-    TreeCompositeView = Marionette.TreeCompositeView = Backbone.Marionette.View.extend({
+(function (_, Backbone, Marionette, treeCompositeTpl) {
+    TreeCompositeView = Marionette.TreeCompositeView = Backbone.Marionette.NativeView.extend({
         tagName: 'li',
         template: treeCompositeTpl,
         events: function () {
@@ -107,4 +107,4 @@ var TreeCompositeView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, this['Templates']['treeCompositeTemplate']);
+})(_, Backbone, Marionette, this['Templates']['treeCompositeTemplate']);

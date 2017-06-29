@@ -1,5 +1,5 @@
 var EntityController;
-(function (App, $, _, Backbone, Marionette, EntityLayoutView, headerTemplate, TimeoutUtil, EntityService) {
+(function (App, _, Backbone, Marionette, EntityLayoutView, headerTemplate, TimeoutUtil, EntityService) {
     EntityController = Marionette.EntityController = Marionette.Object.extend({
         initialize: function (options) {
             this._channel = Backbone.Radio.channel(options.route);
@@ -27,4 +27,4 @@ var EntityController;
             this._channel.trigger('getType', page);
         }
     });
-})(App, jQuery, _, Backbone, Marionette, EntityLayoutView, this['Templates']['headerTemplate'], TimeoutUtil, EntityService);
+})(App, _, Backbone, Marionette, EntityLayoutView, this['Templates']['headerTemplate'], TimeoutUtil, EntityService);

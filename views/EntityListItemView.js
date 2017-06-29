@@ -1,6 +1,6 @@
 var EntityListItemView;
-(function ($, _, Backbone, Marionette, entityListItemTpl, SortableItemBehavior) {
-    EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.View.extend({
+(function ( _, Backbone, Marionette, entityListItemTpl, SortableItemBehavior) {
+    EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.NativeView.extend({
         regions: {
             fieldsRegion: {
                 el: '.fieldsRegion',
@@ -192,4 +192,4 @@ var EntityListItemView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], SortableItemBehavior);
+})(_, Backbone, Marionette, this['Templates']['entityListItemTemplate'], SortableItemBehavior);

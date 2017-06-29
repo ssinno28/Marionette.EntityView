@@ -1,5 +1,5 @@
 var UriUtil;
-(function ($, _, Backbone) {
+(function (_, Backbone) {
     UriUtil = {
         getUriHash: function (object) {
             var str = decodeURIComponent($.param(object));
@@ -20,4 +20,4 @@ var UriUtil;
             return location.hash.slice(0, location.hash.indexOf('q/'));
         }
     };
-})(jQuery, _, Backbone);
+})(_, Backbone);

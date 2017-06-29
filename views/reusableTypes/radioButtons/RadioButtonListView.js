@@ -1,5 +1,5 @@
 var RadioButtonListView;
-(function ($, _, Backbone, Marionette, RadioButtonView, ReusableTypeListView) {
+(function (_, Backbone, Marionette, RadioButtonView, ReusableTypeListView) {
     RadioButtonListView = ReusableTypeListView.extend({
         childView: RadioButtonView,
         getValue: function () {
@@ -16,4 +16,4 @@ var RadioButtonListView;
             });
         }
     });
-})(jQuery, _, Backbone, Marionette, RadioButtonView, ReusableTypeListView);
+})(_, Backbone, Marionette, RadioButtonView, ReusableTypeListView);

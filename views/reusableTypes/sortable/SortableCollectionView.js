@@ -1,6 +1,6 @@
 var SortableCollectionView;
 (function ($, _, Backbone, Marionette, SortableItemView) {
-    SortableCollectionView = Marionette.SortableCollectionView = Marionette.CollectionView.extend({
+    SortableCollectionView = Marionette.SortableCollectionView = Marionette.NativeCollectionView.extend({
         tagName: 'ul',
         className: 'sortable-view',
         childView: SortableItemView,

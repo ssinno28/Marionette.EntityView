@@ -1,5 +1,5 @@
 var EntityCollection;
-(function (_, Backbone, $, App, Filters) {
+(function (_, Backbone, App, Filters) {
     var getOrCondition = function (model, leftConditions, rightConditions) {
         var left = this._predicate(model, leftConditions);
         var right = this._predicate(model, rightConditions);
@@ -669,4 +669,4 @@ var EntityCollection;
             return deferred;
         }
     });
-})(_, Backbone, jQuery, App, EntityFilters);
+})(_, Backbone, App, EntityFilters);

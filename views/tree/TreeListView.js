@@ -1,6 +1,6 @@
 var TreeListView;
-(function ($, _, Backbone, Marionette, TreeCompositeView) {
-    TreeListView = Marionette.TreeListView = Marionette.CollectionView.extend({
+(function (_, Backbone, Marionette, TreeCompositeView) {
+    TreeListView = Marionette.TreeListView = Marionette.NativeCollectionView.extend({
         childView: TreeCompositeView,
         initialize: function (options) {
             this.fullCollection = options.fullCollection;
@@ -23,4 +23,4 @@ var TreeListView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, TreeCompositeView);
+})(_, Backbone, Marionette, TreeCompositeView);

@@ -1,5 +1,5 @@
 var TimeoutUtil;
-(function ($, _) {
+(function (_) {
     TimeoutUtil = (function () {
 
         var constructor = function () {
@@ -41,4 +41,4 @@ var TimeoutUtil;
 
         return constructor;
     })();
-})(jQuery, _);
+})(_);

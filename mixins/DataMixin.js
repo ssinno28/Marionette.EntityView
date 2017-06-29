@@ -1,5 +1,5 @@
 var DataMixin;
-(function ($, _, Backbone) {
+(function (_, Backbone) {
     DataMixin = {
         data: function (page, pageSize) {
             var data = {};
@@ -47,4 +47,4 @@ var DataMixin;
             return returnObj;
         }
     };
-})(jQuery, _, Backbone);
+})(_, Backbone);

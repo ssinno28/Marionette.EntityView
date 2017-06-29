@@ -1,5 +1,5 @@
 var TextAreaView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView, textAreaTemplate) {
+(function (_, Backbone, Marionette, ReusableTypeLayoutView, textAreaTemplate) {
     TextAreaView = ReusableTypeLayoutView.extend({
         template: textAreaTemplate,
         getValue: function () {
@@ -9,4 +9,4 @@ var TextAreaView;
             this.$el.val(val);
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['textAreaTemplate']);
+})(_, Backbone, Marionette, ReusableTypeLayoutView, this['Templates']['textAreaTemplate']);

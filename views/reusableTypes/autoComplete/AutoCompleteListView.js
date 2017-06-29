@@ -1,5 +1,5 @@
 var AutoCompleteListView;
-(function ($, _, Backbone, Marionette, ReusableTypeListView, AutoCompleteView) {
+(function (_, Backbone, Marionette, ReusableTypeListView, AutoCompleteView) {
     AutoCompleteListView = ReusableTypeListView.extend({
         className: 'dropdown-menu',
         tagName: 'ul',
@@ -12,4 +12,4 @@ var AutoCompleteListView;
             this.$el.dropdown('toggle');
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeListView, AutoCompleteView);
+})(_, Backbone, Marionette, ReusableTypeListView, AutoCompleteView);

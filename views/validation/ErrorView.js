@@ -1,6 +1,6 @@
 var ErrorView;
-(function ($, _, Backbone, Marionette) {
+(function ( _, Backbone, Marionette) {
     ErrorView = Marionette.BaseValidationView.extend({
         className: 'alert alert-danger alert-dismissable'
     });
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);

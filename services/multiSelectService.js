@@ -1,5 +1,5 @@
 var MultiSelectService;
-(function ($, _, Backbone, Marionette, EntityService, App, MultiSelectListView, MultiSelectEntityView) {
+(function (_, Backbone, Marionette, EntityService, App, MultiSelectListView, MultiSelectEntityView) {
     MultiSelectService = Marionette.EntityService.extend({
         getData: function (page) {
             var data = {
@@ -26,4 +26,4 @@ var MultiSelectService;
             return 'tiny round';
         }
     });
-})(jQuery, _, Backbone, Marionette, EntityService, App, MultiSelectListView, MultiSelectEntityView);
+})(_, Backbone, Marionette, EntityService, App, MultiSelectListView, MultiSelectEntityView);

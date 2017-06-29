@@ -1,5 +1,5 @@
 var SingleCheckBoxView;
-(function ($, _, Backbone, Marionette, singleCheckBoxTpl, ReusableTypeLayoutView) {
+(function (_, Backbone, Marionette, singleCheckBoxTpl, ReusableTypeLayoutView) {
     SingleCheckBoxView = ReusableTypeLayoutView.extend({
         template: singleCheckBoxTpl,
         triggers: function () {
@@ -35,4 +35,4 @@ var SingleCheckBoxView;
             }
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['singleCheckBoxTpl'], ReusableTypeLayoutView);
+})(_, Backbone, Marionette, this['Templates']['singleCheckBoxTpl'], ReusableTypeLayoutView);

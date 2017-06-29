@@ -1,5 +1,5 @@
 var CheckBoxView;
-(function ($, _, Backbone, Marionette, checkBoxTemplate, ReusableTypeView) {
+(function (_, Backbone, Marionette, checkBoxTemplate, ReusableTypeView) {
     CheckBoxView = ReusableTypeView.extend({
         onRender: function () {
             if (!_.isUndefined(this.model.get('id'))) {
@@ -17,4 +17,4 @@ var CheckBoxView;
             }
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['checkBoxTemplate'], ReusableTypeView);
+})(_, Backbone, Marionette, this['Templates']['checkBoxTemplate'], ReusableTypeView);

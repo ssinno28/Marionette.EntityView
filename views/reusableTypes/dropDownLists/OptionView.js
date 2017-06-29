@@ -1,5 +1,5 @@
 var OptionView;
-(function ($, _, Backbone, Marionette, ReusableTypeView) {
+(function (_, Backbone, Marionette, ReusableTypeView) {
     OptionView = ReusableTypeView.extend({
         tagName: 'option',
         onRender: function () {
@@ -14,4 +14,4 @@ var OptionView;
             }
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeView);
+})(_, Backbone, Marionette, ReusableTypeView);

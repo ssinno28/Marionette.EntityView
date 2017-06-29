@@ -1,5 +1,5 @@
 var ValidationModel;
-(function ($, _, Backbone, Marionette, App) {
+(function (_, Backbone, Marionette, App) {
     ValidationModel = Backbone.Model.extend({
         defaults: {
             messagesCollection: new Backbone.Collection()
@@ -14,4 +14,4 @@ var ValidationModel;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, App);
+})(_, Backbone, Marionette, App);

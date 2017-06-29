@@ -1,6 +1,6 @@
 var ReusableTypeListView;
-(function ($, _, Backbone, Marionette) {
-    ReusableTypeListView = Marionette.ReusableTypeListView = Backbone.Marionette.CollectionView.extend({
+(function (_, Backbone, Marionette) {
+    ReusableTypeListView = Marionette.ReusableTypeListView = Backbone.Marionette.NativeCollectionView.extend({
         initialize: function (options) {
             _.extend(this, options);
 
@@ -22,4 +22,4 @@ var ReusableTypeListView;
             this._channel.stopReplying(null, null, this);
         }
     });
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);

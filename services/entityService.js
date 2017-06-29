@@ -1,5 +1,5 @@
 var EntityService;
-(function ($, _, Backbone, Marionette, App, EntityLayoutView, headerTemplate, EntityListItemView, EntityListView) {
+(function (_, Backbone, Marionette, App, EntityLayoutView, headerTemplate, EntityListItemView, EntityListView) {
     EntityService = Marionette.EntityService = Marionette.Object.extend({
         initialize: function (options) {
             _.extend(this, options);
@@ -370,4 +370,4 @@ var EntityService;
             return _.isUndefined(this.pageSize) ? parseInt(App.pageSize) : this.pageSize;
         }
     });
-})(jQuery, _, Backbone, Marionette, App, EntityLayoutView, this['Templates']['headerTemplate'], EntityListItemView, EntityListView);
+})(_, Backbone, Marionette, App, EntityLayoutView, this['Templates']['headerTemplate'], EntityListItemView, EntityListView);

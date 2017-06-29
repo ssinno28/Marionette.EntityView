@@ -1,5 +1,5 @@
 var SortableItemBehavior;
-(function ($, _, Backbone, Marionette) {
+(function (_, Backbone, Marionette) {
     SortableItemBehavior = Marionette.Behavior.extend({
         onRender: function () {
             this.view.$el.attr('draggable', true);
@@ -52,4 +52,4 @@ var SortableItemBehavior;
             this.view.triggerMethod('item:dropped', this.view.parent.draggedModel, currentModel);
         }
     });
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);

@@ -1,6 +1,6 @@
 var ReusableTypeView;
-(function ($, _, Backbone, Marionette) {
-    ReusableTypeView = Marionette.ReusableTypeView = Backbone.Marionette.View.extend({
+(function (_, Backbone, Marionette) {
+    ReusableTypeView = Marionette.ReusableTypeView = Backbone.Marionette.NativeView.extend({
         initialize: function (options) {
             _.extend(this, options);
             var channel = this._channel = Backbone.Radio.channel(this.dataField);
@@ -48,4 +48,4 @@ var ReusableTypeView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);

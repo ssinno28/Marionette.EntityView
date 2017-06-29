@@ -1,5 +1,5 @@
 var AutoCompleteView;
-(function ($, _, Backbone, Marionette, ReusableTypeListView, liAutoCompleteTemplate) {
+(function (_, Backbone, Marionette, ReusableTypeListView, liAutoCompleteTemplate) {
     AutoCompleteView = Marionette.View.extend({
         tagName: 'li',
         template: liAutoCompleteTemplate,
@@ -11,4 +11,4 @@ var AutoCompleteView;
             }
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeListView, this['Templates']['liAutoCompleteTemplate']);
+})(_, Backbone, Marionette, ReusableTypeListView, this['Templates']['liAutoCompleteTemplate']);

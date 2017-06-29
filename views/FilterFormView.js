@@ -1,5 +1,5 @@
 var FilterFormView;
-(function ($, _, Backbone, Marionette) {
+(function (_, Backbone, Marionette) {
     FilterFormView = Marionette.FormView.extend({
         fieldWrapperTpl: this["Templates"]["filterFieldTpl"],
         template: false,
@@ -11,4 +11,4 @@ var FilterFormView;
         runRenderers: function () {
         }
     });
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);

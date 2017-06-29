@@ -1,6 +1,6 @@
 var EntityListView;
-(function ($, _, Backbone, Marionette, SortableListBehavior) {
-    EntityListView = Marionette.EntityListView = Backbone.Marionette.CollectionView.extend({
+(function (_, Backbone, Marionette, SortableListBehavior) {
+    EntityListView = Marionette.EntityListView = Backbone.Marionette.NativeCollectionView.extend({
         className: 'col-sm-12',
         initialize: function (options) {
             _.extend(this, options);
@@ -52,4 +52,4 @@ var EntityListView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, SortableListBehavior);
+})(_, Backbone, Marionette, SortableListBehavior);

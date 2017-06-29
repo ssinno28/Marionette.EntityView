@@ -1,5 +1,5 @@
 var EntityLayoutModel;
-(function ($, _, Backbone, Marionette) {
+(function (_, Backbone, Marionette) {
     EntityLayoutModel = Backbone.Model.extend({
         defaults: {
             title: '',
@@ -8,4 +8,4 @@ var EntityLayoutModel;
             additionalParams: ''
         }
     });
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);

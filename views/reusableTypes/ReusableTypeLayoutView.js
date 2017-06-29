@@ -1,6 +1,6 @@
 var ReusableTypeLayoutView;
-(function ($, _, Backbone, Marionette) {
-    ReusableTypeLayoutView = Marionette.ReusableTypeLayoutView = Marionette.View.extend({
+(function (_, Backbone, Marionette) {
+    ReusableTypeLayoutView = Marionette.ReusableTypeLayoutView = Marionette.NativeView.extend({
         constructor: function (options) {
             //make sure to do work first then call contrctor on class
             _.extend(this, options);
@@ -45,4 +45,4 @@ var ReusableTypeLayoutView;
             this._channel.stopReplying(null, null, this);
         }
     });
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);

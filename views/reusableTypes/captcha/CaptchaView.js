@@ -1,5 +1,5 @@
 var CaptchaView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView) {
+(function (_, Backbone, Marionette, ReusableTypeLayoutView) {
     CaptchaView = ReusableTypeLayoutView.extend({
         template: _.template('<div id="recaptcha-<%= cid %>"></div>'),
         onDomRefresh: function () {
@@ -26,4 +26,4 @@ var CaptchaView;
             };
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView);
+})(_, Backbone, Marionette, ReusableTypeLayoutView);

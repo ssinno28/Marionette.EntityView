@@ -1,5 +1,5 @@
 var HierarchicalEntityCollection;
-(function (_, Backbone, $, App, UriUtil, EntityCollection) {
+(function (_, Backbone, App, UriUtil, EntityCollection) {
     /**
      * This collection is used for hierarchical entites
      *
@@ -274,4 +274,4 @@ var HierarchicalEntityCollection;
             return App.getCache(url, getCollection);
         }
     });
-})(_, Backbone, jQuery, App, UriUtil, EntityCollection);
+})(_, Backbone, App, UriUtil, EntityCollection);

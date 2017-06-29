@@ -1,8 +1,8 @@
 var MessageView;
-(function ($, _, Backbone, Marionette, MessageModel, messageTemplate) {
-    MessageView = Marionette.MessageView = Backbone.Marionette.View.extend({
+(function (_, Backbone, Marionette, MessageModel, messageTemplate) {
+    MessageView = Marionette.MessageView = Backbone.Marionette.NativeView.extend({
         model: MessageModel,
         tagName: 'li',
         template: messageTemplate
     });
-})(jQuery, _, Backbone, Marionette, MessageModel, this['Templates']['messageTemplate']);
+})( _, Backbone, Marionette, MessageModel, this['Templates']['messageTemplate']);

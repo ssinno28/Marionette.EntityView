@@ -1,9 +1,9 @@
 var MessageListView;
-(function ($, _, Backbone, Marionette, MessageView, MessagesCollection) {
-    MessageListView = Backbone.Marionette.CollectionView.extend({
+(function (_, Backbone, Marionette, MessageView, MessagesCollection) {
+    MessageListView = Backbone.Marionette.NativeCollectionView.extend({
         tagName: 'ul',
         childView: MessageView,
         collection: MessagesCollection
     });
 
-})(jQuery, _, Backbone, Marionette, MessageView, MessagesCollection);
+})(_, Backbone, Marionette, MessageView, MessagesCollection);

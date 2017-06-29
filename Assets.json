@@ -2,6 +2,7 @@
   "moduleName": "Marionette Entity View",
   "js": {
     "files": [
+      "mixins/DomMixin.js",
 	  "mixins/UtilitiesMixin.js",
       "mixins/FieldsMixin.js",
       "mixins/DataMixin.js",

@@ -1,8 +1,8 @@
 var FormView;
-(function ($, _, Backbone, Marionette, FormValidator) {
+(function (_, Backbone, Marionette, FormValidator) {
     "use strict";
 
-    FormView = Marionette.FormView = Marionette.View.extend({
+    FormView = Marionette.FormView = Marionette.NativeView.extend({
 
         className: "formView col-sm-12",
 
@@ -182,4 +182,4 @@ var FormView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, FormValidator);
+})(_, Backbone, Marionette, FormValidator);

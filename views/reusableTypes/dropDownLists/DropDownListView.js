@@ -1,5 +1,5 @@
 var DropDownListView;
-(function ($, _, Backbone, Marionette, OptionView, ReusableTypeListView) {
+(function (_, Backbone, Marionette, OptionView, ReusableTypeListView) {
     DropDownListView = ReusableTypeListView.extend({
         childView: OptionView,
         tagName: 'select',
@@ -22,4 +22,4 @@ var DropDownListView;
             this.$el.data('combobox').refresh();
         }
     });
-})($, _, Backbone, Marionette, OptionView, ReusableTypeListView);
+})(_, Backbone, Marionette, OptionView, ReusableTypeListView);

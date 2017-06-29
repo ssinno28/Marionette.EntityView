@@ -1,5 +1,5 @@
 var TagsInputView;
-(function ($, _, Backbone, Marionette, ReusableTypeLayoutView) {
+(function (_, Backbone, Marionette, ReusableTypeLayoutView) {
     TagsInputView = ReusableTypeLayoutView.extend({
         template: _.template('<select multiple ></select>'),
         ui: {
@@ -109,4 +109,4 @@ var TagsInputView;
                 }, this));
         }
     });
-})(jQuery, _, Backbone, Marionette, ReusableTypeLayoutView);
+})(_, Backbone, Marionette, ReusableTypeLayoutView);

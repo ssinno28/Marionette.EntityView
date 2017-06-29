@@ -1,5 +1,5 @@
 var ModalMixin;
-(function ($, _, Backbone, Marionette, ModalModel) {
+(function (_, Backbone, Marionette, ModalModel) {
     ModalMixin = {
         modal: function (name) {
             var modal = {name: name};
@@ -75,4 +75,4 @@ var ModalMixin;
             };
         }
     };
-})(jQuery, _, Backbone, Marionette, ModalModel);
+})(_, Backbone, Marionette, ModalModel);

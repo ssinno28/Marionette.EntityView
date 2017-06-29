@@ -1,6 +1,6 @@
 var ModalView;
-(function (_, Backbone, $, Marionette, modalTpl, ModalModel) {
-    ModalView = Marionette.View.extend({
+(function (_, Backbone, Marionette, modalTpl, ModalModel) {
+    ModalView = Marionette.NativeView.extend({
         model: ModalModel,
         template: modalTpl,
         initialize: function (options) {
@@ -50,4 +50,4 @@ var ModalView;
             }
         }
     });
-})(_, Backbone, jQuery, Marionette, Templates.modalTpl, ModalModel);
+})(_, Backbone, Marionette, Templates.modalTpl, ModalModel);

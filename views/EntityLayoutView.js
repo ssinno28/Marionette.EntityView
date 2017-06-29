@@ -1,6 +1,6 @@
 var EntityLayoutView;
-(function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior, FilterFormView) {
-    EntityLayoutView = Marionette.EntityLayoutView = Marionette.View.extend({
+(function (_, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior, FilterFormView) {
+    EntityLayoutView = Marionette.EntityLayoutView = Marionette.NativeView.extend({
         template: entityListLayoutTpl,
         regions: {
             'entityRegion': {
@@ -322,4 +322,4 @@ var EntityLayoutView;
             return this._channel;
         }
     });
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior, FilterFormView);
+})(_, Backbone, Marionette, this['Templates']['entityLayoutTemplate'], EntityLayoutModel, PagerBehavior, FilterFormView);

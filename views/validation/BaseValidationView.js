@@ -1,6 +1,6 @@
 var BaseValidationView;
-(function ($, _, Backbone, Marionette, ValidationModel, validationTemplate, MessageCollection, MessageListView) {
-    BaseValidationView = Marionette.BaseValidationView = Marionette.View.extend({
+(function (_, Backbone, Marionette, ValidationModel, validationTemplate, MessageCollection, MessageListView) {
+    BaseValidationView = Marionette.BaseValidationView = Marionette.NativeView.extend({
         tagName: 'div',
         template: validationTemplate,
         regions: {
@@ -15,4 +15,4 @@ var BaseValidationView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, ValidationModel, this['Templates']['validationTemplate'], MessagesCollection, MessageListView);
+})( _, Backbone, Marionette, ValidationModel, this['Templates']['validationTemplate'], MessagesCollection, MessageListView);

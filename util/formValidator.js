@@ -1,5 +1,5 @@
 var FormValidator;
-(function ($, _, Backbone, Marionette) {
+(function (_, Backbone, Marionette) {
     FormValidator = Marionette.Object.extend({
         regex: {
             //RFC 2822
@@ -71,4 +71,4 @@ var FormValidator;
             }
         }
     });
-})(jQuery, _, Backbone, Marionette);
+})(_, Backbone, Marionette);
