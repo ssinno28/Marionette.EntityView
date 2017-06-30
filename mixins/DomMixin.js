@@ -19,7 +19,6 @@
             }
 
             var parent = oldEl.parentNode;
-
             if (!parent) {
                 return;
             }
@@ -32,7 +31,7 @@
             }
         },
         setInnerContent: function setInnerContent(el, html) {
-            el.innerHTML = html
+            el.innerHTML = html;
         },
         detachEl: function detachEl(el) {
             if (el.parentNode) el.parentNode.removeChild(el);
@@ -43,7 +42,7 @@
         },
         findEls: function findEls(selector, context) {
             if (_.isObject(selector)) {
-                return [selector]
+                return [selector];
             } else {
                 return this.el.querySelectorAll(selector);
             }

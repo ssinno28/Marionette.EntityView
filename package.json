@@ -16,6 +16,7 @@
     "ckeditor": "^4.6.2",
     "flatpickr": "^3.0.6",
     "font-awesome": "^4.7.0",
+    "horsey": "^4.2.2",
     "lunr": "^1.0.0",
     "moment": "^2.18.1",
     "pluralize": "^4.0.0",
