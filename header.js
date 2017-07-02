@@ -28,7 +28,7 @@
     "use strict";
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['backbone', 'marionette', 'jquery', 'underscore', 'app', 'moment'],
+        define(['backbone', 'backbone.marionette', 'jquery', 'underscore', 'app', 'moment'],
             function (Backbone, Marionette, $, _, App, moment) {
                 return factory(Backbone, Marionette, $, _, App, moment);
             });

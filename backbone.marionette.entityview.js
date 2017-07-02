@@ -28,7 +28,7 @@
     "use strict";
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['backbone', 'marionette', 'jquery', 'underscore', 'app', 'moment'],
+        define(['backbone', 'backbone.marionette', 'jquery', 'underscore', 'app', 'moment'],
             function (Backbone, Marionette, $, _, App, moment) {
                 return factory(Backbone, Marionette, $, _, App, moment);
             });
@@ -3187,11 +3187,10 @@ var PagerItemView;
                 current = 'active';
             }
 
-            return current;
+            return current; 			
         }
     });
-
-})($, _, Backbone, Marionette, this['Templates']['pagerItemTemplate']);
+})(jQuery, _, Backbone, Marionette, this['Templates']['pagerItemTemplate']);
 
 var PagerListView;
 (function ($, _, Backbone, Marionette, PagerItemView) {
@@ -3304,7 +3303,7 @@ var DropDownListView;
             this.$el.data('combobox').refresh();
         }
     });
-})($, _, Backbone, Marionette, OptionView, ReusableTypeListView);
+})(jQuery, _, Backbone, Marionette, OptionView, ReusableTypeListView);
 
 var DateTimePickerView;
 (function ($, _, Backbone, Marionette, ReusableTypeLayoutView, dateTimePickerTpl, moment) {
@@ -5815,7 +5814,7 @@ var EntityController;
     });
 })(App, jQuery, _, Backbone, Marionette, EntityLayoutView, this['Templates']['headerTemplate'], TimeoutUtil, EntityService);
 
-(function (_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin) {
+(function (_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, $) {
     var $config = $('#config');
     if ($config.length > 0) {
         var config = JSON.parse(decodeURIComponent($config.val()));
@@ -5908,7 +5907,7 @@ var EntityController;
 
     _.extend(Marionette.FormView.prototype, FieldsMixin);
 
-})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin);
+})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, jQuery);
 return {
     BaseValidationView: BaseValidationView,
     ErrorView: ErrorView,

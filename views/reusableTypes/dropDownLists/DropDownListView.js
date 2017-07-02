@@ -22,4 +22,4 @@ var DropDownListView;
             this.$el.data('combobox').refresh();
         }
     });
-})($, _, Backbone, Marionette, OptionView, ReusableTypeListView);
+})(jQuery, _, Backbone, Marionette, OptionView, ReusableTypeListView);
