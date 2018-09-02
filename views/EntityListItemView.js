@@ -159,7 +159,7 @@ var EntityListItemView;
                         '</li>');
                 }
 
-                var html = _.template(template)(options);
+                var html = template(options);
                 this.ui.$actions.append(html);
 
                 if (!_.isUndefined(options.callBack) && !options.withModal) {

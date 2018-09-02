@@ -2,7 +2,7 @@ describe('Entity Forms Validation', function () {
     var channel,
         FormView;
 
-    beforeAll(function () {
+    beforeEach(function () {
         channel = Backbone.Radio.channel('test');
 
         FormView = Marionette.EntityFormView.extend({

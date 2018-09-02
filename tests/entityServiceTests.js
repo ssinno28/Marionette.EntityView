@@ -2,7 +2,7 @@ describe('Entity Service with Routing', function () {
     var entityService,
         options;
 
-    beforeAll(function () {
+    beforeEach(function () {
         options = {
             collection: new MockEntityCollection(),
             model: Backbone.Model,

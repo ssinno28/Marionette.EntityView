@@ -17,7 +17,7 @@ var MockModel = Backbone.EntityModel.extend({
             }, this));
         }
     }),
-    region = new Backbone.Marionette.Region({el: '#mainRegion'}),
+    region = new Marionette.Region({el: '#mainRegion'}),
     MockListItemView = Marionette.EntityListItemView.extend({
         fieldsTemplate: _.template('<div><%= name %></div>'),
         onRender: function () {

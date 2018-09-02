@@ -4311,7 +4311,7 @@ var EntityListItemView;
                         '</li>');
                 }
 
-                var html = _.template(template)(options);
+                var html = template(options);
                 this.ui.$actions.append(html);
 
                 if (!_.isUndefined(options.callBack) && !options.withModal) {
@@ -4567,7 +4567,7 @@ var EntityLayoutView;
                 return;
             }
 
-            var html = _.template(this.header.template)(this.header.params);
+            var html = this.header.template(this.header.params);
             this.ui.$header.append(html);
         },
         action: function (name, isMultiAction) {
@@ -4625,7 +4625,7 @@ var EntityLayoutView;
                         '</button>');
                 }
 
-                var html = _.template(template)(options);
+                var html = template(options);
                 this.ui.$actions.append(html);
 
                 if (!_.isUndefined(options.callBack) && !options.withModal) {
