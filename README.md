@@ -19,6 +19,8 @@ While these projects are not published to npm yet, you can take a look at them t
 * Aside from those there is also the [example folder](https://github.com/ssinno28/Marionette.EntityView/tree/master/example) in the root of the project.
 
 ## Release History
+* 1.3.0
+  * Upgrading all 3rd party dependencies to newest versions (except for lunr since that is not backwards compatible).
 * 1.2.11
   * a few fixes to make sure it is compatible with module loaders
 * 1.2.9
