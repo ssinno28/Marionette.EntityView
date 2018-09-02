@@ -51,8 +51,9 @@ module.exports = function (grunt) {
             }
         },
         jasmine: {
-            src: testFilesPath,
+            src: sourceFiles,
             options: {
+                keepRunner: true,
                 vendor: [
                     "./node_modules/jquery/dist/jquery.js",
                     "./node_modules/bootstrap/dist/js/bootstrap.js",
@@ -67,14 +68,20 @@ module.exports = function (grunt) {
                     "./node_modules/backbone.collectionsubset/lib/backbone.collectionsubset.js",
                     "./node_modules/backbone.radio/build/backbone.radio.js",
                     "./node_modules/backbone.marionette/lib/backbone.marionette.js",
+                    "./node_modules/marionette.approuter/lib/marionette.approuter.js",
                     "./node_modules/lunr/lunr.js",
                     "./node_modules/pluralize/pluralize.js",
                     "./node_modules/ckeditor/ckeditor.js",
                     "./node_modules/ckeditor/adapters/jquery.js",
                     "./node_modules/simplemde/dist/simplemde.min.js",
-                    assetSource.js.generatedFile,
-                    './tests/testSetup.js'
-                ]
+                    './appTest.js'
+                ],
+                specs: [
+                    './tests/entityCollectionTests.js',
+                    './tests/entityFormTests.js',
+                    './tests/entityServiceTests.js'
+                ],
+                helpers: './tests/testSetup.js'
             }
         },
         watch: {
@@ -108,12 +115,12 @@ module.exports = function (grunt) {
     grunt.registerTask('default', function () {
         grunt.task.run(['jshint', 'jst'])
             .then(function () {
-             grunt.task.run(['concat'])
-                 .then(function(){
-                     if (testFiles.length > 0) {
-                         grunt.task.run('jasmine');
-                     }
-                 });
+                grunt.task.run(['concat'])
+                    .then(function () {
+                        if (testFiles.length > 0) {
+                            grunt.task.run('jasmine');
+                        }
+                    });
             });
     });
 };

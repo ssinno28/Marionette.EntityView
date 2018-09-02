@@ -3,3 +3,5 @@ generated
 .idea
 npm-debug.log
 example/debug.log
+/.grunt
+/_SpecRunner.html

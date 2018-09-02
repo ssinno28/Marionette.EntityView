@@ -1,6 +1,6 @@
 var EntityListItemView;
 (function ($, _, Backbone, Marionette, entityListItemTpl, SortableItemBehavior) {
-    EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.View.extend({
+    EntityListItemView = Marionette.EntityListItemView = Marionette.View.extend({
         regions: {
             fieldsRegion: {
                 el: '.fieldsRegion',
@@ -159,7 +159,7 @@ var EntityListItemView;
                         '</li>');
                 }
 
-                var html = Marionette.Renderer.render(template, options);
+                var html = _.template(template)(options);
                 this.ui.$actions.append(html);
 
                 if (!_.isUndefined(options.callBack) && !options.withModal) {

@@ -1,5 +1,10 @@
 describe('EntityCollection tests', function () {
-    var MockCollection = MockEntityCollection.extend({url: '/api/test'}),
+    var MockCollection,
+        entities,
+        entities2;
+
+    beforeEach(function () {
+        MockCollection = MockEntityCollection.extend({url: '/api/test'});
         entities = [
             {id: 1, name: 'test', locationId: 1},
             {id: 2, name: 'test 2', locationId: 1},
@@ -8,46 +13,47 @@ describe('EntityCollection tests', function () {
             {id: 5, name: 'test 5', locationId: 1},
             {id: 6, name: 'test 6', locationId: 1},
             {id: 7, name: 'test 7', locationId: 1}
-        ],
+        ];
         entities2 = [
             {id: 8, name: 'test 8', locationId: 2},
             {id: 9, name: 'test 9', locationId: 2},
             {id: 10, name: 'test 10', locationId: 2}
         ];
-		
-	it('gets correct lunr resuls', function(){
-		var Collection = Backbone.EntityCollection.extend({
-							indexFields: [
-								{name: 'name'}
-							],
-							//for demo purposes only, never override the query method!
-							query: function (track, data, force) {
-									return $.Deferred(_.bind(function (defer) {
-										var pageKey = this._getKeyWithOutPage(data),
-											result = this._getSubCollection(data, pageKey);
+    });
 
-										defer.resolve(result, pageKey);
-									}, this));
-							}
-						});
-			
-			var collection = new Collection(),
-				data = {
-					conditions: [
-						{
-							searchType: 'textSearch',
-							value: 'test 3',
-							field: 'name'
-						}
-					]
-				};
-				
-			collection.addRange(entities);
-			collection.query(true, data)
-				 .done(function(results){
-					expect(results.child.first().get('id')).toEqual(3);
-				 });
-	});
+    it('gets correct lunr resuls', function () {
+        var Collection = Backbone.EntityCollection.extend({
+            indexFields: [
+                {name: 'name'}
+            ],
+            //for demo purposes only, never override the query method!
+            query: function (track, data, force) {
+                return $.Deferred(_.bind(function (defer) {
+                    var pageKey = this._getKeyWithOutPage(data),
+                        result = this._getSubCollection(data, pageKey);
+
+                    defer.resolve(result, pageKey);
+                }, this));
+            }
+        });
+
+        var collection = new Collection(),
+            data = {
+                conditions: [
+                    {
+                        searchType: 'textSearch',
+                        value: 'test 3',
+                        field: 'name'
+                    }
+                ]
+            };
+
+        collection.addRange(entities);
+        collection.query(true, data)
+            .done(function (results) {
+                expect(results.child.first().get('id')).toEqual(3);
+            });
+    });
 
     it('calls setAttributes', function () {
         var collection = new MockCollection();
@@ -104,8 +110,8 @@ describe('EntityCollection tests', function () {
         var entitiesToAdd = entities.concat(entities2),
             models = collection.addRange(entitiesToAdd);
 
-        collection._addModelIndexes(page1Key, models.slice(0,4), dataPage1, 10);
-        collection._addModelIndexes(page2Key, models.slice(4,9), dataPage2, 10);
+        collection._addModelIndexes(page1Key, models.slice(0, 4), dataPage1, 10);
+        collection._addModelIndexes(page2Key, models.slice(4, 9), dataPage2, 10);
 
         var result = collection._getSubCollection(dataPage2, page2Key);
 

@@ -3,7 +3,7 @@ var EntityLayoutModel;
     EntityLayoutModel = Backbone.Model.extend({
         defaults: {
             title: '',
-            listView: new Backbone.Marionette.CollectionView(),
+            listView: new Marionette.CollectionView(),
             route: '',
             additionalParams: ''
         }

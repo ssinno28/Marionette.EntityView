@@ -65,8 +65,8 @@ var EntityCollection;
 
                 if (!_.isUndefined(this.indexFields)) {
                     var indexFields = this.indexFields;
-                    if (_.isUndefined(this.searchIndex)) {
-                        this.searchIndex =
+                    if (_.isUndefined(this.idx)) {
+                        this.idx =
                             lunr(function () {
                                 for (var j = 0; j < indexFields.length; j++) {
                                     var indexField = indexFields[j];
@@ -84,7 +84,7 @@ var EntityCollection;
                         indexObject.id = model.get('id');
                     }
 
-                    this.searchIndex.add(indexObject);
+                    this.idx.add(indexObject);
                 }
             }
 

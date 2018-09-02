@@ -254,18 +254,6 @@ __p += '<div class="row">\r\n    <div class="entity-header col-sm-12">\r\n    </
 return __p
 };
 
-this["Templates"]["multSelectHeaderTpl"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '   <div class="col-xs-12 nopadding">\r\n       <h5>' +
-((__t = ( title )) == null ? '' : __t) +
-'</h5>\r\n   </div>';
-
-}
-return __p
-};
-
 this["Templates"]["multiSelectLayoutTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
@@ -285,6 +273,18 @@ __p += '<span class="multi-select-option" data-id="' +
 '" href="#">\r\n    ' +
 ((__t = ( displayField )) == null ? '' : __t) +
 '\r\n</span>\r\n';
+
+}
+return __p
+};
+
+this["Templates"]["multSelectHeaderTpl"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '   <div class="col-xs-12 nopadding">\r\n       <h5>' +
+((__t = ( title )) == null ? '' : __t) +
+'</h5>\r\n   </div>';
 
 }
 return __p
@@ -587,7 +587,7 @@ var FieldsMixin;
                         '</div>');
                 }
 
-                var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
+                var fieldHtml = fieldWrapperTpl({
                     label: options.label.text,
                     dataField: dataField,
                     fieldRegion: fieldRegion,
@@ -709,7 +709,7 @@ var FieldsMixin;
                     fieldWrapperTpl = options.template;
                 }
 
-                var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
+                var fieldHtml = fieldWrapperTpl({
                     dataField: dataField,
                     fieldRegion: fieldRegion
                 });
@@ -760,7 +760,7 @@ var FieldsMixin;
                 }
 
                 var fieldHtml =
-                    Marionette.Renderer.render(fieldWrapperTpl, {
+                    fieldWrapperTpl({
                         dataField: dataField,
                         fieldRegion: fieldRegion
                     });
@@ -1214,7 +1214,7 @@ var DataMixin;
 })(jQuery, _, Backbone);
 var FormValidator;
 (function ($, _, Backbone, Marionette) {
-    FormValidator = Marionette.Object.extend({
+    FormValidator = Marionette.MnObject.extend({
         regex: {
             //RFC 2822
             email: /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i,
@@ -1376,7 +1376,7 @@ var EntityLayoutModel;
     EntityLayoutModel = Backbone.Model.extend({
         defaults: {
             title: '',
-            listView: new Backbone.Marionette.CollectionView(),
+            listView: new Marionette.CollectionView(),
             route: '',
             additionalParams: ''
         }
@@ -1421,7 +1421,7 @@ var ModalModel;
 
 var EntityFilters;
 (function (Backbone, Marionette) {
-    EntityFilters = Marionette.EntityFilters = Marionette.Object.extend({
+    EntityFilters = Marionette.EntityFilters = Marionette.MnObject.extend({
         like: function (model, condition) {
             return model.get(condition.field).toLowerCase().indexOf(condition.value.toLowerCase()) === 0;
         },
@@ -1488,7 +1488,7 @@ var EntityFilters;
         },
 
         textSearch: function (model, condition) {
-            var searchResults = this.searchIndex.search(condition.value);
+            var searchResults = this.idx.search(condition.value);
             var filteredResult =
                 _.find(searchResults, function (searchResult) {
                     return searchResult.ref === model.get('id');
@@ -1565,8 +1565,8 @@ var EntityCollection;
 
                 if (!_.isUndefined(this.indexFields)) {
                     var indexFields = this.indexFields;
-                    if (_.isUndefined(this.searchIndex)) {
-                        this.searchIndex =
+                    if (_.isUndefined(this.idx)) {
+                        this.idx =
                             lunr(function () {
                                 for (var j = 0; j < indexFields.length; j++) {
                                     var indexField = indexFields[j];
@@ -1584,7 +1584,7 @@ var EntityCollection;
                         indexObject.id = model.get('id');
                     }
 
-                    this.searchIndex.add(indexObject);
+                    this.idx.add(indexObject);
                 }
             }
 
@@ -2466,7 +2466,7 @@ var MessagesCollection;
 
 var EntityRouter;
 (function ($, _, Backbone, Marionette) {
-    EntityRouter = Marionette.EntityRouter = Backbone.Marionette.AppRouter.extend({
+    EntityRouter = Marionette.EntityRouter = Marionette.AppRouter.extend({
         onRoute: function (name, path) {
             if (_.isFunction(this.options.controller.onActionExecuting)) {
                 this.options.controller.onActionExecuting(name, path, arguments);
@@ -2533,11 +2533,9 @@ var ModalView;
             _.each(this.options.choices,
                 _.bind(function (option) {
                     var html =
-                        Marionette.Renderer.render(
-                            _.template('<button type="button" class="btn btn-primary <%= type %>" ' +
-                                '<% if(dismiss) { %> data-dismiss="modal" <% } %> > <%= text %> </button>'),
-                            option
-                        );
+                        _.template('<button type="button" class="btn btn-primary <%= type %>" ' +
+                            '<% if(dismiss) { %> data-dismiss="modal" <% } %> > <%= text %> </button>'
+                        )(option);
 
                     this.ui.$modalFooter.append(html);
                 }, this));
@@ -2631,7 +2629,7 @@ var ModalMixin;
 
 var MessageView;
 (function ($, _, Backbone, Marionette, MessageModel, messageTemplate) {
-    MessageView = Marionette.MessageView = Backbone.Marionette.View.extend({
+    MessageView = Marionette.MessageView = Marionette.View.extend({
         model: MessageModel,
         tagName: 'li',
         template: messageTemplate
@@ -2640,7 +2638,7 @@ var MessageView;
 
 var MessageListView;
 (function ($, _, Backbone, Marionette, MessageView, MessagesCollection) {
-    MessageListView = Backbone.Marionette.CollectionView.extend({
+    MessageListView = Marionette.CollectionView.extend({
         tagName: 'ul',
         childView: MessageView,
         collection: MessagesCollection
@@ -2745,7 +2743,7 @@ var ReusableTypeLayoutView;
 
 var ReusableTypeListView;
 (function ($, _, Backbone, Marionette) {
-    ReusableTypeListView = Marionette.ReusableTypeListView = Backbone.Marionette.CollectionView.extend({
+    ReusableTypeListView = Marionette.ReusableTypeListView = Marionette.CollectionView.extend({
         initialize: function (options) {
             _.extend(this, options);
 
@@ -2771,7 +2769,7 @@ var ReusableTypeListView;
 
 var ReusableTypeView;
 (function ($, _, Backbone, Marionette) {
-    ReusableTypeView = Marionette.ReusableTypeView = Backbone.Marionette.View.extend({
+    ReusableTypeView = Marionette.ReusableTypeView = Marionette.View.extend({
         initialize: function (options) {
             _.extend(this, options);
             var channel = this._channel = Backbone.Radio.channel(this.dataField);
@@ -4098,7 +4096,7 @@ var FilterFormView;
 })(jQuery, _, Backbone, Marionette);
 var EntityListView;
 (function ($, _, Backbone, Marionette, SortableListBehavior) {
-    EntityListView = Marionette.EntityListView = Backbone.Marionette.CollectionView.extend({
+    EntityListView = Marionette.EntityListView = Marionette.CollectionView.extend({
         className: 'col-sm-12',
         initialize: function (options) {
             _.extend(this, options);
@@ -4154,7 +4152,7 @@ var EntityListView;
 
 var EntityListItemView;
 (function ($, _, Backbone, Marionette, entityListItemTpl, SortableItemBehavior) {
-    EntityListItemView = Marionette.EntityListItemView = Backbone.Marionette.View.extend({
+    EntityListItemView = Marionette.EntityListItemView = Marionette.View.extend({
         regions: {
             fieldsRegion: {
                 el: '.fieldsRegion',
@@ -4313,7 +4311,7 @@ var EntityListItemView;
                         '</li>');
                 }
 
-                var html = Marionette.Renderer.render(template, options);
+                var html = _.template(template)(options);
                 this.ui.$actions.append(html);
 
                 if (!_.isUndefined(options.callBack) && !options.withModal) {
@@ -4569,7 +4567,7 @@ var EntityLayoutView;
                 return;
             }
 
-            var html = Marionette.Renderer.render(this.header.template, this.header.params);
+            var html = _.template(this.header.template)(this.header.params);
             this.ui.$header.append(html);
         },
         action: function (name, isMultiAction) {
@@ -4627,7 +4625,7 @@ var EntityLayoutView;
                         '</button>');
                 }
 
-                var html = Marionette.Renderer.render(template, options);
+                var html = _.template(template)(options);
                 this.ui.$actions.append(html);
 
                 if (!_.isUndefined(options.callBack) && !options.withModal) {
@@ -4708,7 +4706,7 @@ var MultiSelectListView;
 
 var EntityService;
 (function ($, _, Backbone, Marionette, App, EntityLayoutView, headerTemplate, EntityListItemView, EntityListView) {
-    EntityService = Marionette.EntityService = Marionette.Object.extend({
+    EntityService = Marionette.EntityService = Marionette.MnObject.extend({
         initialize: function (options) {
             _.extend(this, options);
 
@@ -5448,6 +5446,10 @@ var EntityFormView;
             this.on('render', this.runRenderers, this);
             this.on('dom:refresh', this.runFormInitializers, this);
 
+            if (_.isUndefined(this.events)) {
+                this.events = {};
+            }
+
             this.events['click .reset'] = 'resetForm';
             this.delegateEvents();
         },
@@ -5504,7 +5506,7 @@ var EntityFormView;
                 return;
             }
 
-            var html = Marionette.Renderer.render(this.header.template, this.header.params);
+            var html = _.template(this.header.template)(this.header.params);
             this.ui.$header.append(html);
         },
         getChannel: function () {
@@ -5648,7 +5650,7 @@ var EntityFormView;
 
 var TreeCompositeView;
 (function ($, _, Backbone, Marionette, treeCompositeTpl) {
-    TreeCompositeView = Marionette.TreeCompositeView = Backbone.Marionette.View.extend({
+    TreeCompositeView = Marionette.TreeCompositeView = Marionette.View.extend({
         tagName: 'li',
         template: treeCompositeTpl,
         events: function () {
@@ -5785,7 +5787,7 @@ var TreeListView;
 
 var EntityController;
 (function (App, $, _, Backbone, Marionette, EntityLayoutView, headerTemplate, TimeoutUtil, EntityService) {
-    EntityController = Marionette.EntityController = Marionette.Object.extend({
+    EntityController = Marionette.EntityController = Marionette.MnObject.extend({
         initialize: function (options) {
             this._channel = Backbone.Radio.channel(options.route);
             this.getEntityService(options);

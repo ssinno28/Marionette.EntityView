@@ -1,6 +1,6 @@
 var EntityListView;
 (function ($, _, Backbone, Marionette, SortableListBehavior) {
-    EntityListView = Marionette.EntityListView = Backbone.Marionette.CollectionView.extend({
+    EntityListView = Marionette.EntityListView = Marionette.CollectionView.extend({
         className: 'col-sm-12',
         initialize: function (options) {
             _.extend(this, options);

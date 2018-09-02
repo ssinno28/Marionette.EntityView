@@ -1,6 +1,6 @@
 var EntityFilters;
 (function (Backbone, Marionette) {
-    EntityFilters = Marionette.EntityFilters = Marionette.Object.extend({
+    EntityFilters = Marionette.EntityFilters = Marionette.MnObject.extend({
         like: function (model, condition) {
             return model.get(condition.field).toLowerCase().indexOf(condition.value.toLowerCase()) === 0;
         },
@@ -67,7 +67,7 @@ var EntityFilters;
         },
 
         textSearch: function (model, condition) {
-            var searchResults = this.searchIndex.search(condition.value);
+            var searchResults = this.idx.search(condition.value);
             var filteredResult =
                 _.find(searchResults, function (searchResult) {
                     return searchResult.ref === model.get('id');

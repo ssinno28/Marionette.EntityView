@@ -23,6 +23,10 @@ var EntityFormView;
             this.on('render', this.runRenderers, this);
             this.on('dom:refresh', this.runFormInitializers, this);
 
+            if (_.isUndefined(this.events)) {
+                this.events = {};
+            }
+
             this.events['click .reset'] = 'resetForm';
             this.delegateEvents();
         },
@@ -79,7 +83,7 @@ var EntityFormView;
                 return;
             }
 
-            var html = Marionette.Renderer.render(this.header.template, this.header.params);
+            var html = _.template(this.header.template)(this.header.params);
             this.ui.$header.append(html);
         },
         getChannel: function () {

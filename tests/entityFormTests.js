@@ -1,101 +1,106 @@
 describe('Entity Forms Validation', function () {
-    var channel = Backbone.Radio.channel('test');
+    var channel,
+        FormView;
 
-    var FormView = Marionette.EntityFormView.extend({
-        model: Backbone.EntityModel,
-        onRender: function () {
-            this.field('name')
-                .label('Name')
-                .fieldset('user-settings', 'User Settings')
-                .required('Please enter your full name.')
+    beforeAll(function () {
+        channel = Backbone.Radio.channel('test');
+
+        FormView = Marionette.EntityFormView.extend({
+            model: Backbone.EntityModel,
+            onRender: function () {
+                this.field('name')
+                    .label('Name')
+                    .fieldset('user-settings', 'User Settings')
+                    .required('Please enter your full name.')
+                    .singleLine();
+
+                this.field('email')
+                    .label('Email')
+                    .fieldset('user-settings')
+                    .required('Please enter an email address.')
+                    .email('The email address is not in the correct format!')
+                    .singleLine();
+
+                this.field('age')
+                    .label('Your Age')
+                    .fieldset('user-settings')
+                    .required('Your Age is required!!')
+                    .numeric('This field should be a number!')
+                    .min('There is a minimum age of 23 required!', 23)
+                    .rule('testRule', 'The age cannot be greater than 50!',
+                        function (val) {
+                            return val <= 50;
+                        })
+                    .singleLine();
+
+                this.field('single')
+                    .label('Are you single?')
+                    .fieldset('user-settings')
+                    .checkbox();
+
+                this.field('dob')
+                    .label('Date of Birth')
+                    .fieldset('user-settings')
+                    .datePicker();
+
+                this.field('miscData')
+                    .label('Misc Data')
+                    .fieldset('user-settings')
+                    .document(channel, 'misc-data');
+
+                var genders = new Backbone.Collection([
+                    {
+                        id: 'm',
+                        name: 'male'
+                    }, {
+                        id: 'f',
+                        name: 'female'
+                    }
+                ]);
+
+                this.field('gender')
+                    .label('Gender')
+                    .fieldset('user-settings')
+                    .radioBtns(genders);
+
+                var categories = new Backbone.EntityCollection([
+                    {
+                        id: 'one',
+                        name: 'one'
+                    }, {
+                        id: 'two',
+                        name: 'two'
+                    }
+                ]);
+
+                this.field('categories')
+                    .label('Categories')
+                    .fieldset('user-settings')
+                    .checkboxes(categories);
+
+                this.field('gendersDD')
+                    .label('Genders')
+                    .fieldset('user-settings')
+                    .dropdown(genders);
+
+                this.field('tags')
+                    .label('Tags')
+                    .fieldset('user-settings')
+                    .tagsinput(categories);
+            }
+        });
+
+        channel.reply('document:misc-data', function (docField) {
+            docField('title')
+                .label('Title')
+                .required()
                 .singleLine();
 
-            this.field('email')
-                .label('Email')
-                .fieldset('user-settings')
-                .required('Please enter an email address.')
-                .email('The email address is not in the correct format!')
-                .singleLine();
-
-            this.field('age')
-                .label('Your Age')
-                .fieldset('user-settings')
-                .required('Your Age is required!!')
-                .numeric('This field should be a number!')
-                .min('There is a minimum age of 23 required!', 23)
-                .rule('testRule', 'The age cannot be greater than 50!',
-                    function (val) {
-                        return val <= 50;
-                    })
-                .singleLine();
-
-            this.field('single')
-                .label('Are you single?')
-                .fieldset('user-settings')
+            docField('married')
+                .label('Married')
+                .required()
                 .checkbox();
-
-            this.field('dob')
-                .label('Date of Birth')
-                .fieldset('user-settings')
-                .datePicker();
-
-            this.field('miscData')
-                .label('Misc Data')
-                .fieldset('user-settings')
-                .document(channel, 'misc-data');
-
-            var genders = new Backbone.Collection([
-                {
-                    id: 'm',
-                    name: 'male'
-                }, {
-                    id: 'f',
-                    name: 'female'
-                }
-            ]);
-
-            this.field('gender')
-                .label('Gender')
-                .fieldset('user-settings')
-                .radioBtns(genders);
-
-            var categories = new Backbone.EntityCollection([
-                {
-                    id: 'one',
-                    name: 'one'
-                }, {
-                    id: 'two',
-                    name: 'two'
-                }
-            ]);
-
-            this.field('categories')
-                .label('Categories')
-                .fieldset('user-settings')
-                .checkboxes(categories);
-
-            this.field('gendersDD')
-                .label('Genders')
-                .fieldset('user-settings')
-                .dropdown(genders);
-
-            this.field('tags')
-                .label('Tags')
-                .fieldset('user-settings')
-                .tagsinput(categories);
-        }
-    });
-
-    channel.reply('document:misc-data', function (docField) {
-        docField('title')
-            .label('Title')
-            .required()
-            .singleLine();
-
-        docField('married')
-            .label('Married')
-            .required()
-            .checkbox();
+        });
     });
 
     it('gets field data', function () {

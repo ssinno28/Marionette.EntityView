@@ -219,7 +219,7 @@ var EntityLayoutView;
                 return;
             }
 
-            var html = Marionette.Renderer.render(this.header.template, this.header.params);
+            var html = this.header.template(this.header.params);
             this.ui.$header.append(html);
         },
         action: function (name, isMultiAction) {
@@ -277,7 +277,7 @@ var EntityLayoutView;
                         '</button>');
                 }
 
-                var html = Marionette.Renderer.render(template, options);
+                var html = template(options);
                 this.ui.$actions.append(html);
 
                 if (!_.isUndefined(options.callBack) && !options.withModal) {

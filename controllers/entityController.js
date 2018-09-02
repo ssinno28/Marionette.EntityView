@@ -1,6 +1,6 @@
 var EntityController;
 (function (App, $, _, Backbone, Marionette, EntityLayoutView, headerTemplate, TimeoutUtil, EntityService) {
-    EntityController = Marionette.EntityController = Marionette.Object.extend({
+    EntityController = Marionette.EntityController = Marionette.MnObject.extend({
         initialize: function (options) {
             this._channel = Backbone.Radio.channel(options.route);
             this.getEntityService(options);

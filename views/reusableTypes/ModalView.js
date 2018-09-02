@@ -35,11 +35,9 @@ var ModalView;
             _.each(this.options.choices,
                 _.bind(function (option) {
                     var html =
-                        Marionette.Renderer.render(
-                            _.template('<button type="button" class="btn btn-primary <%= type %>" ' +
-                                '<% if(dismiss) { %> data-dismiss="modal" <% } %> > <%= text %> </button>'),
-                            option
-                        );
+                        _.template('<button type="button" class="btn btn-primary <%= type %>" ' +
+                            '<% if(dismiss) { %> data-dismiss="modal" <% } %> > <%= text %> </button>'
+                        )(option);
 
                     this.ui.$modalFooter.append(html);
                 }, this));

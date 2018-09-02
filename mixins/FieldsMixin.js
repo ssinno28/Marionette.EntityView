@@ -116,7 +116,7 @@ var FieldsMixin;
                         '</div>');
                 }
 
-                var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
+                var fieldHtml = fieldWrapperTpl({
                     label: options.label.text,
                     dataField: dataField,
                     fieldRegion: fieldRegion,
@@ -238,7 +238,7 @@ var FieldsMixin;
                     fieldWrapperTpl = options.template;
                 }
 
-                var fieldHtml = Marionette.Renderer.render(fieldWrapperTpl, {
+                var fieldHtml = fieldWrapperTpl({
                     dataField: dataField,
                     fieldRegion: fieldRegion
                 });
@@ -289,7 +289,7 @@ var FieldsMixin;
                 }
 
                 var fieldHtml =
-                    Marionette.Renderer.render(fieldWrapperTpl, {
+                    fieldWrapperTpl({
                         dataField: dataField,
                         fieldRegion: fieldRegion
                     });

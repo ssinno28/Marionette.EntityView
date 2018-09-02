@@ -1,6 +1,6 @@
 var EntityService;
 (function ($, _, Backbone, Marionette, App, EntityLayoutView, headerTemplate, EntityListItemView, EntityListView) {
-    EntityService = Marionette.EntityService = Marionette.Object.extend({
+    EntityService = Marionette.EntityService = Marionette.MnObject.extend({
         initialize: function (options) {
             _.extend(this, options);
 
