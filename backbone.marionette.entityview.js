@@ -1819,76 +1819,71 @@ var EntityCollection;
              */
             var getCollection =
                 new $.Deferred(function (defer) {
-                    var result = $.ajax({
-                        type: 'POST',
-                        url: url,
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: JSON.stringify(queryData),
-                        headers: self.getHeaders(),
-                        /**
-                         * Description
-                         * @method success
-                         * @param {} response
-                         * @return
-                         */
-                        success: function (response) {
-                            var entities = [],
-                                isArray = response instanceof Array;
+                    var successFn = function (response) {
+                        var entities = [],
+                            isArray = response instanceof Array;
 
-                            if (!isArray) {
-                                entities = response.entities;
-                            } else {
-                                entities = response;
-                            }
-
-                            var models = self.addRange(entities, data);
-                            self._addModelIndexes(pageKey, models, data, parseInt(response.count));
-
-                            var result;
-                            if (track) {
-                                result = self._getSubCollection(data, pageKey);
-
-                                result.child.on('add', function () {
-                                    App.indexes[pageKey]++;
-                                });
-
-                                result.child.on('remove', function (removedModel) {
-                                    self._alignIndexes(removedModel, pageKey);
-                                    App.indexes[pageKey]--;
-                                });
-
-                                defer.resolve(result, pageKey);
-                            } else if (plainObj) {
-                                defer.resolve(entities, pageKey);
-                            } else {
-                                result = new Backbone.Collection(models);
-
-                                result.on('add', function () {
-                                    App.indexes[pageKey]++;
-                                });
-
-                                result.on('remove', function (removedModel) {
-                                    self._alignIndexes(removedModel, pageKey);
-                                    App.indexes[pageKey]--;
-                                });
-
-                                defer.resolve(result, pageKey);
-                            }
-                        },
-                        /**
-                         * Description
-                         * @method error
-                         * @param {} errorResponse
-                         * @return
-                         */
-                        error: function (errorResponse) {
-                            console.log("Inside Failure");
-                            console.log(errorResponse.responseText);
+                        if (!isArray) {
+                            entities = response.entities;
+                        } else {
+                            entities = response;
                         }
-                    });
 
-                    return result;
+                        var models = self.addRange(entities, data);
+                        self._addModelIndexes(pageKey, models, data, parseInt(response.count));
+
+                        var result;
+                        if (track) {
+                            result = self._getSubCollection(data, pageKey);
+
+                            result.child.on('add', function () {
+                                App.indexes[pageKey]++;
+                            });
+
+                            result.child.on('remove', function (removedModel) {
+                                self._alignIndexes(removedModel, pageKey);
+                                App.indexes[pageKey]--;
+                            });
+
+                            defer.resolve(result, pageKey);
+                        } else if (plainObj) {
+                            defer.resolve(entities, pageKey);
+                        } else {
+                            result = new Backbone.Collection(models);
+
+                            result.on('add', function () {
+                                App.indexes[pageKey]++;
+                            });
+
+                            result.on('remove', function (removedModel) {
+                                self._alignIndexes(removedModel, pageKey);
+                                App.indexes[pageKey]--;
+                            });
+
+                            defer.resolve(result, pageKey);
+                        }
+                    };
+
+                    var ajaxOptions;
+                    if(_.isUndefined(self.getAjaxOptions)){
+                        ajaxOptions = {
+                            type: 'POST',
+                            url: url,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: JSON.stringify(queryData),
+                            headers: self.getHeaders(),
+                            success: successFn,
+                            error: function (errorResponse) {
+                                console.log("Inside Failure");
+                                console.log(errorResponse.responseText);
+                            }
+                        };
+                    } else {
+                        ajaxOptions = self.getAjaxOptions();
+                    }
+
+                    return $.ajax(ajaxOptions);
                 });
 
 

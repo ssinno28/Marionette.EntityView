@@ -21,6 +21,33 @@ describe('EntityCollection tests', function () {
         ];
     });
 
+    it('checks for ajax options override on query', function () {
+        var Collection = Backbone.EntityCollection.extend({
+            getAjaxOptions: function () {
+                return {test: 'test'}
+            }
+        });
+
+        var testCollection = new Collection();
+        spyOn(testCollection, 'getAjaxOptions');
+        spyOn($, "ajax").and.callFake(function(options) {});
+
+        var data = {
+            conditions: [
+                {
+                    searchType: 'textSearch',
+                    value: 'test 3',
+                    field: 'name'
+                }
+            ]
+        };
+
+        testCollection.query(false, data)
+            .then(function(){
+                expect(testCollection.getAjaxOptions).toHaveBeenCalled();
+            });
+    });
+
     it('gets correct lunr resuls', function () {
         var Collection = Backbone.EntityCollection.extend({
             indexFields: [
