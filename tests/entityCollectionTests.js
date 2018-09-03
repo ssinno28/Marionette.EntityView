@@ -24,13 +24,14 @@ describe('EntityCollection tests', function () {
     it('checks for ajax options override on query', function () {
         var Collection = Backbone.EntityCollection.extend({
             getAjaxOptions: function () {
-                return {test: 'test'}
+                return {test: 'test'};
             }
         });
 
         var testCollection = new Collection();
-        spyOn(testCollection, 'getAjaxOptions');
-        spyOn($, "ajax").and.callFake(function(options) {});
+        spyOn(testCollection, 'getAjaxOptions').and.returnValue({});
+        spyOn($, "ajax").and.callFake(function (options) {
+        });
 
         var data = {
             conditions: [
@@ -43,7 +44,7 @@ describe('EntityCollection tests', function () {
         };
 
         testCollection.query(false, data)
-            .then(function(){
+            .then(function () {
                 expect(testCollection.getAjaxOptions).toHaveBeenCalled();
             });
     });

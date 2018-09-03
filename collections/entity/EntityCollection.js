@@ -364,6 +364,11 @@ var EntityCollection;
                         }
                     };
 
+                    var errorFn = function (errorResponse) {
+                        console.log("Inside Failure");
+                        console.log(errorResponse.responseText);
+                    };
+
                     var ajaxOptions;
                     if(_.isUndefined(self.getAjaxOptions)){
                         ajaxOptions = {
@@ -374,13 +379,13 @@ var EntityCollection;
                             data: JSON.stringify(queryData),
                             headers: self.getHeaders(),
                             success: successFn,
-                            error: function (errorResponse) {
-                                console.log("Inside Failure");
-                                console.log(errorResponse.responseText);
-                            }
+                            error: errorFn
                         };
                     } else {
-                        ajaxOptions = self.getAjaxOptions();
+                        ajaxOptions = self.getAjaxOptions(data);
+                        ajaxOptions.success = successFn;
+                        ajaxOptions.error = errorFn;
+                        ajaxOptions.headers = self.getHeaders();
                     }
 
                     return $.ajax(ajaxOptions);
