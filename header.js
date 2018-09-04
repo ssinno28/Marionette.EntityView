@@ -26,7 +26,19 @@
 
 (function (root, factory) {
     "use strict";
-    if (typeof define === 'function' && define.amd) {
+
+    if (typeof exports != 'undefined') {
+        var _ = require('underscore'),
+            Backbone = require('backbone'),
+            Marionette = require('backbone.marionette'),
+            moment = require('moment');
+            $;
+
+        try { $ = require('jquery'); } catch (e) {}
+
+        exports = factory(Backbone, Marionette, $, _, App, moment);
+    }
+    else if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define(['backbone', 'backbone.marionette', 'jquery', 'underscore', 'app', 'moment'],
             function (Backbone, Marionette, $, _, App, moment) {
@@ -34,12 +46,12 @@
             });
     } else {
 
-        if (_.isUndefined(root.App)) {
+        if (root._.isUndefined(root.App)) {
             root.App = new Marionette.Application();
         }
 
         // Browser globals
         var exports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment);
-        _.extend(root, exports);
+        root._.extend(root, exports);
     }
 }(this, function (Backbone, Marionette, jQuery, _, App, moment) {

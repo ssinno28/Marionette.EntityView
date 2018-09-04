@@ -51,7 +51,7 @@ module.exports = function (grunt) {
             }
         },
         jasmine: {
-            src: sourceFiles,
+            src: './backbone.marionette.entityview.js',
             options: {
                 keepRunner: true,
                 vendor: [
