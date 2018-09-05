@@ -24,26 +24,31 @@
 
  */
 
-(function (root, factory) {
+(function (factory) {
     "use strict";
 
-    if (typeof exports != 'undefined' || typeof require != 'undefined') {
+    // Establish the root object, `window` (`self`) in the browser, or `global` on the server.
+    // We use `self` instead of `window` for `WebWorker` support.
+    var root = (typeof self == 'object' && self.self === self && self) ||
+        (typeof global == 'object' && global.global === global && global);
+
+    if (typeof exports !== 'undefined') {
         var _ = require('underscore'),
             Backbone = require('backbone'),
             Marionette = require('backbone.marionette'),
             AppRouter = require('marionette.approuter'),
-            moment = require('moment');
+            moment = require('moment'),
             $;
 
         try { $ = require('jquery'); } catch (e) {}
 
-        exports = factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter);
+        factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter, exports);
     }
     else if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define(['backbone', 'backbone.marionette', 'jquery', 'underscore', 'moment', 'marionette.approuter'],
             function (Backbone, Marionette, $, _, moment, AppRouter) {
-                return factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter);
+                return factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter, {});
             });
     } else {
 
@@ -52,10 +57,10 @@
         }
 
         // Browser globals
-        var exports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment, root.Marionette.AppRouter);
-        root._.extend(root, exports);
+        var MnEntityViewExports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment, root.Marionette.AppRouter, {});
+        root._.extend(root, MnEntityViewExports);
     }
-}(this, function (Backbone, Marionette, jQuery, _, App, moment, AppRouter) {this["Templates"] = this["Templates"] || {};
+}(function (Backbone, Marionette, jQuery, _, App, moment, AppRouter, MnEntityView) {this["Templates"] = this["Templates"] || {};
 
 this["Templates"]["entityFormLayoutTemplate"] = function(obj) {
 obj || (obj = {});
@@ -5922,39 +5927,41 @@ var EntityController;
 
     _.extend(Marionette.FormView.prototype, FieldsMixin);
 
-})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, jQuery);
-return {
-    BaseValidationView: BaseValidationView,
-    ErrorView: ErrorView,
-    InfoView: InfoView,
-    WarningView: WarningView,
-    SuccessView: SuccessView,
-    TimeoutUtil: TimeoutUtil,
-    UriUtil: UriUtil,
-    AutoCompleteLayoutView: AutoCompleteLayoutView,
-    MultiSelectLayoutView: MultiSelectLayoutView,
-    DateTimePickerView: DateTimePickerView,
-    DatePickerView: DatePickerView,
-    TimePickerView: TimePickerView,
-    SingleLineTextView: SingleLineTextView,
-    WyswigView: WyswigView,
-    ImageFieldView: ImageFieldView,
-    AutoCompleteListView: AutoCompleteListView,
-    RadioButtonListView: RadioButtonListView,
-    CheckBoxListView: CheckBoxListView,
-    CheckBoxView: CheckBoxView,
-    FormValidator: FormValidator,
-    ReusableTypeLayoutView: ReusableTypeLayoutView,
-    MessageBehavior: MessageBehavior,
-    DropDownListView: DropDownListView,
-    EntityListItemView: EntityListItemView,
-    EntityListView: EntityListView,
-    TreeCompositeView: TreeCompositeView,
-    ModalView: ModalView,
-    EntityLayoutView: EntityLayoutView,
-    FilterFormView: FilterFormView,
-    MultiSelectEntityView: MultiSelectEntityView,
-    App: App
-};
-}));
+})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, jQuery);MnEntityView.BaseValidationView = BaseValidationView;
+MnEntityView.ErrorView = ErrorView;
+MnEntityView.InfoView = InfoView;
+MnEntityView.WarningView = WarningView;
+MnEntityView.SuccessView = SuccessView;
+MnEntityView.TimeoutUtil = TimeoutUtil;
+MnEntityView.UriUtil = UriUtil;
+MnEntityView.AutoCompleteLayoutView = AutoCompleteLayoutView;
+MnEntityView.MultiSelectLayoutView = MultiSelectLayoutView;
+MnEntityView.DateTimePickerView = DateTimePickerView;
+MnEntityView.DatePickerView = DatePickerView;
+MnEntityView.TimePickerView = TimePickerView;
+MnEntityView.SingleLineTextView = SingleLineTextView;
+MnEntityView.WyswigView = WyswigView;
+MnEntityView.ImageFieldView = ImageFieldView;
+MnEntityView.AutoCompleteListView = AutoCompleteListView;
+MnEntityView.RadioButtonListView = RadioButtonListView;
+MnEntityView.CheckBoxListView = CheckBoxListView;
+MnEntityView.CheckBoxView = CheckBoxView;
+MnEntityView.FormValidator = FormValidator;
+MnEntityView.ReusableTypeLayoutView = ReusableTypeLayoutView;
+MnEntityView.MessageBehavior = MessageBehavior;
+MnEntityView.DropDownListView = DropDownListView;
+MnEntityView.EntityListItemView = EntityListItemView;
+MnEntityView.EntityListView = EntityListView;
+MnEntityView.TreeCompositeView = TreeCompositeView;
+MnEntityView.ModalView = ModalView;
+MnEntityView.EntityLayoutView = EntityLayoutView;
+MnEntityView.FilterFormView = FilterFormView;
+MnEntityView.MultiSelectEntityView = MultiSelectEntityView;
+MnEntityView.App = App;
+MnEntityView.EntityModel = EntityModel;
+MnEntityView.EntityFormView = EntityFormView;
+
+return MnEntityView;
+}))
+;
 //# sourceMappingURL=backbone.marionette.entityview.js.map

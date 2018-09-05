@@ -1,35 +1,37 @@
+MnEntityView.BaseValidationView = BaseValidationView;
+MnEntityView.ErrorView = ErrorView;
+MnEntityView.InfoView = InfoView;
+MnEntityView.WarningView = WarningView;
+MnEntityView.SuccessView = SuccessView;
+MnEntityView.TimeoutUtil = TimeoutUtil;
+MnEntityView.UriUtil = UriUtil;
+MnEntityView.AutoCompleteLayoutView = AutoCompleteLayoutView;
+MnEntityView.MultiSelectLayoutView = MultiSelectLayoutView;
+MnEntityView.DateTimePickerView = DateTimePickerView;
+MnEntityView.DatePickerView = DatePickerView;
+MnEntityView.TimePickerView = TimePickerView;
+MnEntityView.SingleLineTextView = SingleLineTextView;
+MnEntityView.WyswigView = WyswigView;
+MnEntityView.ImageFieldView = ImageFieldView;
+MnEntityView.AutoCompleteListView = AutoCompleteListView;
+MnEntityView.RadioButtonListView = RadioButtonListView;
+MnEntityView.CheckBoxListView = CheckBoxListView;
+MnEntityView.CheckBoxView = CheckBoxView;
+MnEntityView.FormValidator = FormValidator;
+MnEntityView.ReusableTypeLayoutView = ReusableTypeLayoutView;
+MnEntityView.MessageBehavior = MessageBehavior;
+MnEntityView.DropDownListView = DropDownListView;
+MnEntityView.EntityListItemView = EntityListItemView;
+MnEntityView.EntityListView = EntityListView;
+MnEntityView.TreeCompositeView = TreeCompositeView;
+MnEntityView.ModalView = ModalView;
+MnEntityView.EntityLayoutView = EntityLayoutView;
+MnEntityView.FilterFormView = FilterFormView;
+MnEntityView.MultiSelectEntityView = MultiSelectEntityView;
+MnEntityView.App = App;
+MnEntityView.EntityModel = EntityModel;
+MnEntityView.EntityFormView = EntityFormView;
 
-return {
-    BaseValidationView: BaseValidationView,
-    ErrorView: ErrorView,
-    InfoView: InfoView,
-    WarningView: WarningView,
-    SuccessView: SuccessView,
-    TimeoutUtil: TimeoutUtil,
-    UriUtil: UriUtil,
-    AutoCompleteLayoutView: AutoCompleteLayoutView,
-    MultiSelectLayoutView: MultiSelectLayoutView,
-    DateTimePickerView: DateTimePickerView,
-    DatePickerView: DatePickerView,
-    TimePickerView: TimePickerView,
-    SingleLineTextView: SingleLineTextView,
-    WyswigView: WyswigView,
-    ImageFieldView: ImageFieldView,
-    AutoCompleteListView: AutoCompleteListView,
-    RadioButtonListView: RadioButtonListView,
-    CheckBoxListView: CheckBoxListView,
-    CheckBoxView: CheckBoxView,
-    FormValidator: FormValidator,
-    ReusableTypeLayoutView: ReusableTypeLayoutView,
-    MessageBehavior: MessageBehavior,
-    DropDownListView: DropDownListView,
-    EntityListItemView: EntityListItemView,
-    EntityListView: EntityListView,
-    TreeCompositeView: TreeCompositeView,
-    ModalView: ModalView,
-    EntityLayoutView: EntityLayoutView,
-    FilterFormView: FilterFormView,
-    MultiSelectEntityView: MultiSelectEntityView,
-    App: App
-};
-}));
+return MnEntityView;
+}))
+;

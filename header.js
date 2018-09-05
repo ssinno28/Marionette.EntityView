@@ -24,26 +24,31 @@
 
  */
 
-(function (root, factory) {
+(function (factory) {
     "use strict";
 
-    if (typeof exports != 'undefined' || typeof require != 'undefined') {
+    // Establish the root object, `window` (`self`) in the browser, or `global` on the server.
+    // We use `self` instead of `window` for `WebWorker` support.
+    var root = (typeof self == 'object' && self.self === self && self) ||
+        (typeof global == 'object' && global.global === global && global);
+
+    if (typeof exports !== 'undefined') {
         var _ = require('underscore'),
             Backbone = require('backbone'),
             Marionette = require('backbone.marionette'),
             AppRouter = require('marionette.approuter'),
-            moment = require('moment');
+            moment = require('moment'),
             $;
 
         try { $ = require('jquery'); } catch (e) {}
 
-        exports = factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter);
+        factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter, exports);
     }
     else if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define(['backbone', 'backbone.marionette', 'jquery', 'underscore', 'moment', 'marionette.approuter'],
             function (Backbone, Marionette, $, _, moment, AppRouter) {
-                return factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter);
+                return factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter, {});
             });
     } else {
 
@@ -52,7 +57,7 @@
         }
 
         // Browser globals
-        var exports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment, root.Marionette.AppRouter);
-        root._.extend(root, exports);
+        var MnEntityViewExports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment, root.Marionette.AppRouter, {});
+        root._.extend(root, MnEntityViewExports);
     }
-}(this, function (Backbone, Marionette, jQuery, _, App, moment, AppRouter) {
+}(function (Backbone, Marionette, jQuery, _, App, moment, AppRouter, MnEntityView) {
