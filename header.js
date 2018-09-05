@@ -27,22 +27,23 @@
 (function (root, factory) {
     "use strict";
 
-    if (typeof exports != 'undefined') {
+    if (typeof exports != 'undefined' || typeof require != 'undefined') {
         var _ = require('underscore'),
             Backbone = require('backbone'),
             Marionette = require('backbone.marionette'),
+            AppRouter = require('marionette.approuter'),
             moment = require('moment');
             $;
 
         try { $ = require('jquery'); } catch (e) {}
 
-        exports = factory(Backbone, Marionette, $, _, App, moment);
+        exports = factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter);
     }
     else if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['backbone', 'backbone.marionette', 'jquery', 'underscore', 'app', 'moment'],
-            function (Backbone, Marionette, $, _, App, moment) {
-                return factory(Backbone, Marionette, $, _, App, moment);
+        define(['backbone', 'backbone.marionette', 'jquery', 'underscore', 'moment', 'marionette.approuter'],
+            function (Backbone, Marionette, $, _, moment, AppRouter) {
+                return factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter);
             });
     } else {
 
@@ -51,7 +52,7 @@
         }
 
         // Browser globals
-        var exports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment);
+        var exports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment, root.Marionette.AppRouter);
         root._.extend(root, exports);
     }
-}(this, function (Backbone, Marionette, jQuery, _, App, moment) {
+}(this, function (Backbone, Marionette, jQuery, _, App, moment, AppRouter) {

@@ -27,22 +27,23 @@
 (function (root, factory) {
     "use strict";
 
-    if (typeof exports != 'undefined') {
+    if (typeof exports != 'undefined' || typeof require != 'undefined') {
         var _ = require('underscore'),
             Backbone = require('backbone'),
             Marionette = require('backbone.marionette'),
+            AppRouter = require('marionette.approuter'),
             moment = require('moment');
             $;
 
         try { $ = require('jquery'); } catch (e) {}
 
-        exports = factory(Backbone, Marionette, $, _, App, moment);
+        exports = factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter);
     }
     else if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['backbone', 'backbone.marionette', 'jquery', 'underscore', 'app', 'moment'],
-            function (Backbone, Marionette, $, _, App, moment) {
-                return factory(Backbone, Marionette, $, _, App, moment);
+        define(['backbone', 'backbone.marionette', 'jquery', 'underscore', 'moment', 'marionette.approuter'],
+            function (Backbone, Marionette, $, _, moment, AppRouter) {
+                return factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter);
             });
     } else {
 
@@ -51,10 +52,10 @@
         }
 
         // Browser globals
-        var exports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment);
+        var exports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment, root.Marionette.AppRouter);
         root._.extend(root, exports);
     }
-}(this, function (Backbone, Marionette, jQuery, _, App, moment) {this["Templates"] = this["Templates"] || {};
+}(this, function (Backbone, Marionette, jQuery, _, App, moment, AppRouter) {this["Templates"] = this["Templates"] || {};
 
 this["Templates"]["entityFormLayoutTemplate"] = function(obj) {
 obj || (obj = {});
@@ -2477,8 +2478,8 @@ var MessagesCollection;
 
 
 var EntityRouter;
-(function ($, _, Backbone, Marionette) {
-    EntityRouter = Marionette.EntityRouter = Marionette.AppRouter.extend({
+(function ($, _, Backbone, Marionette, AppRouter) {
+    EntityRouter = Marionette.EntityRouter = AppRouter.extend({
         onRoute: function (name, path) {
             if (_.isFunction(this.options.controller.onActionExecuting)) {
                 this.options.controller.onActionExecuting(name, path, arguments);
@@ -2507,7 +2508,7 @@ var EntityRouter;
             'startsWith/:startsWith/field/:field/*actions': 'textSearch'
         }
     });
-})(jQuery, _, Backbone, Marionette);
+})(jQuery, _, Backbone, Marionette, AppRouter);
 var ModalView;
 (function (_, Backbone, $, Marionette, modalTpl, ModalModel) {
     ModalView = Marionette.View.extend({
@@ -5952,7 +5953,8 @@ return {
     ModalView: ModalView,
     EntityLayoutView: EntityLayoutView,
     FilterFormView: FilterFormView,
-    MultiSelectEntityView: MultiSelectEntityView
+    MultiSelectEntityView: MultiSelectEntityView,
+    App: App
 };
 }));
 //# sourceMappingURL=backbone.marionette.entityview.js.map

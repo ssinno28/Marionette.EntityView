@@ -29,6 +29,7 @@ return {
     ModalView: ModalView,
     EntityLayoutView: EntityLayoutView,
     FilterFormView: FilterFormView,
-    MultiSelectEntityView: MultiSelectEntityView
+    MultiSelectEntityView: MultiSelectEntityView,
+    App: App
 };
 }));
