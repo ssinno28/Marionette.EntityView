@@ -5927,13 +5927,10 @@ var EntityController;
 
     _.extend(Marionette.FormView.prototype, FieldsMixin);
 
-})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, jQuery);MnEntityView.BaseValidationView = BaseValidationView;
-MnEntityView.ErrorView = ErrorView;
+})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, jQuery);MnEntityView.ErrorView = ErrorView;
 MnEntityView.InfoView = InfoView;
 MnEntityView.WarningView = WarningView;
 MnEntityView.SuccessView = SuccessView;
-MnEntityView.TimeoutUtil = TimeoutUtil;
-MnEntityView.UriUtil = UriUtil;
 MnEntityView.AutoCompleteLayoutView = AutoCompleteLayoutView;
 MnEntityView.MultiSelectLayoutView = MultiSelectLayoutView;
 MnEntityView.DateTimePickerView = DateTimePickerView;
@@ -5946,20 +5943,34 @@ MnEntityView.AutoCompleteListView = AutoCompleteListView;
 MnEntityView.RadioButtonListView = RadioButtonListView;
 MnEntityView.CheckBoxListView = CheckBoxListView;
 MnEntityView.CheckBoxView = CheckBoxView;
-MnEntityView.FormValidator = FormValidator;
-MnEntityView.ReusableTypeLayoutView = ReusableTypeLayoutView;
 MnEntityView.MessageBehavior = MessageBehavior;
 MnEntityView.DropDownListView = DropDownListView;
-MnEntityView.EntityListItemView = EntityListItemView;
-MnEntityView.EntityListView = EntityListView;
 MnEntityView.TreeCompositeView = TreeCompositeView;
 MnEntityView.ModalView = ModalView;
-MnEntityView.EntityLayoutView = EntityLayoutView;
-MnEntityView.FilterFormView = FilterFormView;
 MnEntityView.MultiSelectEntityView = MultiSelectEntityView;
 MnEntityView.App = App;
+
+MnEntityView.TimeoutUtil = TimeoutUtil;
+MnEntityView.UriUtil = UriUtil;
+
+MnEntityView.ReusableTypeLayoutView = ReusableTypeLayoutView;
+MnEntityView.ReusableTypeListView = ReusableTypeListView;
+MnEntityView.ReusableTypeView = ReusableTypeView;
+
 MnEntityView.EntityModel = EntityModel;
+MnEntityView.EntityCollection = EntityCollection;
+
+MnEntityView.EntityRouter = EntityRouter;
+MnEntityView.EntityService = EntityService;
+MnEntityView.EntityController = EntityController;
+
 MnEntityView.EntityFormView = EntityFormView;
+MnEntityView.EntityLayoutView = EntityLayoutView;
+MnEntityView.EntityListItemView = EntityListItemView;
+MnEntityView.EntityListView = EntityListView;
+MnEntityView.FilterFormView = FilterFormView;
+MnEntityView.FormValidator = FormValidator;
+MnEntityView.BaseValidationView = BaseValidationView;
 
 return MnEntityView;
 }))
