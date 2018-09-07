@@ -38,6 +38,7 @@
             Marionette = require('backbone.marionette'),
             AppRouter = require('marionette.approuter'),
             moment = require('moment'),
+            collectionsubset = require('backbone.collectionsubset'),
             $;
 
         try { $ = require('jquery'); } catch (e) {}
@@ -53,7 +54,7 @@
     } else {
 
         if (root._.isUndefined(root.App)) {
-            root.App = new Marionette.Application();
+            root.App = new root.Marionette.Application();
         }
 
         // Browser globals

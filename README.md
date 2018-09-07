@@ -19,7 +19,7 @@ While these projects are not published to npm yet, you can take a look at them t
 * Aside from those there is also the [example folder](https://github.com/ssinno28/Marionette.EntityView/tree/master/example) in the root of the project.
 
 ## Release History
-* 1.3.11
+* 1.3.12
   * updating dist js file to be compatible with brunch.js
 * 1.3.1
   * adding ability to override query ajax options and just use the front end caching (you can now setup getAjaxOptions method on your collection).
