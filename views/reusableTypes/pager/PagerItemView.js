@@ -12,7 +12,7 @@ var PagerItemView;
                 current = 'active';
             }
 
-            return current; 			
+            return current + ' page-item';
         }
     });
 })(jQuery, _, Backbone, Marionette, this['Templates']['pagerItemTemplate']);

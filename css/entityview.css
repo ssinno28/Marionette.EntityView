@@ -15,7 +15,7 @@
     margin: 20px 0;
 }
 
-.form-inline .form-group{
+.form-inline .form-group {
     margin-left: 0;
     margin-right: 0;
 }
@@ -236,6 +236,10 @@ legend {
 
 /* Entity Layout
 ------------------------------------------------------------*/
+.entity-layout .navbar {
+    margin-bottom: 5px;
+}
+
 .entity-layout-nested {
     margin: 15px 0px;
 }
@@ -250,6 +254,12 @@ legend {
 
 .actions button {
     margin-right: 5px;
+}
+
+/* Pagination
+------------------------------------------------------------*/
+.pagination {
+    margin-top: 20px;
 }
 
 /* Icons

@@ -132,19 +132,19 @@ var EntityLayoutView;
             var embedded = this.getOption('embedded') ? 'Embedded' : '';
             this.action('getAll')
                 .text('All')
-                .className('btn-default')
+                .className('btn-outline-primary')
                 .callBack(this.getAllClick)
                 .add(true);
 
             this.action('create', false)
                 .text('Create')
-                .className('btn-primary')
+                .className('btn-outline-secondary')
                 .callBack(this.createClick)
                 .add();
 
             this.action('deleteAll', true)
                 .text('Delete All')
-                .className('btn-danger')
+                .className('btn-outline-danger')
                 .withModal('deleteAllModal' + embedded)
                 .add();
         },

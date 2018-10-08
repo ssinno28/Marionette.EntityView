@@ -37,7 +37,7 @@ describe('Entity Service with Routing', function () {
     it('changes hash on route', function () {
         entityService.region.show(entityService.entityLayoutView());
 
-        var $subNavBtn = entityService.entityLayoutView().$el.find('.sub-nav button:first-child');
+        var $subNavBtn = entityService.entityLayoutView().$el.find('.navbar button:first-child');
         $subNavBtn.trigger('click');
 
         expect(location.hash).toEqual('#' + options.route + '/1/');

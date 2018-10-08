@@ -32,6 +32,9 @@ var MultiSelectLayoutView;
             '$addItems': '.add-items',
             '$removeItems': '.remove-items'
         },
+        renderActions: function () {
+            // Do nothing
+        },
         showSelectedInHeader: function () {
             this.ui.$selected.attr('title', '');
 
@@ -282,7 +285,7 @@ var MultiSelectLayoutView;
                 this.nonSelectedItems = new Backbone.Collection(entities.models);
             }, this));
 
-            this._excludedItemsChannel.trigger('getType');
+            this._excludedItemsChannel.trigger('getType', 1);
         },
         onDomRefresh: function () {
             this.ui.$optionsRegion.hide();

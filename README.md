@@ -19,6 +19,9 @@ While these projects are not published to npm yet, you can take a look at them t
 * Aside from those there is also the [example folder](https://github.com/ssinno28/Marionette.EntityView/tree/master/example) in the root of the project.
 
 ## Release History
+* 1.3.13
+  * style fixes for new bootstrap 
+  * fixing issue with no available items showing for multi-select control
 * 1.3.12
   * updating dist js file to be compatible with brunch.js
 * 1.3.1

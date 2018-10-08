@@ -81,7 +81,7 @@ this["Templates"]["entityLayoutTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="row">\r\n    <div class="entity-header col-sm-12">\r\n    </div>\r\n    <div class="col-sm-12 .filter-form">\r\n        <div class="filter-region">\r\n        </div>\r\n        <div class="form-group sub-nav actions">\r\n        </div>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n<div class="row">\r\n    <div class="list-group entityRegion">\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-xs-7 col-sm-9 col-md-10">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n    <div class="col-xs-5 col-sm-3 col-md-2">\r\n        <div class="page-size-region"></div>\r\n    </div>\r\n</div>';
+__p += '<div class="row">\r\n    <div class="entity-header col-sm-12">\r\n    </div>\r\n    <div class="col-sm-12 .filter-form">\r\n        <div class="filter-region">\r\n        </div>\r\n        <nav class="navbar navbar-light bg-light">\r\n            <form class="form-inline actions">\r\n            </form>\r\n        </nav>\r\n    </div><!-- /col -->\r\n</div><!-- /container -->\r\n<div class="row">\r\n    <div class="list-group entityRegion">\r\n    </div>\r\n</div>\r\n<div class="filterEntities row">\r\n    <div class="col-xs-7 col-sm-9 col-md-10">\r\n        <div class="pagerRegion "></div>\r\n    </div>\r\n    <div class="col-xs-5 col-sm-3 col-md-2">\r\n        <div class="page-size-region"></div>\r\n    </div>\r\n</div>';
 
 }
 return __p
@@ -313,7 +313,7 @@ this["Templates"]["pagerItemTemplate"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '\r\n    <a data-number="' +
+__p += '\r\n    <a class="page-link" data-number="' +
 ((__t = ( number )) == null ? '' : __t) +
 '" href="#' +
 ((__t = ( route )) == null ? '' : __t) +
@@ -3204,7 +3204,7 @@ var PagerItemView;
                 current = 'active';
             }
 
-            return current; 			
+            return current + ' page-item';
         }
     });
 })(jQuery, _, Backbone, Marionette, this['Templates']['pagerItemTemplate']);
@@ -4499,19 +4499,19 @@ var EntityLayoutView;
             var embedded = this.getOption('embedded') ? 'Embedded' : '';
             this.action('getAll')
                 .text('All')
-                .className('btn-default')
+                .className('btn-outline-primary')
                 .callBack(this.getAllClick)
                 .add(true);
 
             this.action('create', false)
                 .text('Create')
-                .className('btn-primary')
+                .className('btn-outline-secondary')
                 .callBack(this.createClick)
                 .add();
 
             this.action('deleteAll', true)
                 .text('Delete All')
-                .className('btn-danger')
+                .className('btn-outline-danger')
                 .withModal('deleteAllModal' + embedded)
                 .add();
         },
@@ -5166,6 +5166,9 @@ var MultiSelectLayoutView;
             '$addItems': '.add-items',
             '$removeItems': '.remove-items'
         },
+        renderActions: function () {
+            // Do nothing
+        },
         showSelectedInHeader: function () {
             this.ui.$selected.attr('title', '');
 
@@ -5416,7 +5419,7 @@ var MultiSelectLayoutView;
                 this.nonSelectedItems = new Backbone.Collection(entities.models);
             }, this));
 
-            this._excludedItemsChannel.trigger('getType');
+            this._excludedItemsChannel.trigger('getType', 1);
         },
         onDomRefresh: function () {
             this.ui.$optionsRegion.hide();
