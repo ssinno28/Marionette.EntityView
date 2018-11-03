@@ -253,9 +253,9 @@ this["Templates"]["modalTpl"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="modal-dialog">\r\n    <div class="modal-content">\r\n        <div class="modal-header">\r\n            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n             X\r\n            </button>\r\n            <h4 class="modal-title">' +
+__p += '<div class="modal-dialog">\r\n    <div class="modal-content">\r\n        <div class="modal-header">\r\n            <h4 class="modal-title">' +
 ((__t = ( title )) == null ? '' : __t) +
-'</h4>\r\n        </div>\r\n        <div class="modal-body message">\r\n            ' +
+'</h4>\r\n            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">\r\n             X\r\n            </button>\r\n        </div>\r\n        <div class="modal-body message">\r\n            ' +
 ((__t = ( message )) == null ? '' : __t) +
 '\r\n        </div>\r\n        <div class="modal-footer">\r\n        </div>\r\n    </div>\r\n</div>';
 
