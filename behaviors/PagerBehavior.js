@@ -13,7 +13,7 @@ var PagerBehavior;
                 count = App.indexes[this.view.key],
                 noOfPages = Math.ceil(count / pageSize);
 
-            if (noOfPages <= 1) {
+            if (_.isNaN(noOfPages) || noOfPages <= 1) {
                 return;
             }
 

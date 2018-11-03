@@ -129,22 +129,24 @@ var EntityLayoutView;
                 .add();
         },
         renderActions: function () {
-            var embedded = this.getOption('embedded') ? 'Embedded' : '';
+            var embedded = this.getOption('embedded') ? 'Embedded' : '',
+                btnClass = embedded !== '' ? 'btn-sm ' : 'btn ';
+
             this.action('getAll')
                 .text('All')
-                .className('btn-outline-primary')
+                .className(btnClass + 'btn-outline-primary')
                 .callBack(this.getAllClick)
                 .add(true);
 
             this.action('create', false)
                 .text('Create')
-                .className('btn-outline-secondary')
+                .className(btnClass + 'btn-outline-secondary')
                 .callBack(this.createClick)
                 .add();
 
             this.action('deleteAll', true)
                 .text('Delete All')
-                .className('btn-outline-danger')
+                .className(btnClass + 'btn-outline-danger')
                 .withModal('deleteAllModal' + embedded)
                 .add();
         },
@@ -253,7 +255,7 @@ var EntityLayoutView;
             var withModal = _.bind(function (modalName) {
                 var modalSafeName = this._formatRegionName(modalName);
                 options.withModal = true;
-                options.template = _.template('<button  data-toggle="modal" data-target="#' + modalSafeName + '" type="button" class="<%= safeName %> btn ' +
+                options.template = _.template('<button  data-toggle="modal" data-target="#' + modalSafeName + '" type="button" class="<%= safeName %> ' +
                     '<% if(isMultiAction) { %> multi-action-requests <% } %>' +
                     ' <%= className %>">' +
                     '<%= text %>' +
@@ -271,7 +273,7 @@ var EntityLayoutView;
                 if (!_.isUndefined(options.template)) {
                     template = options.template;
                 } else {
-                    template = _.template('<button type="button" class="<%= safeName %> btn <% if(isMultiAction) { %> multi-action-requests <% } %>' +
+                    template = _.template('<button type="button" class="<%= safeName %> <% if(isMultiAction) { %> multi-action-requests <% } %>' +
                         ' <%= className %>">' +
                         '<%= text %>' +
                         '</button>');
