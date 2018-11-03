@@ -39,6 +39,7 @@
             AppRouter = require('marionette.approuter'),
             moment = require('moment'),
             collectionsubset = require('backbone.collectionsubset'),
+            combobox = require('@danielfarrell/bootstrap-combobox'),
             $;
 
         try { $ = require('jquery'); } catch (e) {}
@@ -3749,7 +3750,8 @@ var PagerBehavior;
 
             view.showChildView('pageSizeRegion', new DropDownListView({
                 dataField: view.route + ':pageSize',
-                collection: collection
+                collection: collection,
+                selectedId: pageSize
             }));
 
             view.triggerMethod("ShowPager");

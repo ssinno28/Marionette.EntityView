@@ -23,7 +23,8 @@ var PagerBehavior;
 
             view.showChildView('pageSizeRegion', new DropDownListView({
                 dataField: view.route + ':pageSize',
-                collection: collection
+                collection: collection,
+                selectedId: pageSize
             }));
 
             view.triggerMethod("ShowPager");
