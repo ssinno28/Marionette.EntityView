@@ -1019,7 +1019,7 @@ var FieldsMixin;
             });
 
             var currentlySetId = this.model.get(dataField);
-            if (_.isUndefined(currentlySetId) || _.isNull(currentlySetId) || currentlySetId === '' || currentlySetId === 0) {
+            if (_.isUndefined(currentlySetId) || _.isNull(currentlySetId) || currentlySetId === '') {
                 collection.add(new Backbone.Model({name: 'Select', id: ''}), {at: 0});
                 currentlySetId = '';
             }
