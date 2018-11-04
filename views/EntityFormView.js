@@ -97,17 +97,16 @@ var EntityFormView;
             console.log("FAIL");
             console.log(errors);
 
-            var $errors = $('.help-block');
+            var $errors = this.$el.find('.help-block');
             $errors.remove();
 
-            var $formGroups = $('.has-error');
+            var $formGroups = this.$el.find('.has-error');
             _.each($formGroups, function ($formGroup) {
                 $($formGroup).removeClass('has-error');
             });
 
             for (var errorObject in errors) {
-                var field = errors[errorObject].el,
-                    $selector = $(field),
+                var $selector = this.$el.find('[data-field=' + errorObject + ']'),
                     $formGroup = $selector.closest('.form-group');
 
                 $formGroup.addClass('has-error');

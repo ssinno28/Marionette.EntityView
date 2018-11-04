@@ -108,11 +108,9 @@ var FieldsMixin;
                 }
                 else {
                     fieldWrapperTpl = _.template('<div class="form-group">' +
-                        '<label class="<% if(srOnly){ %> sr-only <% } %>col-xs-12 col-sm-2 control-label"><%= label %></label>' +
-                        '<div class="col-xs-12 col-sm-10 <%= dataField %>">' +
+                        '<label class="<% if(srOnly){ %> sr-only <% } %>"><%= label %></label>' +
                         '<div class="<%= fieldRegion %>"></div>' +
-                        '</div>' +
-                        '<div class="col-xs-12 col-sm-10 col-sm-offset-2 errors"></div>' +
+                        '<div class="errors"></div>' +
                         '</div>');
                 }
 

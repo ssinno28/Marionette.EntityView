@@ -604,11 +604,9 @@ var FieldsMixin;
                 }
                 else {
                     fieldWrapperTpl = _.template('<div class="form-group">' +
-                        '<label class="<% if(srOnly){ %> sr-only <% } %>col-xs-12 col-sm-2 control-label"><%= label %></label>' +
-                        '<div class="col-xs-12 col-sm-10 <%= dataField %>">' +
+                        '<label class="<% if(srOnly){ %> sr-only <% } %>"><%= label %></label>' +
                         '<div class="<%= fieldRegion %>"></div>' +
-                        '</div>' +
-                        '<div class="col-xs-12 col-sm-10 col-sm-offset-2 errors"></div>' +
+                        '<div class="errors"></div>' +
                         '</div>');
                 }
 
@@ -4230,7 +4228,7 @@ var EntityListItemView;
             var fieldsView =
                 Marionette.View.extend(
                     {
-                        template: _.isUndefined(this.fieldsTemplate) ? _.template('<div class="col-sm-3"><span><%= name %></span></div>') : this.fieldsTemplate,
+                        template: _.isUndefined(this.fieldsTemplate) ? _.template('<div class="col-sm-5"><span><%= name %></span></div>') : this.fieldsTemplate,
                         model: this.model,
                         templateContext: _.isFunction(this.templateContext) ? this.templateContext() : this.templateContext,
                         onRender: function () {
@@ -5551,17 +5549,16 @@ var EntityFormView;
             console.log("FAIL");
             console.log(errors);
 
-            var $errors = $('.help-block');
+            var $errors = this.$el.find('.help-block');
             $errors.remove();
 
-            var $formGroups = $('.has-error');
+            var $formGroups = this.$el.find('.has-error');
             _.each($formGroups, function ($formGroup) {
                 $($formGroup).removeClass('has-error');
             });
 
             for (var errorObject in errors) {
-                var field = errors[errorObject].el,
-                    $selector = $(field),
+                var $selector = this.$el.find('[data-field=' + errorObject + ']'),
                     $formGroup = $selector.closest('.form-group');
 
                 $formGroup.addClass('has-error');

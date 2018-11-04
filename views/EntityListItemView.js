@@ -52,7 +52,7 @@ var EntityListItemView;
             var fieldsView =
                 Marionette.View.extend(
                     {
-                        template: _.isUndefined(this.fieldsTemplate) ? _.template('<div class="col-sm-3"><span><%= name %></span></div>') : this.fieldsTemplate,
+                        template: _.isUndefined(this.fieldsTemplate) ? _.template('<div class="col-sm-5"><span><%= name %></span></div>') : this.fieldsTemplate,
                         model: this.model,
                         templateContext: _.isFunction(this.templateContext) ? this.templateContext() : this.templateContext,
                         onRender: function () {
