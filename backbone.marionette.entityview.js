@@ -5460,6 +5460,8 @@ var EntityFormView;
         },
         constructor: function (options) {
             _.extend(this, options.formOptions);
+            this.originalRoute = location.hash.substring(1, location.hash.length);
+
             Marionette.FormView.prototype.constructor.apply(this, arguments);
 
             if (!_.isUndefined(this.collection)) {
@@ -5652,7 +5654,7 @@ var EntityFormView;
             });
         },
         getSubServiceRoute: function (name) {
-            return location.hash.substring(1, location.hash.length) + name;
+            return this.originalRoute + name;
         }
     });
 })(jQuery,
