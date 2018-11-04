@@ -62,7 +62,12 @@
         var MnEntityViewExports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment, root.Marionette.AppRouter, {});
         root._.extend(root, MnEntityViewExports);
     }
-}(function (Backbone, Marionette, jQuery, _, App, moment, AppRouter, MnEntityView) {this["Templates"] = this["Templates"] || {};
+}(function (Backbone, Marionette, jQuery, _, App, moment, AppRouter, MnEntityView) {
+    Backbone.Collection = Backbone.Collection.extend({
+        getByCid: function (cid) {
+            return this.get({cid: cid});
+        }
+    });this["Templates"] = this["Templates"] || {};
 
 this["Templates"]["entityFormLayoutTemplate"] = function(obj) {
 obj || (obj = {});
@@ -4105,7 +4110,7 @@ var FilterFormView;
 (function ($, _, Backbone, Marionette) {
     FilterFormView = Marionette.FormView.extend({
         fieldWrapperTpl: this["Templates"]["filterFieldTpl"],
-        template: false,
+        template: _.template('<div></div>'),
         constructor: function () {
             Marionette.FormView.prototype.constructor.apply(this, arguments);
             this.on('render', this.runRenderers, this);

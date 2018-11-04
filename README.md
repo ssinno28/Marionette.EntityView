@@ -19,12 +19,14 @@ While these projects are not published to npm yet, you can take a look at them t
 * Aside from those there is also the [example folder](https://github.com/ssinno28/Marionette.EntityView/tree/master/example) in the root of the project.
 
 ## Release History
-* 1.3.20
+* 1.3.22
   * repositioning modal title for new flex box layout
   * making sure pager behavior doesn't trigger on edit view
   * removing btn class form action fluent builder so you can specify if you want btn-sm, btn-xs ect...
   * requiring combobox in dist file
   * setting page size in page size dropdown on init
+  * adding polyfill for missing getByCid method
+  * updating FilterFormView template to empty div
 * 1.3.13
   * style fixes for new bootstrap 
   * fixing issue with no available items showing for multi-select control

@@ -2,7 +2,7 @@ var FilterFormView;
 (function ($, _, Backbone, Marionette) {
     FilterFormView = Marionette.FormView.extend({
         fieldWrapperTpl: this["Templates"]["filterFieldTpl"],
-        template: false,
+        template: _.template('<div></div>'),
         constructor: function () {
             Marionette.FormView.prototype.constructor.apply(this, arguments);
             this.on('render', this.runRenderers, this);

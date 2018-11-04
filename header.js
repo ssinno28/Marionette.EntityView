@@ -63,3 +63,8 @@
         root._.extend(root, MnEntityViewExports);
     }
 }(function (Backbone, Marionette, jQuery, _, App, moment, AppRouter, MnEntityView) {
+    Backbone.Collection = Backbone.Collection.extend({
+        getByCid: function (cid) {
+            return this.get({cid: cid});
+        }
+    });
