@@ -19,6 +19,8 @@ While these projects are not published to npm yet, you can take a look at them t
 * Aside from those there is also the [example folder](https://github.com/ssinno28/Marionette.EntityView/tree/master/example) in the root of the project.
 
 ## Release History
+* 1.3.27
+  * adding disabled property to pass into singleLine editor for disabling field
 * 1.3.26
   * repositioning modal title for new flex box layout
   * making sure pager behavior doesn't trigger on edit view

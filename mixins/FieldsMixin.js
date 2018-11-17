@@ -196,9 +196,9 @@ var FieldsMixin;
                 this._markdownForRegion(fieldRegion, dataField, mdeOptions, options.isDocProp, currentField);
             }, this);
 
-            var singleLine = _.bind(function (placeholderTxt) {
+            var singleLine = _.bind(function (placeholderTxt, disabled) {
                 addField();
-                this._singleLineForRegion(fieldRegion, dataField, options.isDocProp, placeholderTxt, currentField);
+                this._singleLineForRegion(fieldRegion, dataField, options.isDocProp, placeholderTxt, currentField, disabled);
             }, this);
 
             var checkboxes = _.bind(function (collection) {
@@ -449,17 +449,24 @@ var FieldsMixin;
             field.view = view;
             this.showChildView(region, view);
         },
-        _singleLineForRegion: function (region, dataField, isDocProp, placeholderTxt, field) {
+        _singleLineForRegion: function (region, dataField, isDocProp, placeholderTxt, field, disabled) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
             });
 
+            if (_.isUndefined(disabled)) {
+                disabled = false;
+            } else {
+                field.disabled = true;
+            }
+
             field.view = new SingleLineTextView({
                 value: this.model.get(dataField),
                 dataField: dataField,
                 isDocProp: isDocProp,
-                placeholderTxt: placeholderTxt
+                placeholderTxt: placeholderTxt,
+                disabled: disabled
             });
 
             this.showChildView(region, field.view);

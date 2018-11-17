@@ -369,17 +369,22 @@ return __p
 
 this["Templates"]["singleLineTextTemplate"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<input class="form-control" placeholder="' +
+__p += '<input class="form-control"\r\n       placeholder="' +
 ((__t = ( placeholderTxt )) == null ? '' : __t) +
-'" name="' +
+'"\r\n       name="' +
 ((__t = ( dataField )) == null ? '' : __t) +
-'" data-field="' +
+'"\r\n       data-field="' +
 ((__t = ( dataField )) == null ? '' : __t) +
-'" value="' +
+'"\r\n       value="' +
 ((__t = ( value )) == null ? '' : __t) +
-'" type="text"/>\r\n';
+'"\r\n       ';
+ if(disabled) { ;
+__p += ' disabled ';
+ } ;
+__p += '\r\n       type="text"/>\r\n';
 
 }
 return __p
@@ -692,9 +697,9 @@ var FieldsMixin;
                 this._markdownForRegion(fieldRegion, dataField, mdeOptions, options.isDocProp, currentField);
             }, this);
 
-            var singleLine = _.bind(function (placeholderTxt) {
+            var singleLine = _.bind(function (placeholderTxt, disabled) {
                 addField();
-                this._singleLineForRegion(fieldRegion, dataField, options.isDocProp, placeholderTxt, currentField);
+                this._singleLineForRegion(fieldRegion, dataField, options.isDocProp, placeholderTxt, currentField, disabled);
             }, this);
 
             var checkboxes = _.bind(function (collection) {
@@ -945,17 +950,24 @@ var FieldsMixin;
             field.view = view;
             this.showChildView(region, view);
         },
-        _singleLineForRegion: function (region, dataField, isDocProp, placeholderTxt, field) {
+        _singleLineForRegion: function (region, dataField, isDocProp, placeholderTxt, field, disabled) {
             this.addRegion(region, {
                 el: '.' + this._formatRegionName(region),
                 replaceElement: true
             });
 
+            if (_.isUndefined(disabled)) {
+                disabled = false;
+            } else {
+                field.disabled = true;
+            }
+
             field.view = new SingleLineTextView({
                 value: this.model.get(dataField),
                 dataField: dataField,
                 isDocProp: isDocProp,
-                placeholderTxt: placeholderTxt
+                placeholderTxt: placeholderTxt,
+                disabled: disabled
             });
 
             this.showChildView(region, field.view);
@@ -2519,7 +2531,7 @@ var EntityRouter;
         }
     });
 })(jQuery, _, Backbone, Marionette, AppRouter);
-var ModalView;
+    var ModalView;
 (function (_, Backbone, $, Marionette, modalTpl, ModalModel) {
     ModalView = Marionette.View.extend({
         model: ModalModel,
@@ -3135,7 +3147,8 @@ var SingleLineTextView;
             return {
                 dataField: self.dataField,
                 value: self.value,
-                placeholderTxt: self.placeholderTxt
+                placeholderTxt: self.placeholderTxt,
+                disabled: self.disabled
             };
         },
         getValue: function () {

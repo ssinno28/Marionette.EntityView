@@ -39,6 +39,11 @@ App.pageSize = 5;
 
 var formView = Marionette.EntityFormView.extend({
     onRender: function () {
+        this.field('id')
+            .label('Id')
+            .fieldset('user-settings', 'User Settings')
+            .singleLine(null, true);
+
         this.field('name')
             .label('Name')
             .fieldset('user-settings', 'User Settings')

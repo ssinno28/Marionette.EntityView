@@ -8,6 +8,11 @@ describe('Entity Forms Validation', function () {
         FormView = Marionette.EntityFormView.extend({
             model: Backbone.EntityModel,
             onRender: function () {
+                this.field('id')
+                    .label('Id')
+                    .fieldset('user-settings', 'User Settings')
+                    .singleLine(null, true);
+
                 this.field('name')
                     .label('Name')
                     .fieldset('user-settings', 'User Settings')
@@ -169,6 +174,15 @@ describe('Entity Forms Validation', function () {
             var field = errors[errorObject];
             expect(field.error[0]).toEqual('The email address is not in the correct format!');
         }
+    });
+
+    it('properly disabled field', function () {
+        var view = new FormView({channelName: 'test', model: new Backbone.EntityModel()});
+        region.show(view);
+
+        var idField = view.fields['id'];
+        expect(idField.disabled).toEqual(true);
+        expect(idField.view.$el.prop('disabled')).toBeTruthy();
     });
 
     /* it('returns email confirmation error', function () {

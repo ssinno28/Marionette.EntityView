@@ -8,7 +8,8 @@ var SingleLineTextView;
             return {
                 dataField: self.dataField,
                 value: self.value,
-                placeholderTxt: self.placeholderTxt
+                placeholderTxt: self.placeholderTxt,
+                disabled: self.disabled
             };
         },
         getValue: function () {
