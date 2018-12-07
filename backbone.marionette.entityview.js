@@ -751,7 +751,7 @@ var FieldsMixin;
             var custom = _.bind(function (view) {
                 addField();
 
-                this.addRegion(region, {
+                this.addRegion(fieldRegion, {
                     el: '.' + this._formatRegionName(fieldRegion),
                     replaceElement: true
                 });
@@ -760,7 +760,7 @@ var FieldsMixin;
                     value: this.model.get(dataField),
                     dataField: dataField
                 });
-                this.showChildView(region, currentField.view);
+                this.showChildView(fieldRegion, currentField.view);
             }, this);
 
             var service = _.bind(function (serviceType, serviceOptions) {
@@ -2531,7 +2531,7 @@ var EntityRouter;
         }
     });
 })(jQuery, _, Backbone, Marionette, AppRouter);
-    var ModalView;
+var ModalView;
 (function (_, Backbone, $, Marionette, modalTpl, ModalModel) {
     ModalView = Marionette.View.extend({
         model: ModalModel,
