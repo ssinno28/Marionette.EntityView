@@ -5,7 +5,7 @@ describe('Entity Service with Routing', function () {
     beforeEach(function () {
         options = {
             collection: new MockEntityCollection(),
-            model: Backbone.Model,
+            model: Backbone.EntityModel,
             formView: Marionette.EntityFormView,
             listView: MockListView,
             title: 'Testing',
@@ -13,10 +13,18 @@ describe('Entity Service with Routing', function () {
             region: region
         };
 
-        options.collection.add(new Backbone.Model({id: 1, name: 'testing'}));
+        options.collection.add(new Backbone.EntityModel({id: 1, name: 'testing'}));
         entityService = new Marionette.EntityService(options);
     });
 
+    it('calls destroy when formRegion is passed in', function () {
+        entityService.region.show(entityService.entityLayoutView());
+        entityService.formRegion = region;
+        spyOn(entityService._entityLayoutView, 'destroy');
+
+        entityService.edit(1);
+        expect(entityService._entityLayoutView.destroy).toHaveBeenCalled();
+    });
 
     it('defaults to have routing', function () {
         expect(entityService.routing).toEqual(true);

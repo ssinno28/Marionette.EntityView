@@ -187,6 +187,10 @@ var EntityService;
                     if (_.isUndefined(this.formRegion)) {
                         this.entityLayoutView().showChildView('entityRegion', form);
                     } else {
+                        if (this.region.currentView === this._entityLayoutView) {
+                            this.entityLayoutView().destroy();
+                        }
+
                         this.formRegion.show(form);
                     }
                 }, this));
