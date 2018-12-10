@@ -3754,7 +3754,7 @@ var PagerBehavior;
                 channel = this.view.getChannel(),
                 pageSize = channel.request('getPageSize'),
                 count = App.indexes[this.view.key],
-                noOfPages = Math.ceil(count / pageSize);
+                noOfPages = Math.floor(count / pageSize);
 
             if (_.isNaN(noOfPages) || noOfPages <= 1) {
                 return;
@@ -3797,7 +3797,7 @@ var PagerBehavior;
                 count = App.indexes[this.view.key],
                 currentPage = this.view.listView.currentPage,
                 collection = new Backbone.Collection(),
-                noOfPages = Math.ceil(count / pageSize);
+                noOfPages = Math.floor(count / pageSize);
 
             if (noOfPages === 1) {
                 pagerRegion.empty();
