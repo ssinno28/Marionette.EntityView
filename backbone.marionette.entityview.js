@@ -606,8 +606,7 @@ var FieldsMixin;
                     fieldWrapperTpl = options.template;
                 } else if (!_.isUndefined(this.fieldWrapperTpl)) {
                     fieldWrapperTpl = this.fieldWrapperTpl;
-                }
-                else {
+                } else {
                     fieldWrapperTpl = _.template('<div class="form-group">' +
                         '<label class="<% if(srOnly){ %> sr-only <% } %>"><%= label %></label>' +
                         '<div class="<%= fieldRegion %>"></div>' +
@@ -877,6 +876,12 @@ var FieldsMixin;
                         '<legend>' + text + '</legend>' +
                         '</fieldset>');
                     $fieldset = $fields.find('#' + fieldsetId);
+
+                    if (_.isUndefined(this.fieldsets)) {
+                        this.fieldsets = [];
+                    }
+
+                    this.fieldsets.push({id: fieldsetId, text: text});
                 }
 
                 options.fieldset.$el = $fieldset;

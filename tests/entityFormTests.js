@@ -80,7 +80,7 @@ describe('Entity Forms Validation', function () {
 
                 this.field('categories')
                     .label('Categories')
-                    .fieldset('user-settings')
+                    .fieldset('category-settings')
                     .checkboxes(categories);
 
                 this.field('gendersDD')
@@ -106,6 +106,13 @@ describe('Entity Forms Validation', function () {
                 .required()
                 .checkbox();
         });
+    });
+
+    it('adds all fieldsets correctly to form view', function () {
+        var view = new FormView({channelName: 'test', model: new Backbone.EntityModel()});
+        region.show(view);
+
+        expect(view.fieldsets.length).toEqual(2);
     });
 
     it('gets field data', function () {

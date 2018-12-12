@@ -19,10 +19,11 @@ While these projects are not published to npm yet, you can take a look at them t
 * Aside from those there is also the [example folder](https://github.com/ssinno28/Marionette.EntityView/tree/master/example) in the root of the project.
 
 ## Release History
-* 1.3.30
+* 1.3.31
   * passing in correct region for custom view field
   * making sure layout view gets destroyed if the form view is the same as the layout view
   * using math.floor to get number of pages
+  * exposing fieldsets as a property on EntityFormView
 * 1.3.27
   * adding disabled property to pass into singleLine editor for disabling field
 * 1.3.26
