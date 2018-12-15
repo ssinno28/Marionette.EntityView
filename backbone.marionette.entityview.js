@@ -4450,7 +4450,7 @@ var EntityLayoutView;
             if (!this.routing) {
                 this._channel.trigger('create');
             } else {
-                location.hash = this.route + '/create/';
+                App.router.transitionTo(this.route + '.create');
             }
         },
         runInitializers: function () {
