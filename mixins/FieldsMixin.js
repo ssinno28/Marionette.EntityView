@@ -301,8 +301,6 @@ var FieldsMixin;
 
                 this['_' + name + 'Service'] = new serviceType(_.extend(serviceOptions, {
                     region: this.getRegion(fieldRegion),
-                    route: this.getSubServiceRoute(name),
-                    subRoute: location.hash.substring(1, location.hash.length),
                     name: name,
                     embedded: true
                 }));
