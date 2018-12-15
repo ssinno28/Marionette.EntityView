@@ -1,4 +1,4 @@
-(function (_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, $) {
+(function (_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, $, cherrytree) {
     var $config = $('#config');
     if ($config.length > 0) {
         var config = JSON.parse(decodeURIComponent($config.val()));
@@ -73,6 +73,8 @@
         BrowseServer();
     });
 
+    App.router = cherrytree();
+
     _.extend(EntityLayoutView.prototype, ModalMixin);
     _.extend(EntityListItemView.prototype, ModalMixin);
     _.extend(EntityFormView.prototype, ModalMixin);
@@ -91,4 +93,4 @@
 
     _.extend(Marionette.FormView.prototype, FieldsMixin);
 
-})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, jQuery);
+})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, jQuery, cherrytree);

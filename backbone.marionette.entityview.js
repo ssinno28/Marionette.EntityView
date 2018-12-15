@@ -36,21 +36,21 @@
         var _ = require('underscore'),
             Backbone = require('backbone'),
             Marionette = require('backbone.marionette'),
-            AppRouter = require('marionette.approuter'),
             moment = require('moment'),
             collectionsubset = require('backbone.collectionsubset'),
             combobox = require('@danielfarrell/bootstrap-combobox'),
+            cherrytree = require('cherrytree'),
             $;
 
         try { $ = require('jquery'); } catch (e) {}
 
-        factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter, exports);
+        factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, cherrytree, exports);
     }
     else if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['backbone', 'backbone.marionette', 'jquery', 'underscore', 'moment', 'marionette.approuter'],
-            function (Backbone, Marionette, $, _, moment, AppRouter) {
-                return factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter, {});
+        define(['backbone', 'backbone.marionette', 'jquery', 'underscore', 'moment', 'cherrytree'],
+            function (Backbone, Marionette, $, _, moment, cherrytree) {
+                return factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, cherrytree, {});
             });
     } else {
 
@@ -59,10 +59,10 @@
         }
 
         // Browser globals
-        var MnEntityViewExports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment, root.Marionette.AppRouter, {});
+        var MnEntityViewExports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment, root.cherrytree, {});
         root._.extend(root, MnEntityViewExports);
     }
-}(function (Backbone, Marionette, jQuery, _, App, moment, AppRouter, MnEntityView) {
+}(function (Backbone, Marionette, jQuery, _, App, moment, cherrytree, MnEntityView) {
     Backbone.Collection = Backbone.Collection.extend({
         getByCid: function (cid) {
             return this.get({cid: cid});
@@ -2504,38 +2504,6 @@ var MessagesCollection;
 })(jQuery, _, Backbone, Marionette, App, MessageModel);
 
 
-var EntityRouter;
-(function ($, _, Backbone, Marionette, AppRouter) {
-    EntityRouter = Marionette.EntityRouter = AppRouter.extend({
-        onRoute: function (name, path) {
-            if (_.isFunction(this.options.controller.onActionExecuting)) {
-                this.options.controller.onActionExecuting(name, path, arguments);
-            }
-        },
-        //Root path for all routes defined by this router. Override this in a deriving
-        //class for keeping route table DRY.
-        urlRoot: undefined,
-
-        //override the route method to prefix the route URL
-        route: function (route, name, callback) {
-            if (this.urlRoot) {
-                route = (route === '' ? this.urlRoot : this.urlRoot + "/" + route);
-            }
-
-            //define route
-            Backbone.Router.prototype.route.call(this, route, name, callback);
-
-            //also support URLs with trailing slashes
-            Backbone.Router.prototype.route.call(this, route + "/", name, callback);
-        },
-        appRoutes: {
-            'create/*actions': 'create',
-            'edit/:id/*actions': 'edit',
-            ':page/*actions': 'getType',
-            'startsWith/:startsWith/field/:field/*actions': 'textSearch'
-        }
-    });
-})(jQuery, _, Backbone, Marionette, AppRouter);
 var ModalView;
 (function (_, Backbone, $, Marionette, modalTpl, ModalModel) {
     ModalView = Marionette.View.extend({
@@ -3781,7 +3749,7 @@ var PagerBehavior;
                     if (!_.isNull(pageSize)) {
                         this._channel.trigger('changePageSize', parseInt(pageSize));
                         this.listView.currentPage = 1;
-                        
+
                         this.triggerMethod("ShowPager");
                     }
                 }, view));
@@ -3807,7 +3775,7 @@ var PagerBehavior;
             if (noOfPages === 1) {
                 pagerRegion.empty();
                 if (this.view.routing) {
-                    location.hash = '/' + this.view.route + '/' + 1 + '/';
+                    App.router.transitionTo(this.view.route + '.getType', {page: 1});
                 }
 
                 return;
@@ -3815,7 +3783,7 @@ var PagerBehavior;
 
             for (var i = 1; i <= noOfPages; i++) {
                 var pagerItem = new Backbone.Model(),
-                    route = '/' + this.view.route + '/' + i + '/';
+                    route = App.router.generate(this.view.route + '.getType', {page: i});
 
                 pagerItem.set({route: route, currentPage: i == currentPage, number: i});
                 collection.add(pagerItem);
@@ -4193,7 +4161,7 @@ var EntityListView;
 })(jQuery, _, Backbone, Marionette, SortableListBehavior);
 
 var EntityListItemView;
-(function ($, _, Backbone, Marionette, entityListItemTpl, SortableItemBehavior) {
+(function ($, _, Backbone, Marionette, entityListItemTpl, SortableItemBehavior, App) {
     EntityListItemView = Marionette.EntityListItemView = Marionette.View.extend({
         regions: {
             fieldsRegion: {
@@ -4286,7 +4254,7 @@ var EntityListItemView;
         editClick: function (e) {
             var id = this.model.get('id');
             if (this.getOption('routing')) {
-                location.hash = this.route + '/edit/' + id + '/';
+                App.router.transitionTo(this.route + '.edit', {id: id});
             } else {
                 this._channel.trigger('edit', id);
             }
@@ -4386,7 +4354,7 @@ var EntityListItemView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], SortableItemBehavior);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], SortableItemBehavior, App);
 
 var EntityLayoutView;
 (function ($, _, Backbone, Marionette, entityListLayoutTpl, EntityLayoutModel, PagerBehavior, FilterFormView) {
@@ -4814,16 +4782,6 @@ var EntityService;
             if (_.isUndefined(this.pageSizes)) {
                 this.pageSizes = [5, 10, 15, 20];
             }
-
-            if (this.embedded && this.routing) {
-                var router = Marionette.EntityRouter.extend({
-                    urlRoot: this.route
-                });
-
-                this._router = new router({
-                    controller: this
-                });
-            }
         },
         radioEvents: {
             'create': 'create',
@@ -4976,11 +4934,6 @@ var EntityService;
                 });
         },
         textSearch: function (startsWith, field) {
-            if (!_.isUndefined(this.subRoute) && this.region.isDestroyed()) {
-                location.hash = this.subRoute;
-                return;
-            }
-
             var data =
                 this.data(1, this.getPageSize())
                     .condition(field, 'like', startsWith);
@@ -5018,11 +4971,6 @@ var EntityService;
                 }, this));
         },
         getAll: function (page, force) {
-            if (!_.isUndefined(this.subRoute) && this.region.isDestroyed()) {
-                location.hash = this.subRoute;
-                return;
-            }
-
             if (this.region.currentView !== this._entityLayoutView) {
                 throw new Error('You need to call getType on this service before calling get all!!');
             }
@@ -5069,11 +5017,6 @@ var EntityService;
                 });
         },
         getType: function (page, force) {
-            if (!_.isUndefined(this.subRoute) && this.region.isDestroyed()) {
-                location.hash = this.subRoute;
-                return;
-            }
-
             var self = this;
 
             if (isNaN(page)) {
@@ -5482,7 +5425,6 @@ var EntityFormView;
         },
         constructor: function (options) {
             _.extend(this, options.formOptions);
-            this.originalRoute = location.hash.substring(1, location.hash.length);
 
             Marionette.FormView.prototype.constructor.apply(this, arguments);
 
@@ -5674,9 +5616,6 @@ var EntityFormView;
                     console.log(response.responseText);
                 }
             });
-        },
-        getSubServiceRoute: function (name) {
-            return this.originalRoute + name;
         }
     });
 })(jQuery,
@@ -5868,7 +5807,7 @@ var EntityController;
     });
 })(App, jQuery, _, Backbone, Marionette, EntityLayoutView, this['Templates']['headerTemplate'], TimeoutUtil, EntityService);
 
-(function (_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, $) {
+(function (_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, $, cherrytree) {
     var $config = $('#config');
     if ($config.length > 0) {
         var config = JSON.parse(decodeURIComponent($config.val()));
@@ -5943,6 +5882,8 @@ var EntityController;
         BrowseServer();
     });
 
+    App.router = cherrytree();
+
     _.extend(EntityLayoutView.prototype, ModalMixin);
     _.extend(EntityListItemView.prototype, ModalMixin);
     _.extend(EntityFormView.prototype, ModalMixin);
@@ -5961,7 +5902,7 @@ var EntityController;
 
     _.extend(Marionette.FormView.prototype, FieldsMixin);
 
-})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, jQuery);MnEntityView.ErrorView = ErrorView;
+})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, jQuery, cherrytree);MnEntityView.ErrorView = ErrorView;
 MnEntityView.InfoView = InfoView;
 MnEntityView.WarningView = WarningView;
 MnEntityView.SuccessView = SuccessView;
@@ -5994,7 +5935,6 @@ MnEntityView.ReusableTypeView = ReusableTypeView;
 MnEntityView.EntityModel = EntityModel;
 MnEntityView.EntityCollection = EntityCollection;
 
-MnEntityView.EntityRouter = EntityRouter;
 MnEntityView.EntityService = EntityService;
 MnEntityView.EntityController = EntityController;
 

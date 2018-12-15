@@ -55,6 +55,7 @@ module.exports = function (grunt) {
             options: {
                 keepRunner: true,
                 vendor: [
+                    "./node_modules/cherrytree/standalone.js",
                     "./node_modules/jquery/dist/jquery.js",
                     "./node_modules/bootstrap/dist/js/bootstrap.js",
                     "./node_modules/moment/moment.js",

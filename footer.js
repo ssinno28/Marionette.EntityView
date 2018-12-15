@@ -31,7 +31,6 @@ MnEntityView.ReusableTypeView = ReusableTypeView;
 MnEntityView.EntityModel = EntityModel;
 MnEntityView.EntityCollection = EntityCollection;
 
-MnEntityView.EntityRouter = EntityRouter;
 MnEntityView.EntityService = EntityService;
 MnEntityView.EntityController = EntityController;
 

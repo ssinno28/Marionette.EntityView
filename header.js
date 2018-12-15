@@ -36,21 +36,21 @@
         var _ = require('underscore'),
             Backbone = require('backbone'),
             Marionette = require('backbone.marionette'),
-            AppRouter = require('marionette.approuter'),
             moment = require('moment'),
             collectionsubset = require('backbone.collectionsubset'),
             combobox = require('@danielfarrell/bootstrap-combobox'),
+            cherrytree = require('cherrytree'),
             $;
 
         try { $ = require('jquery'); } catch (e) {}
 
-        factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter, exports);
+        factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, cherrytree, exports);
     }
     else if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['backbone', 'backbone.marionette', 'jquery', 'underscore', 'moment', 'marionette.approuter'],
-            function (Backbone, Marionette, $, _, moment, AppRouter) {
-                return factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, AppRouter, {});
+        define(['backbone', 'backbone.marionette', 'jquery', 'underscore', 'moment', 'cherrytree'],
+            function (Backbone, Marionette, $, _, moment, cherrytree) {
+                return factory(Backbone, Marionette, $, _, new Marionette.Application(), moment, cherrytree, {});
             });
     } else {
 
@@ -59,10 +59,10 @@
         }
 
         // Browser globals
-        var MnEntityViewExports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment, root.Marionette.AppRouter, {});
+        var MnEntityViewExports = factory.call(root, root.Backbone, root.Marionette, root.jQuery, root._, root.App, root.moment, root.cherrytree, {});
         root._.extend(root, MnEntityViewExports);
     }
-}(function (Backbone, Marionette, jQuery, _, App, moment, AppRouter, MnEntityView) {
+}(function (Backbone, Marionette, jQuery, _, App, moment, cherrytree, MnEntityView) {
     Backbone.Collection = Backbone.Collection.extend({
         getByCid: function (cid) {
             return this.get({cid: cid});

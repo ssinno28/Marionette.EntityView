@@ -64,16 +64,6 @@ var EntityService;
             if (_.isUndefined(this.pageSizes)) {
                 this.pageSizes = [5, 10, 15, 20];
             }
-
-            if (this.embedded && this.routing) {
-                var router = Marionette.EntityRouter.extend({
-                    urlRoot: this.route
-                });
-
-                this._router = new router({
-                    controller: this
-                });
-            }
         },
         radioEvents: {
             'create': 'create',
@@ -226,11 +216,6 @@ var EntityService;
                 });
         },
         textSearch: function (startsWith, field) {
-            if (!_.isUndefined(this.subRoute) && this.region.isDestroyed()) {
-                location.hash = this.subRoute;
-                return;
-            }
-
             var data =
                 this.data(1, this.getPageSize())
                     .condition(field, 'like', startsWith);
@@ -268,11 +253,6 @@ var EntityService;
                 }, this));
         },
         getAll: function (page, force) {
-            if (!_.isUndefined(this.subRoute) && this.region.isDestroyed()) {
-                location.hash = this.subRoute;
-                return;
-            }
-
             if (this.region.currentView !== this._entityLayoutView) {
                 throw new Error('You need to call getType on this service before calling get all!!');
             }
@@ -319,11 +299,6 @@ var EntityService;
                 });
         },
         getType: function (page, force) {
-            if (!_.isUndefined(this.subRoute) && this.region.isDestroyed()) {
-                location.hash = this.subRoute;
-                return;
-            }
-
             var self = this;
 
             if (isNaN(page)) {

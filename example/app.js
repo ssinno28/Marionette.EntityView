@@ -129,18 +129,53 @@ var options = {
     allowableOperations: ['edit', 'delete', 'delete-all', 'create', 'test']
 };
 
-var router = Marionette.EntityRouter.extend({
-    urlRoot: 'test'
-});
-
 App.on('start', function () {
     App.FILE_BROWSER_URL = '../node_modules/rich-filemanager/index.html';
 
-    new router({
-        controller: new Marionette.EntityController(options)
+    var controller = new Marionette.EntityController(options);
+    App.router.map(function (route) {
+        route('test', {path: '/test/', abstract: true}, function () {
+            route('test.getType', {path: ':page'});
+            route('test.create', {page: 'create'});
+            route('test.edit', {path: 'edit/:id'});
+        });
     });
 
-    Backbone.history.start();
+    App.router.use(function render(transition) {
+        transition.routes.forEach(function (route, i) {
+            if (App.router.isActive(route.name, route.params, route.query)) {
+                return;
+            }
+
+            let routeSegments = route.name.split('.'),
+                count = routeSegments.length - 1,
+                channelName = '',
+                method = routeSegments[count];
+
+            for (let i = 0; i < count; i++) {
+                channelName += routeSegments[i];
+
+                if (i + 1 < count) {
+                    channelName += '.';
+                }
+            }
+
+            switch (method) {
+                case 'getType':
+                    Backbone.Radio.channel(channelName).trigger(method, route.params.page);
+                    break;
+                case 'edit':
+                    Backbone.Radio.channel(channelName).trigger(method, route.params.id);
+                    break;
+                case 'create':
+                    Backbone.Radio.channel(channelName).trigger(method);
+                    break;
+            }
+        });
+    });
+
+    // start listening to URL changes
+    App.router.listen()
 });
 
 App.start();

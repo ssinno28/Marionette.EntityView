@@ -1,5 +1,5 @@
 var EntityListItemView;
-(function ($, _, Backbone, Marionette, entityListItemTpl, SortableItemBehavior) {
+(function ($, _, Backbone, Marionette, entityListItemTpl, SortableItemBehavior, App) {
     EntityListItemView = Marionette.EntityListItemView = Marionette.View.extend({
         regions: {
             fieldsRegion: {
@@ -92,7 +92,7 @@ var EntityListItemView;
         editClick: function (e) {
             var id = this.model.get('id');
             if (this.getOption('routing')) {
-                location.hash = this.route + '/edit/' + id + '/';
+                App.router.transitionTo(this.route + '.edit', {id: id});
             } else {
                 this._channel.trigger('edit', id);
             }
@@ -192,4 +192,4 @@ var EntityListItemView;
         }
     });
 
-})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], SortableItemBehavior);
+})(jQuery, _, Backbone, Marionette, this['Templates']['entityListItemTemplate'], SortableItemBehavior, App);

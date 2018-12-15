@@ -33,7 +33,7 @@ var PagerBehavior;
                     if (!_.isNull(pageSize)) {
                         this._channel.trigger('changePageSize', parseInt(pageSize));
                         this.listView.currentPage = 1;
-                        
+
                         this.triggerMethod("ShowPager");
                     }
                 }, view));
@@ -59,7 +59,7 @@ var PagerBehavior;
             if (noOfPages === 1) {
                 pagerRegion.empty();
                 if (this.view.routing) {
-                    location.hash = '/' + this.view.route + '/' + 1 + '/';
+                    App.router.transitionTo(this.view.route + '.getType', {page: 1});
                 }
 
                 return;
@@ -67,7 +67,7 @@ var PagerBehavior;
 
             for (var i = 1; i <= noOfPages; i++) {
                 var pagerItem = new Backbone.Model(),
-                    route = '/' + this.view.route + '/' + i + '/';
+                    route = App.router.generate(this.view.route + '.getType', {page: i});
 
                 pagerItem.set({route: route, currentPage: i == currentPage, number: i});
                 collection.add(pagerItem);
