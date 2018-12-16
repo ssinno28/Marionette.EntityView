@@ -4252,7 +4252,9 @@ var EntityListItemView;
         editClick: function (e) {
             var id = this.model.get('id');
             if (this.getOption('routing')) {
-                App.router.transitionTo(this.route + '.edit', {id: id});
+                var params = {};
+                params[this.route.replace('.', '') + 'editid'] = id;
+                App.router.transitionTo(this.route + '.edit', params);
             } else {
                 this._channel.trigger('edit', id);
             }

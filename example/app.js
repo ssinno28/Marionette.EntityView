@@ -134,10 +134,10 @@ App.on('start', function () {
 
     var controller = new Marionette.EntityController(options);
     App.router.map(function (route) {
-        route('test', {path: '/test/', abstract: true}, function () {
-            route('test.getType', {path: ':page'});
-            route('test.create', {page: 'create'});
-            route('test.edit', {path: 'edit/:id'});
+        route('test', {path: '/test', abstract: true}, function () {
+            route('test.create', {path: 'create/'});
+            route('test.edit', {path: 'edit/:testeditid/'});
+            route('test.getType', {path: ':page/'});
         });
     });
 
@@ -165,7 +165,7 @@ App.on('start', function () {
                     Backbone.Radio.channel(channelName).trigger(method, route.params.page);
                     break;
                 case 'edit':
-                    Backbone.Radio.channel(channelName).trigger(method, route.params.id);
+                    Backbone.Radio.channel(channelName).trigger(method, route.params[route.name.replace('.', '') + 'id']);
                     break;
                 case 'create':
                     Backbone.Radio.channel(channelName).trigger(method);
