@@ -108,6 +108,10 @@ describe('Entity Forms Validation', function () {
         });
     });
 
+    afterAll(() => {
+        channel.reset();
+    });
+
     it('adds all fieldsets correctly to form view', function () {
         var view = new FormView({channelName: 'test', model: new Backbone.EntityModel()});
         region.show(view);

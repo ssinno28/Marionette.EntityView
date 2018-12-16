@@ -32,7 +32,6 @@ MnEntityView.EntityModel = EntityModel;
 MnEntityView.EntityCollection = EntityCollection;
 
 MnEntityView.EntityService = EntityService;
-MnEntityView.EntityController = EntityController;
 
 MnEntityView.EntityFormView = EntityFormView;
 MnEntityView.EntityLayoutView = EntityLayoutView;

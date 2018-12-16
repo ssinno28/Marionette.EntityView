@@ -1,4 +1,4 @@
-(function (_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, $, cherrytree) {
+(function (_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, $, cherrytree, Backbone) {
     var $config = $('#config');
     if ($config.length > 0) {
         var config = JSON.parse(decodeURIComponent($config.val()));
@@ -74,6 +74,42 @@
     });
 
     App.router = cherrytree();
+    App.entityViewMiddleware = function render(transition) {
+        transition.routes.forEach(function (route, i) {
+            if (App.router.isActive(route.name, route.params, route.query)) {
+                return;
+            }
+
+            let routeSegments = route.name.split('.'),
+                count = routeSegments.length - 1,
+                channelName = '',
+                method = routeSegments[count];
+
+            for (let i = 0; i < count; i++) {
+                channelName += routeSegments[i];
+
+                if (i + 1 < count) {
+                    channelName += '.';
+                }
+            }
+
+            switch (method) {
+                case 'getType':
+                    Backbone.Radio.channel(channelName).trigger(method, route.params.page);
+                    break;
+                case 'edit':
+                    Backbone.Radio.channel(channelName).trigger(method, route.params[route.name.replace('.', '') + 'id']);
+                    break;
+                case 'create':
+                    Backbone.Radio.channel(channelName).trigger(method);
+                    break;
+            }
+        });
+    };
+
+    App.on('destroy', function(){
+        this.router.destroy();
+    });
 
     _.extend(EntityLayoutView.prototype, ModalMixin);
     _.extend(EntityListItemView.prototype, ModalMixin);
@@ -93,4 +129,4 @@
 
     _.extend(Marionette.FormView.prototype, FieldsMixin);
 
-})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, jQuery, cherrytree);
+})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, jQuery, cherrytree, Backbone);

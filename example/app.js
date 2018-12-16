@@ -132,7 +132,8 @@ var options = {
 App.on('start', function () {
     App.FILE_BROWSER_URL = '../node_modules/rich-filemanager/index.html';
 
-    var controller = new Marionette.EntityController(options);
+    var service = new Marionette.EntityService(options);
+
     App.router.map(function (route) {
         route('test', {path: '/test', abstract: true}, function () {
             route('test.create', {path: 'create/'});
@@ -141,38 +142,7 @@ App.on('start', function () {
         });
     });
 
-    App.router.use(function render(transition) {
-        transition.routes.forEach(function (route, i) {
-            if (App.router.isActive(route.name, route.params, route.query)) {
-                return;
-            }
-
-            let routeSegments = route.name.split('.'),
-                count = routeSegments.length - 1,
-                channelName = '',
-                method = routeSegments[count];
-
-            for (let i = 0; i < count; i++) {
-                channelName += routeSegments[i];
-
-                if (i + 1 < count) {
-                    channelName += '.';
-                }
-            }
-
-            switch (method) {
-                case 'getType':
-                    Backbone.Radio.channel(channelName).trigger(method, route.params.page);
-                    break;
-                case 'edit':
-                    Backbone.Radio.channel(channelName).trigger(method, route.params[route.name.replace('.', '') + 'id']);
-                    break;
-                case 'create':
-                    Backbone.Radio.channel(channelName).trigger(method);
-                    break;
-            }
-        });
-    });
+    App.router.use(this.entityViewMiddleware);
 
     // start listening to URL changes
     App.router.listen()

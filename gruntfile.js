@@ -80,7 +80,8 @@ module.exports = function (grunt) {
                 specs: [
                     './tests/entityCollectionTests.js',
                     './tests/entityFormTests.js',
-                    './tests/entityServiceTests.js'
+                    './tests/entityServiceTests.js',
+                    './tests/routerTests.js'
                 ],
                 helpers: './tests/testSetup.js'
             }

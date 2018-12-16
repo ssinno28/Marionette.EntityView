@@ -5776,38 +5776,7 @@ var TreeListView;
 
 })(jQuery, _, Backbone, Marionette, TreeCompositeView);
 
-var EntityController;
-(function (App, $, _, Backbone, Marionette, EntityLayoutView, headerTemplate, TimeoutUtil, EntityService) {
-    EntityController = Marionette.EntityController = Marionette.MnObject.extend({
-        initialize: function (options) {
-            this._channel = Backbone.Radio.channel(options.route);
-            this.getEntityService(options);
-        },
-        onActionExecuting: function (name, path) {
-            App.route = this.route;
-        },
-        getEntityService: function (options) {
-            this.entityService = new EntityService(options);
-        },
-        create: function () {
-            this._channel.trigger('create');
-        },
-        edit: function (id) {
-            this._channel.trigger('edit', id);
-        },
-        textSearch: function (startsWith, field) {
-            this._channel.trigger('textSearch', startsWith, field);
-        },
-        getAll: function (page) {
-            this._channel.trigger('getAll', page);
-        },
-        getType: function (page) {
-            this._channel.trigger('getType', page);
-        }
-    });
-})(App, jQuery, _, Backbone, Marionette, EntityLayoutView, this['Templates']['headerTemplate'], TimeoutUtil, EntityService);
-
-(function (_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, $, cherrytree) {
+(function (_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, $, cherrytree, Backbone) {
     var $config = $('#config');
     if ($config.length > 0) {
         var config = JSON.parse(decodeURIComponent($config.val()));
@@ -5883,6 +5852,42 @@ var EntityController;
     });
 
     App.router = cherrytree();
+    App.entityViewMiddleware = function render(transition) {
+        transition.routes.forEach(function (route, i) {
+            if (App.router.isActive(route.name, route.params, route.query)) {
+                return;
+            }
+
+            let routeSegments = route.name.split('.'),
+                count = routeSegments.length - 1,
+                channelName = '',
+                method = routeSegments[count];
+
+            for (let i = 0; i < count; i++) {
+                channelName += routeSegments[i];
+
+                if (i + 1 < count) {
+                    channelName += '.';
+                }
+            }
+
+            switch (method) {
+                case 'getType':
+                    Backbone.Radio.channel(channelName).trigger(method, route.params.page);
+                    break;
+                case 'edit':
+                    Backbone.Radio.channel(channelName).trigger(method, route.params[route.name.replace('.', '') + 'id']);
+                    break;
+                case 'create':
+                    Backbone.Radio.channel(channelName).trigger(method);
+                    break;
+            }
+        });
+    };
+
+    App.on('destroy', function(){
+        this.router.destroy();
+    });
 
     _.extend(EntityLayoutView.prototype, ModalMixin);
     _.extend(EntityListItemView.prototype, ModalMixin);
@@ -5902,7 +5907,7 @@ var EntityController;
 
     _.extend(Marionette.FormView.prototype, FieldsMixin);
 
-})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, jQuery, cherrytree);MnEntityView.ErrorView = ErrorView;
+})(_, App, EntityLayoutView, EntityListItemView, EntityFormView, ModalMixin, UtilitiesMixin, jQuery, cherrytree, Backbone);MnEntityView.ErrorView = ErrorView;
 MnEntityView.InfoView = InfoView;
 MnEntityView.WarningView = WarningView;
 MnEntityView.SuccessView = SuccessView;
@@ -5936,7 +5941,6 @@ MnEntityView.EntityModel = EntityModel;
 MnEntityView.EntityCollection = EntityCollection;
 
 MnEntityView.EntityService = EntityService;
-MnEntityView.EntityController = EntityController;
 
 MnEntityView.EntityFormView = EntityFormView;
 MnEntityView.EntityLayoutView = EntityLayoutView;

@@ -17,6 +17,10 @@ describe('Entity Service with Routing', function () {
         entityService = new Marionette.EntityService(options);
     });
 
+    afterAll(() => {
+        entityService.destroy();
+    });
+
     it('calls destroy when formRegion is passed in', function () {
         entityService.region.show(entityService.entityLayoutView());
         entityService.formRegion = region;
