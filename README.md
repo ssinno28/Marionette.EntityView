@@ -20,7 +20,7 @@ While these projects are not published to npm yet, you can take a look at them t
 
 ## Release History
 * 1.4.4
-  * **DEPRECATION WARNING** removing entity router (based on AppRouter) in favor of more robust router cherrytree
+  * **DEPRECATION WARNING** removing entity router and entity controller (based on AppRouter) in favor of more robust router cherrytree
 * 1.3.31
   * passing in correct region for custom view field
   * making sure layout view gets destroyed if the form view is the same as the layout view
