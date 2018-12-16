@@ -17,17 +17,28 @@ describe('Entity Service with Routing', function () {
         entityService = new Marionette.EntityService(options);
     });
 
-    afterAll(() => {
+    afterEach(() => {
         entityService.destroy();
     });
 
-    it('calls destroy when formRegion is passed in', function () {
+    it('executes function when form region is not an object for edit', function () {
         entityService.region.show(entityService.entityLayoutView());
-        entityService.formRegion = region;
-        spyOn(entityService._entityLayoutView, 'destroy');
+        entityService.formRegion = function () {
+        };
 
+        spyOn(entityService, 'formRegion').and.returnValue(new Marionette.Region({el: '#test-region'}));
         entityService.edit(1);
-        expect(entityService._entityLayoutView.destroy).toHaveBeenCalled();
+        expect(entityService.formRegion).toHaveBeenCalled();
+    });
+
+    it('executes function when form region is not an object for create', function () {
+        entityService.region.show(entityService.entityLayoutView());
+        entityService.formRegion = function () {
+        };
+
+        spyOn(entityService, 'formRegion').and.returnValue(new Marionette.Region({el: '#test-region'}));
+        entityService.create();
+        expect(entityService.formRegion).toHaveBeenCalled();
     });
 
     it('defaults to have routing', function () {

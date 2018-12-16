@@ -153,7 +153,8 @@ var EntityService;
             if (_.isUndefined(this.formRegion)) {
                 this.entityLayoutView().showChildView('entityRegion', form);
             } else {
-                this.formRegion.show(form);
+                var region = _.isFunction(this.formRegion) ? this.formRegion() : this.formRegion;
+                region.show(form);
             }
         },
         edit: function (id) {
@@ -177,11 +178,8 @@ var EntityService;
                     if (_.isUndefined(this.formRegion)) {
                         this.entityLayoutView().showChildView('entityRegion', form);
                     } else {
-                        if (this.region.currentView === this._entityLayoutView) {
-                            this.entityLayoutView().destroy();
-                        }
-
-                        this.formRegion.show(form);
+                        var region = _.isFunction(this.formRegion) ? this.formRegion() : this.formRegion;
+                        region.show(form);
                     }
                 }, this));
         },
