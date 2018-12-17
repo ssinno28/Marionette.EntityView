@@ -153,8 +153,11 @@ var EntityService;
             if (_.isUndefined(this.formRegion)) {
                 this.entityLayoutView().showChildView('entityRegion', form);
             } else {
-                var region = _.isFunction(this.formRegion) ? this.formRegion() : this.formRegion;
-                region.show(form);
+                if (_.isFunction(this.formRegion)) {
+                    this.formRegion(form);
+                } else {
+                    this.formRegion.show(form)
+                }
             }
         },
         edit: function (id) {
@@ -178,8 +181,11 @@ var EntityService;
                     if (_.isUndefined(this.formRegion)) {
                         this.entityLayoutView().showChildView('entityRegion', form);
                     } else {
-                        var region = _.isFunction(this.formRegion) ? this.formRegion() : this.formRegion;
-                        region.show(form);
+                        if (_.isFunction(this.formRegion)) {
+                            this.formRegion(form);
+                        } else {
+                            this.formRegion.show(form)
+                        }
                     }
                 }, this));
         },

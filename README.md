@@ -19,8 +19,8 @@ While these projects are not published to npm yet, you can take a look at them t
 * Aside from those there is also the [example folder](https://github.com/ssinno28/Marionette.EntityView/tree/master/example) in the root of the project.
 
 ## Release History
-* 1.4.5
-  * making it so you can pass in a function to get the form region
+* 1.4.6
+  * making it so you can pass in a function that takes the form view setup through the service
 * 1.4.4
   * **DEPRECATION WARNING** removing entity router and entity controller (based on AppRouter) in favor of more robust router cherrytree
 * 1.3.31
