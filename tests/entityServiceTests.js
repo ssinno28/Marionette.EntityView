@@ -31,6 +31,16 @@ describe('Entity Service with Routing', function () {
         expect(entityService.formRegion).toHaveBeenCalled();
     });
 
+    it('executes function when region is not an object for getType', function () {
+        entityService.region.show(entityService.entityLayoutView());
+        entityService.region = function () {
+        };
+
+        spyOn(entityService, 'region').and.returnValue(new Marionette.Region({el: '#test-region'}));
+        entityService.getType(1);
+        expect(entityService.region).toHaveBeenCalled();
+    });
+
     it('executes function when form region is not an object for create', function () {
         entityService.region.show(entityService.entityLayoutView());
         entityService.formRegion = function () {

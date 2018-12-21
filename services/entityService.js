@@ -133,10 +133,11 @@ var EntityService;
             this.getAll(1);
         },
         create: function () {
-            var entity = this.getNewModel();
+            var entity = this.getNewModel(),
+                region = _.isFunction(this.region) ? this.region() : this.region;
 
-            if (_.isUndefined(this.formRegion) && this.region.currentView !== this.entityLayoutView()) {
-                this.region.show(this.entityLayoutView());
+            if (_.isUndefined(this.formRegion) && region.currentView !== this.entityLayoutView()) {
+                region.show(this.entityLayoutView());
             }
 
             var form = new this.formView
@@ -161,8 +162,9 @@ var EntityService;
             }
         },
         edit: function (id) {
-            if (_.isUndefined(this.formRegion) && this.region.currentView !== this.entityLayoutView()) {
-                this.region.show(this.entityLayoutView());
+            var region = _.isFunction(this.region) ? this.region() : this.region;
+            if (_.isUndefined(this.formRegion) && region.currentView !== this.entityLayoutView()) {
+                region.show(this.entityLayoutView());
             }
 
             this.collection.getById(id)
@@ -190,10 +192,11 @@ var EntityService;
                 }, this));
         },
         delete: function (id) {
-            var self = this;
+            var self = this,
+            region = _.isFunction(this.region) ? this.region() : this.region;
 
-            if (this.region.currentView !== this.entityLayoutView()) {
-                this.region.show(this.entityLayoutView());
+            if (region.currentView !== this.entityLayoutView()) {
+                region.show(this.entityLayoutView());
             }
 
             this.collection.getById(id)
@@ -257,7 +260,8 @@ var EntityService;
                 }, this));
         },
         getAll: function (page, force) {
-            if (this.region.currentView !== this._entityLayoutView) {
+            var region = _.isFunction(this.region) ? this.region() : this.region;
+            if (region.currentView !== this._entityLayoutView) {
                 throw new Error('You need to call getType on this service before calling get all!!');
             }
 
@@ -303,13 +307,14 @@ var EntityService;
                 });
         },
         getType: function (page, force) {
-            var self = this;
+            var self = this,
+                region = _.isFunction(this.region) ? this.region() : this.region;
 
             if (isNaN(page)) {
                 page = 0;
             }
 
-            if (this.region.currentView === this._entityLayoutView) {
+            if (region.currentView === this._entityLayoutView) {
                 this.getAll(page);
                 return;
             }
@@ -326,7 +331,7 @@ var EntityService;
                         models = entities.child;
                     }
 
-                    self.region.reset();
+                    region.reset();
                     models.currentPage = page;
 
                     var channel = self.getChannel();
@@ -335,7 +340,7 @@ var EntityService;
                     var entityLayoutView = self.entityLayoutView(models);
                     entityLayoutView.key = key;
 
-                    self.region.show(entityLayoutView);
+                    region.show(entityLayoutView);
                     self.entityLayoutView().showChildView('entityRegion', entityLayoutView.listView);
                 });
         },
