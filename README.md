@@ -19,7 +19,7 @@ While these projects are not published to npm yet, you can take a look at them t
 * Aside from those there is also the [example folder](https://github.com/ssinno28/Marionette.EntityView/tree/master/example) in the root of the project.
 
 ## Release History
-* 1.4.9
+* 1.4.10
   * making it so you can pass in a function that takes the form view setup through the service
   * allowing the ability to pass in a function for entityservice region that returns a region
 * 1.4.4
