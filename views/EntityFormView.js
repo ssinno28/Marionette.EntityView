@@ -48,7 +48,6 @@ var EntityFormView;
             };
         },
         runFormInitializers: function () {
-            this._channel.trigger('view.form.activated');
             this.checkDisabledFields();
         },
         checkDisabledFields: function () {

@@ -110,7 +110,7 @@ __p += '\r\n    <div class="list-view-checkbox col-xs-1 col-sm-1">\r\n        <i
  } ;
 __p += '\r\n\r\n\r\n    <div class="col-xs-9 col-sm-10 list-view-additional-info">\r\n        <div class="fieldsRegion"></div>\r\n    </div>\r\n\r\n    ';
  if(showOperations) { ;
-__p += '\r\n    <div class="list-view-actions col-sm-1 col-xs-1">\r\n        <div class="dropdown pull-right">\r\n            <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
+__p += '\r\n    <div class="list-view-actions col-sm-1 col-xs-1 btn-group ml-auto">\r\n        <div class="dropdown pull-right">\r\n            <button class="btn btn-link dropdown-toggle" type="button" id="dropdown' +
 ((__t = ( route )) == null ? '' : __t) +
 '' +
 ((__t = (id)) == null ? '' : __t) +
@@ -4121,9 +4121,6 @@ var EntityListView;
 
             return behaviors;
         },
-        onDomRefresh: function () {
-            this._channel.trigger('view.list.activated');
-        },
         childViewOptions: function () {
             var route = this.route,
                 allowableOperations = this.allowableOperations,
@@ -4442,7 +4439,8 @@ var EntityLayoutView;
 
             return {
                 route: route,
-                btnClass: btnClass
+                btnClass: btnClass,
+                embedded: this.getOption('embedded')
             };
         },
         createClick: function (e) {
@@ -4852,10 +4850,15 @@ var EntityService;
         },
         create: function () {
             var entity = this.getNewModel(),
-                region = _.isFunction(this.region) ? this.region() : this.region;
+                region = _.isFunction(this.region) ? this.region() : this.region,
+                formRegion = _.isFunction(this.formRegion) ? this.formRegion() : this.formRegion;
 
-            if (_.isUndefined(this.formRegion) && region.currentView !== this.entityLayoutView()) {
+            if (region.currentView !== this.entityLayoutView()) {
                 region.show(this.entityLayoutView());
+
+                if (!_.isUndefined(formRegion)) {
+                    this.getAll(1);
+                }
             }
 
             var form = new this.formView
@@ -4866,20 +4869,33 @@ var EntityService;
                 btnClass: this.getBtnClass(),
                 formOptions: this.getFormOptions(),
                 channelName: this.route,
-                header: this.getFormHeader()
+                header: this.getFormHeader(),
+                embedded: this.embedded
             });
 
-            if (_.isUndefined(this.formRegion)) {
+            if (_.isUndefined(formRegion)) {
+                var entityRegion = this.entityLayoutView().getRegion('entityRegion');
+                entityRegion.on('show', _.bind(function () {
+                    this._channel.trigger('view.form.activated');
+                }, this));
                 this.entityLayoutView().showChildView('entityRegion', form);
             } else {
-                var region = _.isFunction(this.formRegion) ? this.formRegion() : this.formRegion;
-                region.show(form);
+                formRegion.on('show', _.bind(function () {
+                    this._channel.trigger('view.form.activated');
+                }, this));
+                formRegion.show(form);
             }
         },
         edit: function (id) {
-            var region = _.isFunction(this.region) ? this.region() : this.region;
-            if (_.isUndefined(this.formRegion) && region.currentView !== this.entityLayoutView()) {
+            var region = _.isFunction(this.region) ? this.region() : this.region,
+                formRegion = _.isFunction(this.formRegion) ? this.formRegion() : this.formRegion;
+
+            if (region.currentView !== this.entityLayoutView()) {
                 region.show(this.entityLayoutView());
+
+                if (!_.isUndefined(formRegion)) {
+                    this.getAll(1);
+                }
             }
 
             this.collection.getById(id)
@@ -4892,20 +4908,27 @@ var EntityService;
                         btnClass: this.getBtnClass(),
                         formOptions: this.getFormOptions(),
                         channelName: this.channelName,
-                        header: this.getFormHeader(entity.get('name'))
+                        header: this.getFormHeader(entity.get('name')),
+                        embedded: this.embedded
                     });
 
-                    if (_.isUndefined(this.formRegion)) {
+                    if (_.isUndefined(formRegion)) {
+                        var entityRegion = this.entityLayoutView().getRegion('entityRegion');
+                        entityRegion.on('show', _.bind(function () {
+                            this._channel.trigger('view.form.activated');
+                        }, this));
                         this.entityLayoutView().showChildView('entityRegion', form);
                     } else {
-                        var region = _.isFunction(this.formRegion) ? this.formRegion() : this.formRegion;
-                        region.show(form);
+                        formRegion.on('show', _.bind(function () {
+                            this._channel.trigger('view.form.activated');
+                        }, this));
+                        formRegion.show(form);
                     }
                 }, this));
         },
         delete: function (id) {
             var self = this,
-            region = _.isFunction(this.region) ? this.region() : this.region;
+                region = _.isFunction(this.region) ? this.region() : this.region;
 
             if (region.currentView !== this.entityLayoutView()) {
                 region.show(this.entityLayoutView());
@@ -4957,7 +4980,8 @@ var EntityService;
                             baseClassIds: this.baseClassIds,
                             route: this.route,
                             sortable: this.sortable,
-                            routing: this.routing
+                            routing: this.routing,
+                            embedded: this.embedded
                         });
 
                     listView.route = this.route;
@@ -4977,7 +5001,6 @@ var EntityService;
                 throw new Error('You need to call getType on this service before calling get all!!');
             }
 
-            var self = this;
             if (isNaN(page)) {
                 page = 0;
             }
@@ -4985,7 +5008,7 @@ var EntityService;
             var data = this.getData(page);
 
             this.collection.query(this.track, data, force)
-                .done(function (entities, key) {
+                .done(_.bind(function (entities, key) {
                     var models = null;
 
                     if (_.isUndefined(entities.child)) {
@@ -4995,32 +5018,36 @@ var EntityService;
                     }
 
                     var listView =
-                        new self.listView
+                        new this.listView
                         ({
                             collection: models,
-                            parentViewCid: self.entityLayoutView().cid,
-                            baseClassIds: self.baseClassIds,
-                            route: self.route,
-                            sortable: self.sortable,
-                            routing: self.routing
+                            parentViewCid: this.entityLayoutView().cid,
+                            baseClassIds: this.baseClassIds,
+                            route: this.route,
+                            sortable: this.sortable,
+                            routing: this.routing,
+                            embedded: this.embedded
                         });
 
                     listView.currentPage = page;
-                    listView.route = self.route;
-                    listView.allowableOperations = self.allowableOperations;
+                    listView.route = this.route;
+                    listView.allowableOperations = this.allowableOperations;
 
-                    self.entityLayoutView().key = key;
-                    self.entityLayoutView().listView = listView;
+                    this.entityLayoutView().key = key;
+                    this.entityLayoutView().listView = listView;
 
-                    var channel = self.getChannel();
+                    var channel = this.getChannel();
                     channel.trigger('subcollection', models);
 
-                    self.entityLayoutView().showChildView('entityRegion', listView);
-                });
+                    var region = this.entityLayoutView().getRegion('entityRegion');
+                    region.on('show', _.bind(function () {
+                        this._channel.trigger('view.list.activated');
+                    }, this));
+                    this.entityLayoutView().showChildView('entityRegion', listView);
+                }, this));
         },
         getType: function (page, force) {
-            var self = this,
-                region = _.isFunction(this.region) ? this.region() : this.region;
+            var region = _.isFunction(this.region) ? this.region() : this.region;
 
             if (isNaN(page)) {
                 page = 0;
@@ -5034,7 +5061,7 @@ var EntityService;
             var data = this.getData(page);
 
             this.collection.query(this.track, data, force)
-                .done(function (entities, key) {
+                .done(_.bind(function (entities, key) {
                     var models = null;
 
                     if (_.isUndefined(entities.child)) {
@@ -5046,15 +5073,20 @@ var EntityService;
                     region.reset();
                     models.currentPage = page;
 
-                    var channel = self.getChannel();
+                    var channel = this.getChannel();
                     channel.trigger('subcollection', models);
 
-                    var entityLayoutView = self.entityLayoutView(models);
+                    var entityLayoutView = this.entityLayoutView(models);
                     entityLayoutView.key = key;
 
                     region.show(entityLayoutView);
-                    self.entityLayoutView().showChildView('entityRegion', entityLayoutView.listView);
-                });
+
+                    var listViewRegion = this.entityLayoutView().getRegion('entityRegion');
+                    listViewRegion.on('show', _.bind(function () {
+                        this._channel.trigger('view.list.activated');
+                    }, this));
+                    this.entityLayoutView().showChildView('entityRegion', entityLayoutView.listView);
+                }, this));
         },
         getData: function (page) {
             if (this.sortable) {
@@ -5468,7 +5500,6 @@ var EntityFormView;
             };
         },
         runFormInitializers: function () {
-            this._channel.trigger('view.form.activated');
             this.checkDisabledFields();
         },
         checkDisabledFields: function () {

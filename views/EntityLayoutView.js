@@ -84,7 +84,8 @@ var EntityLayoutView;
 
             return {
                 route: route,
-                btnClass: btnClass
+                btnClass: btnClass,
+                embedded: this.getOption('embedded')
             };
         },
         createClick: function (e) {

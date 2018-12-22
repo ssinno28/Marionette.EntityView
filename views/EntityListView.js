@@ -17,9 +17,6 @@ var EntityListView;
 
             return behaviors;
         },
-        onDomRefresh: function () {
-            this._channel.trigger('view.list.activated');
-        },
         childViewOptions: function () {
             var route = this.route,
                 allowableOperations = this.allowableOperations,
