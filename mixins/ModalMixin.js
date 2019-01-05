@@ -26,7 +26,8 @@ var ModalMixin;
                 this.showChildView(modal.name, modalView);
 
                 if (!_.isUndefined($el) && $el.length > 0 && !_.isUndefined(text)) {
-                    $el.append('<button data-toggle="modal" data-target="#' + className + '" class="' + className + '-show btn btn-default">' +
+                    var btnClass = className + '-show btn btn-default ' + modal.btnClass;
+                    $el.append('<button data-toggle="modal" data-target="#' + className + '" class="' + btnClass + '">' +
                         text +
                         '</button>');
                 }
@@ -55,7 +56,19 @@ var ModalMixin;
                 return {
                     title: titleFunc,
                     choice: choiceFunc,
-                    add: addFunc
+                    add: addFunc,
+                    btnClass: btnClassFunc
+                };
+            };
+
+            var btnClassFunc = function (btnClass) {
+                modal.btnClass = btnClass;
+
+                return {
+                    title: titleFunc,
+                    choice: choiceFunc,
+                    add: addFunc,
+                    messageFunc: messageFunc
                 };
             };
 
@@ -65,13 +78,15 @@ var ModalMixin;
                 return {
                     message: messageFunc,
                     choice: choiceFunc,
-                    add: addFunc
+                    add: addFunc,
+                    btnClass: btnClassFunc
                 };
             };
 
             return {
                 title: titleFunc,
-                message: messageFunc
+                message: messageFunc,
+                btnClass: btnClassFunc
             };
         }
     };
